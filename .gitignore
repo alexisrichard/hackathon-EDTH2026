@@ -1,0 +1,43 @@
+# Claude Code local settings (per-user, not for the repo)
+.claude/settings.local.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.local
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# Data — never commit data files to git, they live on S3
+*.csv
+*.parquet
+*.geojson
+*.tif
+*.tiff
+*.zip
+*.rar
+*.tar.gz
+data/
+raw/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
