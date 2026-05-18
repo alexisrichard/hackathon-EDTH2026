@@ -35,9 +35,9 @@ UA = {"User-Agent": "edth2026-baltic-prep/0.1 (alexisrichard@github)"}
 
 OFAC_SDN_URL = "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.CSV"
 OFAC_SDN_ALT = "https://www.treasury.gov/ofac/downloads/sdn.csv"
-EU_CONSOLIDATED_URL = (
-    "https://webgate.ec.europa.eu/fsd/fsf/public/files/xmlFullSanctionsList_1_1/content"
-)
+# EU consolidated direct URL is token-gated; using OpenSanctions normalized copy (CC-BY-NC).
+EU_FSF_OPENSANCTIONS_URL = "https://data.opensanctions.org/datasets/latest/eu_fsf/targets.simple.csv"
+EU_FSF_OPENSANCTIONS_DATED = "https://data.opensanctions.org/datasets/20260518/eu_fsf/targets.simple.csv"
 UK_OFSI_URL = "https://ofsistorage.blob.core.windows.net/publishlive/2022format/ConList.csv"
 
 
@@ -95,57 +95,60 @@ def fetch_ofac_sdn() -> list[dict]:
     return rows
 
 
-def fetch_eu_consolidated() -> list[dict]:
-    """EU consolidated XML. Element 'sanctionEntity' with subjectType=enterprise often
-    contains shipping companies; vessels themselves are rare in this feed.
+def fetch_eu_fsf() -> list[dict]:
+    """EU Financial Sanctions Files via OpenSanctions normalized CSV.
+
+    OpenSanctions normalizes the EU consolidated list into a Follow-the-Money
+    schema. License: CC-BY-NC 4.0 (non-commercial use; we treat as research-only
+    for the hackathon demo, NOT for any commercial productization).
     """
-    print("[EU Consolidated]")
-    body = fetch(EU_CONSOLIDATED_URL)
+    print("[EU FSF via OpenSanctions]")
+    body = fetch(EU_FSF_OPENSANCTIONS_URL) or fetch(EU_FSF_OPENSANCTIONS_DATED)
     if not body:
         print("  no data\n")
         return []
-    raw_path = RAW_DIR / "eu_consolidated.xml"
+    raw_path = RAW_DIR / "eu_fsf_targets.csv"
     raw_path.write_bytes(body)
     print(f"  saved raw: {raw_path} ({len(body) // 1024} KB)")
-    rows: list[dict] = []
-    try:
-        root = ET.fromstring(body)
-    except ET.ParseError as ex:
-        print(f"  XML parse failed: {ex}\n")
-        return rows
 
-    for entity in root.iter():
-        tag = entity.tag.split("}", 1)[-1]
-        if tag not in {"sanctionEntity"}:
-            continue
-        subject_type = entity.attrib.get("subjectType", "")
-        names = []
-        for ne in entity.iter():
-            if ne.tag.split("}", 1)[-1] == "nameAlias":
-                w = ne.attrib.get("wholeName", "")
-                if w:
-                    names.append(w)
-        primary_name = names[0] if names else ""
-        text_blob = ET.tostring(entity, encoding="unicode").lower()
-        is_maritime = any(
-            kw in text_blob
-            for kw in ("vessel", "ship", "tanker", "shipping", "marine", "maritime", "fleet")
+    text = body.decode("utf-8", errors="replace")
+    reader = csv.DictReader(io.StringIO(text))
+    rows: list[dict] = []
+    # OpenSanctions FTM schema: Vessel rows have schema='Vessel'; shipping companies
+    # often have 'maritime' or 'shipping' in their name/aliases.
+    SHIP_SCHEMAS = {"Vessel", "Vehicle"}  # Vehicle covers some legacy entries
+    SHIPPING_KW = ("shipping", "tanker", "marine", "maritime", "fleet",
+                   "navigation", "vessel", "ship management")
+    for row in reader:
+        sch = (row.get("schema") or "").strip()
+        name = (row.get("name") or "").strip()
+        aliases = (row.get("aliases") or "").lower()
+        identifiers = row.get("identifiers") or ""
+        is_vessel = sch in SHIP_SCHEMAS
+        is_ship_co = sch in ("Organization", "Company") and any(
+            kw in name.lower() or kw in aliases for kw in SHIPPING_KW
         )
-        if not is_maritime:
+        if not (is_vessel or is_ship_co):
             continue
+        # Try to extract IMO from identifiers field
+        imo = ""
+        m = re.search(r"\b(IMO|imo[N]?o?)[:\s]*(\d{7})\b", identifiers + " " + (row.get("name") or ""), re.IGNORECASE)
+        if m:
+            imo = m.group(2)
+        country = (row.get("countries") or "").split(";")[0].strip()
         rows.append({
-            "source": "EU_consolidated",
-            "entry_id": entity.attrib.get("logicalId", ""),
-            "name": primary_name,
-            "type": subject_type or "entity",
-            "country": "",
-            "imo": "",
+            "source": "EU_FSF_OS",
+            "entry_id": (row.get("id") or "").strip(),
+            "name": name,
+            "type": "vessel" if is_vessel else "shipping_entity",
+            "country": country,
+            "imo": imo,
             "mmsi": "",
             "flag": "",
             "owner": "",
-            "notes": " | ".join(names[1:5])[:500],
+            "notes": (row.get("sanctions") or "")[:500],
         })
-    print(f"  parsed {len(rows)} maritime-relevant entries\n")
+    print(f"  parsed {len(rows)} maritime entries\n")
     return rows
 
 
@@ -210,7 +213,7 @@ def main() -> int:
     print(f"Fetching sanctions data ({datetime.now(timezone.utc).isoformat()})\n")
     all_rows: list[dict] = []
     all_rows += fetch_ofac_sdn()
-    all_rows += fetch_eu_consolidated()
+    all_rows += fetch_eu_fsf()
     all_rows += fetch_uk_ofsi()
 
     fetched_at = datetime.now(timezone.utc).isoformat()

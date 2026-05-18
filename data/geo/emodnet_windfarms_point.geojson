@@ -1,0 +1,3003 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": "windfarms.31",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.13,
+     54.97
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Vindeby-Lolland",
+    "n_turbines": 11,
+    "power_mw": 4.95,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": "1991",
+    "dist_coast": 1676.31285727,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.57",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.56,
+     65.658
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 1",
+    "n_turbines": 1,
+    "power_mw": 3,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2005",
+    "dist_coast": 14.5966830835,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.58",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.5,
+     65.667
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 2-3",
+    "n_turbines": 2,
+    "power_mw": 6,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2008",
+    "dist_coast": 617.84155917,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.59",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.551,
+     65.658
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 4",
+    "n_turbines": 1,
+    "power_mw": 3,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2008",
+    "dist_coast": 53.0401498407,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.60",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.563,
+     65.65
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 5",
+    "n_turbines": 1,
+    "power_mw": 3,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2007",
+    "dist_coast": 627.514721705,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.61",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.551,
+     65.658
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 6-7",
+    "n_turbines": 2,
+    "power_mw": 6,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2008",
+    "dist_coast": 53.0401498407,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.62",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.551,
+     65.658
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos 8-9-10-11",
+    "n_turbines": 4,
+    "power_mw": 12,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2008",
+    "dist_coast": 53.0401498407,
+    "notes": "Decommission: 2016"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.63",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.545,
+     65.668
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos Repowering Offshore Part",
+    "n_turbines": 8,
+    "power_mw": 26.4,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2017",
+    "dist_coast": 787.926465333,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.64",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.545,
+     65.668
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ajos Repowering Onshore Part",
+    "n_turbines": 5,
+    "power_mw": 16,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2017",
+    "dist_coast": 787.926465333,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.74",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.35,
+     61.62
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Pori Offshore 1 Reposaaren Tuulipuisto",
+    "n_turbines": 1,
+    "power_mw": 2.3,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2010",
+    "dist_coast": 918.375059946,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.76",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.26,
+     61.608
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Pori-Tahkoluoto Pori 2",
+    "n_turbines": 10,
+    "power_mw": 42,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2017",
+    "dist_coast": 5511.38505116,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.98",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.13,
+     54.16
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Germany",
+    "name": "Breitling",
+    "n_turbines": 1,
+    "power_mw": 2.5,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": "2006",
+    "dist_coast": 358.792251654,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.425",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.3,
+     58.25
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "SeaTwirl 3MW",
+    "n_turbines": 1,
+    "power_mw": 3,
+    "status": "Dismantled",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2011",
+    "dist_coast": 3153.88176936,
+    "notes": "Decommission: 2019"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.430",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.378,
+     59.265
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "V\u00e4nern",
+    "n_turbines": 7,
+    "power_mw": 0.021,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": "2009",
+    "dist_coast": 113427.734942,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.433",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.378,
+     59.265
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "V\u00e4nern Gasslingegrund Offshore",
+    "n_turbines": 7,
+    "power_mw": 21,
+    "status": "Production",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": "2009",
+    "dist_coast": 113427.734941,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.37",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     22.5,
+     59.15
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Loode-Eesti Meretuulepark Hiiumaa",
+    "n_turbines": 200,
+    "power_mw": 1100,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 8027.17115278,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.39",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.67,
+     58.14
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Saare",
+    "n_turbines": 100,
+    "power_mw": 600,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17436.6770094,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.66",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.89,
+     59.86
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Inkoo Inkoo-Raaseporin",
+    "n_turbines": 60,
+    "power_mw": 300,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 4411.25466507,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.77",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.09,
+     64.58
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Raahe Maanahkiaisen",
+    "n_turbines": 70,
+    "power_mw": 350,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 8449.56907721,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.78",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.4,
+     64.78
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Raahe Pertunmatala",
+    "n_turbines": 24,
+    "power_mw": 72,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 7455.99153798,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.80",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.3,
+     61.71
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Tahkoluoto demonstration",
+    "n_turbines": 2,
+    "power_mw": 30,
+    "status": "Approved",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 4185.06674236,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.82",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.89,
+     64.61
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Ulkonahkiainen",
+    "n_turbines": 70,
+    "power_mw": 210,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17882.3365362,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.83",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.74,
+     60.75
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Vagsk\u00e4r",
+    "n_turbines": 98,
+    "power_mw": 1960,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 33035.5801956,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.65",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.85,
+     65.03
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Halla",
+    "n_turbines": null,
+    "power_mw": 1920,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 33096.2547617,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.279",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.65,
+     55.05
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltic Power",
+    "n_turbines": 76,
+    "power_mw": 1140,
+    "status": "Construction",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 28426.9069848,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.284",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.26,
+     55.52
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltyk I Phase 1",
+    "n_turbines": 190,
+    "power_mw": 1140,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 51081.3317156,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.285",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.38,
+     55.51
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltyk I Phase 2",
+    "n_turbines": 70,
+    "power_mw": 420,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 57895.8273363,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.431",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.94,
+     56.88
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Galatea-Galene",
+    "n_turbines": 21,
+    "power_mw": 400,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 23454.8006951,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.36,
+     57.45
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Bochers Banke",
+    "n_turbines": null,
+    "power_mw": 1102.5,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17145.5506181,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.96,
+     55.14
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Bornholm Bassin Ost",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 41357.1617598,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.96,
+     54.88
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Bornholm Bassin Syd",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 52608.8586695,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.2,
+     54.7
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Femern",
+    "n_turbines": null,
+    "power_mw": 400,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 1762.15357761,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.45,
+     54.46
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Femern Bugt",
+    "n_turbines": null,
+    "power_mw": 300,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 10406.5028203,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     10.65,
+     57.68
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Frederikshavn Nord",
+    "n_turbines": null,
+    "power_mw": 500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 5195.7595305,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.39,
+     56.17
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Gilleleje",
+    "n_turbines": null,
+    "power_mw": 210,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 6142.34724881,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.11,
+     56.47
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Gjerrild Bugt",
+    "n_turbines": null,
+    "power_mw": 400,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 9734.38123861,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     10.99,
+     56.57
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Grena",
+    "n_turbines": null,
+    "power_mw": 315,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 9862.08052492,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.09,
+     54.66
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Guldborgsund",
+    "n_turbines": null,
+    "power_mw": 500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 8306.53556388,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.99,
+     54.53
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Guldborgsund Syd",
+    "n_turbines": null,
+    "power_mw": 500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 3520.97099438,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.88,
+     57.61
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Hirtshals Havn Offshore",
+    "n_turbines": null,
+    "power_mw": 350,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 4444.27710821,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.76,
+     57.55
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Hirtshals Havn Syd",
+    "n_turbines": null,
+    "power_mw": 500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 7209.97316457,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.56,
+     56.07
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Klintebjerg",
+    "n_turbines": null,
+    "power_mw": 585,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 12164.9108922,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.4,
+     57.32
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Laeso",
+    "n_turbines": null,
+    "power_mw": 540,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 12084.0242744,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.65,
+     54.42
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Lolland",
+    "n_turbines": null,
+    "power_mw": 253,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 20502.8645695,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.20",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.2,
+     54.66
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Lolland Syd",
+    "n_turbines": null,
+    "power_mw": 260,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 5702.08848051,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.21",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.19,
+     56.21
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Lysegrund",
+    "n_turbines": null,
+    "power_mw": 550,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 10304.9555333,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.22",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.25,
+     56.47
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Norddjurs",
+    "n_turbines": null,
+    "power_mw": 650,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 18177.953132,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.25",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.63,
+     56.63
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Sonderbjerg",
+    "n_turbines": null,
+    "power_mw": 285,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 7410.84810875,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.26",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.53,
+     55.27
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Stevns Nord",
+    "n_turbines": null,
+    "power_mw": 350,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 5186.76235712,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.27",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.25,
+     56.25
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Denmark",
+    "name": "Stokkebro",
+    "n_turbines": null,
+    "power_mw": 210,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 23265.8011851,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.32",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.19,
+     57.98
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Area 1 - Eesti Energia",
+    "n_turbines": null,
+    "power_mw": 1005,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 12277.0776112,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.01,
+     57.97
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Area 2 - Eesti Energia",
+    "n_turbines": null,
+    "power_mw": 1005,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 13651.727171,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.82,
+     58.04
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "ELWIND",
+    "n_turbines": null,
+    "power_mw": 1000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 10812.7115978,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.35",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.25,
+     58.13
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "European Energy Estonia O\u00dc Area SaareWest",
+    "n_turbines": null,
+    "power_mw": 1000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 36846.353695,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.36",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.98,
+     57.97
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Liivi Iaht Kihnu",
+    "n_turbines": null,
+    "power_mw": 960,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 13628.2809003,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.41",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.74,
+     58.06
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "S\u00f5rve",
+    "n_turbines": null,
+    "power_mw": 1200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17087.5982864,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.42",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.73,
+     57.94
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "S\u00f5rve 2",
+    "n_turbines": null,
+    "power_mw": 1200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 15059.8275455,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.43",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     22.09,
+     59.12
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW1",
+    "n_turbines": null,
+    "power_mw": 84,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 19392.6923229,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.44",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.61,
+     57.83
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW10",
+    "n_turbines": null,
+    "power_mw": 72,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 25851.3314469,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.45",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.37,
+     58.18
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW11",
+    "n_turbines": null,
+    "power_mw": 108,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 27920.9754144,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.46",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.41,
+     58.23
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW12",
+    "n_turbines": null,
+    "power_mw": 72,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 23116.202088,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.47",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.41,
+     58.23
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW13",
+    "n_turbines": null,
+    "power_mw": 72,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 23116.202088,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.48",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.96,
+     59.07
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW2",
+    "n_turbines": null,
+    "power_mw": 114,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 15080.9390995,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.49",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.77,
+     58.95
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW3",
+    "n_turbines": null,
+    "power_mw": 144,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 15706.9935603,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.50",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.84,
+     58.91
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW4",
+    "n_turbines": null,
+    "power_mw": 132,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 11615.1980602,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.51",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.87,
+     58.14
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW5",
+    "n_turbines": null,
+    "power_mw": 84,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 11157.1063667,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.52",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.6,
+     58.24
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW6",
+    "n_turbines": null,
+    "power_mw": 492,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 13029.0203096,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.53",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.43,
+     58.28
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW7",
+    "n_turbines": null,
+    "power_mw": 252,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 20115.3981195,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.54",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.42,
+     58.18
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW8",
+    "n_turbines": null,
+    "power_mw": 120,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 25473.222339,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.55",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.26,
+     58.19
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Sunly SW9",
+    "n_turbines": null,
+    "power_mw": 120,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 32967.488938,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.56",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.34,
+     58.11
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Tuuletraal",
+    "n_turbines": null,
+    "power_mw": 1050,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 31280.1643536,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.67",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.51,
+     65.64
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Kemi Ajos III Kemin Ajoksen III",
+    "n_turbines": null,
+    "power_mw": 189,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 1272.29550847,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.69",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.84,
+     63.79
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Laine",
+    "n_turbines": null,
+    "power_mw": 1800,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 31855.1291702,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.70",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.69,
+     61.8
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Navakka",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 32683.5845777,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.71",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.49,
+     59.71
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Noatun Syd",
+    "n_turbines": null,
+    "power_mw": 3000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 14040.4197892,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.72",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.31,
+     62.67
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Norrskar",
+    "n_turbines": null,
+    "power_mw": 1550,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 37726.7213514,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.73",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.61,
+     65.28
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Pooki",
+    "n_turbines": null,
+    "power_mw": 2000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 11969.3473686,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.79",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.82,
+     63.79
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Reimari",
+    "n_turbines": null,
+    "power_mw": 3600,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 32691.1666942,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.81",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.8,
+     62.53
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Tyrsky",
+    "n_turbines": null,
+    "power_mw": 1400,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 13064.9004441,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.84",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.92,
+     63.86
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Voima",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 32503.2747235,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.85",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.03,
+     61.6
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Wellamo",
+    "n_turbines": null,
+    "power_mw": 2000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 16579.7709173,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.267",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.77,
+     56.82
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Latvia",
+    "name": "Baltic Wind Park Phase 1",
+    "n_turbines": null,
+    "power_mw": 200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17203.5038585,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.268",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.77,
+     56.82
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Latvia",
+    "name": "Baltic Wind Park Phase 2",
+    "n_turbines": null,
+    "power_mw": 300,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 17203.5038585,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.269",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.95,
+     56.73
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Latvia",
+    "name": "JK Energy",
+    "n_turbines": null,
+    "power_mw": 900,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 6683.84060679,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.270",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.3,
+     55.6
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Latvia",
+    "name": "Kurzeme Offshore",
+    "n_turbines": null,
+    "power_mw": 1000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 50647.3983421,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.271",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.27,
+     56.5
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Lithuania",
+    "name": "Kurz\u00e9me",
+    "n_turbines": null,
+    "power_mw": 1000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 43840.734723,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.280",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.53,
+     55.56
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltica 1",
+    "n_turbines": null,
+    "power_mw": 900,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 68610.9138281,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.281",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.1,
+     55.07
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltica 2",
+    "n_turbines": null,
+    "power_mw": 1498,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 38842.0660666,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.282",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.13,
+     55.04
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltica 2+",
+    "n_turbines": null,
+    "power_mw": 210,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 35115.6064423,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.283",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.45,
+     55.06
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltica 3",
+    "n_turbines": null,
+    "power_mw": 1045.5,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 33058.5338147,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.286",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     16.88,
+     55.08
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltyk II",
+    "n_turbines": null,
+    "power_mw": 720,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 38794.6271237,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.287",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.36,
+     54.99
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Baltyk III",
+    "n_turbines": null,
+    "power_mw": 720,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 26496.0077552,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.288",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.08,
+     55.06
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "B-Wind",
+    "n_turbines": null,
+    "power_mw": 200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 25173.2746432,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.289",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.95,
+     55.08
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "C-Wind",
+    "n_turbines": null,
+    "power_mw": 200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 27729.0622658,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.290",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     16.64,
+     55.09
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "FEW Baltic II",
+    "n_turbines": null,
+    "power_mw": 350,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 30662.3392235,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.291",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.16,
+     54.37
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Poland",
+    "name": "Licence Application No. 76",
+    "n_turbines": null,
+    "power_mw": 14,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 26149.8015743,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.411",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.95,
+     54.99
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Aurora Offshore (SE)",
+    "n_turbines": null,
+    "power_mw": 5.5,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 1756.81414856,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.412",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     15.58,
+     55.86
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Baltic Central Offshore",
+    "n_turbines": null,
+    "power_mw": 4000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 12705.8608238,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.413",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.23,
+     61.09
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "G\u00e4vle West",
+    "n_turbines": null,
+    "power_mw": 4000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 49019.6333138,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.414",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.89,
+     56.76
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Gotland",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 21925.4673584,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.415",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     10.55,
+     58.67
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Heimdall",
+    "n_turbines": null,
+    "power_mw": 2400,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 29116.8260653,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.416",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.04,
+     61.49
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Hudiksvall",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 31104.8187841,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.417",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.38,
+     56.63
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Kattegatt",
+    "n_turbines": null,
+    "power_mw": 1500,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 19125.924123,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.420",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.07,
+     65.05
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Lulea-Kalix I",
+    "n_turbines": null,
+    "power_mw": 1200,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 43484.7499156,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.421",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.3,
+     65.27
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Lulea-Kalix II",
+    "n_turbines": null,
+    "power_mw": 1800,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 30164.4906744,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.424",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.64,
+     58.55
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Oxel\u00f6sund",
+    "n_turbines": null,
+    "power_mw": 600,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 12931.7260432,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.427",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     11.14,
+     58.38
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Soten\u00e4s Offshore Park",
+    "n_turbines": null,
+    "power_mw": 10,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 2895.27271632,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.428",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     13.31,
+     59.22
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Stenkalles grund",
+    "n_turbines": null,
+    "power_mw": 100,
+    "status": "Approved",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 108448.792617,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.432",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.35,
+     57.38
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Simpevarp",
+    "n_turbines": null,
+    "power_mw": 800,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 13720.6440172,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.436",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.34,
+     56.68
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "GinstVind",
+    "n_turbines": null,
+    "power_mw": 1000,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 18676.3421821,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.410",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.26,
+     57.49
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Anemone",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 16577.953581,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.38",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     22.49,
+     58.21
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Nasva Offshore",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 984.087018805,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.40",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.24,
+     58.19
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Estonia",
+    "name": "Saaremaa Roheenergia",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 34021.5794805,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.68",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.77,
+     62.79
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Korsn\u00e4s - Forststyrelsen",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 15298.4918195,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.75",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.26,
+     61.67
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Finland",
+    "name": "Pori-Tahkoluoto Extension",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 4409.46739564,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.418",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.67,
+     58.65
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Langgrund",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 5268.06642789,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.419",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.34,
+     58.51
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Langgrund II",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2024",
+    "year": null,
+    "dist_coast": 8452.40325419,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.422",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     14.95,
+     54.99
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Njord",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 1756.81414856,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.423",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.12,
+     58.61
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Norra Klasgrunden",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 2976.36519003,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.426",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     17.11,
+     58.58
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "S\u00f6dra Klasgrunden",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 3699.63603462,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.429",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.73,
+     63.55
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "V\u00e4ktaren",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 4731.6803199,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.434",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.02,
+     61.37
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Auramaris",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 35225.396565,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.435",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.64,
+     63.83
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Bylgia",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 30974.74592,
+    "notes": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "windfarms.437",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.47,
+     62.22
+    ]
+   },
+   "geometry_name": "the_geom",
+   "properties": {
+    "country": "Sweden",
+    "name": "Ostanvind",
+    "n_turbines": null,
+    "power_mw": null,
+    "status": "Planned",
+    "type_inst": null,
+    "updateyear": "2025",
+    "year": null,
+    "dist_coast": 37849.2447518,
+    "notes": null
+   }
+  }
+ ],
+ "totalFeatures": 124,
+ "numberMatched": 124,
+ "numberReturned": 124,
+ "timeStamp": "2026-05-18T12:11:01.030Z",
+ "crs": {
+  "type": "name",
+  "properties": {
+   "name": "urn:ogc:def:crs:EPSG::4326"
+  }
+ },
+ "metadata": {
+  "source": "EMODnet Human Activities (emodnet:windfarms)",
+  "license": "CC-BY 4.0",
+  "fetched_at": "2026-05-18T12:26:17.151735+00:00",
+  "bbox_min_lon_min_lat_max_lon_max_lat": [
+   9.0,
+   52.0,
+   30.0,
+   66.0
+  ],
+  "feature_count": 124
+ }
+}

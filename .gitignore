@@ -46,6 +46,10 @@ raw/
 # Small, version-controlled layers (geo/criticality, reference, incidents)
 # are intentionally tracked under data/geo/ and data/reference/.
 
+# Large derived layers (>10 MB) — fetched from S3 via scripts/common/sync_from_s3.py
+data/geo/emodnet_cables_combined.geojson
+data/geo/marine_regions_eez_baltic.geojson
+
 # Notebook checkpoints
 .ipynb_checkpoints/
 
