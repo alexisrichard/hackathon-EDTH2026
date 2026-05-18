@@ -1,0 +1,31 @@
+Subject:
+Research data request for Anatolii Kravtsev / Benjamin Hilgenstock — Russian Shadow Fleet Tracker vessel list (EDTH 2026 hackathon)
+
+
+Body:
+
+Dear KSE team,
+
+Could this please be forwarded to Anatolii Kravtsev (Research Lead on Shadow Fleet) or Benjamin Hilgenstock (Director, Center for Geoeconomics and Resilience)? My request relates directly to their published Russian Shadow Fleet Tracker.
+
+I'm writing to ask whether KSE Institute would share the underlying vessel-level dataset behind the tracker — specifically the list of tankers your team identifies as "shadow fleet" under the G7+-link and IG P&I criteria, with their IMO numbers and, if available, ship manager, registered owner, and flag attributes.
+
+Context: I'm a French engineer and entrepreneur (telecoms, cyber, submarine cables). I'm competing with two colleagues at the European Defence Tech Hackathon (EDTH) in Paris on June 12-14, 2026. Our project is a maritime cueing engine for Baltic undersea-infrastructure protection. We ingest AIS, criticality layers (cables, pipelines, naval bases), and sanctions data to prioritise where ISR sensors should be tasked — directly motivated by the post-2022 Baltic cable-cut incidents: Nord Stream, Balticconnector, C-Lion1, Estlink 2 / Eagle S, Latvia–Sweden / Vezhen, and the recent Elisa cable / Fitburg case.
+
+Without your vessel-level list, the OFAC SDN and UK OFSI data we have covers Iranian, Cuban, and Venezuelan tankers well but has a clear blind spot for exactly the Russian shadow-fleet vessels implicated in those incidents — Eagle S, Yi Peng 3, Newnew Polar Bear, Fitburg, Vezhen — none of which appear on OFAC. Your dataset would dramatically improve our ability to surface the right vessels during the demo.
+
+Use scope:
+- Strictly the hackathon prototype and the demo to judges on June 14
+- Non-commercial, no public redistribution
+- Full attribution to KSE Institute in any pitch deck, demo, or follow-up materials
+- Happy to delete the data after the event, or to follow whatever conditions you specify
+- Any technical format (Excel, CSV, JSON) is fine, and a one-time snapshot is fine
+
+If the vessel-level dataset isn't available for external sharing, I would also be grateful for any pointer to a workable alternative — for example, an aggregated risk score per vessel, or guidance on applying your methodology against our existing AIS coverage.
+
+Happy to share more about the project, our team, and our planned data-handling on request.
+
+Best regards,
+Alexis Richard
+LinkedIn: https://www.linkedin.com/in/alexis-richard-77053857/
+Project repository: https://github.com/alexisrichard/hackathon-EDTH2026

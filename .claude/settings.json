@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch",
+      "WebSearch",
+      "Bash(aws s3 ls *)",
+      "Bash(aws s3 ls)",
+      "Bash(aws s3 cp *)",
+      "Bash(aws s3 sync *)",
+      "Bash(aws s3api head-object *)",
+      "Bash(aws s3api head-bucket *)",
+      "Bash(aws s3api list-objects *)",
+      "Bash(aws s3api list-objects-v2 *)",
+      "Bash(aws s3api list-buckets *)",
+      "Bash(aws s3api list-buckets)",
+      "Bash(aws s3api get-object-attributes *)",
+      "Bash(aws s3api get-bucket-location *)",
+      "Bash(aws s3api get-bucket-versioning *)",
+      "Bash(aws s3api get-bucket-tagging *)",
+      "Bash(aws sts get-caller-identity *)",
+      "Bash(aws sts get-caller-identity)",
+      "Bash(aws configure list *)",
+      "Bash(aws configure list)",
+      "Bash(aws configure get *)",
+      "Bash(aws configure list-profiles *)",
+      "Bash(aws configure list-profiles)",
+      "Bash(curl -s *)",
+      "Bash(curl -sI *)",
+      "Bash(curl -sL *)",
+      "Bash(curl -sIL *)",
+      "Bash(curl -sLI *)",
+      "Bash(curl -I *)",
+      "Bash(curl --head *)",
+      "Bash(curl -v --max-time *)",
+      "Bash(tasklist *)",
+      "Bash(tasklist)",
+      "mcp__ccd_session__mark_chapter",
+      "mcp__ccd_session__spawn_task",
+      "mcp__ccd_session_mgmt__search_session_transcripts"
+    ]
+  }
+}

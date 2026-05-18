@@ -24,17 +24,35 @@ dist/
 build/
 .next/
 
-# Data — never commit data files to git, they live on S3
-*.csv
+# Data — big binary stuff lives on S3, never in git
 *.parquet
-*.geojson
 *.tif
 *.tiff
 *.zip
 *.rar
 *.tar.gz
-data/
+*.nc
+*.h5
+
+# Big-data subdirs (local mirrors of S3 if you sync) — kept out of git
+data/ais/
+data/sar/
+data/optical/
+data/cache/
+data/tmp/
+data/reference/raw/
 raw/
+
+# Small, version-controlled layers (geo/criticality, reference, incidents)
+# are intentionally tracked under data/geo/ and data/reference/.
+
+# Large derived layers (>10 MB) — fetched from S3 via scripts/common/sync_from_s3.py
+data/geo/emodnet_cables_combined.geojson
+data/geo/marine_regions_eez_baltic.geojson
+data/geo/ne_ocean_10m.geojson
+data/geo/bathymetry_*.nc
+data/geo/bathymetry_*.tif
+data/geo/osm_buoys.geojson
 
 # Notebook checkpoints
 .ipynb_checkpoints/

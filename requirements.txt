@@ -1,0 +1,33 @@
+# Core data
+duckdb
+pyarrow
+pandas
+
+# Geo
+geopandas
+shapely
+pyogrio
+pyproj
+
+# HTTP + downloads
+requests
+httpx
+tqdm
+
+# AWS — let pip resolve compatible boto3 / aiobotocore / s3fs
+boto3
+s3fs
+
+# AIS-specific
+pyais
+
+# OSM extracts
+overpy
+
+# Sentinel / Copernicus
+sentinelhub
+
+# Notebooks
+jupyterlab
+matplotlib
+folium
