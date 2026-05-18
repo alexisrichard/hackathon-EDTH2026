@@ -1,0 +1,15 @@
+Data prep is done.
+
+S3 bucket s3://edth2026-baltic — ~31 GB now, ~400 GB after tonight.
+
+- Danish AIS: 118 days covering every incident window; full 2022→present backfill runs tonight
+- 36 geo layers: cables, pipelines, ports, naval bases, wind farms, HELCOM accidents/spills, bathymetry
+- 9 incidents (Nord Stream → Sventoji 2026): Sentinel-1 SAR + Sentinel-2 crops ready for replay
+- Sanctions (OFAC + UK + EU) + Equasis + Global Fishing Watch wired up
+- Live AIS stream (AISStream) tested for Sunday's live demo
+- 10 Kaggle datasets (drone video, SAR, optical) downloading tonight
+
+Repo: https://github.com/alexisrichard/hackathon-EDTH2026
+Setup: ONBOARDING.md (~30 min, Windows + macOS)
+
+One gap: KSE vessel-level list — emailed them, awaiting reply.

@@ -24,6 +24,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import boto3
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -184,6 +185,9 @@ def parse_ship_info(html: str, imo: str) -> dict:
     return out
 
 
+_s3 = boto3.client("s3", region_name="eu-west-3")
+
+
 def lookup_one(session: requests.Session, imo: str) -> dict | None:
     out_path = OUT_DIR / f"{imo}.json"
     if out_path.exists() and out_path.stat().st_size > 100:
@@ -199,7 +203,12 @@ def lookup_one(session: requests.Session, imo: str) -> dict | None:
     out_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
     raw_path = OUT_DIR / f"{imo}.raw.html"
     raw_path.write_text(html, encoding="utf-8")
-    print(f"  {imo}: ok ({len(data)-2} fields, {raw_path.stat().st_size//1024} KB raw)", flush=True)
+    # Mirror to S3 (parsed JSON only — raw HTML stays local for repro)
+    try:
+        _s3.upload_file(str(out_path), "edth2026-baltic", f"reference/equasis/{out_path.name}")
+    except Exception as ex:
+        print(f"  {imo}: S3 upload failed ({ex})", flush=True)
+    print(f"  {imo}: ok ({len(data.get('tables',[]))} tables, {raw_path.stat().st_size//1024} KB raw)", flush=True)
     return data
 
 

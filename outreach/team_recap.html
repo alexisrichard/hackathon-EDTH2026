@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EDTH 2026 — pre-event data prep recap</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; max-width: 820px; margin: 28px auto; padding: 0 24px; color: #1f2328; line-height: 1.55; font-size: 15px; }
+  h1 { font-size: 22px; margin: 0 0 6px 0; }
+  h2 { font-size: 16px; margin: 24px 0 8px 0; padding-bottom: 4px; border-bottom: 1px solid #e2e6ea; }
+  h3 { font-size: 14px; margin: 14px 0 4px 0; color: #555; }
+  .lede { color: #555; margin: 0 0 16px 0; }
+  ul { margin: 4px 0 12px 0; padding-left: 22px; }
+  ul li { margin: 3px 0; }
+  .ok { color: #1e6f3a; font-weight: 600; }
+  .partial { color: #b06c00; font-weight: 600; }
+  .pending { color: #8b1f1f; font-weight: 600; }
+  code { background: #f0f2f4; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  pre { background: #f6f8fa; border: 1px solid #d7dde3; border-radius: 6px; padding: 10px 14px; font-size: 13px; overflow-x: auto; }
+  a { color: #3367d6; }
+  .instructions { background: #fffbe6; border: 1px solid #f5da92; padding: 10px 14px; border-radius: 4px; margin: 0 0 24px 0; font-size: 13px; color: #5a4a00; }
+</style>
+</head>
+<body>
+
+<div class="instructions">
+<strong>To share:</strong> Select all (Ctrl+A), Copy (Ctrl+C), paste into Slack/Gmail/Notion. Formatting preserved. Delete this yellow box after pasting.
+</div>
+
+<h1>EDTH 2026 — Baltic project, pre-event data state</h1>
+<p class="lede">All data sources collected or wired up. Bulk downloads queued for overnight. Repo: <a href="https://github.com/alexisrichard/hackathon-EDTH2026">github.com/alexisrichard/hackathon-EDTH2026</a> · onboarding instructions in <code>ONBOARDING.md</code>.</p>
+
+<h2>Where the data lives</h2>
+<ul>
+  <li>S3 bucket: <code>s3://edth2026-baltic/</code> (eu-west-3, ~31 GB now, ~400 GB after overnight)</li>
+  <li>Small / committed in repo: <code>data/geo/</code>, <code>data/reference/</code></li>
+  <li>Large stuff (AIS Parquet, satellite, KSE raw): S3 only — fetch with <code>scripts/common/sync_from_s3.py</code></li>
+</ul>
+
+<h2>What we have <span class="ok">✓</span></h2>
+
+<h3>AIS (vessel positions)</h3>
+<ul>
+  <li><strong>Danish (DMA, bulk Parquet)</strong> — 118 days covering every named incident window. Full 2022→present backfill runs overnight (paused at the user's request to free bandwidth).</li>
+  <li><strong>AISStream (live WebSocket)</strong> — tested at 38 msg/sec, for Sunday's live demo.</li>
+</ul>
+
+<h3>Satellite imagery</h3>
+<ul>
+  <li><strong>Sentinel-1 SAR</strong> — 441 scenes catalogued, 9 incident-AOI crops downloaded</li>
+  <li><strong>Sentinel-2 optical</strong> — same: 441 catalogued, 9 true-color crops</li>
+</ul>
+
+<h3>Criticality / infrastructure layers (36 files)</h3>
+<ul>
+  <li><strong>OSM</strong>: submarine cables, power cables, pipelines, ports, naval bases, refineries, offshore wind, platforms, TSS, restricted areas, anchorages, lighthouses, wrecks, fairways, buoys</li>
+  <li><strong>EMODnet</strong>: pipelines, wind farms, cables (national merged)</li>
+  <li><strong>HELCOM</strong>: 4,932 shipping accidents, 5,838 oil spills, dredging, disposal, fishing intensity</li>
+  <li><strong>Natural Earth</strong>: countries, coastlines, ports, rivers, urban areas, ocean</li>
+  <li><strong>Marine Regions</strong>: 12 Baltic-state EEZ polygons</li>
+  <li><strong>GMRT bathymetry</strong>: 29 MB Baltic sea-floor depth grid</li>
+  <li><strong>Chokepoints</strong>: 9 manual entries (Skagerrak, Øresund, Great Belt, Gulf of Finland, Kaliningrad, etc.)</li>
+</ul>
+
+<h3>Reference / lookup</h3>
+<ul>
+  <li><strong>Incidents</strong>: 9 well-sourced events Sep 2022 → Jan 2026 (Nord Stream, Balticconnector, Yi Peng 3 ×2, Eagle S, Vezhen, Cinia, Fitburg, Sventoji-Liepaja)</li>
+  <li><strong>Sanctions</strong>: 1,773 maritime entries (OFAC SDN 1,480 vessels + UK OFSI 219 + EU FSF 74)</li>
+  <li><strong>KSE shadow-fleet PDF</strong>: 72 ship managers + 48 buyers parsed</li>
+  <li><strong>Marine weather + sea state</strong>: 9 incident windows × hourly samples</li>
+  <li><strong>Equasis lookup</strong>: per-MMSI/IMO registry pull (vessel name, ownership, manager, ISM, classification, port history)</li>
+  <li><strong>Global Fishing Watch</strong>: vessel registry + event types (port-visits, loitering, encounters, gaps, fishing) — runs overnight</li>
+  <li><strong>10 Kaggle datasets</strong>: drone-video SDS, HRSID, LS-SSDD, ships-in-satellite, MASATI, AFO, Kattegat AIS, port activity, Ukraine events, more — download overnight</li>
+</ul>
+
+<h2>Overnight job <span class="ok">queued</span></h2>
+<pre>powershell -File scripts\overnight.ps1</pre>
+<ul>
+  <li>Danish AIS full backfill 2022→present (~70 h)</li>
+  <li>10 Kaggle datasets (~30–60 min)</li>
+  <li>GFW per-vessel events (~10 min)</li>
+</ul>
+<p>All idempotent — safe to interrupt and restart. Logs land at <code>data/cache/overnight_*.log</code>.</p>
+
+<h2>Honest gaps <span class="partial">~</span></h2>
+<ul>
+  <li><strong>KSE vessel-level list</strong> — public PDF is aggregate stats only. Emailed KSE Institute (Hilgenstock / Kravtsev) requesting the per-vessel IMO dataset; awaiting reply.</li>
+  <li><strong>Finnish bulk historical AIS</strong> — Digitraffic API works per-MMSI but their archive depth is shallow. Danish AIS partially covers Gulf of Finland anyway.</li>
+  <li><strong>Orange Marine cable routes</strong> — Alexis's CEO contact; potential authoritative data if pursued.</li>
+</ul>
+
+<h2>How to get started (teammate quickstart)</h2>
+<ol>
+  <li>Clone: <code>git clone https://github.com/alexisrichard/hackathon-EDTH2026.git</code></li>
+  <li>Follow <code>ONBOARDING.md</code> (Windows winget + macOS Homebrew both covered, ~30 min)</li>
+  <li>Get AWS creds from Alexis (the bucket is private)</li>
+  <li>Open <code>data/samples/notebooks/01_baltic_exploration.ipynb</code> for a quick data tour</li>
+</ol>
+
+<h2>Key docs</h2>
+<ul>
+  <li><code>PLAN.md</code> — project plan</li>
+  <li><code>data/SOURCES.md</code> — every dataset, license, redistribution rights</li>
+  <li><code>ONBOARDING.md</code> — team setup</li>
+  <li><code>data/reference/*_README.md</code> — per-dataset notes</li>
+</ul>
+
+</body>
+</html>
