@@ -70,6 +70,7 @@ Last updated: 2026-05-18
 | `helcom_dredging_sites_*.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 1.3 MB | Dredging activity (points + areas) |
 | `helcom_disposal_sites_areas.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 3.0 MB | 1,668 disposal site areas |
 | `helcom_fishing_intensity_total_2016_2021.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 8.6 MB | 10,000 fishing intensity cells |
+| `marine_weather/INC-*.json` | Open-Meteo Marine + Archive (ERA5) | CC-BY 4.0 | 2026-05-18 | `scripts/ingest/fetch_marine_weather.py` | ~150 KB × 9 | Hourly wave + wind + temp + pressure for each incident ±14 days |
 
 † Large files (>10 MB) — kept in S3 only, gitignored. Use `scripts/common/sync_from_s3.py geo` to fetch.
 
