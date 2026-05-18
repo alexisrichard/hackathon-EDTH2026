@@ -102,8 +102,8 @@ Last updated: 2026-05-18
 
 | Source | Bucket | License | Status |
 |---|---|---|---|
-| Sentinel-1 SAR | element84 STAC (catalogued); raw via Copernicus | Free, Copernicus Open Access | Catalog only. Raw downloads need Copernicus account |
-| Sentinel-2 optical | element84 STAC (catalogued); raw via Copernicus | Free, Copernicus Open Access | Catalog only. Raw downloads need Copernicus account |
+| Sentinel-1 SAR | element84 STAC (catalogued); rendered crops via Copernicus Sentinel Hub Process API | Free, Copernicus Open Access | 441 scenes catalogued; 9 incident-AOI true-color crops downloaded (~1.7-2.1 MB each as JPEG) |
+| Sentinel-2 optical | element84 STAC (catalogued); rendered crops via Copernicus Sentinel Hub Process API | Free, Copernicus Open Access | 441 scenes catalogued; 9 incident-AOI true-color crops downloaded (~150-1050 KB each as JPEG, cloud-pct adaptive) |
 | Umbra Open Data SAR | `s3://umbra-open-data-catalog/` (anonymous) | CC-BY 4.0 | Catalog walked; Baltic hits enumerated in `commercial_sar_scenes.csv` |
 | Capella Open Data SAR | `s3://capella-open-data/` (anonymous) | CC-BY-NC 4.0 | Catalog walked; **non-commercial only** |
 | Planet Education | `planet.com/markets/education-and-research` | Research-only if approved | Application required; stretch goal |
