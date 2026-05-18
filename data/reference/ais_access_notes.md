@@ -16,12 +16,17 @@ Pipeline: `scripts/ingest/danish_ais.py` — stream-extract zip → filter to Ba
 
 ## Finnish AIS — Fintraffic / Digitraffic
 
-**Status: BULK HISTORICAL DOWNLOAD GAP. Real-time API works.**
+**Status: BULK HISTORICAL DOWNLOAD GAP. Real-time API works. Historical depth is limited.**
 
 - Real-time/live API: `https://meri.digitraffic.fi/api/ais/v1/locations` (GeoJSON, requires `Accept-Encoding: gzip`)
 - Historical via `/api/ais/v1/locations?mmsi=<n>&from=<ts>&to=<ts>` — per-MMSI only, not bulk by area
 - License: CC-BY 4.0, free
 - Swagger: `https://meri.digitraffic.fi/swagger/openapi.json`
+
+**Tested 2026-05-18:** Per-MMSI queries for known incident vessels (Eagle S, Yi Peng 3,
+Newnew Polar Bear) for incident dates in 2023-2024 returned 0 features. Digitraffic's
+"locations" endpoint appears to keep only a recent historical window (weeks, not years).
+For older events, contact Fintraffic for an archive extract. Script: `scripts/ingest/finnish_ais_per_mmsi.py`.
 
 **Gap:** there is no public bulk-download archive of historical Finnish AIS *positions*. Digitraffic's `/locations` endpoint is per-MMSI lookup, which means we'd have to:
 1. Get list of all MMSIs that operated in Gulf of Finland in our target window (this list itself is hard)
