@@ -293,13 +293,31 @@ def process_one_date(d: date, dates_wanted: set[date] | None = None) -> None:
     cleanup(local, paths)
 
 
+def s3_dest_exists(d: date) -> bool:
+    """Cheap HEAD against our own bucket to see if a day is already done."""
+    try:
+        _dest.head_object(Bucket=DEST_BUCKET, Key=s3_dest_key(d))
+        return True
+    except _dest.exceptions.ClientError:
+        return False
+
+
 def process_window(start: date, end: date) -> None:
-    """Process dates in [start, end] inclusive."""
+    """Process dates in [start, end] inclusive. Skips days already in dest S3."""
     dates_in_window = set()
     d = start
     while d <= end:
         dates_in_window.add(d)
         d += timedelta(days=1)
+
+    # Skip dates already in dest
+    already_done = {d for d in dates_in_window if s3_dest_exists(d)}
+    if already_done:
+        print(f"\n  skipping {len(already_done)} dates already in s3://{DEST_BUCKET}", flush=True)
+    dates_in_window -= already_done
+    if not dates_in_window:
+        print("  nothing to do", flush=True)
+        return
 
     # Group by source zip (one monthly zip can serve up to 31 dates)
     seen_keys: set[str] = set()
@@ -352,6 +370,16 @@ def cmd_month(s: str) -> int:
     return 0
 
 
+def cmd_full(end_str: str | None = None) -> int:
+    """Full 2022-01-01 → today (or end_str if given). Skips already-done days."""
+    from datetime import date as _date
+    start = _date(2022, 1, 1)
+    end = datetime.fromisoformat(end_str).date() if end_str else _date.today()
+    print(f"Full backfill: {start} -> {end} ({(end-start).days} days, will skip already-done)", flush=True)
+    process_window(start, end)
+    return 0
+
+
 def main(argv: list[str]) -> int:
     if len(argv) < 2:
         print(__doc__, file=sys.stderr)
@@ -365,6 +393,8 @@ def main(argv: list[str]) -> int:
         return cmd_range(argv[2], argv[3])
     if cmd == "month" and len(argv) >= 3:
         return cmd_month(argv[2])
+    if cmd == "full":
+        return cmd_full(argv[2] if len(argv) >= 3 else None)
     print(__doc__, file=sys.stderr)
     return 2
 
