@@ -25,6 +25,9 @@ Last updated: 2026-05-18
 | TeleGeography Submarine Cable Map | **No redistribution** | Visual reference only | Yes if visually referenced |
 | KSE Russian shadow fleet | Research-only, ask before redistribution | Internal demo OK, public release — ask | Yes — "Kyiv School of Economics" |
 | Kaggle datasets | Varies per dataset — check each | Varies | Per Kaggle terms + dataset-specific |
+| HELCOM (Helsinki Commission) | Free with attribution | Yes | Yes — "HELCOM" |
+| Natural Earth | Public Domain (CC0) | Yes | Recommended |
+| GMRT bathymetry | Free for non-commercial; cite Ryan et al. (2009) | Non-commercial only | Yes — "GMRT" |
 | Orange Marine (if obtained) | Likely proprietary / NDA | Depends on agreement | Per agreement |
 
 ## Datasets currently in repo + S3 bucket
@@ -46,6 +49,27 @@ Last updated: 2026-05-18
 | `emodnet_windfarms_point.geojson` | EMODnet Human Activities | CC-BY 4.0 | 2026-05-18 | `scripts/geo/fetch_emodnet_layers.py` | 58 KB | 124 features. Individual turbine locations |
 | `emodnet_cables_combined.geojson`† | EMODnet Human Activities | CC-BY 4.0 | 2026-05-18 | `scripts/geo/fetch_emodnet_layers.py` | 47 MB | 300 features. Merged national cable layers (DE, NL, NO) |
 | `marine_regions_eez_baltic.geojson`† | VLIZ Marine Regions (WFS) | CC-BY 4.0 | 2026-05-18 | `scripts/geo/fetch_marine_regions_eez.py` | 36 MB | 12 EEZ polygons for Baltic states + adjacent |
+| `bathymetry_baltic.nc`† | GMRT (Global Multi-Resolution Topography) | Free non-commercial | 2026-05-18 | `scripts/geo/fetch_bathymetry.py` | 29 MB | Sea floor depths, NetCDF grid |
+| `chokepoints.geojson` | Hand-curated by project team | Project (MIT-equivalent) | 2026-05-18 | Manual | 3 KB | 9 maritime chokepoints (Skagerrak, Øresund, Great Belt, etc.) |
+| `ne_countries_50m.geojson` | Natural Earth | CC0 (Public Domain) | 2026-05-18 | `scripts/geo/fetch_natural_earth.py` | 539 KB | 17 country polygons clipped to Baltic region |
+| `ne_coastline_10m.geojson` | Natural Earth | CC0 | 2026-05-18 | same | 1.3 MB | 228 coastline segments |
+| `ne_ports_10m.geojson` | Natural Earth | CC0 | 2026-05-18 | same | 29 KB | 133 ports |
+| `ne_ocean_10m.geojson`† | Natural Earth | CC0 | 2026-05-18 | same | 17 MB | 1 ocean polygon (used for masking) |
+| `ne_rivers_10m.geojson` | Natural Earth | CC0 | 2026-05-18 | same | 519 KB | 86 rivers |
+| `ne_urban_areas_10m.geojson` | Natural Earth | CC0 | 2026-05-18 | same | 4.5 MB | 1107 urban areas |
+| `osm_tss.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | `scripts/geo/fetch_osm_seamarks.py` | 97 KB | 371 Traffic Separation Scheme segments |
+| `osm_restricted_areas.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 2.5 MB | 1,277 restricted/military areas |
+| `osm_anchorages.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 151 KB | 583 anchorages |
+| `osm_lighthouses.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 4.6 MB | 5,115 lighthouses |
+| `osm_buoys.geojson`† | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 14.8 MB | 41,219 buoys (cardinal/lateral/special) |
+| `osm_wrecks.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 347 KB | 1,051 wrecks |
+| `osm_fairways.geojson` | OSM Overpass | ODbL 1.0 | 2026-05-18 | same | 1.1 MB | 831 fairway centerlines |
+| `helcom_shipping_accidents.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | `scripts/geo/fetch_helcom.py` | 4.6 MB | 4,932 reported Baltic shipping accidents |
+| `helcom_detected_spills.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 2.8 MB | 5,838 detected oil/substance spills |
+| `helcom_ais_passage_crossings.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 22 KB | 14 AIS passage-line crossings reference |
+| `helcom_dredging_sites_*.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 1.3 MB | Dredging activity (points + areas) |
+| `helcom_disposal_sites_areas.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 3.0 MB | 1,668 disposal site areas |
+| `helcom_fishing_intensity_total_2016_2021.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 8.6 MB | 10,000 fishing intensity cells |
 
 † Large files (>10 MB) — kept in S3 only, gitignored. Use `scripts/common/sync_from_s3.py geo` to fetch.
 

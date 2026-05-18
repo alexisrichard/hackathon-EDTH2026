@@ -49,6 +49,10 @@ raw/
 # Large derived layers (>10 MB) — fetched from S3 via scripts/common/sync_from_s3.py
 data/geo/emodnet_cables_combined.geojson
 data/geo/marine_regions_eez_baltic.geojson
+data/geo/ne_ocean_10m.geojson
+data/geo/bathymetry_*.nc
+data/geo/bathymetry_*.tif
+data/geo/osm_buoys.geojson
 
 # Notebook checkpoints
 .ipynb_checkpoints/

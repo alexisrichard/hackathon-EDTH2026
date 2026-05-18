@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "Hand-curated by project team based on standard maritime navigation references (publicly known chokepoint coordinates).",
+    "license": "MIT-equivalent (project-team work)",
+    "fetched_at": "2026-05-18",
+    "notes": "Approximate centroids for the major Baltic maritime chokepoints. Use as point-in-radius approximation; for routing, replace with proper traffic separation scheme (TSS) polygons from national hydrographic offices."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [10.7, 57.1]},
+      "properties": {"name": "Skagerrak", "type": "chokepoint", "controls_access_to": "Baltic from North Sea", "notes": "Connects North Sea to Kattegat; not a strict chokepoint but the western entrance"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [12.6, 56.0]},
+      "properties": {"name": "Øresund", "type": "chokepoint", "controls_access_to": "Baltic from Kattegat", "notes": "Sound between Denmark and Sweden; ~4 km narrowest; Drogden Strait shipping channel"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [10.8, 55.4]},
+      "properties": {"name": "Great Belt (Storebælt)", "type": "chokepoint", "controls_access_to": "Baltic from Kattegat", "notes": "Strait between Funen and Zealand; main deep-draft Baltic entrance"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [9.9, 54.8]},
+      "properties": {"name": "Little Belt (Lillebælt)", "type": "chokepoint", "controls_access_to": "Baltic from Kattegat", "notes": "Strait between Funen and Jutland; minor route"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [25.0, 60.0]},
+      "properties": {"name": "Gulf of Finland (entrance)", "type": "chokepoint", "controls_access_to": "Russian Baltic ports (St Petersburg, Ust-Luga, Vyborg)", "notes": "Strategic chokepoint for Russian shadow-fleet traffic; ~60 km wide at entrance"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [19.0, 60.2]},
+      "properties": {"name": "Sea of Åland", "type": "chokepoint", "controls_access_to": "Gulf of Bothnia", "notes": "Between Åland Islands and Swedish coast; demilitarized zone"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [19.5, 59.2]},
+      "properties": {"name": "Stockholm Archipelago approach", "type": "chokepoint", "controls_access_to": "Stockholm", "notes": "Major Swedish naval and commercial route"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [20.0, 54.7]},
+      "properties": {"name": "Kaliningrad approach", "type": "chokepoint", "controls_access_to": "Russian Kaliningrad Oblast (Baltiysk naval base)", "notes": "Approach to Russian Baltic Fleet HQ; politically sensitive"}
+    },
+    {
+      "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [13.5, 55.0]},
+      "properties": {"name": "Bornholm Strait", "type": "chokepoint", "controls_access_to": "Baltic Proper from western Baltic", "notes": "Strait between Bornholm and Swedish coast; Nord Stream blast sites near here"}
+    }
+  ]
+}
