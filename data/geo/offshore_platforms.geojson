@@ -1,0 +1,661 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "source": "OpenStreetMap (Overpass)",
+  "fetched_at": "2026-05-18T11:10:48.598662+00:00",
+  "bbox_south_west_north_east": [
+   52.0,
+   9.0,
+   66.0,
+   30.0
+  ],
+  "feature_count": 13
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.63,
+     54.6128083
+    ]
+   },
+   "properties": {
+    "frequency": "60",
+    "location": "platform",
+    "man_made": "offshore_platform",
+    "name": "OSS Baltic 1",
+    "operator": "EnBW Energie Baden-W\u00fcrttemberg AG",
+    "power": "substation",
+    "seamark:light:character": "Oc",
+    "seamark:light:colour": "yellow",
+    "seamark:light:group": "3",
+    "seamark:light:height": "30",
+    "seamark:light:period": "16",
+    "seamark:light:range": "5",
+    "seamark:name": "B 0",
+    "seamark:platform:category": "production",
+    "seamark:radio_station:callsign": "WIND FARM BALTIC1NW",
+    "seamark:radio_station:category": "ais",
+    "seamark:radio_station:mmsi": "992111840",
+    "seamark:type": "platform",
+    "source": "EnBW Import",
+    "start_date": "2011",
+    "substation": "transmission",
+    "voltage": "150000",
+    "wikidata": "Q60289244",
+    "osm_id": "node/1293358105"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.1819345,
+     55.4816011
+    ]
+   },
+   "properties": {
+    "field_name": "B-3",
+    "man_made": "offshore_platform",
+    "name": "Baltic Beta",
+    "operator": "Petrobaltic",
+    "seamark:fog_signal": "yes",
+    "seamark:fog_signal:group": "U",
+    "seamark:fog_signal:period": "30",
+    "seamark:light:character": "Mo",
+    "seamark:light:colour": "white",
+    "seamark:light:group": "U",
+    "seamark:light:period": "15",
+    "seamark:name": "Baltic Beta",
+    "seamark:platform:category": "production",
+    "seamark:radar_transponder:category": "ramark",
+    "seamark:radar_transponder:group": "T",
+    "seamark:radio_station:category": "ais",
+    "seamark:type": "platform",
+    "type": "oil",
+    "osm_id": "node/2406460000"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.66275,
+     55.4013667
+    ]
+   },
+   "properties": {
+    "man_made": "offshore_platform",
+    "seamark:name": "Petro Giant",
+    "seamark:platform:category": "production",
+    "seamark:type": "platform",
+    "source": "\u0418\u0437\u0432\u0435\u0449\u0435\u043d\u0438\u044f \u043c\u043e\u0440\u0435\u043f\u043b\u0430\u0432\u0430\u0442\u0435\u043b\u044f\u043c .- \u0412\u044b\u043f. 41, 2014",
+    "source_ref": "http://structure.mil.ru/files/morf/military/files/NM_1441.PDF",
+    "osm_id": "node/3135730227"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.8099667,
+     55.5200667
+    ]
+   },
+   "properties": {
+    "building": "industrial",
+    "location": "platform",
+    "man_made": "offshore_platform",
+    "name": "Lillgrund Offshore Substation",
+    "power": "substation",
+    "seamark:light:1:character": "Mo",
+    "seamark:light:1:colour": "white",
+    "seamark:light:1:group": "U",
+    "seamark:light:1:period": "15",
+    "seamark:light:1:range": "6",
+    "seamark:light:2:category": "floodlight",
+    "seamark:light:2:character": "F",
+    "seamark:light:2:colour": "white",
+    "seamark:light:2:visibility": "low",
+    "seamark:type": "platform",
+    "substation": "transmission",
+    "osm_id": "node/4088415868"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.7214414,
+     55.4003128
+    ]
+   },
+   "properties": {
+    "man_made": "offshore_platform",
+    "name": "Lotos Petrobaltic",
+    "operator": "Lotos Petrobaltic",
+    "ref:imo": "8762616",
+    "seamark:light:character": "Mo",
+    "seamark:light:colour": "white",
+    "seamark:light:group": "U",
+    "seamark:light:period": "17",
+    "seamark:name": "Lotos Petrobaltic",
+    "seamark:platform:category": "production",
+    "seamark:type": "platform",
+    "url": "https://www.vesselfinder.com/pl/vessels/LOTOS-PETROBALTIC-IMO-8762616-MMSI-261526000",
+    "osm_id": "node/8776955909"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.7230282,
+     55.4004451
+    ]
+   },
+   "properties": {
+    "man_made": "offshore_platform",
+    "name": "Petrobaltic",
+    "operator": "Lotos Petrobaltic",
+    "ref:imo": "8753940",
+    "seamark:fog_signal": "yes",
+    "seamark:fog_signal:group": "U",
+    "seamark:fog_signal:period": "30",
+    "seamark:light:character": "Mo",
+    "seamark:light:colour": "white",
+    "seamark:light:group": "U",
+    "seamark:light:period": "15",
+    "seamark:light:range": "10",
+    "seamark:name": "Petrobaltic",
+    "seamark:platform:category": "production",
+    "seamark:type": "platform",
+    "url": "https://www.vesselfinder.com/pl/vessels/PETROBALTIC-IMO-8753940-MMSI-261000160",
+    "osm_id": "node/8777037483"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     18.1571841,
+     55.456176
+    ]
+   },
+   "properties": {
+    "man_made": "offshore_platform",
+    "name": "Petro Giant",
+    "operator": "Lotos Petrobaltic",
+    "ref:imo": "8415768",
+    "seamark:fog_signal": "yes",
+    "seamark:fog_signal:group": "U",
+    "seamark:light:character": "Mo",
+    "seamark:light:colour": "white",
+    "seamark:light:group": "U",
+    "seamark:light:period": "15",
+    "seamark:name": "Lotos Petrobaltic",
+    "seamark:platform:category": "production",
+    "seamark:radar_transponder:category": "racon",
+    "seamark:radar_transponder:group": "G",
+    "seamark:type": "platform",
+    "osm_id": "node/8777040953"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.5744167,
+     55.3274333
+    ]
+   },
+   "properties": {
+    "man_made": "offshore_platform",
+    "name": "Kravtsovskoye",
+    "seamark:light:character": "Mo",
+    "seamark:light:group": "U",
+    "seamark:light:height": "22",
+    "seamark:light:period": "15",
+    "seamark:light:range": "9",
+    "seamark:light:sequence": "00.75+(00.75)+00.75+(00.75)+06.00+(06.00)",
+    "seamark:name": "Kravtsovskoye",
+    "seamark:platform:category": "oil",
+    "seamark:radar_transponder:category": "racon",
+    "seamark:radar_transponder:group": "D",
+    "seamark:radar_transponder:range": "20",
+    "seamark:type": "platform",
+    "osm_id": "node/11934781615"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       13.478031,
+       54.1565676
+      ],
+      [
+       13.477974,
+       54.1565493
+      ],
+      [
+       13.4779098,
+       54.1565434
+      ],
+      [
+       13.477846,
+       54.1565506
+      ],
+      [
+       13.4777902,
+       54.1565701
+      ],
+      [
+       13.477749,
+       54.1565996
+      ],
+      [
+       13.4777273,
+       54.1566354
+      ],
+      [
+       13.4777277,
+       54.1566735
+      ],
+      [
+       13.4777468,
+       54.1567056
+      ],
+      [
+       13.4777816,
+       54.1567328
+      ],
+      [
+       13.4778288,
+       54.1567525
+      ],
+      [
+       13.4778841,
+       54.1567628
+      ],
+      [
+       13.4779421,
+       54.1567629
+      ],
+      [
+       13.4779974,
+       54.1567525
+      ],
+      [
+       13.4780447,
+       54.1567329
+      ],
+      [
+       13.4780795,
+       54.1567057
+      ],
+      [
+       13.4780998,
+       54.1566696
+      ],
+      [
+       13.4780978,
+       54.1566315
+      ],
+      [
+       13.478074,
+       54.1565961
+      ],
+      [
+       13.478031,
+       54.1565676
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "building": "yes",
+    "man_made": "offshore_platform",
+    "name": "Ehem. Bohrplattform Koos Ost",
+    "note": "estimated",
+    "note_1": "Position pr\u00e4zisiert",
+    "seamark:platform:category": "oil;gas",
+    "seamark:platform:status": "not_in_use",
+    "source": "aerial imagery",
+    "osm_id": "way/822608281"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       13.4702476,
+       54.1545281
+      ],
+      [
+       13.4701906,
+       54.1545098
+      ],
+      [
+       13.4701264,
+       54.1545039
+      ],
+      [
+       13.4700626,
+       54.1545112
+      ],
+      [
+       13.4700068,
+       54.1545307
+      ],
+      [
+       13.4699656,
+       54.1545601
+      ],
+      [
+       13.4699439,
+       54.154596
+      ],
+      [
+       13.4699443,
+       54.154634
+      ],
+      [
+       13.4699634,
+       54.1546661
+      ],
+      [
+       13.4699982,
+       54.1546933
+      ],
+      [
+       13.4700454,
+       54.154713
+      ],
+      [
+       13.4701007,
+       54.1547234
+      ],
+      [
+       13.4701587,
+       54.1547234
+      ],
+      [
+       13.470214,
+       54.1547131
+      ],
+      [
+       13.4702613,
+       54.1546934
+      ],
+      [
+       13.4702961,
+       54.1546663
+      ],
+      [
+       13.4703164,
+       54.1546301
+      ],
+      [
+       13.4703144,
+       54.1545921
+      ],
+      [
+       13.4702906,
+       54.1545567
+      ],
+      [
+       13.4702476,
+       54.1545281
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "building": "yes",
+    "layer": "1",
+    "man_made": "offshore_platform",
+    "name": "Ehem. Bohrplattform Koos West",
+    "note": "estimated",
+    "seamark:platform:category": "oil;gas",
+    "seamark:platform:status": "not_in_use",
+    "source": "aerial imagery",
+    "osm_id": "way/822608282"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       12.8507155,
+       55.0273621
+      ],
+      [
+       12.8506678,
+       55.0273375
+      ],
+      [
+       12.8506482,
+       55.0271339
+      ],
+      [
+       12.850691,
+       55.0271065
+      ],
+      [
+       12.8510454,
+       55.0270952
+      ],
+      [
+       12.8510931,
+       55.0271198
+      ],
+      [
+       12.8511127,
+       55.0273234
+      ],
+      [
+       12.8510699,
+       55.0273508
+      ],
+      [
+       12.8507155,
+       55.0273621
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "building": "industrial",
+    "frequency": "50",
+    "location": "platform",
+    "man_made": "offshore_platform",
+    "name": "KFA",
+    "operator": "Energinet",
+    "power": "substation",
+    "start_date": "2021",
+    "substation": "transmission",
+    "voltage": "220000",
+    "website": "https://en.energinet.dk",
+    "osm_id": "way/889061694"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       12.9452268,
+       55.0486539
+      ],
+      [
+       12.9449776,
+       55.0483924
+      ],
+      [
+       12.9449956,
+       55.0483571
+      ],
+      [
+       12.9453071,
+       55.0482592
+      ],
+      [
+       12.9453686,
+       55.0482696
+      ],
+      [
+       12.9456178,
+       55.048531
+      ],
+      [
+       12.9455998,
+       55.0485663
+      ],
+      [
+       12.9452883,
+       55.0486642
+      ],
+      [
+       12.9452268,
+       55.0486539
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "building": "industrial",
+    "frequency": "50",
+    "location": "platform",
+    "man_made": "offshore_platform",
+    "name": "KFB",
+    "operator": "Energinet",
+    "operator:wikidata": "Q1341529",
+    "power": "substation",
+    "start_date": "2021",
+    "substation": "transmission",
+    "voltage": "220000;33000",
+    "website": "https://en.energinet.dk",
+    "osm_id": "way/889061695"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       13.5188447,
+       54.1400231
+      ],
+      [
+       13.5187877,
+       54.1400048
+      ],
+      [
+       13.5187235,
+       54.1399989
+      ],
+      [
+       13.5186597,
+       54.1400061
+      ],
+      [
+       13.5186039,
+       54.1400256
+      ],
+      [
+       13.5185627,
+       54.1400551
+      ],
+      [
+       13.518541,
+       54.140091
+      ],
+      [
+       13.5185414,
+       54.1401291
+      ],
+      [
+       13.5185605,
+       54.1401612
+      ],
+      [
+       13.5185953,
+       54.1401884
+      ],
+      [
+       13.5186425,
+       54.1402081
+      ],
+      [
+       13.5186978,
+       54.1402184
+      ],
+      [
+       13.5187558,
+       54.1402185
+      ],
+      [
+       13.5188111,
+       54.1402081
+      ],
+      [
+       13.5188584,
+       54.1401885
+      ],
+      [
+       13.5188932,
+       54.1401613
+      ],
+      [
+       13.5189135,
+       54.1401252
+      ],
+      [
+       13.5189115,
+       54.140087
+      ],
+      [
+       13.5188877,
+       54.1400516
+      ],
+      [
+       13.5188447,
+       54.1400231
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "building": "yes",
+    "description": "Ehem. Bohrplattform Gahlkow",
+    "man_made": "offshore_platform",
+    "seamark:platform:category": "oil;gas",
+    "seamark:platform:status": "not_in_use",
+    "osm_id": "way/903029508"
+   }
+  }
+ ]
+}
