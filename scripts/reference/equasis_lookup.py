@@ -24,6 +24,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import boto3
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -121,33 +122,70 @@ def search_vessel(session: requests.Session, imo: str) -> str | None:
 
 
 def parse_ship_info(html: str, imo: str) -> dict:
-    """Extract structured fields from an Equasis ship info HTML page."""
-    soup = BeautifulSoup(html, "lxml")
-    out: dict = {"imo": imo}
+    """Extract structured fields from an Equasis ship info HTML page.
 
-    # Helper: collapse whitespace
+    Equasis ship pages have:
+      - An <h4> title like "EAGLE S - IMO n° 9329760"
+      - Multiple <table>s with column headers in <th> and data in <td>
+      - Each table is its own structured section (management, classification,
+        inspections, P&I, etc.)
+    """
+    soup = BeautifulSoup(html, "lxml")
     def clean(s: str | None) -> str:
         return re.sub(r"\s+", " ", s or "").strip()
 
-    # Equasis uses a tabular layout — extract every label/value pair we can find
-    for row in soup.select("table tr"):
-        cells = row.find_all(["th", "td"])
-        if len(cells) == 2:
-            label = clean(cells[0].get_text())
-            value = clean(cells[1].get_text())
-            if label and value and len(label) < 60:
-                # Normalize label keys
-                key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
-                if key and key not in out:
-                    out[key] = value
+    out: dict = {"imo": imo}
 
-    # Special-case: the vessel title often appears in <h2> or <h1>
-    title = soup.find(["h1", "h2"])
-    if title:
-        out["ship_title"] = clean(title.get_text())
+    # Ship title block (h4 with "NAME - IMO n° NNNNNNN")
+    title_h4 = soup.find("h4")
+    if title_h4:
+        title_text = clean(title_h4.get_text())
+        out["ship_title"] = title_text
+        # Parse name out of "NAME - IMO n° ..."
+        m = re.match(r"^(.*?)\s*-\s*IMO", title_text)
+        if m:
+            out["ship_name"] = m.group(1).strip()
 
+    # Parse every table: first row is headers (th), subsequent rows are data rows
+    tables_out: list[dict] = []
+    for ti, table in enumerate(soup.find_all("table")):
+        # Try to label the table by its closest preceding heading
+        heading = None
+        for prev in table.find_all_previous(["h3", "h4", "h5"], limit=1):
+            heading = clean(prev.get_text())[:80]
+            break
+
+        rows = table.find_all("tr")
+        if not rows:
+            continue
+        header_cells = rows[0].find_all(["th", "td"])
+        headers = [clean(c.get_text()) for c in header_cells]
+        # If first row has only td (no th), treat as a data row with no headers
+        first_is_header = any(c.name == "th" for c in header_cells)
+
+        data_rows: list[dict | list] = []
+        for tr in rows[(1 if first_is_header else 0):]:
+            cells = [clean(c.get_text(" ")) for c in tr.find_all(["th", "td"])]
+            if not cells or not any(cells):
+                continue
+            if headers and len(cells) == len(headers):
+                data_rows.append({headers[i]: cells[i] for i in range(len(headers))})
+            else:
+                data_rows.append(cells)
+        if data_rows:
+            tables_out.append({
+                "table_index": ti,
+                "preceding_heading": heading,
+                "headers": headers if first_is_header else None,
+                "rows": data_rows,
+            })
+
+    out["tables"] = tables_out
     out["_fetched_at"] = datetime.now(timezone.utc).isoformat()
     return out
+
+
+_s3 = boto3.client("s3", region_name="eu-west-3")
 
 
 def lookup_one(session: requests.Session, imo: str) -> dict | None:
@@ -165,7 +203,12 @@ def lookup_one(session: requests.Session, imo: str) -> dict | None:
     out_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
     raw_path = OUT_DIR / f"{imo}.raw.html"
     raw_path.write_text(html, encoding="utf-8")
-    print(f"  {imo}: ok ({len(data)-2} fields, {raw_path.stat().st_size//1024} KB raw)", flush=True)
+    # Mirror to S3 (parsed JSON only — raw HTML stays local for repro)
+    try:
+        _s3.upload_file(str(out_path), "edth2026-baltic", f"reference/equasis/{out_path.name}")
+    except Exception as ex:
+        print(f"  {imo}: S3 upload failed ({ex})", flush=True)
+    print(f"  {imo}: ok ({len(data.get('tables',[]))} tables, {raw_path.stat().st_size//1024} KB raw)", flush=True)
     return data
 
 

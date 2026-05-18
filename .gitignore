@@ -43,6 +43,11 @@ data/tmp/
 data/reference/raw/
 raw/
 
+# Auto-generated per-vessel lookup outputs — re-runnable, mirrored to S3
+data/reference/equasis/
+data/reference/gfw_events/
+data/reference/gfw_vessels/
+
 # Small, version-controlled layers (geo/criticality, reference, incidents)
 # are intentionally tracked under data/geo/ and data/reference/.
 

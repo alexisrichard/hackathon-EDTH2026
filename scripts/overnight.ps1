@@ -24,6 +24,8 @@ Write-Output "  Kaggle log        -> $kgLog"
 Write-Output ""
 
 # Start as background processes — they will outlive this script
+$gfwLog = "data\cache\overnight_gfw_$ts.log"
+
 $aisProc = Start-Process -FilePath $py `
   -ArgumentList "scripts\ingest\danish_ais.py","full" `
   -WorkingDirectory $root `
@@ -40,12 +42,22 @@ $kgProc = Start-Process -FilePath $py `
   -WindowStyle Hidden `
   -PassThru
 
+$gfwProc = Start-Process -FilePath $py `
+  -ArgumentList "scripts\ingest\fetch_gfw.py" `
+  -WorkingDirectory $root `
+  -RedirectStandardOutput $gfwLog `
+  -RedirectStandardError "$gfwLog.err" `
+  -WindowStyle Hidden `
+  -PassThru
+
 Write-Output "AIS    PID $($aisProc.Id)"
 Write-Output "Kaggle PID $($kgProc.Id)"
+Write-Output "GFW    PID $($gfwProc.Id)  (~10 min, lightweight)"
 Write-Output ""
 Write-Output "Tail logs while you sleep with:"
 Write-Output "  Get-Content $aisLog -Tail 5 -Wait"
 Write-Output "  Get-Content $kgLog  -Tail 5 -Wait"
+Write-Output "  Get-Content $gfwLog -Tail 5 -Wait"
 Write-Output ""
 Write-Output "Stop them with:"
-Write-Output "  Stop-Process -Id $($aisProc.Id),$($kgProc.Id) -Force"
+Write-Output "  Stop-Process -Id $($aisProc.Id),$($kgProc.Id),$($gfwProc.Id) -Force"
