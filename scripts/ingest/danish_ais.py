@@ -375,9 +375,12 @@ def process_window(start: date, end: date) -> None:
         print(f"\n=== window day {d} -> s3://{SOURCE_BUCKET}/{key} ({kind}) ===", flush=True)
         local = download(key)
         wanted = dates_in_window if kind == "monthly" else {d}
-        paths = process_zip(local, dates_wanted=wanted)
-        upload_parquet(paths)
-        cleanup(local, paths)
+        # process_zip uploads + deletes each day inline; nothing left to upload here.
+        process_zip(local, dates_wanted=wanted)
+        # Remove the local zip; per-day parquet files are already gone.
+        if local.exists():
+            print(f"  removing local {local.name}", flush=True)
+            local.unlink()
 
 
 def cmd_incidents() -> int:
