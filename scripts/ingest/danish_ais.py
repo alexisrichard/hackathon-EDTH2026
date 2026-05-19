@@ -70,6 +70,10 @@ BBOX = (52.0, 66.0, 9.0, 30.0)  # min_lat, max_lat, min_lon, max_lon
 # Filtering done in pandas; reading is chunked so we stay under ~2 GB RAM
 READ_CHUNK_ROWS = 1_000_000
 
+# Bandwidth throttle for the download phase. 0 = unlimited; else target Mbps.
+# 25 Mbps ≈ 3.1 MB/s — leaves headroom on a 100 Mbps link for everyday use.
+DOWNLOAD_MBPS = 25
+
 INCIDENT_WINDOWS: list[tuple[date, date]] = [
     # (start_inclusive, end_inclusive) for each incident ±3 days
     (date(2022, 9, 1),  date(2022, 9, 30)),    # Nord Stream — monthly file covers it
@@ -121,18 +125,27 @@ def download(key: str) -> Path:
     # Windows AV/indexer (WinError 32). Path-style URL because the bucket
     # name 'aisdata.ais.dk' has dots that break the *.s3.region cert.
     url = f"https://s3.{SOURCE_REGION}.amazonaws.com/{SOURCE_BUCKET}/{key}"
-    print(f"  downloading {url} -> {local}", flush=True)
+    print(f"  downloading {url} -> {local}  (throttle: {DOWNLOAD_MBPS} Mbps)", flush=True)
     t0 = time.time()
     bytes_done = 0
     last_log = t0
+    # Token-bucket throttle: aim for DOWNLOAD_MBPS, smoothed across small chunks.
+    chunk_size = 256 * 1024  # 256 KB — gives smooth pacing without per-byte overhead
+    target_bps = (DOWNLOAD_MBPS * 1_000_000 / 8) if DOWNLOAD_MBPS > 0 else 0
     with requests.get(url, stream=True, timeout=(30, 600)) as r:
         r.raise_for_status()
         with open(local, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8 * 1024 * 1024):  # 8 MB
+            for chunk in r.iter_content(chunk_size=chunk_size):
                 if not chunk:
                     continue
                 f.write(chunk)
                 bytes_done += len(chunk)
+                # Pace against the target: if we're ahead of schedule, sleep.
+                if target_bps > 0:
+                    elapsed = time.time() - t0
+                    expected = bytes_done / target_bps
+                    if expected > elapsed:
+                        time.sleep(expected - elapsed)
                 now = time.time()
                 if now - last_log > 30:
                     mb = bytes_done / 1_048_576
@@ -201,11 +214,13 @@ def s3_dest_key(d: date) -> str:
 
 
 def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[date, Path]:
-    """Stream zip → filter → write per-day Parquet. Returns dict of {date: parquet_path}."""
+    """Stream zip → filter → per-day Parquet. Closes + uploads + deletes each day's
+    output as soon as its inner CSV finishes — keeps memory + disk bounded even on
+    monthly zips with 30 days inside.
+    """
     print(f"  processing {zip_path.name}...", flush=True)
     t0 = time.time()
-    writers: dict[date, pq.ParquetWriter] = {}
-    paths: dict[date, Path] = {}
+    all_paths: dict[date, Path] = {}
     rows_total = 0
     rows_kept = 0
 
@@ -214,8 +229,15 @@ def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[d
         if not csv_names:
             print(f"    NO CSV inside zip!", flush=True)
             return {}
-        for csv_name in csv_names:
-            print(f"    inner: {csv_name}", flush=True)
+        for csv_idx, csv_name in enumerate(csv_names):
+            # Writers scoped to this inner CSV. For monthly zips with one CSV per
+            # day, that's a single writer at a time. Closing+uploading+deleting
+            # at end of each CSV keeps RAM and disk bounded.
+            writers: dict[date, pq.ParquetWriter] = {}
+            local_paths: dict[date, Path] = {}
+            csv_rows = 0
+            csv_kept = 0
+            print(f"    inner [{csv_idx+1}/{len(csv_names)}]: {csv_name}", flush=True)
             with zf.open(csv_name) as raw:
                 text = io.TextIOWrapper(raw, encoding="latin-1", newline="")
                 reader = pd.read_csv(
@@ -229,6 +251,7 @@ def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[d
                 )
                 for i, chunk in enumerate(reader):
                     rows_total += len(chunk)
+                    csv_rows += len(chunk)
                     filtered = filter_chunk(chunk)
                     if filtered.empty:
                         continue
@@ -237,24 +260,42 @@ def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[d
                         if dates_wanted is not None and d not in dates_wanted:
                             continue
                         rows_kept += len(g)
+                        csv_kept += len(g)
                         if d not in writers:
                             out = parquet_path(d)
-                            paths[d] = out
-                            # determine schema from first batch
+                            local_paths[d] = out
+                            all_paths[d] = out
                             table = pa.Table.from_pandas(g.drop(columns=["date_utc"]), preserve_index=False)
                             writers[d] = pq.ParquetWriter(out, table.schema, compression="zstd")
                             writers[d].write_table(table)
                         else:
                             table = pa.Table.from_pandas(g.drop(columns=["date_utc"]), preserve_index=False)
                             writers[d].write_table(table)
-                    if i % 20 == 0:
-                        print(f"    ... chunk {i}: total_rows={rows_total:,} kept={rows_kept:,}", flush=True)
+                    if i and i % 20 == 0:
+                        print(f"    ... chunk {i}: csv_rows={csv_rows:,} csv_kept={csv_kept:,}", flush=True)
 
-    for w in writers.values():
-        w.close()
+            # Close writers + upload + delete local for this inner CSV before
+            # moving to the next CSV. Keeps memory + disk bounded.
+            for w in writers.values():
+                w.close()
+            for d, p in sorted(local_paths.items()):
+                if p.exists():
+                    key = s3_dest_key(d)
+                    mb = p.stat().st_size / 1_048_576
+                    try:
+                        _dest.upload_file(str(p), DEST_BUCKET, key)
+                        print(f"      uploaded day={d} {mb:.1f} MB", flush=True)
+                    except Exception as ex:
+                        print(f"      upload FAILED day={d}: {ex}", flush=True)
+                        continue
+                    try:
+                        p.unlink()
+                    except OSError:
+                        pass
+
     dt = time.time() - t0
-    print(f"  done in {dt:.0f}s. total_rows={rows_total:,}, kept={rows_kept:,}, days={len(paths)}", flush=True)
-    return paths
+    print(f"  done in {dt:.0f}s. total_rows={rows_total:,}, kept={rows_kept:,}, days={len(all_paths)}", flush=True)
+    return all_paths
 
 
 def upload_parquet(paths: dict[date, Path]) -> None:
@@ -277,6 +318,7 @@ def cleanup(zip_path: Path, paths: dict[date, Path]) -> None:
 def process_one_date(d: date, dates_wanted: set[date] | None = None) -> None:
     """Process the source zip containing date d. For daily files dates_wanted is ignored;
     for monthly files, filter to dates_wanted (so we don't write all 30 days when we only need 7).
+    Note: process_zip now uploads + deletes per inner CSV; upload_parquet is a no-op safety net.
     """
     try:
         key, kind = s3_key_for_date(d)
