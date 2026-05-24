@@ -26,12 +26,14 @@ The full project plan lives in [`PLAN.md`](PLAN.md). The threat-model context �
 
 ## Data inventory (high level)
 
+📖 **For a specialist-readable, source-by-source guide** — what each dataset is, what it provides, coverage / cadence / volume, what it's useful for, and caveats — see **[`DATA_GUIDE.md`](DATA_GUIDE.md)**.
+
 Full provenance + license matrix in [`data/SOURCES.md`](data/SOURCES.md).
 Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 
 | Category | What we have | Source |
 |---|---|---|
-| AIS — bulk historical | 118 days of Baltic-filtered Parquet covering every named incident window; full 2022→present backfill runs via `scripts\overnight.ps1` | Danish Maritime Authority |
+| AIS — bulk historical | **1,601 days** Baltic-filtered Parquet, 2022-01-01 → 2026-05-20 (~330 GB); full 2022→present backfill runs via `scripts\overnight.ps1` | Danish Maritime Authority |
 | AIS — live | WebSocket consumer for the Sunday demo | AISStream.io |
 | Satellite imagery | 441 Sentinel-1/-2 scenes catalogued; 9 incident-AOI crops downloaded | Copernicus Data Space + Element84 STAC |
 | Criticality / infrastructure | 36 GeoJSON layers — cables, pipelines, ports, naval bases, wind farms, refineries, TSS, lighthouses, anchorages, wrecks, fairways, shipping accidents, oil spills, EEZ, bathymetry, chokepoints | OSM, EMODnet, HELCOM, Natural Earth, Marine Regions, GMRT |

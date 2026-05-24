@@ -1,5 +1,7 @@
-# Claude Code local settings (per-user, not for the repo)
+# Claude Code local settings + runtime state (per-user, not for the repo)
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/scheduled_tasks.json
 
 # OS / editor cruft
 .DS_Store
