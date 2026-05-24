@@ -71,8 +71,8 @@ BBOX = (52.0, 66.0, 9.0, 30.0)  # min_lat, max_lat, min_lon, max_lon
 READ_CHUNK_ROWS = 1_000_000
 
 # Bandwidth throttle for the download phase. 0 = unlimited; else target Mbps.
-# 25 Mbps ≈ 3.1 MB/s — leaves headroom on a 100 Mbps link for everyday use.
-DOWNLOAD_MBPS = 25
+# 44 Mbps ≈ 5.5 MB/s — half of the observed unthrottled ~11 MB/s, so daytime use stays smooth.
+DOWNLOAD_MBPS = 0
 
 INCIDENT_WINDOWS: list[tuple[date, date]] = [
     # (start_inclusive, end_inclusive) for each incident ±3 days
@@ -118,8 +118,14 @@ def download(key: str) -> Path:
     name = Path(key).name
     local = CACHE_DIR / name
     if local.exists() and local.stat().st_size > 0:
-        print(f"  cache hit: {local.name} ({local.stat().st_size // 1024 // 1024} MB)", flush=True)
-        return local
+        # Defensive: a partial zip left by a previous kill is truncated and would
+        # crash `zipfile.ZipFile(...)` later with BadZipFile. Cheap end-of-file
+        # central-directory check; if it fails, drop the cache and re-download.
+        if zipfile.is_zipfile(local):
+            print(f"  cache hit: {local.name} ({local.stat().st_size // 1024 // 1024} MB)", flush=True)
+            return local
+        print(f"  cache file invalid (truncated zip), re-downloading: {local.name}", flush=True)
+        local.unlink()
     # Anonymous S3 bucket → public HTTPS. Plain streaming GET avoids the
     # boto3/aws-cli multipart-then-atomic-rename pattern that races with
     # Windows AV/indexer (WinError 32). Path-style URL because the bucket

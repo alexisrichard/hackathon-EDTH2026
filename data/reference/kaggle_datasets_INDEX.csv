@@ -1,0 +1,13 @@
+slug,category,why,size_mb,status,local_path,fetched_at
+ubiratanfilho/sds-dataset,drone_video,SeaDronesSee — drone footage with GPS for ship detection,1203,cache_hit,data\reference\raw\kaggle\sds-dataset,2026-05-20T18:11:55.901939Z
+piterfm/2022-ukraine-russian-war,geo_context,Ukraine-Russia war event database (regional situational context),0,cache_hit,data\reference\raw\kaggle\2022-ukraine-russian-war,2026-05-20T18:11:55.905939Z
+sanjeetsinghnaik/ship-ports,geo,World shipping ports reference,0,cache_hit,data\reference\raw\kaggle\ship-ports,2026-05-20T18:11:55.908939Z
+kailaspsudheer/sarscope-unveiling-the-maritime-landscape,sar_imagery,SARScope — labeled SAR maritime imagery,379,cache_hit,data\reference\raw\kaggle\sarscope-unveiling-the-maritime-landscape,2026-05-20T18:11:56.328750Z
+jangsienicajzkowy/afo-aerial-dataset-of-floating-objects,aerial_imagery,"AFO — aerial floating-object detection (debris, lifeboats, etc.)",4478,cache_hit,data\reference\raw\kaggle\afo-aerial-dataset-of-floating-objects,2026-05-20T18:11:56.809925Z
+arunvithyasegar/daily-port-activity-data-and-trade-estimates,port_activity,Daily port activity + trade estimates,515,cache_hit,data\reference\raw\kaggle\daily-port-activity-data-and-trade-estimates,2026-05-20T18:11:56.813926Z
+sarribere99/high-resolution-sar-images-dataset-hrsid,sar_imagery,HRSID — Sentinel-1-derived SAR ship benchmark (5.7 GB),6818,cache_hit,data\reference\raw\kaggle\high-resolution-sar-images-dataset-hrsid,2026-05-20T18:11:56.921927Z
+petrarodriguez/ls-ssdd-v1-0,sar_imagery,"LS-SSDD — large-scene SAR (closest to Sentinel-1 resolution, 2.8 GB)",2699,cache_hit,data\reference\raw\kaggle\ls-ssdd-v1-0,2026-05-20T18:11:57.256481Z
+rhammell/ships-in-satellite-imagery,optical_imagery,Ships in Satellite Imagery — most-downloaded optical benchmark,433,cache_hit,data\reference\raw\kaggle\ships-in-satellite-imagery,2026-05-20T18:11:57.337478Z
+eminserkanerdonmez/ais-dataset,ais_sample,Kattegat Strait AIS — directly in our Baltic bbox,26,cache_hit,data\reference\raw\kaggle\ais-dataset,2026-05-20T18:11:57.337478Z
+n0n5ense/global-maritime-pirate-attacks-19932020,skipped,"Wrong region — pirate attacks concentrated in Indian Ocean / Gulf of Guinea, ~0 incidents in Baltic",0,skipped,,2026-05-20T18:11:57.338478Z
+pranav941/-sea-of-fishes,skipped,Derivable from AIS (look at where ship_type='Fishing' vessels operate),0,skipped,,2026-05-20T18:11:57.338478Z
