@@ -395,23 +395,30 @@ Hourly resolution.
 
 ## Kaggle — ML training datasets
 
-**What it is.** 10 maritime-domain datasets queued/downloaded for use as training data if any team member wants to train (or fine-tune) a vessel-detection model.
+**What it is.** 10 maritime-domain datasets downloaded for use as training data if any team member wants to train (or fine-tune) a vessel-detection model.
 
-**What's included.**
-- Drone-video Ship Detection Sample (SDS) — labelled video frames of vessels from drones
-- HRSID — High-Resolution SAR Image Dataset (SAR ship detection)
-- LS-SSDD — Large-Scale SAR Ship Detection Dataset
-- MASATI — Maritime Satellite Imagery dataset (Sentinel-2 + Maxar)
-- AFO — Aerial Floating Objects
-- Ports — labelled port-region photos
-- Kattegat AIS — sampled AIS tracks for ML
-- + 3 supplementary maritime datasets
+**What's included** (downloaded + mirrored to S3 on 2026-06-07):
 
-**Total volume.** 16.5 GB at `s3://edth2026-baltic/kaggle/`.
+| Dataset | Slug | Size | License |
+|---|---|---|---|
+| SeaDronesSee drone video | `ubiratanfilho/sds-dataset` | 9.96 GB | ⚠️ unknown |
+| HRSID — High-Resolution SAR | `sarribere99/high-resolution-sar-images-dataset-hrsid` | 7.15 GB | ⚠️ unknown |
+| AFO — Aerial Floating Objects | `jangsienicajzkowy/afo-aerial-dataset-of-floating-objects` | 4.70 GB | 🚫 CC-BY-NC-SA 3.0 IGO |
+| LS-SSDD — Large-Scene SAR | `petrarodriguez/ls-ssdd-v1-0` | 2.83 GB | ✅ Apache-2.0 |
+| Daily port activity + trade | `arunvithyasegar/daily-port-activity-data-and-trade-estimates` | 541 MB | ⚠️ World Bank terms |
+| Ships in satellite imagery | `rhammell/ships-in-satellite-imagery` | 455 MB | ✅ CC-BY-SA-4.0 |
+| SARScope — labelled SAR | `kailaspsudheer/sarscope-unveiling-the-maritime-landscape` | 398 MB | ✅ Apache-2.0 |
+| Kattegat AIS (in our bbox) | `eminserkanerdonmez/ais-dataset` | 27.6 MB | ⚠️ "other" |
+| World shipping ports | `sanjeetsinghnaik/ship-ports` | 44 KB | ✅ CC0-1.0 |
+| Ukraine-war event context | `piterfm/2022-ukraine-russian-war` | 184 KB | 🚫 CC-BY-NC-SA-4.0 |
+
+**Total volume.** ~24 GB (26.06 GB / 63,173 objects) at `s3://edth2026-baltic/kaggle/<slug-name>/`.
 
 **Useful for.** Pre-training or fine-tuning ship-detection CV models. Not used by the cueing engine itself; provided as training material for anyone who wants to extend.
 
-**Caveats.** Licenses vary per dataset — check the individual dataset description on Kaggle before redistributing.
+**Caveats.** Licenses vary per dataset (see table). **Two are `unknown`** (SeaDronesSee, HRSID) and **two are non-commercial** (AFO, Ukraine-war) — fine for the hackathon as research/training material, but verify before any commercial use. See `data/SOURCES.md` § *Commercial-use guardrails*.
+
+**Format / how to query.** Per-dataset folders under `s3://edth2026-baltic/kaggle/`. Pull one with `aws s3 sync s3://edth2026-baltic/kaggle/<name>/ data/reference/raw/kaggle/<name>/`. Re-run / extend the set with `python scripts/ingest/fetch_kaggle.py` (skip-if-exists; uploads to S3 automatically). Inventory + per-dataset status in `data/reference/kaggle_datasets_INDEX.csv`.
 
 **License.** Per Kaggle terms + dataset-specific. See [`data/SOURCES.md`](data/SOURCES.md) for the matrix.
 

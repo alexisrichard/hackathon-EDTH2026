@@ -3,7 +3,7 @@
 Provenance and license tracking for every dataset under `data/` and `s3://edth2026-baltic/`.
 **Always check this file before redistributing data or shipping a demo to a third party.**
 
-Last updated: 2026-05-18
+Last updated: 2026-06-07
 
 ## Quick license-compatibility summary
 
@@ -80,20 +80,21 @@ Last updated: 2026-05-18
 |---|---|---|---|---|---|
 | `incidents.csv` | Hand-curated by project team | MIT-equivalent (ours) | 2026-05-18 | Manual | 9 well-documented Baltic incidents with attribution taxonomy |
 | `sanctions_maritime.csv` | OFAC SDN + UK OFSI + EU FSF (via OpenSanctions) | OFAC: public domain; OFSI: OGL v3.0; OpenSanctions: CC-BY-NC 4.0 | 2026-05-18 | `scripts/reference/fetch_sanctions.py` | 1,773 entries. Mixed-license — non-commercial only because of OpenSanctions inclusion |
-| `sentinel_scenes.csv` | Element84 Earth-Search STAC | Sentinel data: free (Copernicus) | 2026-05-18 | `scripts/ingest/sentinel_stac_search.py` | 441 scenes catalogued (no actual imagery downloaded yet) |
+| `sentinel_scenes.csv` | Element84 Earth-Search STAC | Sentinel data: free (Copernicus) | 2026-05-18 | `scripts/ingest/sentinel_stac_search.py` | 441 scenes catalogued; 9 incident-AOI crops rendered to S3 (`sar/sentinel1/`, `optical/sentinel2/`) |
 | `commercial_sar_scenes.csv` | Umbra + Capella STAC walk | Umbra: CC-BY 4.0; Capella: CC-BY-NC 4.0 | 2026-05-18 | `scripts/ingest/commercial_sar_search.py` | Baltic-intersecting scenes per incident |
 | `raw/ofac_sdn.csv` | US Treasury OFAC | Public domain (US Gov) | 2026-05-18 | `fetch_sanctions.py` | Raw download (gitignored) |
 | `raw/uk_consolidated.csv` | UK OFSI | Open Government Licence v3.0 | 2026-05-18 | `fetch_sanctions.py` | Raw download (gitignored) |
 | `raw/eu_fsf_targets.csv` | OpenSanctions normalized EU FSF | CC-BY-NC 4.0 | 2026-05-18 | `fetch_sanctions.py` | Raw download (gitignored) |
 | `aisdk_README.txt` | Danish Maritime Authority | Free | 2026-05-18 | `scripts/ingest/danish_ais.py` | Schema reference for AIS CSV |
 | `ais_access_notes.md` | Internal | — | 2026-05-18 | Manual | Notes on bulk-access status for each AIS source |
-| `kaggle_datasets_TODO.md` | Internal | — | 2026-05-18 | Manual | Maritime datasets on Kaggle to evaluate |
+| `kaggle_datasets_TODO.md` | Internal | — | 2026-05-18 | Manual | Original evaluation shortlist (now actioned — see INDEX below) |
+| `kaggle_datasets_INDEX.csv` | Internal | — | 2026-06-07 | `scripts/ingest/fetch_kaggle.py` | Inventory of the 10 downloaded Kaggle datasets: size, status, S3 URI. See Kaggle section below |
 
 ### AIS — `s3://edth2026-baltic/ais/parquet/`
 
 | Source | Bucket layout | License | Status |
 |---|---|---|---|
-| Danish | `source=danish/year=YYYY/month=MM/day=DD/part-XXXX.parquet` | Free, no restrictions | **In progress** — pipeline at `scripts/ingest/danish_ais.py`. Incident windows downloading |
+| Danish | `source=danish/year=YYYY/month=MM/day=DD/part-XXXX.parquet` | Free, no restrictions | **Complete** — full backfill 2022-01-01 → 2026-05-20 (1,601 days, no gaps, ~330 GB). Pipeline at `scripts/ingest/danish_ais.py` |
 | Finnish | (not yet) | CC-BY 4.0 | Bulk-download gap — see `ais_access_notes.md` |
 | Norwegian | (not yet) | NLOD 2.0 | Deprioritized — see `ais_access_notes.md` |
 | AISStream.io live | (not bulk-stored, demo only) | Free with key | Sign up at `aisstream.io` |
@@ -109,6 +110,23 @@ Last updated: 2026-05-18
 | Planet Education | `planet.com/markets/education-and-research` | Research-only if approved | Application required; stretch goal |
 | ICEYE | `iceye.com` | Paid / ad-hoc researcher access | Stretch goal |
 
+### Kaggle ML training datasets — `s3://edth2026-baltic/kaggle/`
+
+Downloaded + mirrored to S3 on 2026-06-07 via `scripts/ingest/fetch_kaggle.py`. Total ~24 GB (26.06 GB / 63,173 objects). Training material only — **not used by the cueing engine**. Inventory: `data/reference/kaggle_datasets_INDEX.csv`.
+
+| Dataset (slug) | License | Size | Commercial use | Notes |
+|---|---|---|---|---|
+| `ubiratanfilho/sds-dataset` | **unknown** | 9.96 GB | ⚠️ verify before any use | SeaDronesSee drone video; no license stated on Kaggle |
+| `sarribere99/high-resolution-sar-images-dataset-hrsid` | **unknown** | 7.15 GB | ⚠️ verify before any use | HRSID SAR ship benchmark; no license stated |
+| `jangsienicajzkowy/afo-aerial-dataset-of-floating-objects` | CC-BY-NC-SA 3.0 IGO | 4.70 GB | **No — non-commercial** | AFO aerial floating objects |
+| `petrarodriguez/ls-ssdd-v1-0` | Apache-2.0 | 2.83 GB | Yes | LS-SSDD large-scene SAR |
+| `arunvithyasegar/daily-port-activity-data-and-trade-estimates` | World Bank terms | 541 MB | Check WB terms | Daily port activity + trade estimates |
+| `rhammell/ships-in-satellite-imagery` | CC-BY-SA-4.0 | 455 MB | Yes (attribution + share-alike) | Optical ship detection benchmark |
+| `kailaspsudheer/sarscope-unveiling-the-maritime-landscape` | Apache-2.0 | 398 MB | Yes | SARScope labelled SAR |
+| `eminserkanerdonmez/ais-dataset` | "other" | 27.6 MB | ⚠️ check dataset description | Kattegat Strait AIS — in our Baltic bbox |
+| `sanjeetsinghnaik/ship-ports` | CC0-1.0 | 44 KB | Yes | World shipping ports reference |
+| `piterfm/2022-ukraine-russian-war` | CC-BY-NC-SA-4.0 | 184 KB | **No — non-commercial** | Regional situational context |
+
 ## Attribution string for the demo
 
 Include this (or equivalent) in any public demo, screenshot, or pitch deck:
@@ -123,6 +141,8 @@ If we want to commercialize ANY part of this after the hackathon, the following 
 - **Capella Open Data SAR** → drop OR pay for commercial use
 - **TeleGeography cable map** → license OR replace with EMODnet/OSM-only cables
 - **KSE shadow fleet** → seek explicit redistribution license
+- **Kaggle: AFO + Ukraine-war datasets** (CC-BY-NC-SA) → non-commercial only; drop or replace if a trained model ships commercially
+- **Kaggle: SeaDronesSee + HRSID datasets** (license unknown) → confirm license with the dataset author before any commercial training use
 
 Everything else is commercial-safe as long as attribution is preserved.
 

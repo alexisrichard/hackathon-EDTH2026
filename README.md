@@ -43,7 +43,7 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 | GFW events | Per-vessel port visits, loitering, encounters, AIS gaps, fishing | Global Fishing Watch v3 API |
 | Marine weather | 9 incident windows × hourly waves + wind + temp + pressure | Open-Meteo + ERA5 |
 | Incidents | 9 well-sourced Baltic events Sep 2022 → Jan 2026 with attribution taxonomy | Hand-curated |
-| Kaggle | 10 datasets queued for download (drone-video SDS, HRSID, LS-SSDD, MASATI, AFO, ports, Kattegat AIS, etc.) | Kaggle |
+| Kaggle | **10 datasets downloaded to S3 (~24 GB, 63k files):** SeaDronesSee drone video, HRSID + LS-SSDD + SARScope (SAR), ships-in-satellite (optical), AFO (aerial), Kattegat AIS, daily port activity, world ports, Ukraine-war events | Kaggle |
 
 ---
 

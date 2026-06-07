@@ -1,5 +1,12 @@
 # Kaggle maritime datasets — investigation TODO
 
+> **✅ DONE (2026-06-07).** The shortlist below was evaluated and 10 datasets were
+> downloaded + mirrored to `s3://edth2026-baltic/kaggle/` (~24 GB). See
+> [`kaggle_datasets_INDEX.csv`](kaggle_datasets_INDEX.csv) for the final set, sizes,
+> licenses, and S3 URIs, and `data/SOURCES.md` § *Kaggle ML training datasets*.
+> Re-run / extend with `python scripts/ingest/fetch_kaggle.py`. The notes below are
+> kept for historical context (original shortlist + access setup).
+
 Found via Kaggle search "maritime" / "AIS anomaly". Kaggle dataset pages are
 JS-rendered; details require either visiting in a browser OR using the Kaggle
 API (`pip install kaggle`, then `~/.kaggle/kaggle.json` with API token from

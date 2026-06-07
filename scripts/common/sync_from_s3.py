@@ -6,8 +6,9 @@ Used by teammates after cloning the repo to pull files that are too large for gi
 Usage:
   python scripts/common/sync_from_s3.py geo            # all geo/ layers
   python scripts/common/sync_from_s3.py reference      # sanctions + incidents
+  python scripts/common/sync_from_s3.py kaggle         # ML training datasets (~24 GB)
   python scripts/common/sync_from_s3.py ais YYYY-MM-DD # one day of Danish AIS
-  python scripts/common/sync_from_s3.py all            # everything (~hundreds of MB)
+  python scripts/common/sync_from_s3.py all            # everything small (geo + reference)
 """
 from __future__ import annotations
 
@@ -21,6 +22,11 @@ SYNCS: dict[str, tuple[str, str]] = {
     "reference": (f"s3://{BUCKET}/reference/", "data/reference/"),
 }
 
+# Large prefixes excluded from "all" — pull explicitly by name.
+LARGE_SYNCS: dict[str, tuple[str, str]] = {
+    "kaggle": (f"s3://{BUCKET}/kaggle/", "data/reference/raw/kaggle/"),
+}
+
 
 def run(args: list[str]) -> int:
     print(f"$ {' '.join(args)}", flush=True)
@@ -28,7 +34,7 @@ def run(args: list[str]) -> int:
 
 
 def cmd_sync_prefix(label: str) -> int:
-    src, dst = SYNCS[label]
+    src, dst = {**SYNCS, **LARGE_SYNCS}[label]
     return run(["aws", "s3", "sync", src, dst, "--exclude", "*.keep"])
 
 
@@ -45,7 +51,7 @@ def main(argv: list[str]) -> int:
         print(__doc__, file=sys.stderr)
         return 2
     cmd = argv[1]
-    if cmd in SYNCS:
+    if cmd in SYNCS or cmd in LARGE_SYNCS:
         return cmd_sync_prefix(cmd)
     if cmd == "ais" and len(argv) >= 3:
         return cmd_ais_day(argv[2])
