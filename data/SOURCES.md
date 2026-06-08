@@ -25,6 +25,7 @@ Last updated: 2026-06-07
 | TeleGeography Submarine Cable Map | **No redistribution** | Visual reference only | Yes if visually referenced |
 | KSE Russian shadow fleet | Research-only, ask before redistribution | Internal demo OK, public release — ask | Yes — "Kyiv School of Economics" |
 | Kaggle datasets | Varies per dataset — check each | Varies | Per Kaggle terms + dataset-specific |
+| Public coastal webcams | **No** — display only; recording/redistribution per each source's ToS | **No** without per-source clearance | Per source |
 | HELCOM (Helsinki Commission) | Free with attribution | Yes | Yes — "HELCOM" |
 | Natural Earth | Public Domain (CC0) | Yes | Recommended |
 | GMRT bathymetry | Free for non-commercial; cite Ryan et al. (2009) | Non-commercial only | Yes — "GMRT" |
@@ -89,6 +90,8 @@ Last updated: 2026-06-07
 | `ais_access_notes.md` | Internal | — | 2026-05-18 | Manual | Notes on bulk-access status for each AIS source |
 | `kaggle_datasets_TODO.md` | Internal | — | 2026-05-18 | Manual | Original evaluation shortlist (now actioned — see INDEX below) |
 | `kaggle_datasets_INDEX.csv` | Internal | — | 2026-06-07 | `scripts/ingest/fetch_kaggle.py` | Inventory of the 10 downloaded Kaggle datasets: size, status, S3 URI. See Kaggle section below |
+| `coastal_cameras.csv` | Web research (public webcams) | Display-only; capture per each source's ToS | 2026-06-08 | Manual | 12 candidate Baltic port/coastal webcams for AIS↔camera fusion. Leads to confirm — see `coastal_cameras_README.md` |
+| `coastal_cameras_README.md` | Internal | — | 2026-06-08 | Manual | Methodology, verification status, stream-URL/clip-capture how-to, ToS guidance for the camera catalog |
 
 ### AIS — `s3://edth2026-baltic/ais/parquet/`
 
