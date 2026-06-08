@@ -40,6 +40,7 @@ def capture(cam_id: str, url: str, secs: int) -> Path:
     clip = OUT_DIR / f"{cam_id}_sample.mp4"
     cmd = ytdlp_cmd() + [
         "--no-warnings",
+        "--force-overwrites",  # else yt-dlp skips an existing file and you get a STALE clip
         "-f", "95/94/93/b[protocol^=m3u8]/b",
         "--downloader", "ffmpeg",
         "--downloader-args", f"ffmpeg_i:-t {secs}",  # ONE arg — never split

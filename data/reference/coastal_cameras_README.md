@@ -48,15 +48,30 @@ AIS-area matching, *not* for pixel homography). Specifically:
 
 Treat the CSV as leads to confirm, not guaranteed-working endpoints.
 
-### Confirmed working (2026-06-08)
+### Confirmed working (re-validated 2026-06-08)
 
-Three YouTube live feeds resolved + captured cleanly with yt-dlp/ffmpeg:
-`CAM-KIEL-HOLTENAU`, `CAM-BRUNSBUTTEL`, and the alt Kiel-Canal angle. **Two 20 s sample
-clips + still frames are already in S3** (`s3://edth2026-baltic/cameras/`) so there's
-known-good footage to develop against — both are 1280×720 H.264, slow dense lock traffic
-with large clearly-visible vessels (the Brunsbüttel ship's name "BOSNIA" is even legible).
+Three YouTube live feeds resolve + capture cleanly with yt-dlp/ffmpeg; fresh sample clips
++ frames for all three are in S3 (`s3://edth2026-baltic/cameras/`). Quality is **not**
+equal — capturability ≠ fitness:
+
+- `CAM-KIEL-HOLTENAU` — **best**, 1280×720, lots of vessels (tug + Color Line ferry +
+  cargo at the lock). Note: this camera **pans / PTZ-cycles**, so the view changes over
+  time → fine for detection, but **no fixed homography**.
+- `CAM-BRUNSBUTTEL` — 1280×720, cargo ships in the lock (ship name "BOSNIA" legible).
+  Geography is North Sea / Elbe, **not Baltic** — detector-dev only.
+- `CAM-KIEL-HOLTENAU-ALT` — **weakest**, only 640×360, a cluttered shipyard panorama.
+
+All three are **canal-lock / harbour** scenes — good for *detection* benchmarking, but a
+poor environment for the *AIS dark-vessel* signal (controlled all-AIS traffic + AIS-less
+small craft → false positives). For the demo narrative you still want an open-water
+**chokepoint** cam (Great Belt / Øresund), which sits behind a JS player.
+
 The operator-page feeds (livespotting Warnemünde, BalticLiveCam Tallinn) are **not**
 resolvable by yt-dlp's generic extractor — grab their `.m3u8` in a browser instead.
+
+> Re-capture footage fresh on the day — live stream IDs rotate, and the capture script now
+> passes `--force-overwrites` so a re-run actually replaces the clip instead of silently
+> keeping a stale one.
 
 ## How to resolve a direct stream URL
 
