@@ -24,6 +24,9 @@ pyais
 # OSM extracts
 overpy
 
+# Camera feeds (capture_camera_clip.py) — also needs ffmpeg on PATH (system binary)
+yt-dlp
+
 # Sentinel / Copernicus
 sentinelhub
 

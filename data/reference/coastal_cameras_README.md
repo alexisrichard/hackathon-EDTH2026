@@ -48,6 +48,16 @@ AIS-area matching, *not* for pixel homography). Specifically:
 
 Treat the CSV as leads to confirm, not guaranteed-working endpoints.
 
+### Confirmed working (2026-06-08)
+
+Three YouTube live feeds resolved + captured cleanly with yt-dlp/ffmpeg:
+`CAM-KIEL-HOLTENAU`, `CAM-BRUNSBUTTEL`, and the alt Kiel-Canal angle. **Two 20 s sample
+clips + still frames are already in S3** (`s3://edth2026-baltic/cameras/`) so there's
+known-good footage to develop against — both are 1280×720 H.264, slow dense lock traffic
+with large clearly-visible vessels (the Brunsbüttel ship's name "BOSNIA" is even legible).
+The operator-page feeds (livespotting Warnemünde, BalticLiveCam Tallinn) are **not**
+resolvable by yt-dlp's generic extractor — grab their `.m3u8` in a browser instead.
+
 ## How to resolve a direct stream URL
 
 For an official-site / aggregator player:
@@ -62,17 +72,22 @@ yt-dlp -g "https://www.youtube.com/watch?v=<LIVE_ID>"
 
 ## How to capture a sample clip (for offline detector testing)
 
-```bash
-# 30 s clip from an HLS manifest
-ffmpeg -i "<m3u8-url>" -t 30 -c copy data/reference/raw/cameras/<cam_id>_sample.mp4
+Use the script — it bakes in the working recipe (muxed-HLS format + correctly-quoted
+duration arg) so you don't re-hit the format/quoting gotchas:
 
-# or straight from YouTube live
-yt-dlp --downloader ffmpeg --downloader-args "ffmpeg_i:-t 30" \
-  "https://www.youtube.com/watch?v=<LIVE_ID>" -o data/reference/raw/cameras/<cam_id>_sample.mp4
+```bash
+python scripts/ingest/capture_camera_clip.py CAM-KIEL-HOLTENAU \
+    "https://www.youtube.com/watch?v=ll6Yep9Va5o" --secs 20 --s3
 ```
 
-`data/reference/raw/` is gitignored — clips go to S3 (`s3://edth2026-baltic/cameras/`) if we
-decide to keep them, not into git.
+It writes `<cam_id>_sample.mp4` + `<cam_id>_frame.jpg` to `data/reference/raw/cameras/`
+(gitignored) and, with `--s3`, uploads both to `s3://edth2026-baltic/cameras/`.
+
+Two gotchas the script handles (raw-command users beware):
+- **Pick a muxed HLS format** (`-f 95/94/93` for YouTube live = 720/480/360p). Bare
+  `-f best` can select separate video+audio and fail to mux.
+- **Pass `ffmpeg_i:-t <secs>` as ONE argument.** If the shell splits it, `<secs>` is read
+  as a second download → *"Fixed output name but more than one file to download"*.
 
 ## Terms of use — be careful (consistent with `SOURCES.md` discipline)
 
