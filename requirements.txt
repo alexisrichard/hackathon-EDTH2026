@@ -26,6 +26,9 @@ overpy
 
 # Camera feeds (capture_camera_clip.py) — also needs ffmpeg on PATH (system binary)
 yt-dlp
+# Resolving JS-player / Cloudflare webcam streams (resolve_stream_url.py)
+# after install: python -m playwright install chromium
+playwright
 
 # Sentinel / Copernicus
 sentinelhub

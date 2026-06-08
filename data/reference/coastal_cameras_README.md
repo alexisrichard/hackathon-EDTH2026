@@ -84,16 +84,26 @@ dark-vessel environment. Status of the feeds that actually fit the demo:
   demo-robust feed we have. Two angles (pylon-down + low-angle), both with a burned-in
   timestamp, captured to S3. **This is the one to build the demo on.** Open-water Great Belt
   chokepoint, strong Danish AIS.
-- **`CAM-HELSINGOR-PORT` (Øresund) — ⛔ needs a browser.** webcamtaxi is behind Cloudflare
-  + a JS player; no static stream URL, no YouTube equivalent found.
-- **Helsinki / Tallinn corridor — ⛔ needs a browser.** The Port of Helsinki "web camera"
-  page hero is a 25 s Vimeo *marketing loop* (`Port_of_Helsinki_nettibanneri`), not a live
-  cam. SkylineWebcams' yt-dlp extractor is currently broken. The real West-Harbour YouTube
-  stream exists but its live ID had rotated/expired.
+- **`CAM-HELSINKI-WEST` (Helsinki West Harbour → Tallinn ferry gateway) — ✅ CONFIRMED LIVE**
+  via headless-browser screen-recording. It's an embed-locked YouTube broadcast
+  (`6hPWq2IG08M`) served over SABR, so yt-dlp returns "No video formats" and there's no clean
+  HLS; `resolve_stream_url.py` located it, then a Playwright recording of the rendered player
+  captured it (clip+frame in S3). **Caveat:** the capture carries YouTube player overlays.
+  Gulf of Finland, near Balticconnector/Estlink — Danish AIS is weak here, so pair with
+  AISStream live.
+- **`CAM-HELSINGOR-PORT` (Øresund) — ⛔ source cam OFFLINE today.** A headless browser passed
+  Cloudflare fine, but the webcamtaxi player showed **"TEMPORARILY OFFLINE"**. Retry later, or
+  swap in an alternate Øresund / Helsingborg cam.
 
-To finish the two browser-only feeds: open the page in Chrome, DevTools → Network → filter
-`m3u8`, copy the manifest, then `capture_camera_clip.py CAM-... "<m3u8>"`. (Or connect the
-Claude-in-Chrome extension and it can read the network requests directly.)
+### Resolving JS-player / Cloudflare cams headlessly
+
+`python scripts/ingest/resolve_stream_url.py <page-url>` loads the page in headless Chromium
+(Playwright) and sniffs the network for the `.m3u8` — it passes Cloudflare and runs the JS
+that injects the stream, which plain yt-dlp/requests can't. Feed any URL it finds to
+`capture_camera_clip.py`. If the source is an **embed-locked YouTube/SABR** stream (no
+pullable HLS, like West Harbour), fall back to recording the rendered player with Playwright
+(`record_video_dir`) and crop to the player box — that's how `CAM-HELSINKI-WEST` was captured.
+Requires `pip install playwright && python -m playwright install chromium`.
 
 ## How to resolve a direct stream URL
 
