@@ -73,6 +73,28 @@ resolvable by yt-dlp's generic extractor — grab their `.m3u8` in a browser ins
 > passes `--force-overwrites` so a re-run actually replaces the clip instead of silently
 > keeping a stale one.
 
+### Mission-useful (chokepoint) feeds — status 2026-06-08
+
+The Kiel/Brunsbüttel feeds above are good for *detector dev* but are locks, not the
+dark-vessel environment. Status of the feeds that actually fit the demo:
+
+- **`CAM-STOREBAELT-E` / `CAM-STOREBAELT-SPROGO` (Great Belt) — ✅ CONFIRMED LIVE.** The
+  player iframe (`player.sob.m-dn.net/sb1|sb2-live.html`) exposes a **stable direct HLS**:
+  `https://stream.sob.m-dn.net/live/sb1/index.m3u8` (and `sb2`). No rotating ID → the most
+  demo-robust feed we have. Two angles (pylon-down + low-angle), both with a burned-in
+  timestamp, captured to S3. **This is the one to build the demo on.** Open-water Great Belt
+  chokepoint, strong Danish AIS.
+- **`CAM-HELSINGOR-PORT` (Øresund) — ⛔ needs a browser.** webcamtaxi is behind Cloudflare
+  + a JS player; no static stream URL, no YouTube equivalent found.
+- **Helsinki / Tallinn corridor — ⛔ needs a browser.** The Port of Helsinki "web camera"
+  page hero is a 25 s Vimeo *marketing loop* (`Port_of_Helsinki_nettibanneri`), not a live
+  cam. SkylineWebcams' yt-dlp extractor is currently broken. The real West-Harbour YouTube
+  stream exists but its live ID had rotated/expired.
+
+To finish the two browser-only feeds: open the page in Chrome, DevTools → Network → filter
+`m3u8`, copy the manifest, then `capture_camera_clip.py CAM-... "<m3u8>"`. (Or connect the
+Claude-in-Chrome extension and it can read the network requests directly.)
+
 ## How to resolve a direct stream URL
 
 For an official-site / aggregator player:
