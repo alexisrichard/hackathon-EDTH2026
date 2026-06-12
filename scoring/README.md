@@ -22,3 +22,29 @@ train/         # training scripts + experiment notebooks
 **Contract:** expose a stable `suspicion(track, t) -> {score, terms}` so the backend can stub it early and swap in the real thing. Read AIS via `scripts/common` helpers and the S3 layout in [`../AGENTS.md`](../AGENTS.md) §2.
 
 See [`../REPO_STRUCTURE.md`](../REPO_STRUCTURE.md).
+
+## Synthetic demo contract
+
+The minimal backend boundary for the first demo is defined in
+[`CONTRACT.md`](CONTRACT.md). It covers observation scoring, 50 km tasking-box
+ranking, satellite windows, validation, and defensive-use disclaimers.
+
+This contract supersedes the provisional `suspicion(track, t)` signature
+mentioned above.
+
+The offline-safe fictional fixture used to exercise that contract is in
+[`demo_data/synthetic_scenario.json`](demo_data/synthetic_scenario.json), with
+plain-language notes in [`demo_data/README.md`](demo_data/README.md).
+
+## Run the transparent demo
+
+From the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -m scoring.run_demo
+.\.venv\Scripts\python.exe -m unittest discover -s scoring/tests -v
+```
+
+The current rules are intentionally simple and visible: infrastructure
+proximity 30%, unusual movement 25%, infrastructure importance 20%, AIS
+staleness 15%, and supplied satellite availability 10%.
