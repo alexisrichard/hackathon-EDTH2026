@@ -22,6 +22,10 @@ The full project plan lives in [`PLAN.md`](PLAN.md). The threat-model context �
 3. Get the bucket access key from Alexis (private channel — not in the repo).
 4. Open `data/samples/notebooks/01_baltic_exploration.ipynb` for a quick tour of the data.
 
+### Using AI coding assistants (Claude, Gemini, ChatGPT/Codex…)
+
+The repo's working guide is [`AGENTS.md`](AGENTS.md) — one **tool-neutral** source of truth for humans and any AI assistant. [`CLAUDE.md`](CLAUDE.md) and [`GEMINI.md`](GEMINI.md) are thin pointers that redirect those tools to it (Codex/ChatGPT read `AGENTS.md` natively), so whatever you use auto-loads the same rules — just `cd` into the repo and start. It briefs you on the system design, the S3 layout and conventions (Baltic bbox, `eu-west-3`, parquet partitioning), the commands, and our way of working (branch isolation — never commit to `main`; plan-first; verify-before-done). It's also a fast read for humans who want the project in one page. Keep it current as the project evolves.
+
 ---
 
 ## Data inventory (high level)
@@ -49,8 +53,13 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 
 ## Repo layout
 
+> **Working in a team? Read [`REPO_STRUCTURE.md`](REPO_STRUCTURE.md)** — directory ownership lanes, the branch-per-person model, and a "where do I put X" guide.
+
 ```
 .
+├── AGENTS.md                       project guide for humans + AI assistants (source of truth)
+├── CLAUDE.md, GEMINI.md            thin pointers → AGENTS.md (per-tool auto-load)
+├── REPO_STRUCTURE.md               repo map: ownership lanes + where things go
 ├── PLAN.md                         project plan (what we're building during the hackathon)
 ├── ONBOARDING.md                   team setup, cross-platform
 ├── README.md                       this file
@@ -89,7 +98,7 @@ All gated sources read from `.env.local` at the repo root (gitignored). The curr
 
 AWS access (S3) is configured via `aws configure` and lives in `~/.aws/credentials`. The `edth2026-data` IAM user has S3 access to the project bucket.
 
-**All of the above should be rotated after the hackathon.** They live in chat history with Claude where they were originally pasted in.
+**All of the above should be rotated after the hackathon.** They live in AI-assistant chat history where they were originally pasted in.
 
 ---
 
