@@ -2,7 +2,7 @@
 
 How this repo is organized, **who owns what**, and **where to put a new thing**. Read this before you start writing code. It exists so three people can work in parallel without clobbering each other.
 
-> **The one rule that prevents merge hell:** *own your directory.* Each person works inside their lane. Touching another lane's directory means a PR + a heads-up to its owner. Combined with one-branch-per-person (see [`CLAUDE.md`](CLAUDE.md) → Collaboration), this keeps conflicts near zero.
+> **The one rule that prevents merge hell:** *own your directory.* Each person works inside their lane. Touching another lane's directory means a PR + a heads-up to its owner. Combined with one-branch-per-person (see [`AGENTS.md`](AGENTS.md) → Collaboration), this keeps conflicts near zero.
 
 The app stack below (FastAPI, React + MapLibre/deck.gl, scikit-learn/lightgbm) is [`PLAN.md`](PLAN.md)'s suggested default — **confirm or change it together Friday**, then update this file. The *directory layout* and *ownership model* hold regardless of stack.
 
@@ -13,7 +13,8 @@ The app stack below (FastAPI, React + MapLibre/deck.gl, scikit-learn/lightgbm) i
 ```
 hackathon-EDTH2026/
 │
-├── CLAUDE.md            # agent + human project guide (auto-loaded by Claude Code)
+├── AGENTS.md            # project guide for humans + AI assistants — the source of truth
+├── CLAUDE.md, GEMINI.md # thin pointers → AGENTS.md (so each tool auto-loads it)
 ├── REPO_STRUCTURE.md    # THIS FILE — what goes where, who owns what
 ├── PLAN.md              # full system design, scope tiers, demo flow, threat model
 ├── ONBOARDING.md        # machine setup (venv, AWS, smoke tests)
@@ -104,11 +105,11 @@ Agree on these **early Friday**, then mock each side so nobody is ever blocked (
 
 - **Backend ↔ Frontend** → `shared/api_contract.md`. The JSON shapes for `/vessels`, `/scores`, `/cues`, `/scenarios`. Frontend codes against the documented shape with a mock fixture until the live endpoint exists.
 - **Backend ↔ Scoring** → the `scoring.score.suspicion(...)` signature. Backend calls a stub returning random scores until the real engine lands, then swaps it in. The interface is the handshake — agree on inputs (a vessel track + time) and output (a 0–1 score + per-term breakdown) first.
-- **Everyone ↔ Data** → `scripts/common/bbox.py` (`BALTIC_BBOX`), the S3 layout (`CLAUDE.md` §2), and `shared/scenarios.json` for demo dates/AOIs.
+- **Everyone ↔ Data** → `scripts/common/bbox.py` (`BALTIC_BBOX`), the S3 layout (`AGENTS.md` §2), and `shared/scenarios.json` for demo dates/AOIs.
 
 ---
 
-## 5. Conventions (recap — full list in CLAUDE.md §2)
+## 5. Conventions (recap — full list in AGENTS.md §2)
 
 - **Region** `eu-west-3`. **CRS** EPSG:4326. **Baltic bbox** 52–66°N / 9–30°E (`scripts.common.bbox`).
 - **Parquet partitioning** `year=YYYY/month=MM/day=DD/`.

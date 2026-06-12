@@ -19,6 +19,6 @@ train/         # training scripts + experiment notebooks
 
 **Proposed stack (confirm Friday):** scikit-learn / lightgbm for the baseline; PyTorch only if a trajectory transformer becomes worth it. Start classical, ship something.
 
-**Contract:** expose a stable `suspicion(track, t) -> {score, terms}` so the backend can stub it early and swap in the real thing. Read AIS via `scripts/common` helpers and the S3 layout in [`../CLAUDE.md`](../CLAUDE.md) §2.
+**Contract:** expose a stable `suspicion(track, t) -> {score, terms}` so the backend can stub it early and swap in the real thing. Read AIS via `scripts/common` helpers and the S3 layout in [`../AGENTS.md`](../AGENTS.md) §2.
 
 See [`../REPO_STRUCTURE.md`](../REPO_STRUCTURE.md).

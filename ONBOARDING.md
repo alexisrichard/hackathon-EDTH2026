@@ -172,7 +172,7 @@ This opens in your browser at `http://localhost:8888/lab`. Notebooks live in `da
 
 | Path | What |
 |---|---|
-| `CLAUDE.md` | Project guide auto-loaded by Claude Code — system design, S3 layout, conventions, way of working. Also a good one-page read for humans |
+| `AGENTS.md` | Project guide for humans + AI assistants — system design, S3 layout, conventions, way of working. `CLAUDE.md` / `GEMINI.md` are pointers to it |
 | `PLAN.md` | Project plan — read this if you haven't yet |
 | `data/SOURCES.md` | Where every dataset comes from + license |
 | `data/geo/*.geojson` | Criticality layers (small, committed) |
