@@ -200,6 +200,16 @@
   .verdict strong { color: var(--ice); }
 
   footer { border-top: 1px solid var(--border); margin-top: 70px; padding-top: 24px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .08em; }
+
+  @media (max-width: 900px) {
+    .concept-body { grid-template-columns: 1fr; }
+    .hero-tile { border-right: none; border-bottom: 1px solid var(--border); min-height: 240px; }
+    .brief-grid, .swatches { grid-template-columns: 1fr 1fr; }
+    .type-card { grid-template-columns: 1fr; }
+    .type-card .note { border-left: none; padding-left: 0; }
+    .scale-row { gap: 14px; flex-wrap: wrap; }
+    .topbar nav { display: none; }
+  }
 </style>
 </head>
 <body>
