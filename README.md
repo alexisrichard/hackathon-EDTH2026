@@ -22,6 +22,10 @@ The full project plan lives in [`PLAN.md`](PLAN.md). The threat-model context �
 3. Get the bucket access key from Alexis (private channel — not in the repo).
 4. Open `data/samples/notebooks/01_baltic_exploration.ipynb` for a quick tour of the data.
 
+### Using Claude Code / AI agents
+
+The repo ships a [`CLAUDE.md`](CLAUDE.md) at the root. If you run [Claude Code](https://claude.com/claude-code) (or a compatible agent) from the repo, it's **picked up automatically** — no setup, just `cd` into the repo and start. It briefs the agent on the system design, the S3 layout and conventions (Baltic bbox, `eu-west-3`, parquet partitioning), the commands, and our way of working (branch isolation — never commit to `main`; plan-first; verify-before-done). It's also a fast read for humans who want the project in one page. Keep it current as the project evolves.
+
 ---
 
 ## Data inventory (high level)
@@ -51,6 +55,7 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 
 ```
 .
+├── CLAUDE.md                       agent/human project guide — auto-loaded by Claude Code
 ├── PLAN.md                         project plan (what we're building during the hackathon)
 ├── ONBOARDING.md                   team setup, cross-platform
 ├── README.md                       this file
