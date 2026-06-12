@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEIMDALL — Logo Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Michroma&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --void:    #060A12;   /* page background — deep Baltic night */
+    --panel:   #0B1220;
+    --card:    #0F1726;
+    --tile:    #0A101C;
+    --ice:     #E8F1F8;   /* light tile + light text */
+    --border:  #1C2740;
+    --border-2:#2A3A5C;
+
+    --cyan:    #41E3FF;   /* Bifröst signal */
+    --teal:    #2FD6B5;   /* aurora alternative */
+    --amber:   #FFB02E;   /* alert */
+    --red:     #FF4538;   /* breach */
+    --slate:   #8FA3B8;   /* secondary text */
+    --muted:   #4A5A74;
+
+    --sans: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  body {
+    background: var(--void);
+    color: var(--ice);
+    font-family: var(--sans);
+    line-height: 1.55;
+    padding: 0 0 120px;
+  }
+  ::selection { background: rgba(65,227,255,.25); }
+
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
+
+  /* ====== header ====== */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 64px 0 40px;
+    margin-bottom: 56px;
+    background:
+      radial-gradient(1200px 400px at 70% -10%, rgba(65,227,255,.07), transparent 60%),
+      var(--void);
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -.01em; }
+  h1 .dim { color: var(--muted); font-weight: 500; }
+  .sub { color: var(--slate); max-width: 640px; margin-top: 14px; font-size: 15px; }
+  .meta { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 22px; letter-spacing: .08em; }
+
+  /* ====== sections ====== */
+  section { margin-bottom: 84px; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 30px; }
+  .sec-num { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: .2em; }
+  h2 { font-size: 22px; font-weight: 600; letter-spacing: .01em; }
+  .sec-note { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+  h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+
+  /* ====== brief ====== */
+  .brief-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .brief-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .brief-card .t { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin-bottom: 8px; }
+  .brief-card p { font-size: 13px; color: var(--slate); }
+  .brief-card strong { color: var(--ice); font-weight: 600; }
+
+  /* ====== concept cards ====== */
+  .concept {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 0; margin-bottom: 36px; overflow: hidden;
+  }
+  .concept-head {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 20px 28px; border-bottom: 1px solid var(--border);
+  }
+  .c-id { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: .15em; }
+  .c-name { font-size: 18px; font-weight: 700; letter-spacing: .03em; }
+  .c-tag { margin-left: auto; font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .c-tag.rec { color: var(--amber); }
+
+  .concept-body { display: grid; grid-template-columns: 340px 1fr; }
+  .hero-tile {
+    background:
+      radial-gradient(420px 320px at 50% 42%, rgba(65,227,255,.08), transparent 70%),
+      var(--tile);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 320px; color: var(--cyan);
+  }
+  .concept-info { padding: 26px 30px; }
+  .myth {
+    font-size: 13px; color: var(--slate); border-left: 2px solid var(--cyan);
+    padding-left: 14px; margin-bottom: 14px; font-style: italic;
+  }
+  .myth b { color: var(--ice); font-style: normal; }
+  .rationale { font-size: 14px; color: var(--slate); margin-bottom: 20px; }
+  .rationale strong { color: var(--ice); }
+
+  .row-label { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin: 18px 0 10px; }
+
+  .variants { display: flex; gap: 34px 10px; flex-wrap: wrap; }
+  .v-tile {
+    width: 92px; height: 92px; border-radius: 8px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; position: relative;
+    background: var(--tile);
+  }
+  .v-tile span {
+    position: absolute; bottom: -20px; left: 0; right: 0; text-align: center;
+    font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+  }
+  .v-tile.light { background: var(--ice); border-color: #C9D6E2; }
+  .variants { margin-bottom: 30px; }
+
+  .scale-row { display: flex; align-items: flex-end; gap: 26px; }
+  .scale-item { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--cyan); }
+  .scale-item em { font-family: var(--mono); font-size: 9px; font-style: normal; color: var(--muted); letter-spacing: .1em; }
+
+  .lockup { display: flex; align-items: center; gap: 14px; margin-top: 6px; color: var(--ice); }
+  .lockup svg { color: var(--cyan); flex: none; }
+  .lockup .wm { font-family: var(--sans); font-weight: 600; font-size: 21px; letter-spacing: .22em; }
+  .lockup .wm i { font-style: normal; color: var(--muted); font-weight: 500; }
+
+  /* ====== type ====== */
+  .type-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 26px 30px 22px; margin-bottom: 14px; display: grid; grid-template-columns: 1fr 280px; gap: 24px; align-items: center; }
+  .type-card .big { font-size: 40px; color: var(--ice); }
+  .type-card .small { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 10px; letter-spacing: .04em; }
+  .type-card .note { font-size: 12.5px; color: var(--slate); border-left: 1px solid var(--border-2); padding-left: 18px; }
+  .type-card .note .f { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 6px; }
+  .t-a .big { font-family: 'Space Grotesk'; font-weight: 600; letter-spacing: .24em; }
+  .t-b .big { font-family: 'Michroma'; font-weight: 400; letter-spacing: .14em; font-size: 33px; }
+  .t-c .big { font-family: 'Rajdhani'; font-weight: 700; letter-spacing: .2em; font-size: 42px; }
+  .t-d .big { font-family: 'JetBrains Mono'; font-weight: 700; letter-spacing: .12em; font-size: 34px; }
+  .big .dim { color: var(--muted); }
+
+  /* ====== color ====== */
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 26px; }
+  .sw { border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+  .sw .chip { height: 64px; }
+  .sw .lab { padding: 10px 12px; background: var(--panel); }
+  .sw .lab b { display: block; font-size: 12px; font-weight: 600; }
+  .sw .lab code { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; }
+  .sw .lab i { display: block; font-style: normal; font-size: 10.5px; color: var(--slate); margin-top: 2px; }
+  .signal-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* ====== context mocks ====== */
+  .topbar {
+    background: var(--tile); border: 1px solid var(--border-2); border-radius: 10px;
+    height: 54px; display: flex; align-items: center; padding: 0 20px; gap: 22px;
+    box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; color: var(--cyan); }
+  .topbar .brand b { color: var(--ice); font-weight: 600; font-size: 13.5px; letter-spacing: .26em; }
+  .topbar .div { width: 1px; height: 22px; background: var(--border-2); }
+  .topbar nav { display: flex; gap: 20px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; color: var(--muted); }
+  .topbar nav .on { color: var(--cyan); }
+  .topbar .clock { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--slate); letter-spacing: .08em; display: flex; align-items: center; gap: 9px; }
+  .topbar .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+
+  .tabs { display: flex; gap: 6px; margin-top: 18px; }
+  .tab {
+    background: var(--panel); border: 1px solid var(--border); border-bottom: none;
+    border-radius: 8px 8px 0 0; padding: 8px 16px 9px; display: flex; align-items: center; gap: 8px;
+    font-family: var(--sans); font-size: 11.5px; color: var(--slate); width: 230px;
+  }
+  .tab svg { color: var(--cyan); flex: none; }
+  .tab.off { opacity: .45; }
+
+  /* ====== matrix ====== */
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; min-width: 920px; border-collapse: collapse; font-size: 13px; }
+  th { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-2); }
+  td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--slate); }
+  td.n { color: var(--ice); font-weight: 600; white-space: nowrap; }
+  td.s { font-family: var(--mono); letter-spacing: .18em; color: var(--cyan); white-space: nowrap; }
+  tr.win td { background: rgba(65,227,255,.04); }
+  td.v { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; }
+  table { table-layout: auto; }
+  td, th { vertical-align: top; }
+  @media (max-width: 1100px) { td, th { padding: 10px 8px; font-size: 12px; } }
+  .v-rec { color: var(--amber); } .v-alt { color: var(--teal); } .v-no { color: var(--muted); }
+
+  .verdict {
+    margin-top: 28px; background: linear-gradient(180deg, rgba(65,227,255,.06), transparent), var(--panel);
+    border: 1px solid var(--border-2); border-left: 3px solid var(--cyan);
+    border-radius: 10px; padding: 24px 28px;
+  }
+  .verdict h3 { color: var(--cyan); font-family: var(--mono); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; margin-bottom: 12px; }
+  .verdict p { font-size: 14px; color: var(--slate); margin-bottom: 10px; }
+  .verdict strong { color: var(--ice); }
+
+  footer { border-top: 1px solid var(--border); margin-top: 70px; padding-top: 24px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .08em; }
+</style>
+</head>
+<body>
+
+<!-- ====== SVG MARK LIBRARY (referenced via <use>) ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+
+    <!-- C1 · GJALLARHORN — alarm arcs from a listening post -->
+    <symbol id="m-horn" viewBox="0 0 120 120">
+      <circle cx="28" cy="92" r="6" fill="currentColor"/>
+      <path d="M51.2 85.8 A24 24 0 0 0 34.2 68.8" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M70.5 80.6 A44 44 0 0 0 39.4 49.5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M89.8 75.4 A64 64 0 0 0 44.6 30.2" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- C1b · horn + tasked-box notch on the outer arc -->
+    <symbol id="m-horn-cue" viewBox="0 0 120 120">
+      <circle cx="28" cy="92" r="6" fill="currentColor"/>
+      <path d="M51.2 85.8 A24 24 0 0 0 34.2 68.8" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M70.5 80.6 A44 44 0 0 0 39.4 49.5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M89.8 75.4 A64 64 0 0 0 78.4 52.6" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M67.4 41.6 A64 64 0 0 0 44.6 30.2" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      <path d="M62.3 42.7 L62.3 35.7 L69.3 35.7 M77.3 35.7 L84.3 35.7 L84.3 42.7 M84.3 50.7 L84.3 57.7 L77.3 57.7 M69.3 57.7 L62.3 57.7 L62.3 50.7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="square"/>
+    </symbol>
+
+    <!-- C2 · VÖRDR — the sleepless eye as sensor slit -->
+    <symbol id="m-eye" viewBox="0 0 120 120">
+      <path d="M20 60 A58 58 0 0 1 100 60" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M20 60 A58 58 0 0 0 100 60" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="60" cy="60" r="14" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="66 22" transform="rotate(-30 60 60)"/>
+      <circle cx="60" cy="60" r="7" fill="currentColor"/>
+      <path d="M2 60 H14 M106 60 H118" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- C3 · BIFRÖST — guarded arcs over the cable -->
+    <symbol id="m-bridge" viewBox="0 0 120 120">
+      <path d="M18 86 A43 43 0 0 1 102 86" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M26 86 A35 35 0 0 1 94 86" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".72"/>
+      <path d="M34 86 A27 27 0 0 1 86 86" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".45"/>
+      <path d="M28 86 H92" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7"/>
+      <circle cx="18" cy="86" r="4.5" fill="currentColor"/>
+      <circle cx="102" cy="86" r="4.5" fill="currentColor"/>
+      <circle cx="60" cy="42" r="4" fill="currentColor"/>
+    </symbol>
+
+    <!-- C4 · HAGALL — younger-futhark rune star -->
+    <symbol id="m-hagall" viewBox="0 0 120 120">
+      <path d="M60 24 V96 M38 42 L82 78 M82 42 L38 78" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="square"/>
+    </symbol>
+
+    <!-- C4b · elder-futhark Hagalaz ᚺ monogram -->
+    <symbol id="m-hagall-elder" viewBox="0 0 120 120">
+      <path d="M44 28 V92 M76 28 V92 M44 50 L76 62 M44 60 L76 72" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+    </symbol>
+
+    <!-- C5 · THE CUE — bearing, sector, tasked box -->
+    <symbol id="m-cue" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M60 9 V14 M60 106 V111 M106 60 H111 M9 60 H14" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+      <path d="M60 60 L75.05 18.7 A44 44 0 0 1 91.6 29.4 Z" fill="currentColor" fill-opacity="0.16" stroke="none"/>
+      <path d="M60 60 L84 23.1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M67.5 27.5 V20.5 H74.5 M82.5 20.5 H89.5 V27.5 M89.5 35.5 V42.5 H82.5 M74.5 42.5 H67.5 V35.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+      <circle cx="60" cy="60" r="4.5" fill="currentColor"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Heimdall · Brand / 01</div>
+    <h1>Logo Study <span class="dim">— five marks for the watchman</span></h1>
+    <p class="sub">Heimdall guards the Bifröst. He sees a hundred leagues, hears the grass grow, never sleeps —
+    and when the breach comes, he sounds the Gjallarhorn first. Five logo directions, each anchored in one
+    facet of the myth and one truth of the product.</p>
+    <div class="meta">EDTH 2026 · PARIS &nbsp;//&nbsp; MARITIME CUEING ENGINE &nbsp;//&nbsp; DOC 01 — PRECEDES FULL IDENTITY SYSTEM</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ 0 · BRIEF ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">00</span><h2>What the mark must do</h2></div>
+    <div class="brief-grid">
+      <div class="brief-card"><div class="t">Survive 16 px</div><p>It lives as a <strong>favicon, map pin and topbar glyph</strong> before it ever lives on a slide. Geometry over detail.</p></div>
+      <div class="brief-card"><div class="t">Read as defense, not SaaS</div><p>The audience is NATO CUI / Marine Nationale–adjacent. <strong>Severe, instrumental, quiet confidence.</strong> No gradients-and-rounded-blob startup energy.</p></div>
+      <div class="brief-card"><div class="t">Carry the story</div><p>The pitch is <strong>tip-and-cue</strong>: we are the cheap continuous watch that tells scarce sensors where to look. The mark should be tellable in one sentence.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 1 · CONCEPTS ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>The five marks</h2><span class="sec-note">ALL MARKS DRAWN ON A 120 GRID · STROKE-BASED · 1-COLOR</span></div>
+
+    <!-- C1 -->
+    <div class="concept">
+      <div class="concept-head"><span class="c-id">C1</span><span class="c-name">GJALLARHORN</span><span class="c-tag rec">★ Recommended</span></div>
+      <div class="concept-body">
+        <div class="hero-tile"><svg width="210" height="210"><use href="#m-horn"/></svg></div>
+        <div class="concept-info">
+          <p class="myth"><b>The myth:</b> the horn Heimdall sounds when the enemy crosses — the alarm that precedes the battle, never follows it.</p>
+          <p class="rationale">Three arcs swelling from a single listening post: <strong>at once a horn blast, a sonar ping and a radar sweep.</strong>
+          It encodes the product's whole claim — <em>we sound it before the cable goes down</em> — in geometry a child could redraw.
+          The asymmetric origin keeps it off the generic wifi-glyph axis; the variant notches a <strong>tasked satellite box</strong> into the outer arc, fusing alarm and cueing.</p>
+          <div class="row-label">Variants</div>
+          <div class="variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-horn"/></svg><span>signal</span></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="56" height="56"><use href="#m-horn"/></svg><span>mono</span></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="56" height="56"><use href="#m-horn"/></svg><span>print</span></div>
+            <div class="v-tile" style="color:var(--amber)"><svg width="56" height="56"><use href="#m-horn"/></svg><span>alert</span></div>
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-horn-cue"/></svg><span>cue variant</span></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#m-horn"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#m-horn"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#m-horn"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#m-horn"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#m-horn"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#m-horn"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="concept">
+      <div class="concept-head"><span class="c-id">C2</span><span class="c-name">VÖRÐR — THE SLEEPLESS EYE</span><span class="c-tag">High cliché risk</span></div>
+      <div class="concept-body">
+        <div class="hero-tile"><svg width="210" height="210"><use href="#m-eye"/></svg></div>
+        <div class="concept-info">
+          <p class="myth"><b>The myth:</b> Heimdall needs less sleep than a bird and sees a hundred leagues, night or day.</p>
+          <p class="rationale">A sensor slit on the sea horizon — eyelids as lens housing, a <strong>radar-gapped iris</strong>, the horizon line running
+          through. Clean, scales well, instantly "surveillance." The problem is exactly that: <strong>the eye is the most-used glyph in the
+          intelligence industry</strong> — and Palantir already owns the all-seeing-eye association in this market. We'd be decorating their lobby.</p>
+          <div class="row-label">Variants</div>
+          <div class="variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-eye"/></svg><span>signal</span></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="56" height="56"><use href="#m-eye"/></svg><span>mono</span></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="56" height="56"><use href="#m-eye"/></svg><span>print</span></div>
+            <div class="v-tile" style="color:var(--amber)"><svg width="56" height="56"><use href="#m-eye"/></svg><span>alert</span></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#m-eye"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#m-eye"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#m-eye"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#m-eye"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#m-eye"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#m-eye"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="concept">
+      <div class="concept-head"><span class="c-id">C3</span><span class="c-name">BIFRÖST</span><span class="c-tag">Best story · weakest at 16px</span></div>
+      <div class="concept-body">
+        <div class="hero-tile"><svg width="210" height="210"><use href="#m-bridge"/></svg></div>
+        <div class="concept-info">
+          <p class="myth"><b>The myth:</b> Heimdall's post is the Bifröst — the bridge between worlds. Nothing crosses unseen.</p>
+          <p class="rationale">Three fading arcs span two landing stations; beneath them, <strong>a dotted submarine cable</strong> — the literal
+          bridge between nations that we guard. The sentinel point hangs above the apex. It's the most precise metaphor of the five
+          (our subject <em>is</em> protected links between two shores), and the rainbow-arc echoes sonar fans. Weakness: three thin
+          arcs merge into mush at favicon size — it's a deck-and-letterhead mark, not a glyph.</p>
+          <div class="row-label">Variants</div>
+          <div class="variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-bridge"/></svg><span>signal</span></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="56" height="56"><use href="#m-bridge"/></svg><span>mono</span></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="56" height="56"><use href="#m-bridge"/></svg><span>print</span></div>
+            <div class="v-tile" style="color:var(--amber)"><svg width="56" height="56"><use href="#m-bridge"/></svg><span>alert</span></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#m-bridge"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#m-bridge"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#m-bridge"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#m-bridge"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#m-bridge"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#m-bridge"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="concept">
+      <div class="concept-head"><span class="c-id">C4</span><span class="c-name">HAGALL — THE RUNE</span><span class="c-tag rec">★ Strong alternate</span></div>
+      <div class="concept-body">
+        <div class="hero-tile"><svg width="210" height="210"><use href="#m-hagall"/></svg></div>
+        <div class="concept-info">
+          <p class="myth"><b>The myth:</b> Hagall — the H-rune. In the younger futhark it's a six-armed star: hail, the hard strike from a clear sky.</p>
+          <p class="rationale">Heimdall's initial, written the way the Norse wrote it. <strong>A six-armed star that is simultaneously a rune, a
+          compass rose and a sensor-fusion node</strong> — six bearings converging on one point. This is the Anduril play: severe, angular,
+          zero decoration, untouchable at 16&nbsp;px. The elder-futhark ᚺ variant gives a second, more "monogram" cut for badges and
+          stamps. Watch-outs: verify distance from any snowflake/asterisk trademark in the space, and it carries the least maritime flavor.</p>
+          <div class="row-label">Variants</div>
+          <div class="variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-hagall"/></svg><span>signal</span></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="56" height="56"><use href="#m-hagall"/></svg><span>mono</span></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="56" height="56"><use href="#m-hagall"/></svg><span>print</span></div>
+            <div class="v-tile" style="color:var(--amber)"><svg width="56" height="56"><use href="#m-hagall"/></svg><span>alert</span></div>
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-hagall-elder"/></svg><span>elder ᚺ</span></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#m-hagall"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#m-hagall"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#m-hagall"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#m-hagall"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#m-hagall"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#m-hagall"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="concept">
+      <div class="concept-head"><span class="c-id">C5</span><span class="c-name">THE CUE</span><span class="c-tag">Product-literal · lives on as UI icon</span></div>
+      <div class="concept-body">
+        <div class="hero-tile"><svg width="210" height="210"><use href="#m-cue"/></svg></div>
+        <div class="concept-info">
+          <p class="myth"><b>The myth:</b> none — this one is pure doctrine. A bearing, a swept sector, a tasked box on the ring.</p>
+          <p class="rationale">The product's output drawn as an instrument face: <strong>"task your next pass on this box, on this bearing."</strong>
+          Unmistakably ISR, reads instantly to a defense jury. As a <em>company</em> mark it's the least ownable — every targeting
+          UI on earth has a reticle — and the five elements collapse below 24&nbsp;px. Verdict: probably not the logo, but
+          <strong>absolutely the iconography of the cueing overlay</strong> inside the app, whichever mark wins.</p>
+          <div class="row-label">Variants</div>
+          <div class="variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="56" height="56"><use href="#m-cue"/></svg><span>signal</span></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="56" height="56"><use href="#m-cue"/></svg><span>mono</span></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="56" height="56"><use href="#m-cue"/></svg><span>print</span></div>
+            <div class="v-tile" style="color:var(--red)"><svg width="56" height="56"><use href="#m-cue"/></svg><span>breach</span></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#m-cue"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#m-cue"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#m-cue"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#m-cue"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#m-cue"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#m-cue"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · WORDMARK ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Wordmark — four type voices</h2><span class="sec-note">ALL TRACKED WIDE · CAPS PRIMARY · ".AI" ALWAYS DIMMED</span></div>
+
+    <div class="type-card t-a">
+      <div><div class="big">HEIMDALL<span class="dim">.AI</span></div><div class="small">heimdall.ai &nbsp;·&nbsp; Space Grotesk 600 · tracking +240</div></div>
+      <div class="note"><span class="f">A · Space Grotesk — recommended</span>Modern geometric grotesk with just enough edge. Reads "serious software company," pairs natively with JetBrains Mono data type, won't age over a weekend or a Series A.</div>
+    </div>
+    <div class="type-card t-b">
+      <div><div class="big">HEIMDALL<span class="dim">.AI</span></div><div class="small">heimdall.ai &nbsp;·&nbsp; Michroma 400 · tracking +140</div></div>
+      <div class="note"><span class="f">B · Michroma</span>Eurostile DNA — pure aerospace/mil-spec heritage. Maximal "defense prime" flavor; risks period-piece sci-fi in long copy. Display-only if used.</div>
+    </div>
+    <div class="type-card t-c">
+      <div><div class="big">HEIMDALL<span class="dim">.AI</span></div><div class="small">heimdall.ai &nbsp;·&nbsp; Rajdhani 700 · tracking +200</div></div>
+      <div class="note"><span class="f">C · Rajdhani</span>Squared HUD lettering — cockpit-display energy. Strong on dark UI; slightly light-bodied for print and slides.</div>
+    </div>
+    <div class="type-card t-d">
+      <div><div class="big">HEIMDALL<span class="dim">.AI</span></div><div class="small">heimdall.ai &nbsp;·&nbsp; JetBrains Mono 700 · tracking +120</div></div>
+      <div class="note"><span class="f">D · JetBrains Mono</span>Terminal brutalism — the wordmark as a system process. Credible, but better kept as the <em>data voice</em> (timestamps, MMSI, coordinates) than the brand voice.</div>
+    </div>
+  </section>
+
+  <!-- ============ 3 · COLOR ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Signal color — directional</h2><span class="sec-note">FINAL PALETTE BELONGS TO THE IDENTITY DOC</span></div>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#060A12"></div><div class="lab"><b>Void</b><code>#060A12</code><i>page / theatre background</i></div></div>
+      <div class="sw"><div class="chip" style="background:#41E3FF"></div><div class="lab"><b>Bifröst Cyan</b><code>#41E3FF</code><i>primary signal — sonar, brand</i></div></div>
+      <div class="sw"><div class="chip" style="background:#FFB02E"></div><div class="lab"><b>Gjallarhorn Amber</b><code>#FFB02E</code><i>alert — score rising</i></div></div>
+      <div class="sw"><div class="chip" style="background:#FF4538"></div><div class="lab"><b>Breach Red</b><code>#FF4538</code><i>incident — cable down</i></div></div>
+      <div class="sw"><div class="chip" style="background:#2FD6B5"></div><div class="lab"><b>Aurora Teal</b><code>#2FD6B5</code><i>nominal / healthy systems</i></div></div>
+      <div class="sw"><div class="chip" style="background:#8FA3B8"></div><div class="lab"><b>Slate</b><code>#8FA3B8</code><i>secondary text, quiet vessels</i></div></div>
+      <div class="sw"><div class="chip" style="background:#E8F1F8"></div><div class="lab"><b>Ice</b><code>#E8F1F8</code><i>primary text, light surfaces</i></div></div>
+      <div class="sw"><div class="chip" style="background:#1C2740"></div><div class="lab"><b>Depth Line</b><code>#1C2740</code><i>borders, graticules, grids</i></div></div>
+    </div>
+    <div class="row-label" style="margin-top:0">Signal test — C1 across the state colors (cyan = watching · amber = alerting · red = breach · teal = clear)</div>
+    <div class="signal-row">
+      <div class="v-tile" style="color:var(--cyan)"><svg width="54" height="54"><use href="#m-horn"/></svg></div>
+      <div class="v-tile" style="color:var(--amber)"><svg width="54" height="54"><use href="#m-horn"/></svg></div>
+      <div class="v-tile" style="color:var(--red)"><svg width="54" height="54"><use href="#m-horn"/></svg></div>
+      <div class="v-tile" style="color:var(--teal)"><svg width="54" height="54"><use href="#m-horn"/></svg></div>
+      <div class="v-tile" style="color:var(--slate)"><svg width="54" height="54"><use href="#m-horn"/></svg></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--slate);margin-top:26px;max-width:660px">The mark doubling as a <strong style="color:var(--ice)">live status indicator</strong> — same glyph, state-driven color — is a pattern we
+    can carry into the app topbar: when Heimdall is alerting, the logo itself goes amber.</p>
+  </section>
+
+  <!-- ============ 4 · IN CONTEXT ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>In context</h2><span class="sec-note">C1 SHOWN · SWAP ANY MARK VIA ONE SYMBOL ID</span></div>
+    <div class="topbar">
+      <div class="brand"><svg width="24" height="24"><use href="#m-horn"/></svg><b>HEIMDALL</b></div>
+      <div class="div"></div>
+      <nav><span class="on">THEATRE MAP</span><span>INCIDENTS</span><span>CUEING</span><span>REPLAY</span></nav>
+      <div class="clock"><span class="dot"></span>2024-12-25&nbsp;14:02:11Z&nbsp;&nbsp;BALTIC/NORTH&nbsp;SEA</div>
+    </div>
+    <div class="tabs">
+      <div class="tab"><svg width="15" height="15"><use href="#m-horn"/></svg>Heimdall — Operations</div>
+      <div class="tab off"><svg width="15" height="15"><use href="#m-hagall"/></svg>Heimdall — Operations</div>
+      <div class="tab off"><svg width="15" height="15"><use href="#m-eye"/></svg>Heimdall — Operations</div>
+    </div>
+  </section>
+
+  <!-- ============ 5 · VERDICT ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Scoring &amp; recommendation</h2></div>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>Mark</th><th>Score</th><th>Distinctive</th><th>Story fit</th><th>16 px</th><th>Defense tone</th><th>Cliché-safe</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr class="win"><td class="n">C1 · Gjallarhorn</td><td class="s">●●●●○</td><td>High</td><td>Perfect — the alarm before the breach</td><td>Strong</td><td>Strong</td><td>Good (wifi-adjacent, offset by asymmetry)</td><td class="v v-rec">★ PRIMARY</td></tr>
+        <tr><td class="n">C4 · Hagall</td><td class="s">●●●●○</td><td>Very high</td><td>Good — the initial, six bearings, one node</td><td>Excellent</td><td>Excellent</td><td>Check snowflake/asterisk space</td><td class="v v-alt">ALTERNATE</td></tr>
+        <tr><td class="n">C3 · Bifröst</td><td class="s">●●●○○</td><td>High</td><td>Excellent — guarding the link between shores</td><td>Weak</td><td>Good</td><td>Good</td><td class="v v-no">DECK MARK ONLY</td></tr>
+        <tr><td class="n">C5 · The Cue</td><td class="s">●●○○○</td><td>Low</td><td>Literal</td><td>Weak</td><td>Strong</td><td>Reticles are everywhere</td><td class="v v-no">→ UI ICONOGRAPHY</td></tr>
+        <tr><td class="n">C2 · Vörðr</td><td class="s">●●○○○</td><td>Low</td><td>Good</td><td>Strong</td><td>Good</td><td>Palantir owns the eye</td><td class="v v-no">SKIP</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="verdict">
+      <h3>Recommendation</h3>
+      <p><strong>C1 · Gjallarhorn, in Bifröst Cyan, with the Space Grotesk wordmark.</strong> It's the only mark whose one-sentence
+      explanation <em>is</em> the pitch: "Heimdall sounds the horn before the breach — we cue the satellite before the cable goes down."
+      It scales like a wifi glyph (a proven 16&nbsp;px geometry), doubles as a state-driven status light, and the cue-variant
+      bakes the tasking box into the brand.</p>
+      <p>If the team wants maximum severity over maximum story, <strong>C4 · Hagall</strong> is the Anduril-grade alternate — and the two
+      compose: Gjallarhorn as the product mark, the rune as a favicon/stamp/watermark second voice. Either way, <strong>C5's reticle
+      becomes the in-app cueing icon</strong>, and C3 survives as a pitch-deck illustration.</p>
+      <p style="margin-bottom:0;color:var(--muted);font-size:12.5px">Due diligence before locking: heimdall.ai domain availability + a trademark sweep ("Heimdall" is used in some cyber tooling — fine for a hackathon, check before incorporation).</p>
+    </div>
+  </section>
+
+  <footer>
+    HEIMDALL · LOGO STUDY · DOC 01 &nbsp;//&nbsp; NEXT: FULL BRAND IDENTITY &amp; DESIGN SYSTEM (TOKENS · COMPONENTS · MAP UI PATTERNS) &nbsp;//&nbsp; EDTH 2026 PARIS
+  </footer>
+
+</div>
+</body>
+</html>

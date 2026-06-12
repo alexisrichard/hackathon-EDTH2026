@@ -66,3 +66,6 @@ data/geo/osm_buoys.geojson
 
 # Logs
 *.log
+
+# Claude Code preview launcher (per-user)
+.claude/launch.json
