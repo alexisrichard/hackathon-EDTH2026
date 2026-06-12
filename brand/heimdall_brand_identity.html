@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEIMDALL — Brand Identity &amp; Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ================================================================
+     HEIMDALL · DESIGN TOKENS
+     Product colors (suspicion ramp, bands, sensor colors) mirror
+     shared/encoding/display_encoding.json — that JSON is the source
+     of truth for anything the map renders. Change there first.
+     ================================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* --- Backgrounds (the theatre) --- */
+    --bg-void:     #060A12;   /* page / map void          */
+    --bg-deep:     #0B1220;   /* panels                   */
+    --bg-card:     #0F1726;   /* cards                    */
+    --bg-elevated: #141E33;   /* popovers, hover surfaces */
+    --bg-hover:    #1A2640;
+    --bg-input:    #0A101C;
+
+    /* --- Text --- */
+    --text-ice:    #E8F1F8;   /* primary                  */
+    --text-slate:  #8FA3B8;   /* secondary                */
+    --text-muted:  #4A5A74;   /* tertiary, placeholders   */
+    --text-faint:  #2E3B55;   /* disabled, graticules     */
+    --text-inverse:#060A12;
+
+    /* --- Brand signal --- */
+    --cyan:        #41E3FF;   /* Bifröst Cyan — the brand */
+    --cyan-dim:    #2FB4D1;
+    --cyan-glow:   rgba(65, 227, 255, 0.30);
+    --cyan-bg:     rgba(65, 227, 255, 0.08);
+
+    /* --- System state --- */
+    --nominal:     #2FD6B5;   /* Aurora Teal — healthy    */
+    --alert:       #FFB02E;   /* Gjallarhorn Amber        */
+    --breach:      #FF4538;   /* Breach Red — incident    */
+
+    /* --- Suspicion bands (= display_encoding.json ramp stops) --- */
+    --band-calm:     #388ED3;   /* 0.00–0.25 */
+    --band-watch:    #2EC4B6;   /* 0.25–0.50 */
+    --band-elevated: #FFD166;   /* 0.50–0.75 */
+    --band-high:     #EF8A38;   /* 0.75–0.90 */
+    --band-critical: #E63946;   /* 0.90–1.00 */
+
+    /* --- Sensor colors (cue overlay boxes) --- */
+    --sensor-sar:  #7AA2F7;
+    --sensor-opt:  #9ECE6A;
+    --sensor-ais:  #7DCFFF;
+    --sensor-das:  #BB9AF7;
+
+    /* --- Lines --- */
+    --line:        #1C2740;   /* borders, dividers, grids */
+    --line-heavy:  #2A3A5C;
+    --line-focus:  #41E3FF;
+
+    /* --- Shadows / elevation --- */
+    --shadow-1: 0 1px 2px rgba(0,0,0,.35);
+    --shadow-2: 0 6px 18px rgba(0,0,0,.45);
+    --shadow-3: 0 16px 48px rgba(0,0,0,.55);
+    --glow-cyan:   0 0 14px rgba(65,227,255,.25);
+    --glow-breach: 0 0 14px rgba(255,69,56,.30);
+
+    /* --- Radius --- */
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-pill: 999px;
+
+    /* --- Type --- */
+    --sans: 'Space Grotesk', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* --- Motion --- */
+    --t-fast: 120ms; --t-base: 200ms; --t-slow: 320ms;
+    --ease: cubic-bezier(.25,.6,.25,1);
+  }
+
+  body { background: var(--bg-void); color: var(--text-ice); font-family: var(--sans); line-height: 1.55; padding-bottom: 140px; }
+  ::selection { background: rgba(65,227,255,.25); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+  /* ====== doc chrome ====== */
+  header.doc {
+    border-bottom: 1px solid var(--line); padding: 70px 0 46px; margin-bottom: 60px;
+    background: radial-gradient(1300px 460px at 72% -12%, rgba(65,227,255,.08), transparent 62%), var(--bg-void);
+  }
+  .kicker { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--cyan); margin-bottom: 16px; }
+  header.doc .lockup-hero { display: flex; align-items: center; gap: 22px; margin-bottom: 22px; }
+  header.doc .lockup-hero svg { color: var(--cyan); }
+  h1 { font-size: 42px; font-weight: 700; letter-spacing: .14em; }
+  h1 .dim { color: var(--text-muted); font-weight: 500; }
+  .doc-sub { color: var(--text-slate); max-width: 700px; font-size: 15px; }
+  .doc-sub strong { color: var(--text-ice); }
+  .meta { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 24px; letter-spacing: .08em; }
+
+  section { margin-bottom: 90px; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 32px; }
+  .sec-num { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: .2em; }
+  h2 { font-size: 23px; font-weight: 600; }
+  .sec-note { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
+  h3.sub-head { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--text-slate); margin: 38px 0 16px; }
+  p.lead { font-size: 14.5px; color: var(--text-slate); max-width: 760px; margin-bottom: 18px; }
+  p.lead strong { color: var(--text-ice); }
+
+  /* ====== generic cards/grids ====== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .card { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 22px; }
+  .card .t { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+  .card p { font-size: 13px; color: var(--text-slate); }
+  .card p strong { color: var(--text-ice); }
+
+  /* ====== logo section ====== */
+  .logo-stage { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
+  .stage-tile { background: radial-gradient(420px 300px at 50% 45%, rgba(65,227,255,.08), transparent 70%), var(--bg-input);
+    border: 1px solid var(--line); border-radius: var(--r-lg); display: flex; align-items: center; justify-content: center; min-height: 300px; color: var(--cyan); }
+  .spec-list { display: flex; flex-direction: column; gap: 10px; }
+  .spec-row { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 16px; display: flex; gap: 14px; align-items: baseline; }
+  .spec-row .k { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); width: 110px; flex: none; }
+  .spec-row .v { font-size: 13px; color: var(--text-slate); }
+  .spec-row .v strong { color: var(--text-ice); }
+  .variants-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .v-tile { width: 96px; height: 96px; border-radius: var(--r-md); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; position: relative; background: var(--bg-input); }
+  .v-tile span { position: absolute; bottom: -22px; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; }
+  .v-tile.light { background: var(--text-ice); border-color: #C9D6E2; }
+  .variants-row { margin-bottom: 34px; }
+  .lockups { display: flex; gap: 14px; flex-wrap: wrap; }
+  .lockup-tile { background: var(--bg-input); border: 1px solid var(--line); border-radius: var(--r-md); padding: 26px 34px; display: flex; align-items: center; gap: 16px; color: var(--cyan); }
+  .lockup-tile .wm { color: var(--text-ice); font-weight: 600; font-size: 22px; letter-spacing: .24em; }
+  .lockup-tile .wm i { font-style: normal; color: var(--text-muted); font-weight: 500; }
+  .lockup-tile.stacked { flex-direction: column; gap: 12px; padding: 26px 44px; }
+  .lockup-tile.stacked .wm { font-size: 16px; }
+  .donts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .dont { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; text-align: center; }
+  .dont .demo { height: 76px; display: flex; align-items: center; justify-content: center; color: var(--cyan); margin-bottom: 10px; }
+  .dont .lab { font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; color: var(--breach); text-transform: uppercase; }
+
+  /* ====== color section ====== */
+  .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
+  .sw { border-radius: var(--r-md); border: 1px solid var(--line); overflow: hidden; }
+  .sw .chip { height: 56px; }
+  .sw .lab { padding: 10px 12px; background: var(--bg-deep); }
+  .sw .lab b { display: block; font-size: 12px; font-weight: 600; }
+  .sw .lab code { font-family: var(--mono); font-size: 10px; color: var(--text-muted); letter-spacing: .04em; }
+  .sw .lab i { display: block; font-style: normal; font-size: 10.5px; color: var(--text-slate); margin-top: 2px; }
+  .ramp { border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+  .ramp .bar { height: 34px; background: linear-gradient(90deg, #388ED3 0%, #2EC4B6 25%, #FFD166 50%, #EF8A38 75%, #E63946 100%); }
+  .ramp .ticks { display: flex; background: var(--bg-deep); font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; }
+  .ramp .ticks span { flex: 1; padding: 8px 10px; border-right: 1px solid var(--line); }
+  .ramp .ticks span:last-child { border-right: none; }
+  .ratio-bar { display: flex; height: 26px; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--line); margin-top: 6px; }
+
+  /* ====== type section ====== */
+  .type-spec { border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; margin-bottom: 14px; }
+  .type-spec .row { display: grid; grid-template-columns: 220px 1fr 200px; gap: 18px; align-items: baseline; padding: 16px 20px; border-bottom: 1px solid var(--line); background: var(--bg-deep); }
+  .type-spec .row:last-child { border-bottom: none; }
+  .type-spec .lab { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--text-muted); text-transform: uppercase; }
+  .type-spec .use { font-family: var(--mono); font-size: 10.5px; color: var(--text-slate); }
+
+  /* ====== glyphs ====== */
+  .glyph-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px; }
+  .glyph { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 6px 10px; text-align: center; }
+  .glyph svg { color: var(--text-ice); }
+  .glyph .lab { font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: var(--text-muted); text-transform: uppercase; margin-top: 8px; }
+
+  /* ====== components ====== */
+  .comp-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+
+  .btn { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    padding: 10px 18px; border-radius: var(--r-sm); border: 1px solid transparent; cursor: pointer;
+    transition: all var(--t-fast) var(--ease); background: none; color: var(--text-ice); }
+  .btn-primary { background: var(--cyan); color: var(--text-inverse); }
+  .btn-primary:hover { box-shadow: var(--glow-cyan); }
+  .btn-secondary { border-color: var(--line-heavy); color: var(--text-ice); }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+  .btn-ghost { color: var(--text-slate); }
+  .btn-ghost:hover { color: var(--text-ice); background: var(--bg-hover); }
+  .btn-danger { background: rgba(255,69,56,.12); border-color: rgba(255,69,56,.4); color: var(--breach); }
+  .btn-danger:hover { box-shadow: var(--glow-breach); }
+  .btn-sm { padding: 6px 12px; font-size: 10px; }
+  .btn[disabled] { opacity: .38; cursor: not-allowed; }
+
+  .chip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; padding: 4px 11px; border-radius: var(--r-pill); border: 1px solid; }
+  .chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip-calm     { color: var(--band-calm);     border-color: rgba(56,142,211,.4);  background: rgba(56,142,211,.10); }
+  .chip-watch    { color: var(--band-watch);    border-color: rgba(46,196,182,.4);  background: rgba(46,196,182,.10); }
+  .chip-elevated { color: var(--band-elevated); border-color: rgba(255,209,102,.4); background: rgba(255,209,102,.10); }
+  .chip-high     { color: var(--band-high);     border-color: rgba(239,138,56,.4);  background: rgba(239,138,56,.10); }
+  .chip-critical { color: var(--band-critical); border-color: rgba(230,57,70,.45);  background: rgba(230,57,70,.12); }
+  .chip-sensor-sar { color: var(--sensor-sar); border-color: rgba(122,162,247,.4); background: rgba(122,162,247,.10); }
+  .chip-sensor-opt { color: var(--sensor-opt); border-color: rgba(158,206,106,.4); background: rgba(158,206,106,.10); }
+  .chip-sensor-das { color: var(--sensor-das); border-color: rgba(187,154,247,.4); background: rgba(187,154,247,.10); }
+  .chip-sensor-ais { color: var(--sensor-ais); border-color: rgba(125,207,255,.4); background: rgba(125,207,255,.10); }
+
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .dot-nominal { background: var(--nominal); box-shadow: 0 0 8px var(--nominal); }
+  .dot-alert { background: var(--alert); box-shadow: 0 0 8px var(--alert); }
+  .dot-breach { background: var(--breach); box-shadow: 0 0 8px var(--breach); animation: pulse-dot 1.2s infinite; }
+  .dot-idle { background: var(--text-muted); }
+
+  .input { font-family: var(--mono); font-size: 12px; color: var(--text-ice); background: var(--bg-input);
+    border: 1px solid var(--line); border-radius: var(--r-sm); padding: 9px 13px; outline: none; min-width: 220px;
+    transition: border-color var(--t-fast) var(--ease); }
+  .input::placeholder { color: var(--text-muted); }
+  .input:focus { border-color: var(--line-focus); box-shadow: 0 0 0 3px rgba(65,227,255,.12); }
+  select.input { min-width: 150px; }
+
+  .toggle { position: relative; width: 40px; height: 22px; background: var(--bg-elevated); border: 1px solid var(--line-heavy);
+    border-radius: var(--r-pill); cursor: pointer; transition: all var(--t-base) var(--ease); }
+  .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--text-slate); transition: all var(--t-base) var(--ease); }
+  .toggle.on { background: rgba(65,227,255,.18); border-color: var(--cyan); }
+  .toggle.on::after { left: 20px; background: var(--cyan); }
+
+  /* alert card */
+  .alert-card { background: var(--bg-card); border: 1px solid var(--line); border-left: 3px solid var(--band-critical);
+    border-radius: var(--r-md); padding: 14px 16px; max-width: 460px; }
+  .alert-card .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 7px; }
+  .alert-card .name { font-weight: 700; font-size: 14px; letter-spacing: .06em; }
+  .alert-card .mmsi { font-family: var(--mono); font-size: 10.5px; color: var(--text-muted); }
+  .alert-card .score { margin-left: auto; font-family: var(--mono); font-weight: 700; font-size: 15px; color: var(--band-critical); }
+  .alert-card .why { font-size: 12px; color: var(--text-slate); margin-bottom: 11px; }
+  .term-bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .term { font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: var(--text-muted); text-transform: uppercase; }
+  .term .bar { height: 4px; background: var(--bg-elevated); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .term .bar i { display: block; height: 100%; background: var(--cyan); }
+  .alert-card .actions { display: flex; gap: 8px; }
+
+  /* table */
+  table.ds { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.ds th { font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted);
+    text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line-heavy); }
+  table.ds td { padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--text-slate); }
+  table.ds td.mono, .mono { font-family: var(--mono); }
+  table.ds tr:hover td { background: var(--bg-hover); }
+  table.ds td .nm { color: var(--text-ice); font-weight: 600; }
+
+  /* tabs */
+  .tabset { display: flex; gap: 2px; border-bottom: 1px solid var(--line); }
+  .tabset .tb { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted);
+    padding: 9px 16px; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tabset .tb.on { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+  /* stat block */
+  .stat { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 18px; min-width: 150px; }
+  .stat .k { font-family: var(--mono); font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); }
+  .stat .v { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text-ice); margin-top: 3px; }
+  .stat .v em { font-style: normal; font-size: 12px; color: var(--nominal); }
+
+  /* ====== dashboard mock ====== */
+  .dash { border: 1px solid var(--line-heavy); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-3); background: var(--bg-void); }
+  .dash-top { height: 50px; display: flex; align-items: center; padding: 0 18px; gap: 20px; border-bottom: 1px solid var(--line); background: var(--bg-deep); }
+  .dash-top .brand { display: flex; align-items: center; gap: 10px; color: var(--cyan); }
+  .dash-top .brand b { color: var(--text-ice); font-weight: 600; font-size: 12.5px; letter-spacing: .26em; }
+  .dash-top .div { width: 1px; height: 20px; background: var(--line-heavy); }
+  .dash-top nav { display: flex; gap: 18px; font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--text-muted); }
+  .dash-top nav .on { color: var(--cyan); }
+  .dash-top .clock { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--text-slate); letter-spacing: .06em; display: flex; align-items: center; gap: 8px; }
+  .dash-body { display: grid; grid-template-columns: 1fr 290px; }
+  .dash-map { position: relative; height: 440px; overflow: hidden;
+    background:
+      radial-gradient(700px 300px at 30% 20%, rgba(47,214,181,.05), transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 55px, rgba(65,227,255,.045) 55px 56px),
+      repeating-linear-gradient(90deg, transparent 0 55px, rgba(65,227,255,.045) 55px 56px),
+      linear-gradient(158deg, #081222 0%, #060D19 55%, #050A14 100%);
+  }
+  .dash-map svg.layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .marker { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 3px; transform: translate(-50%, -50%); }
+  .marker .tag { font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: var(--text-slate); background: rgba(6,10,18,.8);
+    border: 1px solid var(--line); border-radius: 3px; padding: 1.5px 6px; white-space: nowrap; }
+  .marker.hot .tag { color: var(--band-critical); border-color: rgba(230,57,70,.5); }
+  .cue-frame { position: absolute; transform: translate(-50%, -50%); }
+  .cue-frame .cue-tag { position: absolute; top: -22px; left: 0; font-family: var(--mono); font-size: 8.5px; letter-spacing: .1em;
+    color: var(--sensor-sar); background: rgba(6,10,18,.85); border: 1px solid rgba(122,162,247,.45); border-radius: 3px; padding: 1.5px 7px; white-space: nowrap; }
+  .cue-frame svg { display: block; animation: pulse-cue 2s infinite var(--ease); }
+  .map-legend { position: absolute; left: 14px; bottom: 12px; background: rgba(6,10,18,.85); border: 1px solid var(--line); border-radius: var(--r-md); padding: 9px 12px; }
+  .map-legend .lab { font-family: var(--mono); font-size: 8px; letter-spacing: .18em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+  .map-legend .bar { width: 170px; height: 7px; border-radius: 3px; background: linear-gradient(90deg, #388ED3, #2EC4B6, #FFD166, #EF8A38, #E63946); }
+  .map-legend .ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 7.5px; color: var(--text-muted); margin-top: 4px; letter-spacing: .1em; }
+  .map-coords { position: absolute; right: 14px; bottom: 12px; font-family: var(--mono); font-size: 9px; color: var(--text-muted); letter-spacing: .08em;
+    background: rgba(6,10,18,.85); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 5px 9px; }
+  .dash-rail { border-left: 1px solid var(--line); background: var(--bg-deep); display: flex; flex-direction: column; }
+  .rail-head { font-family: var(--mono); font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-slate);
+    padding: 12px 14px 8px; display: flex; align-items: center; gap: 8px; }
+  .rail-item { margin: 0 10px 8px; background: var(--bg-card); border: 1px solid var(--line); border-left: 3px solid; border-radius: var(--r-sm); padding: 9px 11px; }
+  .rail-item .r1 { display: flex; align-items: baseline; gap: 8px; }
+  .rail-item .r1 .nm { font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+  .rail-item .r1 .sc { margin-left: auto; font-family: var(--mono); font-size: 12px; font-weight: 700; }
+  .rail-item .r2 { font-size: 10.5px; color: var(--text-slate); margin-top: 3px; }
+  .rail-item .r3 { font-family: var(--mono); font-size: 9px; color: var(--text-muted); margin-top: 4px; letter-spacing: .04em; }
+  .cue-item { margin: 0 10px 8px; background: var(--bg-card); border: 1px solid rgba(122,162,247,.35); border-radius: var(--r-sm); padding: 9px 11px; }
+  .cue-item .r1 { display: flex; align-items: center; gap: 8px; }
+  .cue-item .rank { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--text-ice); background: var(--bg-elevated); border-radius: 3px; padding: 2px 7px; }
+  .cue-item .r2 { font-family: var(--mono); font-size: 9px; color: var(--text-muted); margin: 5px 0; letter-spacing: .03em; }
+  .cue-item .why { font-size: 10.5px; color: var(--text-slate); margin-bottom: 8px; }
+  .dash-scrub { border-top: 1px solid var(--line); background: var(--bg-deep); padding: 11px 16px; display: flex; align-items: center; gap: 14px; }
+  .play { width: 32px; height: 32px; border-radius: 50%; background: var(--cyan); border: none; cursor: pointer; position: relative; flex: none; }
+  .play::after { content: ''; position: absolute; left: 12px; top: 9px; border-left: 11px solid var(--text-inverse); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+  .speed { font-family: var(--mono); font-size: 10px; color: var(--text-slate); border: 1px solid var(--line-heavy); border-radius: var(--r-sm); padding: 4px 9px; letter-spacing: .08em; }
+  .track { flex: 1; height: 26px; position: relative; }
+  .track .rail { position: absolute; top: 11px; left: 0; right: 0; height: 4px; background: var(--bg-elevated); border-radius: 2px; }
+  .track .played { position: absolute; top: 11px; left: 0; width: 62%; height: 4px; background: var(--cyan); border-radius: 2px; box-shadow: 0 0 8px rgba(65,227,255,.4); }
+  .track .handle { position: absolute; top: 5px; left: 62%; width: 16px; height: 16px; border-radius: 50%; background: var(--text-ice); border: 3px solid var(--cyan); transform: translateX(-50%); }
+  .track .tick { position: absolute; top: 7px; width: 2px; height: 12px; background: var(--breach); opacity: .75; }
+  .track .tick.dim { background: var(--text-muted); opacity: .6; }
+  .scrub-time { font-family: var(--mono); font-size: 11px; color: var(--text-ice); letter-spacing: .06em; flex: none; }
+  .scrub-time em { font-style: normal; color: var(--text-muted); }
+
+  /* ====== spacing/elevation tables ====== */
+  .tok-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tok-table th { font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line-heavy); }
+  .tok-table td { padding: 9px 12px; border-bottom: 1px solid var(--line); color: var(--text-slate); }
+  .tok-table td:first-child { font-family: var(--mono); color: var(--cyan); font-size: 11.5px; }
+
+  /* ====== motion demos ====== */
+  @keyframes pulse-dot { 0%,100% { box-shadow: 0 0 6px var(--breach); } 50% { box-shadow: 0 0 16px var(--breach); } }
+  @keyframes pulse-cue { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+  @keyframes sweep { to { transform: rotate(360deg); } }
+  .sweep-demo { width: 110px; height: 110px; border-radius: 50%; border: 1px solid var(--line-heavy); position: relative; overflow: hidden; background: var(--bg-input); }
+  .sweep-demo::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(65,227,255,.35), transparent 70deg, transparent 360deg);
+    animation: sweep 3.2s linear infinite; }
+  .sweep-demo::after { content: ''; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); transform: translate(-50%,-50%); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+
+  /* ====== voice ====== */
+  .voice-table td:first-child { font-family: var(--sans); color: var(--text-muted); text-decoration: line-through; }
+  .voice-table td:last-child { color: var(--text-ice); font-family: var(--mono); font-size: 11.5px; }
+
+  /* ====== do/dont ====== */
+  .dd { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dd .col { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px 22px; }
+  .dd .col h4 { font-family: var(--mono); font-size: 10.5px; letter-spacing: .22em; margin-bottom: 12px; }
+  .dd .col.do h4 { color: var(--nominal); } .dd .col.dont h4 { color: var(--breach); }
+  .dd ul { list-style: none; }
+  .dd li { font-size: 13px; color: var(--text-slate); padding: 6px 0 6px 22px; position: relative; border-bottom: 1px solid var(--line); }
+  .dd li:last-child { border-bottom: none; }
+  .dd .do li::before { content: '▸'; position: absolute; left: 4px; color: var(--nominal); }
+  .dd .dont li::before { content: '✕'; position: absolute; left: 4px; color: var(--breach); font-size: 11px; }
+  .dd li strong { color: var(--text-ice); }
+
+  /* ====== deck pointers ====== */
+  .deck-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
+  .slide-card { background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; }
+  .slide-card .n { font-family: var(--mono); font-size: 10px; color: var(--cyan); letter-spacing: .16em; margin-bottom: 6px; }
+  .slide-card b { display: block; font-size: 13.5px; margin-bottom: 5px; }
+  .slide-card p { font-size: 12px; color: var(--text-slate); }
+
+  /* ====== code blocks ====== */
+  pre.code { background: var(--bg-input); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 20px;
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.7; color: var(--text-slate); overflow-x: auto; }
+  pre.code .c { color: var(--text-muted); } pre.code .k { color: var(--cyan); } pre.code .v { color: var(--nominal); }
+
+  footer.doc { border-top: 1px solid var(--line); margin-top: 80px; padding-top: 26px; font-family: var(--mono); font-size: 10.5px; color: var(--text-muted); letter-spacing: .08em; }
+
+  @media (max-width: 920px) {
+    .grid-2, .grid-3, .grid-4, .swatch-grid, .logo-stage, .donts, .dd, .deck-grid { grid-template-columns: 1fr 1fr; }
+    .glyph-grid { grid-template-columns: repeat(3, 1fr); }
+    .type-spec .row { grid-template-columns: 1fr; gap: 6px; }
+    .dash-body { grid-template-columns: 1fr; }
+    .dash-rail { border-left: none; border-top: 1px solid var(--line); }
+    .dash-top nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== MARK ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- HEIMDALL mark — R5 · Apex Cue (final). Source geometry: brand/logo_refinement.html -->
+    <symbol id="mark" viewBox="0 0 120 120">
+      <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+      <path d="M51.25 84.30 L48.05 71.95 L35.70 68.75" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M66.71 80.16 L61.17 58.83 L39.84 53.29" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M82.16 76.01 L77.28 57.22" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt"/>
+      <path d="M43.99 37.84 L62.78 42.72" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt"/>
+      <path d="M64.79 42.21 V36.21 H70.79 M77.79 36.21 H83.79 V42.21 M83.79 49.21 V55.21 H77.79 M70.79 55.21 H64.79 V49.21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+    </symbol>
+    <!-- cue reticle (UI icon for the cueing overlay — Doc 01 C5 legacy) -->
+    <symbol id="icon-cue" viewBox="0 0 24 24">
+      <path d="M4 8 V4 H8 M16 4 H20 V8 M20 16 V20 H16 M8 20 H4 V16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+      <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="doc">
+  <div class="wrap">
+    <div class="kicker">Heimdall · Brand / 03 — The System</div>
+    <div class="lockup-hero">
+      <svg width="64" height="64"><use href="#mark"/></svg>
+      <h1>HEIMDALL<span class="dim">.AI</span></h1>
+    </div>
+    <p class="doc-sub"><strong>Brand identity &amp; design system.</strong> The watchman who sees a hundred leagues and sounds the horn
+    before the breach — as a product surface: map-first, data-dense, machined. This document is the single reference for the mark,
+    the palette, the type, the components, and the map patterns the dashboard is built from.</p>
+    <div class="meta">EDTH 2026 · PARIS &nbsp;//&nbsp; MARK: R5 APEX CUE (LOCKED) · WORDMARK: SPACE GROTESK (LOCKED) &nbsp;//&nbsp; PRODUCT COLORS MIRROR shared/encoding/display_encoding.json</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ================= 01 FOUNDATION ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Brand foundation</h2></div>
+    <p class="lead"><strong>One sentence:</strong> Heimdall watches every vessel in the theatre and tells scarce sensors where to look next —
+    <em>the horn sounds before the cable goes down.</em></p>
+    <div class="grid-3">
+      <div class="card"><div class="t">Essence</div><p><strong>The alarm before the battle.</strong> Heimdall is not the weapon and not the wall — he is the watch. The brand never celebrates destruction; it celebrates <strong>never being surprised</strong>.</p></div>
+      <div class="card"><div class="t">Personality</div><p><strong>Calm under threat.</strong> Severe, instrumental, precise. Speaks like a watch officer: short declaratives, evidence attached, zero exclamation marks. Confidence is shown by precision, not volume.</p></div>
+      <div class="card"><div class="t">Audience</div><p><strong>Defense operators and the people who fund them.</strong> NATO CUI Cell, navies, EMSA, cable owners, insurers. They distrust black boxes — every score the product shows is <strong>interpretable</strong>, and the brand inherits that: every claim, sourced.</p></div>
+    </div>
+    <h3 class="sub-head">Naming</h3>
+    <div class="grid-3">
+      <div class="card"><div class="t">Product</div><p><strong>Heimdall</strong> — capital H, never "HeimdallAI", never "Heimdall.AI" in prose. The domain form <span class="mono" style="font-size:11px">heimdall.ai</span> appears only as a URL or in the lockup.</p></div>
+      <div class="card"><div class="t">The mark</div><p><strong>The Gjallarhorn</strong> — when the mark needs a name (press kit, merch). Stripes = the signal; the box = the tasked objective; the stud = the watch post.</p></div>
+      <div class="card"><div class="t">Feature language</div><p>The output is a <strong>cue</strong> (noun) and we <strong>task</strong> a sensor (verb). "Task-next queue", "tasked box", "cueing engine". Avoid "alert fatigue" words — Heimdall <em>prioritizes</em>, it doesn't nag.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 02 LOGO ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Logo system</h2><span class="sec-note">R5 · APEX CUE — LOCKED 2026-06-12</span></div>
+    <div class="logo-stage">
+      <div class="stage-tile"><svg width="220" height="220"><use href="#mark"/></svg></div>
+      <div class="spec-list">
+        <div class="spec-row"><span class="k">Anatomy</span><span class="v"><strong>Station stud</strong> (the watch post) → <strong>two full chevrons</strong> (the signal) → <strong>broken third chevron</strong> whose legs aim into a <strong>bracket box</strong> (the tasked objective) seated at the apex.</span></div>
+        <div class="spec-row"><span class="k">Geometry</span><span class="v">Drawn on a <strong>120-unit grid</strong>, radiating at 45°. Strokes 6.5u, butt caps, miter joins; brackets 3.2u, square caps. <strong>Never round anything.</strong></span></div>
+        <div class="spec-row"><span class="k">Clearspace</span><span class="v"><strong>One stud (9u) on all sides</strong>, minimum. Nothing enters the box's bracket gaps — they are part of the mark.</span></div>
+        <div class="spec-row"><span class="k">Minimum size</span><span class="v"><strong>16 px</strong> (favicon floor) · 20 px in UI chrome · lockup minimum 120 px wide.</span></div>
+        <div class="spec-row"><span class="k">Color</span><span class="v">Single color, always. Default <strong>Bifröst Cyan</strong> on dark; Ice for mono; Void on light. The mark may act as a <strong>status light</strong>: amber while alerting, red on breach.</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub-head">Variants</h3>
+    <div class="variants-row">
+      <div class="v-tile" style="color:var(--cyan)"><svg width="58" height="58"><use href="#mark"/></svg><span>signal</span></div>
+      <div class="v-tile" style="color:var(--text-ice)"><svg width="58" height="58"><use href="#mark"/></svg><span>mono</span></div>
+      <div class="v-tile light" style="color:#0A0F1A"><svg width="58" height="58"><use href="#mark"/></svg><span>print / light</span></div>
+      <div class="v-tile" style="color:var(--alert)"><svg width="58" height="58"><use href="#mark"/></svg><span>alerting</span></div>
+      <div class="v-tile" style="color:var(--breach)"><svg width="58" height="58"><use href="#mark"/></svg><span>breach</span></div>
+    </div>
+
+    <h3 class="sub-head">Lockups</h3>
+    <div class="lockups">
+      <div class="lockup-tile"><svg width="36" height="36"><use href="#mark"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+      <div class="lockup-tile stacked"><svg width="46" height="46"><use href="#mark"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+      <div class="lockup-tile"><svg width="26" height="26"><use href="#mark"/></svg><span class="wm" style="font-size:15px">HEIMDALL</span></div>
+    </div>
+    <p class="lead" style="margin-top:14px">Horizontal is primary. Wordmark: <strong>Space Grotesk 600, tracking +240, all caps</strong>; the ".AI" suffix always
+    in Muted — never in the signal color. In product chrome the suffix is dropped entirely.</p>
+
+    <h3 class="sub-head">Misuse — never</h3>
+    <div class="donts">
+      <div class="dont"><div class="demo"><svg width="56" height="56" style="filter:blur(.5px)"><g style="stroke-linecap:round"><use href="#mark"/></g></svg></div><div class="lab">No round caps</div></div>
+      <div class="dont"><div class="demo"><svg width="56" height="56" style="transform:rotate(38deg)"><use href="#mark"/></svg></div><div class="lab">No rotation</div></div>
+      <div class="dont"><div class="demo" style="background:linear-gradient(90deg,#41E3FF,#BB9AF7); border-radius:6px"><svg width="56" height="56" style="color:#fff"><use href="#mark"/></svg></div><div class="lab">No gradients / busy bg</div></div>
+      <div class="dont"><div class="demo"><svg width="56" height="56"><g style="color:var(--cyan)"><use href="#mark"/></g></svg><svg width="20" height="20" style="color:var(--breach); margin-left:-26px; margin-top:-30px"><use href="#icon-cue"/></svg></div><div class="lab">No two-tone, no add-ons</div></div>
+    </div>
+  </section>
+
+  <!-- ================= 03 COLOR ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Color</h2><span class="sec-note">PRODUCT RAMP/BANDS/SENSORS = display_encoding.json</span></div>
+
+    <h3 class="sub-head" style="margin-top:0">Surfaces &amp; text</h3>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#060A12"></div><div class="lab"><b>Void</b><code>--bg-void #060A12</code><i>page, map background</i></div></div>
+      <div class="sw"><div class="chip" style="background:#0B1220"></div><div class="lab"><b>Deep</b><code>--bg-deep #0B1220</code><i>panels, rails</i></div></div>
+      <div class="sw"><div class="chip" style="background:#0F1726"></div><div class="lab"><b>Card</b><code>--bg-card #0F1726</code><i>cards, list items</i></div></div>
+      <div class="sw"><div class="chip" style="background:#141E33"></div><div class="lab"><b>Elevated</b><code>--bg-elevated #141E33</code><i>popovers, hovers</i></div></div>
+      <div class="sw"><div class="chip" style="background:#E8F1F8"></div><div class="lab"><b>Ice</b><code>--text-ice #E8F1F8</code><i>primary text</i></div></div>
+      <div class="sw"><div class="chip" style="background:#8FA3B8"></div><div class="lab"><b>Slate</b><code>--text-slate #8FA3B8</code><i>secondary text</i></div></div>
+      <div class="sw"><div class="chip" style="background:#4A5A74"></div><div class="lab"><b>Muted</b><code>--text-muted #4A5A74</code><i>tertiary, placeholders</i></div></div>
+      <div class="sw"><div class="chip" style="background:#1C2740"></div><div class="lab"><b>Line</b><code>--line #1C2740</code><i>borders, graticules</i></div></div>
+    </div>
+
+    <h3 class="sub-head">Brand &amp; system state</h3>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#41E3FF"></div><div class="lab"><b>Bifröst Cyan</b><code>--cyan #41E3FF</code><i>brand, primary actions, focus</i></div></div>
+      <div class="sw"><div class="chip" style="background:#2FD6B5"></div><div class="lab"><b>Aurora Teal</b><code>--nominal #2FD6B5</code><i>nominal, live, healthy</i></div></div>
+      <div class="sw"><div class="chip" style="background:#FFB02E"></div><div class="lab"><b>Gjallarhorn Amber</b><code>--alert #FFB02E</code><i>system alerting</i></div></div>
+      <div class="sw"><div class="chip" style="background:#FF4538"></div><div class="lab"><b>Breach Red</b><code>--breach #FF4538</code><i>incident, destructive actions</i></div></div>
+    </div>
+
+    <h3 class="sub-head">Suspicion ramp — the data voice of color</h3>
+    <p class="lead">Vessel color is <strong>never decorative</strong>: it is the suspicion score, interpolated across these five stops
+    (piecewise-linear, from <span class="mono" style="font-size:11px">shared/encoding/display_encoding.json</span>). Bands drive chips, alert borders and legend labels.</p>
+    <div class="ramp">
+      <div class="bar"></div>
+      <div class="ticks"><span>CALM 0–.25<br>#388ED3</span><span>WATCH .25–.5<br>#2EC4B6</span><span>ELEVATED .5–.75<br>#FFD166</span><span>HIGH .75–.9<br>#EF8A38</span><span>CRITICAL .9–1<br>#E63946</span></div>
+    </div>
+
+    <h3 class="sub-head">Sensor colors — the cueing overlay</h3>
+    <div class="swatch-grid">
+      <div class="sw"><div class="chip" style="background:#7AA2F7"></div><div class="lab"><b>SAR</b><code>--sensor-sar #7AA2F7</code><i>radar tasking boxes</i></div></div>
+      <div class="sw"><div class="chip" style="background:#9ECE6A"></div><div class="lab"><b>Optical</b><code>--sensor-opt #9ECE6A</code><i>optical tasking boxes</i></div></div>
+      <div class="sw"><div class="chip" style="background:#7DCFFF"></div><div class="lab"><b>AIS</b><code>--sensor-ais #7DCFFF</code><i>AIS-watch boxes</i></div></div>
+      <div class="sw"><div class="chip" style="background:#BB9AF7"></div><div class="lab"><b>DAS</b><code>--sensor-das #BB9AF7</code><i>acoustic / fiber sensing</i></div></div>
+    </div>
+
+    <h3 class="sub-head">Usage ratio</h3>
+    <p class="lead">The theatre is dark and quiet; color is information. Target mix on any screen:</p>
+    <div class="ratio-bar">
+      <div style="flex:72; background:#060A12"></div>
+      <div style="flex:14; background:#0F1726"></div>
+      <div style="flex:8;  background:#8FA3B8"></div>
+      <div style="flex:4;  background:#41E3FF"></div>
+      <div style="flex:2;  background:#E63946"></div>
+    </div>
+    <div class="meta" style="margin-top:8px">72% VOID · 14% SURFACES · 8% TEXT · 4% SIGNAL · 2% STATE — if a screen is more than ~6% saturated color, the map has stopped being the hero.</div>
+  </section>
+
+  <!-- ================= 04 TYPOGRAPHY ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Typography</h2><span class="sec-note">TWO FAMILIES, TWO JOBS — NEVER A THIRD</span></div>
+    <div class="grid-2">
+      <div class="card"><div class="t">Space Grotesk — the brand voice</div><p>Headlines, panel titles, vessel names, buttons-as-words, marketing. Weights 500–700. Wide tracking (+140 to +240) in caps; normal tracking in sentence case.</p></div>
+      <div class="card"><div class="t">JetBrains Mono — the data voice</div><p>Everything that is <strong>measured</strong>: timestamps, MMSI/IMO, coordinates, scores, labels, table headers, code. Weights 400–700. If a value could appear in a log file, it's mono.</p></div>
+    </div>
+    <h3 class="sub-head">Scale</h3>
+    <div class="type-spec">
+      <div class="row"><span class="lab">display · 42/700</span><span style="font-size:42px; font-weight:700; letter-spacing:.02em">Sound before breach</span><span class="use">hero, pitch slides</span></div>
+      <div class="row"><span class="lab">h1 · 28/700</span><span style="font-size:28px; font-weight:700">Theatre overview</span><span class="use">page titles</span></div>
+      <div class="row"><span class="lab">h2 · 20/600</span><span style="font-size:20px; font-weight:600">Task-next queue</span><span class="use">panel titles</span></div>
+      <div class="row"><span class="lab">body · 14/400</span><span style="font-size:14px; color:var(--text-slate)">Declared tanker behaving like a loiterer over protected infrastructure.</span><span class="use">explanations, "why" strings</span></div>
+      <div class="row"><span class="lab">label · mono 10/600</span><span class="mono" style="font-size:10px; font-weight:600; letter-spacing:.2em; color:var(--text-slate)">SUSPICION BREAKDOWN</span><span class="use">section labels, caps + tracking</span></div>
+      <div class="row"><span class="lab">data · mono 12/500</span><span class="mono" style="font-size:12px; color:var(--text-ice)">2024-12-25T13:50:00Z · MMSI 372985000 · 59.90°N 26.39°E · 0.91</span><span class="use">timestamps, ids, coords, scores</span></div>
+    </div>
+    <p class="lead" style="margin-top:14px"><strong>Rules:</strong> times are always ISO-8601 <strong>UTC with the Z shown</strong>. Coordinates to 2 decimals in UI, full precision on hover/export.
+    Scores always 2 decimals, never percentages. Tabular numerals everywhere data columns align.</p>
+  </section>
+
+  <!-- ================= 05 ICONOGRAPHY ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Iconography &amp; map glyphs</h2><span class="sec-note">SHAPE = SHIP TYPE (display_encoding.json) · COLOR = SCORE</span></div>
+    <p class="lead">All icons follow the mark's grammar: <strong>2px strokes, butt/square caps, miter joins, no rounding.</strong>
+    Vessel glyphs are the nine shapes below — <strong>shape encodes declared type, fill color encodes suspicion</strong>; triangles rotate to course-over-ground.</p>
+    <div class="glyph-grid">
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 4 L20 20 H4 Z" fill="currentColor"/></svg><div class="lab">triangle<br>tanker</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="5.5" y="5.5" width="13" height="13" fill="currentColor"/></svg><div class="lab">square<br>cargo·dredger</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 3 L21 12 L12 21 L3 12 Z" fill="currentColor"/></svg><div class="lab">diamond<br>fishing</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 3.5 L20.1 9.4 L17 18.9 H7 L3.9 9.4 Z" fill="currentColor"/></svg><div class="lab">pentagon<br>pax·ropax</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M10 4 H14 V10 H20 V14 H14 V20 H10 V14 H4 V10 H10 Z" fill="currentColor"/></svg><div class="lab">cross<br>tug·pilot</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 3 L19 6 V12 C19 16.5 16 19.5 12 21 C8 19.5 5 16.5 5 12 V6 Z" fill="currentColor"/></svg><div class="lab">shield<br>mil·le·sar</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 3 L19.8 7.5 V16.5 L12 21 L4.2 16.5 V7.5 Z" fill="currentColor"/></svg><div class="lab">hexagon<br>research</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 7 L12 15 L20 7 V12 L12 20 L4 12 Z" fill="currentColor"/></svg><div class="lab">chevron<br>high-speed</div></div>
+      <div class="glyph"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg><div class="lab">circle<br>other·unk</div></div>
+    </div>
+    <h3 class="sub-head">The cue reticle</h3>
+    <div class="comp-row">
+      <span style="color:var(--sensor-sar)"><svg width="34" height="34"><use href="#icon-cue"/></svg></span>
+      <span style="color:var(--sensor-opt)"><svg width="34" height="34"><use href="#icon-cue"/></svg></span>
+      <span style="color:var(--sensor-das)"><svg width="34" height="34"><use href="#icon-cue"/></svg></span>
+      <p class="lead" style="margin:0 0 0 10px; font-size:13px">Corner brackets + center point — the icon of a <strong>tasking recommendation</strong>, inherited from the mark's box.
+      Always in the recommended sensor's color. On the map it scales into the cue overlay frame itself.</p>
+    </div>
+  </section>
+
+  <!-- ================= 06 COMPONENTS ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Components</h2><span class="sec-note">LIVE — INSPECT &amp; COPY THE CSS</span></div>
+
+    <h3 class="sub-head" style="margin-top:0">Buttons</h3>
+    <div class="comp-row">
+      <button class="btn btn-primary">Task sensor</button>
+      <button class="btn btn-secondary">Drill in</button>
+      <button class="btn btn-ghost">Dismiss</button>
+      <button class="btn btn-danger">Flag breach</button>
+      <button class="btn btn-primary btn-sm">Task</button>
+      <button class="btn btn-secondary" disabled>Awaiting pass</button>
+    </div>
+    <p class="lead" style="font-size:12.5px">Mono, caps, tracked. One primary per view — <strong>the primary action is always a tasking action.</strong> Danger is reserved for irreversible ops calls.</p>
+
+    <h3 class="sub-head">Band chips &amp; status</h3>
+    <div class="comp-row">
+      <span class="chip chip-calm">calm</span>
+      <span class="chip chip-watch">watch</span>
+      <span class="chip chip-elevated">elevated</span>
+      <span class="chip chip-high">high</span>
+      <span class="chip chip-critical">critical</span>
+    </div>
+    <div class="comp-row">
+      <span class="chip chip-sensor-sar">SAR</span>
+      <span class="chip chip-sensor-opt">optical</span>
+      <span class="chip chip-sensor-ais">AIS</span>
+      <span class="chip chip-sensor-das">DAS</span>
+      <span style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--text-slate)"><span class="dot dot-nominal"></span>LIVE</span>
+      <span style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--text-slate)"><span class="dot dot-alert"></span>ALERTING</span>
+      <span style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--text-slate)"><span class="dot dot-breach"></span>BREACH</span>
+    </div>
+
+    <h3 class="sub-head">Inputs</h3>
+    <div class="comp-row">
+      <input class="input" placeholder="Search MMSI, name, IMO…">
+      <select class="input"><option>Replay · 60×</option></select>
+      <span class="toggle on" title="overlay on"></span>
+      <span class="toggle" title="overlay off"></span>
+    </div>
+
+    <h3 class="sub-head">The alert card — anatomy of an interpretable score</h3>
+    <div class="alert-card">
+      <div class="head">
+        <span class="name">EAGLE S</span>
+        <span class="mmsi">MMSI 372985000 · TANKER</span>
+        <span class="score">0.91</span>
+      </div>
+      <div class="why">Declared tanker behaving like a loiterer: slowed to 2 kn directly over Estlink 2 (criticality 0.95), class-coherence 0.17, AIS gap 13 min.</div>
+      <div class="term-bars">
+        <div class="term">KIN<div class="bar"><i style="width:99%"></i></div></div>
+        <div class="term">1−COH<div class="bar"><i style="width:83%"></i></div></div>
+        <div class="term">CRIT<div class="bar"><i style="width:95%"></i></div></div>
+        <div class="term">DARK<div class="bar"><i style="width:100%"></i></div></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary btn-sm">Task SAR</button>
+        <button class="btn btn-secondary btn-sm">Track</button>
+        <button class="btn btn-ghost btn-sm">History</button>
+      </div>
+    </div>
+    <p class="lead" style="font-size:12.5px; margin-top:12px">The four term-bars are <strong>mandatory</strong> — a score with no breakdown is a black box, and we don't ship black boxes. Left border = band color.</p>
+
+    <h3 class="sub-head">Table</h3>
+    <table class="ds">
+      <thead><tr><th>Vessel</th><th>MMSI</th><th>Type</th><th>SOG</th><th>Position</th><th>Suspicion</th></tr></thead>
+      <tbody>
+        <tr><td class="nm">EAGLE S</td><td class="mono">372985000</td><td>Tanker</td><td class="mono">1.6 kn</td><td class="mono">59.90°N 26.39°E</td><td><span class="chip chip-critical">0.91</span></td></tr>
+        <tr><td class="nm">FINNMAID</td><td class="mono">230639000</td><td>RoPax</td><td class="mono">21.3 kn</td><td class="mono">59.86°N 25.71°E</td><td><span class="chip chip-calm">0.03</span></td></tr>
+        <tr><td class="nm">MSC TUXPAN</td><td class="mono">355906000</td><td>Container</td><td class="mono">16.8 kn</td><td class="mono">59.71°N 26.02°E</td><td><span class="chip chip-watch">0.27</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-head">Tabs &amp; stats</h3>
+    <div class="tabset" style="margin-bottom:16px"><span class="tb on">Theatre</span><span class="tb">Incidents</span><span class="tb">Cueing</span><span class="tb">Replay</span></div>
+    <div class="comp-row">
+      <div class="stat"><div class="k">Vessels tracked</div><div class="v">4,118</div></div>
+      <div class="stat"><div class="k">Active cues</div><div class="v">5</div></div>
+      <div class="stat"><div class="k">Critical</div><div class="v" style="color:var(--band-critical)">1</div></div>
+      <div class="stat"><div class="k">Feed</div><div class="v" style="font-size:16px; padding-top:8px"><em>● LIVE · 0.4s</em></div></div>
+    </div>
+  </section>
+
+  <!-- ================= 07 MAP UI ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Map UI — the product surface</h2><span class="sec-note">COMPOSED FROM THE TOKENS ABOVE · EAGLE S SCENARIO</span></div>
+
+    <div class="dash">
+      <div class="dash-top">
+        <div class="brand"><svg width="22" height="22"><use href="#mark"/></svg><b>HEIMDALL</b></div>
+        <div class="div"></div>
+        <nav><span class="on">THEATRE MAP</span><span>INCIDENTS</span><span>CUEING</span><span>REPLAY</span></nav>
+        <div class="clock"><span class="dot dot-nominal"></span>2024-12-25&nbsp;13:50:00Z&nbsp;&nbsp;REPLAY&nbsp;60×</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-map">
+          <svg class="layer" viewBox="0 0 760 440" preserveAspectRatio="none">
+            <radialGradient id="crit" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#E63946" stop-opacity=".16"/>
+              <stop offset="45%" stop-color="#EF8A38" stop-opacity=".10"/>
+              <stop offset="100%" stop-color="#2EC4B6" stop-opacity="0"/>
+            </radialGradient>
+            <ellipse cx="430" cy="195" rx="260" ry="150" fill="url(#crit)"/>
+            <path d="M40 290 C 200 240, 380 205, 730 120" fill="none" stroke="#8FA3B8" stroke-width="1.6" stroke-dasharray="5 7" opacity=".6"/>
+            <text x="552" y="148" font-family="JetBrains Mono" font-size="9" fill="#4A5A74" letter-spacing="2">ESTLINK 2</text>
+            <path d="M0 60 C 180 95, 420 70, 760 35" fill="none" stroke="#1C2740" stroke-width="1.2" opacity=".8"/>
+            <text x="18" y="52" font-family="JetBrains Mono" font-size="8" fill="#2E3B55" letter-spacing="2">FI EEZ</text>
+          </svg>
+
+          <!-- vessels -->
+          <div class="marker hot" style="left:56%; top:44%">
+            <svg width="20" height="20" viewBox="0 0 24 24" style="transform:rotate(250deg)"><path d="M12 3 L19 21 L12 17 L5 21 Z" fill="#E63946"/></svg>
+            <span class="tag">EAGLE S · 0.91</span>
+          </div>
+          <div class="marker" style="left:30%; top:62%">
+            <svg width="13" height="13" viewBox="0 0 24 24"><path d="M12 3.5 L20.1 9.4 L17 18.9 H7 L3.9 9.4 Z" fill="#388ED3"/></svg>
+            <span class="tag">FINNMAID · 0.03</span>
+          </div>
+          <div class="marker" style="left:43%; top:75%">
+            <svg width="13" height="13" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#2EC4B6"/></svg>
+            <span class="tag">MSC TUXPAN · 0.27</span>
+          </div>
+          <div class="marker" style="left:75%; top:25%">
+            <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 3 L21 12 L12 21 L3 12 Z" fill="#388ED3"/></svg>
+          </div>
+          <div class="marker" style="left:14%; top:30%">
+            <svg width="11" height="11" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#4A5A74"/></svg>
+          </div>
+
+          <!-- cue box -->
+          <div class="cue-frame" style="left:58%; top:42%">
+            <span class="cue-tag">CUE-01 · SAR · 1.00 · TASK BY 14:00Z</span>
+            <svg width="150" height="110" viewBox="0 0 150 110">
+              <path d="M2 26 V2 H26 M124 2 H148 V26 M148 84 V108 H124 M26 108 H2 V84" fill="none" stroke="#7AA2F7" stroke-width="2.5" stroke-linecap="square"/>
+            </svg>
+          </div>
+
+          <div class="map-legend">
+            <div class="lab">Suspicion</div>
+            <div class="bar"></div>
+            <div class="ends"><span>0.0 CALM</span><span>1.0 CRITICAL</span></div>
+          </div>
+          <div class="map-coords">59.90°N 26.39°E · GULF OF FINLAND · Z8</div>
+        </div>
+
+        <div class="dash-rail">
+          <div class="rail-head"><span class="dot dot-breach"></span>ALERT FEED</div>
+          <div class="rail-item" style="border-left-color:var(--band-critical)">
+            <div class="r1"><span class="nm">EAGLE S</span><span class="sc" style="color:var(--band-critical)">0.91</span></div>
+            <div class="r2">Tanker loitering over Estlink 2 · AIS gap 13 min</div>
+            <div class="r3">13:49:12Z · 59.90N 26.39E</div>
+          </div>
+          <div class="rail-item" style="border-left-color:var(--band-watch)">
+            <div class="r1"><span class="nm">MSC TUXPAN</span><span class="sc" style="color:var(--band-watch)">0.27</span></div>
+            <div class="r2">Course deviation from TSS lane</div>
+            <div class="r3">13:46:55Z · 59.71N 26.02E</div>
+          </div>
+          <div class="rail-item" style="border-left-color:var(--band-calm)">
+            <div class="r1"><span class="nm">FINNMAID</span><span class="sc" style="color:var(--band-calm)">0.03</span></div>
+            <div class="r2">Nominal — scheduled RoPax crossing</div>
+            <div class="r3">13:50:00Z · 59.86N 25.71E</div>
+          </div>
+          <div class="rail-head" style="margin-top:6px"><svg width="13" height="13" style="color:var(--sensor-sar)"><use href="#icon-cue"/></svg>TASK-NEXT QUEUE</div>
+          <div class="cue-item">
+            <div class="r1"><span class="rank">#1</span><span class="chip chip-sensor-sar" style="padding:2px 8px; font-size:9px">SAR</span><span class="mono" style="margin-left:auto; font-size:11px; font-weight:700; color:var(--text-ice)">1.00</span></div>
+            <div class="r2">BOX 26.25–26.42E · 59.82–59.98N</div>
+            <div class="why">EAGLE S driving cell score; pass window closes 14:00Z.</div>
+            <button class="btn btn-primary btn-sm">Task</button>
+          </div>
+          <div class="cue-item" style="border-color:rgba(158,206,106,.3)">
+            <div class="r1"><span class="rank">#2</span><span class="chip chip-sensor-opt" style="padding:2px 8px; font-size:9px">OPTICAL</span><span class="mono" style="margin-left:auto; font-size:11px; font-weight:700; color:var(--text-ice)">0.41</span></div>
+            <div class="r2">BOX 25.60–25.85E · 59.60–59.78N</div>
+            <div class="why">Anchorage drift cluster; daylight window ok.</div>
+            <button class="btn btn-secondary btn-sm">Task</button>
+          </div>
+        </div>
+      </div>
+      <div class="dash-scrub">
+        <button class="play" title="play"></button>
+        <span class="speed">60×</span>
+        <div class="track">
+          <div class="rail"></div>
+          <div class="played"></div>
+          <div class="tick dim" style="left:9%"  title="Nord Stream"></div>
+          <div class="tick dim" style="left:33%" title="Balticconnector"></div>
+          <div class="tick dim" style="left:55%" title="C-Lion1"></div>
+          <div class="tick" style="left:63%" title="Estlink 2"></div>
+          <div class="tick dim" style="left:78%" title="LV–SE"></div>
+          <div class="handle"></div>
+        </div>
+        <span class="scrub-time">2024-12-25 13:50:00Z <em>/ 2022-09 → 2026-06</em></span>
+      </div>
+    </div>
+
+    <h3 class="sub-head">Pattern rules</h3>
+    <div class="grid-3">
+      <div class="card"><div class="t">The map is the hero</div><p>≥ 65% of the viewport. Panels never overlap the active cue. Chrome stays in Deep/Card surfaces; <strong>the void belongs to the theatre.</strong></p></div>
+      <div class="card"><div class="t">Cue boxes</div><p>Bracket frames in the <strong>recommended sensor's color</strong>, tag above-left (id · sensor · score · deadline), 2s opacity pulse. Never filled — the operator must see through them.</p></div>
+      <div class="card"><div class="t">Vessel labels</div><p>Only when score ≥ watch, hovered, or pinned. Label = <strong>NAME · score</strong>, mono, scrim-backed. The sea must stay readable at zoom-out.</p></div>
+      <div class="card"><div class="t">Criticality overlay</div><p>Teal→amber→red radial wash under everything, ≤ 16% alpha. It's context, not content — toggleable, never animated.</p></div>
+      <div class="card"><div class="t">Time control</div><p>Scrubber always visible in replay. <strong>Red ticks = ground-truth incidents.</strong> Clock format <span class="mono" style="font-size:10.5px">YYYY-MM-DD HH:MM:SSZ</span> everywhere, no exceptions.</p></div>
+      <div class="card"><div class="t">Dark vessels</div><p>Radar-detected, AIS-silent contacts render as <strong>hollow</strong> glyphs (stroke only) in Breach Red — present but unaccounted for.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 08 SPACING ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Spacing, radius &amp; elevation</h2></div>
+    <div class="grid-2">
+      <div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>--s-1</td><td>4px</td><td>icon gaps, chip padding</td></tr>
+            <tr><td>--s-2</td><td>8px</td><td>intra-card gaps</td></tr>
+            <tr><td>--s-3</td><td>12px</td><td>list-item gaps</td></tr>
+            <tr><td>--s-4</td><td>16px</td><td>card padding</td></tr>
+            <tr><td>--s-5</td><td>24px</td><td>panel padding</td></tr>
+            <tr><td>--s-6</td><td>32px</td><td>section gaps</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>--r-sm</td><td>4px</td><td>buttons, inputs, tags</td></tr>
+            <tr><td>--r-md</td><td>8px</td><td>cards, list items</td></tr>
+            <tr><td>--r-lg</td><td>12px</td><td>panels, modals</td></tr>
+            <tr><td>--shadow-1/2/3</td><td>see tokens</td><td>cards / popovers / modals</td></tr>
+            <tr><td>--glow-cyan</td><td>14px @ .25</td><td>primary hover, live focus</td></tr>
+            <tr><td>--glow-breach</td><td>14px @ .30</td><td>critical elements only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:14px">8px base grid. Radii stay small — <strong>this is machined equipment, not a consumer app.</strong> Glows are state, not decoration.</p>
+  </section>
+
+  <!-- ================= 09 MOTION ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">09</span><h2>Motion</h2><span class="sec-note">CALM CHROME · ALIVE DATA</span></div>
+    <div class="grid-2">
+      <div>
+        <table class="tok-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>--t-fast</td><td>120ms</td><td>hovers, toggles</td></tr>
+            <tr><td>--t-base</td><td>200ms</td><td>panels, chips, fades</td></tr>
+            <tr><td>--t-slow</td><td>320ms</td><td>map camera, modal</td></tr>
+            <tr><td>pulse-cue</td><td>2s loop</td><td>active cue frames</td></tr>
+            <tr><td>pulse-dot</td><td>1.2s loop</td><td>breach status only</td></tr>
+            <tr><td>sweep</td><td>3.2s linear</td><td>loading / scanning states</td></tr>
+          </tbody>
+        </table>
+        <p class="lead" style="font-size:12.5px; margin-top:12px"><strong>Rules:</strong> chrome never bounces or springs; ease-out only. Continuous animation is reserved for
+        <strong>live threat state</strong> (cue pulse, breach dot) and <strong>scan/loading</strong>. Honor <span class="mono" style="font-size:11px">prefers-reduced-motion</span>. Vessel movement itself is the hero animation — don't compete with it.</p>
+      </div>
+      <div style="display:flex; gap:18px; align-items:center; justify-content:center">
+        <div class="sweep-demo" title="scanning"></div>
+        <div style="display:flex; flex-direction:column; gap:14px; align-items:center">
+          <span class="dot dot-breach" style="width:12px; height:12px"></span>
+          <svg width="64" height="48" viewBox="0 0 150 110" style="animation:pulse-cue 2s infinite"><path d="M2 26 V2 H26 M124 2 H148 V26 M148 84 V108 H124 M26 108 H2 V84" fill="none" stroke="#7AA2F7" stroke-width="4" stroke-linecap="square"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10 VOICE ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">10</span><h2>Voice &amp; copy</h2><span class="sec-note">A WATCH OFFICER, NOT A SALESMAN</span></div>
+    <div class="grid-3">
+      <div class="card"><div class="t">Terse</div><p>Subject–verb–evidence. One sentence where one sentence works. No exclamation marks, ever — urgency is carried by the band color and the deadline, not punctuation.</p></div>
+      <div class="card"><div class="t">Evidence-first</div><p>Every claim carries its number: "slowed to 2 kn over Estlink 2", not "behaving suspiciously". If the engine can't say why, it doesn't get to alert.</p></div>
+      <div class="card"><div class="t">Unemotional about threat</div><p>We name vessels and behaviors, never nationalities or intent we can't prove. "Attribution: disputed" is a complete sentence.</p></div>
+    </div>
+    <h3 class="sub-head">Instead of → write</h3>
+    <table class="ds voice-table">
+      <tbody>
+        <tr><td>🚨 ALERT!! Suspicious vessel detected!!!</td><td>EAGLE S · 0.91 · loitering over Estlink 2 · task SAR by 14:00Z</td></tr>
+        <tr><td>AI-powered next-gen maritime intelligence</td><td>We tell your next satellite pass where to look.</td></tr>
+        <tr><td>Oops, something went wrong 😅</td><td>AIS feed lost 13:42Z. Replaying cache. Live resumes automatically.</td></tr>
+        <tr><td>Are you sure you want to delete?</td><td>Dismissing CUE-01 stands down the SAR request. Confirm.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 11 DO / DONT ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">11</span><h2>Do's &amp; don'ts</h2></div>
+    <div class="dd">
+      <div class="col do">
+        <h4>DO</h4>
+        <ul>
+          <li><strong>Let the void dominate</strong> — the map is the brand's living surface.</li>
+          <li>Use the mark as a <strong>status light</strong> (cyan → amber → red) in product chrome.</li>
+          <li>Keep every score next to its <strong>breakdown</strong> — interpretability is the moat.</li>
+          <li>Write timestamps in <strong>UTC with the Z</strong>, everywhere, including slides.</li>
+          <li>Use sensor colors <strong>only</strong> for tasking surfaces — they mean "go look here".</li>
+          <li>Carry the data attribution line on anything public.</li>
+        </ul>
+      </div>
+      <div class="col dont">
+        <h4>DON'T</h4>
+        <ul>
+          <li>Round the mark's caps, rotate it, gradient it, or pair it with another icon.</li>
+          <li>Use Breach Red for anything that isn't an incident or destructive action.</li>
+          <li>Show a suspicion score as a <strong>percentage</strong> — it's a 0–1 score with a breakdown.</li>
+          <li>Add a third typeface, light-theme the ops surface, or skin the map "satellite-bright".</li>
+          <li>Say "spy", "hunt", or claim attribution we can't prove — we are the watch, not the verdict.</li>
+          <li>Animate chrome while vessels are moving — the data is the show.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 12 DECK ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">12</span><h2>Pitch deck pointers</h2><span class="sec-note">LIGHT GUIDANCE — THE DEMO IS THE DECK</span></div>
+    <p class="lead"><strong>Principle: slides look like the product.</strong> Same Void background, same type pair, same band colors — the jury should not
+    feel a context switch between the deck and the live demo. Slides carry one idea each; the demo carries the argument.</p>
+    <div class="deck-grid">
+      <div class="slide-card"><div class="n">SLIDE 1 · THE THREAT</div><b>The Baltic incident map</b><p>Full-bleed dark map, five red ticks 2022→2025, one line: "Five cables in three years. Zero were predicted." Big mono dates.</p></div>
+      <div class="slide-card"><div class="n">SLIDE 2 · THE PROBLEM</div><b>"Defenders aren't lacking alerts. They're lacking prioritization."</b><p>One sentence, display type. The tip-and-cue gap: sensors are scarce; the ocean isn't.</p></div>
+      <div class="slide-card"><div class="n">SLIDE 3 · LIVE DEMO</div><b>Eagle S, Christmas Eve 2024</b><p>Cut to the product. Score climbs → SAR cue fires 13:35Z → cable cut 14:00Z. ~3 min, scripted, <strong>recorded backup video ready</strong>.</p></div>
+      <div class="slide-card"><div class="n">SLIDE 4 · HOW</div><b>The interpretable score</b><p>The §5.4 formula with the four term-bars from the alert card. Message: "auditable by an operator, not a black box."</p></div>
+      <div class="slide-card"><div class="n">SLIDE 5 · PROOF</div><b>Held-out validation</b><p>"Trained on N incidents. The model never saw Eagle S — and flagged it 25 minutes before the cut." One table, big numbers.</p></div>
+      <div class="slide-card"><div class="n">SLIDE 6 · ROADMAP / ASK</div><b>Today Baltic, tomorrow every theatre</b><p>North Sea → Atlantic → Pacific; AIS+SAR → +DAS +acoustic. Name the customer (NATO CUI Cell) and the ask.</p></div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><div class="t">Visual rules</div><p>Dark slides only. Full-bleed product screenshots, no browser chrome. Headlines in Space Grotesk; every number in JetBrains Mono. One accent color per slide.</p></div>
+      <div class="card"><div class="t">The hero moment</div><p>Rehearse the 3 minutes until boring. The line to land: <strong>"We never showed the model this incident."</strong> Pause after it.</p></div>
+      <div class="card"><div class="t">Hygiene</div><p>Data attribution line in the appendix (SOURCES.md string). UTC timestamps on screenshots. No "AI-powered" anywhere — show, don't adjective.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 13 COPY-PASTE ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">13</span><h2>Copy-paste tokens</h2><span class="sec-note">DROP INTO frontend/src — KEEP IN SYNC WITH display_encoding.json</span></div>
+<pre class="code">
+<span class="c">/* heimdall tokens — v1 · brand/heimdall_brand_identity.html is the reference */</span>
+:root {
+  <span class="k">--bg-void:</span> <span class="v">#060A12</span>;  <span class="k">--bg-deep:</span> <span class="v">#0B1220</span>;  <span class="k">--bg-card:</span> <span class="v">#0F1726</span>;  <span class="k">--bg-elevated:</span> <span class="v">#141E33</span>;
+  <span class="k">--text-ice:</span> <span class="v">#E8F1F8</span>;  <span class="k">--text-slate:</span> <span class="v">#8FA3B8</span>;  <span class="k">--text-muted:</span> <span class="v">#4A5A74</span>;
+  <span class="k">--cyan:</span> <span class="v">#41E3FF</span>;  <span class="k">--nominal:</span> <span class="v">#2FD6B5</span>;  <span class="k">--alert:</span> <span class="v">#FFB02E</span>;  <span class="k">--breach:</span> <span class="v">#FF4538</span>;
+  <span class="k">--band-calm:</span> <span class="v">#388ED3</span>; <span class="k">--band-watch:</span> <span class="v">#2EC4B6</span>; <span class="k">--band-elevated:</span> <span class="v">#FFD166</span>;
+  <span class="k">--band-high:</span> <span class="v">#EF8A38</span>; <span class="k">--band-critical:</span> <span class="v">#E63946</span>;
+  <span class="k">--sensor-sar:</span> <span class="v">#7AA2F7</span>; <span class="k">--sensor-opt:</span> <span class="v">#9ECE6A</span>; <span class="k">--sensor-ais:</span> <span class="v">#7DCFFF</span>; <span class="k">--sensor-das:</span> <span class="v">#BB9AF7</span>;
+  <span class="k">--line:</span> <span class="v">#1C2740</span>;  <span class="k">--line-heavy:</span> <span class="v">#2A3A5C</span>;
+  <span class="k">--sans:</span> <span class="v">'Space Grotesk', sans-serif</span>;  <span class="k">--mono:</span> <span class="v">'JetBrains Mono', monospace</span>;
+  <span class="k">--r-sm:</span> <span class="v">4px</span>; <span class="k">--r-md:</span> <span class="v">8px</span>; <span class="k">--r-lg:</span> <span class="v">12px</span>;
+  <span class="k">--t-fast:</span> <span class="v">120ms</span>; <span class="k">--t-base:</span> <span class="v">200ms</span>; <span class="k">--t-slow:</span> <span class="v">320ms</span>;
+}
+<span class="c">/* the mark (R5) as an inline symbol — geometry from brand/logo_refinement.html #r5 */</span>
+&lt;symbol id="heimdall-mark" viewBox="0 0 120 120"&gt;
+  &lt;rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/&gt;
+  &lt;path d="M51.25 84.30 L48.05 71.95 L35.70 68.75" fill="none" stroke="currentColor" stroke-width="6.5"/&gt;
+  &lt;path d="M66.71 80.16 L61.17 58.83 L39.84 53.29" fill="none" stroke="currentColor" stroke-width="6.5"/&gt;
+  &lt;path d="M82.16 76.01 L77.28 57.22 M43.99 37.84 L62.78 42.72" stroke="currentColor" stroke-width="6.5"/&gt;
+  &lt;path d="M64.79 42.21 V36.21 H70.79 M77.79 36.21 H83.79 V42.21 M83.79 49.21 V55.21 H77.79
+           M70.79 55.21 H64.79 V49.21" fill="none" stroke="currentColor" stroke-width="3.2"/&gt;
+&lt;/symbol&gt;  <span class="c">&lt;!-- add stroke-linecap="butt" stroke-linejoin="miter" on the g/paths --&gt;</span>
+</pre>
+  </section>
+
+  <footer class="doc">
+    HEIMDALL · BRAND IDENTITY &amp; DESIGN SYSTEM · DOC 03 / V1 &nbsp;//&nbsp; MARK R5 + SPACE GROTESK LOCKED 2026-06-12 &nbsp;//&nbsp;
+    PRODUCT COLOR SOURCE OF TRUTH: shared/encoding/display_encoding.json &nbsp;//&nbsp; EDTH 2026 PARIS
+  </footer>
+
+</div>
+</body>
+</html>
