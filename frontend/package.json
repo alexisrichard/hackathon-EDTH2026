@@ -18,6 +18,8 @@
     "@deck.gl/react": "^9.0.30",
     "@deck.gl/layers": "^9.0.30",
     "@deck.gl/geo-layers": "^9.0.30",
+    "@deck.gl/aggregation-layers": "^9.0.30",
+    "@deck.gl/extensions": "^9.0.30",
     "@deck.gl/mapbox": "^9.0.30"
   },
   "devDependencies": {

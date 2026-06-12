@@ -69,3 +69,4 @@ data/geo/osm_buoys.geojson
 
 # Claude Code preview launcher (per-user)
 .claude/launch.json
+data/geo/marine_regions_12nm.geojson

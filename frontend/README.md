@@ -1,24 +1,34 @@
-# frontend/ — the dashboard
+# frontend/ — the dashboard (V1 RUNNING)
 
-**Lane:** Frontend & Demo · **Owner:** _TBD_
+**Lane:** Frontend & Demo · **Owner:** Alexis
 
-The operator cockpit. One screen, three panels (see [`../PLAN.md`](../PLAN.md) §6):
+The operator cockpit, V1 live:
 
-1. **Map** — vessel tracks, cable routes, criticality overlay, alert markers, time-scrub bar.
-2. **Alert feed** — top suspicious vessels now, one-click drill-in.
-3. **Cueing panel** — "top 5 areas to task next," boxes on the map with reasoning.
-
-**Hero demo:** Eagle S, Christmas Eve 2024 — watch the score climb over Estlink 2, the cueing engine recommend a satellite box, the cable flip red. Scripted, 3 min, with a recorded backup video (no live-data dependency).
-
-**Proposed stack (confirm Friday):** React + MapLibre or deck.gl for the geo-heavy UI, Vite.
-
-```
-src/
-├── components/   # Map, AlertFeed, CueingPanel, TimeScrubber
-└── api/          # typed client → backend
+```bash
+npm install
+npm run dev          # → http://localhost:5173
 ```
 
-**Contract:** code against [`../shared/api_contract.md`](../shared/api_contract.md) with a mock fixture; point at the live backend when it's up. Demo dates/AOIs come from [`../shared/scenarios.json`](../shared/scenarios.json).
+**What V1 does** (all in-browser, zero backend/AWS needed):
+
+- **Satellite basemap** — EOX Sentinel-2 Cloudless tiles (real imagery, global, CC-BY),
+  CSS-dimmed to the ops aesthetic. Falls back to the void background offline.
+- **Jurisdictions** — EEZ (solid) + 12 nm territorial seas (dashed), Marine Regions.
+- **Infrastructure** — telecom cables (cyan), power cables (teal), pipelines (amber).
+- **Geopoints** — ~3,500 scored POIs (ports, naval bases, chokepoints, terminals,
+  wind farms, lights…) colored by **v1 strategic score** + optional **heatmap** overlay.
+  Data + scoring weights: `scripts/geo/build_web_layers.py` → `public/data/*.json`.
+- **Mock AIS fleet** — EAGLE S scripted incident + ~110 synthetic vessels on Baltic +
+  North Sea lanes (`src/mock/fleet.ts`), shape=type / color=suspicion per the shared
+  encoding. Replay clock: play/pause/speed/scrub; the suspicion arc crosses the
+  14:00Z Estlink 2 cut and the SAR cue fires at 13:35Z.
+- **UI shell** — topbar (mark = status light), alert feed (click → fly to vessel),
+  task-next queue, time scrubber with incident tick, layer toggles, legend.
+
+**Swap mock → live:** `src/mock/fleet.ts` is the stand-in for the typed API client in
+`src/api/` (backend `/scores` + `/cues`); both speak the same encoding/types.
+
+**Contract:** [`../shared/api_contract.md`](../shared/api_contract.md). Demo dates/AOIs: [`../shared/scenarios.json`](../shared/scenarios.json).
 
 ## Data layer (built — types + client + encoding)
 
