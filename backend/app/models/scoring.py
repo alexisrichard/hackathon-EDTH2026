@@ -1,19 +1,8 @@
-"""Suspicion-score models — the interpretable output of the scoring engine.
+"""Typed output of the transparent collection-priority scoring engine.
 
-Mirrors PLAN.md §5.4 *exactly*::
-
-    suspicion(vessel, t) = kinematic_anomaly(vessel, t)
-                         × (1 − class_coherence(vessel, t))
-                         × local_criticality(vessel.position)
-                         × dark_modifier(vessel, t)
-
-Every term is in [0, 1] and interpretable on its own, so the dashboard can show
-the breakdown ("declared tanker, behaving incoherently, over Estlink 2, AIS
-gap"). The composite ``suspicion`` is the product above, also clamped to [0, 1].
-
-The scoring engine (``scoring/score.py``, the ML lane) is the real producer of
-:class:`ScoreBreakdown`. The backend treats it as a contract: it asks the engine
-(or the mock) for a breakdown and decorates it with display hints.
+The real producer is :func:`scoring.score.score_observation`. Five interpretable
+inputs are combined with visible weights: infrastructure proximity, unusual
+movement, stale AIS, infrastructure importance, and satellite availability.
 """
 
 from __future__ import annotations
@@ -27,58 +16,43 @@ from app.models.vessel import Vessel, VesselPosition
 
 
 class ScoreBreakdown(BaseModel):
-    """The four interpretable score terms plus the composite suspicion.
+    """Five factors, their weighted contributions, and a defensive explanation."""
 
-    The composite follows PLAN §5.4. Note the formula uses ``(1 − class_coherence)``:
-    *high* coherence (vessel behaving normally for its class) *lowers* suspicion,
-    so we store ``class_coherence`` itself (0 = totally incoherent, 1 = perfectly
-    normal) and apply the inversion in :meth:`suspicion`.
-    """
-
-    kinematic_anomaly: float = Field(
-        ..., ge=0, le=1,
-        description="How anomalous the vessel's motion is (1 = very anomalous).",
-    )
-    class_coherence: float = Field(
-        ..., ge=0, le=1,
-        description=(
-            "How coherent behavior is with the declared class "
-            "(1 = perfectly normal, 0 = totally incoherent). "
-            "The formula multiplies by (1 − this)."
-        ),
-    )
-    local_criticality: float = Field(
-        ..., ge=0, le=1,
-        description="Strategic criticality of the vessel's location (1 = over a cable/base).",
-    )
-    dark_modifier: float = Field(
-        1.0, ge=0, le=1,
-        description=(
-            "AIS-darkness multiplier in [0, 1]. 1.0 = nominal — applied to dark / "
-            "AIS-dropout vessels and to anyone we cannot rule out (the suspicious "
-            "default). Values <1 *downweight* a vessel that an independent sensor "
-            "(e.g. Sentinel-1 SAR) has confidently confirmed as continuously, "
-            "honestly lit. Since the four terms multiply, keeping the nominal at "
-            "1.0 means darkness never discounts suspicion; only positive "
-            "confirmation does."
-        ),
-    )
+    infrastructure_proximity: float = Field(..., ge=0, le=1)
+    unusual_movement: float = Field(..., ge=0, le=1)
+    ais_recency: float = Field(..., ge=0, le=1)
+    infrastructure_importance: float = Field(..., ge=0, le=1)
+    satellite_availability: float = Field(..., ge=0, le=1)
+    contributions: dict[str, float] = Field(default_factory=dict)
     why: str = Field(
         "",
         description="Human-readable one-line justification for the score.",
     )
+    disclaimer: str = Field(
+        "",
+        description="Defensive-use framing attached by the scoring engine.",
+    )
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def score(self) -> float:
+        """Transparent weighted collection-priority score in [0, 1]."""
+        raw = sum(self.contributions.values())
+        if not self.contributions:
+            raw = (
+                0.30 * self.infrastructure_proximity
+                + 0.25 * self.unusual_movement
+                + 0.15 * (1.0 - self.ais_recency)
+                + 0.20 * self.infrastructure_importance
+                + 0.10 * self.satellite_availability
+            )
+        return max(0.0, min(1.0, raw))
 
     @computed_field  # type: ignore[prop-decorator]
     @property
     def suspicion(self) -> float:
-        """Composite suspicion per PLAN §5.4, clamped to [0, 1]."""
-        raw = (
-            self.kinematic_anomaly
-            * (1.0 - self.class_coherence)
-            * self.local_criticality
-            * self.dark_modifier
-        )
-        return max(0.0, min(1.0, raw))
+        """Backward-compatible alias for clients using the original field name."""
+        return self.score
 
 
 class DisplayHints(BaseModel):
@@ -115,5 +89,10 @@ class ScoredVessel(BaseModel):
 
     @property
     def suspicion(self) -> float:
-        """Convenience accessor for the composite suspicion."""
+        """Backward-compatible accessor for the collection-priority score."""
         return self.breakdown.suspicion
+
+    @property
+    def score(self) -> float:
+        """Preferred accessor for the collection-priority score."""
+        return self.breakdown.score

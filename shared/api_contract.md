@@ -50,10 +50,10 @@ Vessel tracks in a bbox + time window (replayed from AIS). All params optional;
 > position carries `heading` + `nav_status`.
 
 ### `GET /scores?bbox=&t=`
-Per-vessel suspicion at instant `t` (defaults to the demo instant), sorted
-hottest-first, each with the interpretable breakdown and ready-to-render display
-hints. `breakdown.suspicion` = `kinematic_anomaly × (1 − class_coherence) ×
-local_criticality × dark_modifier` (PLAN §5.4), clamped to [0, 1].
+Per-vessel defensive collection priority at instant `t` (defaults to the demo
+instant), sorted highest-first, with the five-factor weighted breakdown from
+PLAN §5.4. `breakdown.suspicion` remains a compatibility alias for
+`breakdown.score`.
 ```jsonc
 { "t": "2024-12-25T13:50:00Z",
   "scores": [
@@ -62,10 +62,13 @@ local_criticality × dark_modifier` (PLAN §5.4), clamped to [0, 1].
       "position": { "t": "2024-12-25T13:50:00Z", "lon": 26.39, "lat": 59.90,
         "sog": 1.6, "cog": 250, "heading": 250, "nav_status": "under_way_using_engine" },
       "breakdown": {
-        "kinematic_anomaly": 0.99, "class_coherence": 0.17, "local_criticality": 0.95,
-        "dark_modifier": 1.0,
-        "why": "Declared tanker behaving like a loiterer: slowed to 2 kn directly over Estlink 2 (criticality 0.95), class-coherence 0.17, AIS gap 13 min.",
-        "suspicion": 0.78 },
+        "infrastructure_proximity": 0.95, "unusual_movement": 0.99,
+        "ais_recency": 0.78, "infrastructure_importance": 0.95,
+        "satellite_availability": 0.95,
+        "contributions": {"infrastructure_proximity": 0.285, "unusual_movement": 0.2475},
+        "why": "High observation priority because the vessel is close to protected infrastructure...",
+        "disclaimer": "Defensive collection cue only; this score does not assess hostile intent.",
+        "score": 0.85, "suspicion": 0.85 },
       "display": { "shape": "triangle", "color": [233, 86, 65], "color_hex": "#e95641", "band": "elevated" } }
 ] }
 ```
@@ -76,9 +79,9 @@ Top-N areas to task next — the product (PLAN §5.5). Ranked by `score`.
 { "t": "2024-12-25T13:50:00Z",
   "cues": [
     { "rank": 1, "cell_id": "r2c5", "bbox": [26.25, 59.8167, 26.42, 59.975],
-      "t": "2024-12-25T13:50:00Z", "sensor": "SAR", "score": 1.0,
+      "t": "2024-12-25T14:10:00Z", "sensor": "SAR", "score": 0.88,
       "driver_mmsis": [372985000],
-      "why": "EAGLE S: Declared tanker behaving like a loiterer... Recommend a SAR pass." }
+      "why": "Synthetic observations near the Estlink 2 protection corridor; SAR collection is available." }
 ] }
 ```
 `sensor` ∈ `SAR | optical | AIS | DAS`.
