@@ -3,6 +3,11 @@ duckdb
 pyarrow
 pandas
 
+# Backend API (FastAPI service in backend/) — run with the root .venv
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pydantic>=2.5
+
 # Geo
 geopandas
 shapely

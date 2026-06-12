@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEIMDALL — Gjallarhorn Refinement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --void:#060A12; --panel:#0B1220; --tile:#0A101C; --ice:#E8F1F8;
+    --border:#1C2740; --border-2:#2A3A5C;
+    --cyan:#41E3FF; --teal:#2FD6B5; --amber:#FFB02E; --red:#FF4538;
+    --slate:#8FA3B8; --muted:#4A5A74;
+    --sans:'Space Grotesk',-apple-system,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  body { background:var(--void); color:var(--ice); font-family:var(--sans); line-height:1.55; padding:0 0 120px; }
+  ::selection { background:rgba(65,227,255,.25); }
+  .wrap { max-width:1060px; margin:0 auto; padding:0 32px; }
+
+  header { border-bottom:1px solid var(--border); padding:60px 0 38px; margin-bottom:50px;
+    background:radial-gradient(1200px 400px at 70% -10%, rgba(65,227,255,.07), transparent 60%), var(--void); }
+  .kicker { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--cyan); margin-bottom:14px; }
+  h1 { font-size:40px; font-weight:700; letter-spacing:-.01em; }
+  h1 .dim { color:var(--muted); font-weight:500; }
+  .sub { color:var(--slate); max-width:680px; margin-top:14px; font-size:15px; }
+  .sub strong { color:var(--ice); }
+  .meta { font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:20px; letter-spacing:.08em; }
+
+  section { margin-bottom:74px; }
+  .sec-head { display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--border); padding-bottom:14px; margin-bottom:28px; }
+  .sec-num { font-family:var(--mono); font-size:12px; color:var(--cyan); letter-spacing:.2em; }
+  h2 { font-size:22px; font-weight:600; }
+  .sec-note { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em; }
+
+  /* locked banner */
+  .locked { display:flex; gap:14px; flex-wrap:wrap; }
+  .lock-chip { background:var(--panel); border:1px solid var(--border-2); border-radius:8px; padding:12px 18px; display:flex; align-items:center; gap:12px; }
+  .lock-chip .k { font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--teal); text-transform:uppercase; }
+  .lock-chip .v { font-size:13.5px; font-weight:600; }
+
+  /* moves */
+  .moves { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .move { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
+  .move .t { font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--cyan); margin-bottom:8px; }
+  .move p { font-size:13px; color:var(--slate); }
+  .move strong { color:var(--ice); }
+
+  /* candidate cards */
+  .cand { background:var(--panel); border:1px solid var(--border); border-radius:14px; margin-bottom:32px; overflow:hidden; }
+  .cand-head { display:flex; align-items:baseline; gap:14px; padding:18px 26px; border-bottom:1px solid var(--border); }
+  .c-id { font-family:var(--mono); font-size:12px; color:var(--cyan); letter-spacing:.15em; }
+  .c-name { font-size:17px; font-weight:700; letter-spacing:.03em; }
+  .c-tag { margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .c-tag.rec { color:var(--amber); }
+  .cand-body { display:grid; grid-template-columns:320px 1fr; }
+  .hero-tile { background:radial-gradient(380px 300px at 50% 44%, rgba(65,227,255,.08), transparent 70%), var(--tile);
+    border-right:1px solid var(--border); display:flex; align-items:center; justify-content:center; min-height:300px; color:var(--cyan); }
+  .cand-info { padding:24px 28px; }
+  .rationale { font-size:13.5px; color:var(--slate); margin-bottom:18px; }
+  .rationale strong { color:var(--ice); }
+  .row-label { font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin:16px 0 10px; }
+  .scale-row { display:flex; align-items:flex-end; gap:24px; }
+  .scale-item { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--cyan); }
+  .scale-item em { font-family:var(--mono); font-size:9px; font-style:normal; color:var(--muted); letter-spacing:.1em; }
+  .lockup { display:flex; align-items:center; gap:14px; margin-top:4px; }
+  .lockup svg { color:var(--cyan); flex:none; }
+  .lockup .wm { font-weight:600; font-size:21px; letter-spacing:.24em; }
+  .lockup .wm i { font-style:normal; color:var(--muted); font-weight:500; }
+  .mini-variants { display:flex; gap:10px; }
+  .v-tile { width:74px; height:74px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; background:var(--tile); }
+  .v-tile.light { background:var(--ice); border-color:#C9D6E2; }
+
+  /* context */
+  .topbar { background:var(--tile); border:1px solid var(--border-2); border-radius:10px; height:54px; display:flex; align-items:center; padding:0 20px; gap:22px; box-shadow:0 14px 40px rgba(0,0,0,.5); }
+  .topbar .brand { display:flex; align-items:center; gap:10px; color:var(--cyan); }
+  .topbar .brand b { color:var(--ice); font-weight:600; font-size:13.5px; letter-spacing:.26em; }
+  .topbar .div { width:1px; height:22px; background:var(--border-2); }
+  .topbar nav { display:flex; gap:20px; font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--muted); }
+  .topbar nav .on { color:var(--cyan); }
+  .topbar .clock { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--slate); letter-spacing:.08em; display:flex; align-items:center; gap:9px; }
+  .topbar .dot { width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal); }
+  .tabs { display:flex; gap:6px; margin-top:18px; }
+  .tab { background:var(--panel); border:1px solid var(--border); border-bottom:none; border-radius:8px 8px 0 0; padding:8px 16px 9px; display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--slate); width:230px; }
+  .tab svg { color:var(--cyan); flex:none; }
+  .tab.off { opacity:.45; }
+
+  .verdict { margin-top:6px; background:linear-gradient(180deg, rgba(65,227,255,.06), transparent), var(--panel);
+    border:1px solid var(--border-2); border-left:3px solid var(--cyan); border-radius:10px; padding:24px 28px; }
+  .verdict h3 { color:var(--cyan); font-family:var(--mono); font-size:11px; letter-spacing:.24em; text-transform:uppercase; margin-bottom:12px; }
+  .verdict p { font-size:14px; color:var(--slate); margin-bottom:10px; }
+  .verdict strong { color:var(--ice); }
+  footer { border-top:1px solid var(--border); margin-top:60px; padding-top:24px; font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.08em; }
+
+  @media (max-width: 900px) {
+    .cand-body { grid-template-columns: 1fr; }
+    .hero-tile { border-right: none; border-bottom: 1px solid var(--border); min-height: 240px; }
+    .moves { grid-template-columns: 1fr; }
+    .scale-row { gap: 14px; flex-wrap: wrap; }
+    .topbar nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== MARK LIBRARY ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+
+    <!-- R1 · SQUARED CUE — doc-01 cue variant, de-wifi'd: butt caps + station stud -->
+    <symbol id="r1" viewBox="0 0 120 120">
+      <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+      <path d="M51.25 84.30 A22 22 0 0 0 35.70 68.75" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M66.71 80.16 A38 38 0 0 0 39.84 53.29" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M82.16 76.01 A54 54 0 0 0 75.29 60.59" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M59.41 44.71 A54 54 0 0 0 43.99 37.84" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M58.2 48.3 V41.8 H64.7 M71.7 41.8 H78.2 V48.3 M78.2 55.3 V61.8 H71.7 M64.7 61.8 H58.2 V55.3" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+    </symbol>
+
+    <!-- R2 · BEARING — arcs gapped on the 45° azimuth, bearing line threads to the tasked box -->
+    <symbol id="r2" viewBox="0 0 120 120">
+      <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+      <path d="M51.25 84.30 A22 22 0 0 0 47.34 76.46 M43.54 72.66 A22 22 0 0 0 35.70 68.75" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M66.71 80.16 A38 38 0 0 0 59.11 65.56 M54.43 60.89 A38 38 0 0 0 39.84 53.29" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M82.16 76.01 A54 54 0 0 0 71.36 55.28 M64.72 48.64 A54 54 0 0 0 43.99 37.84" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt"/>
+      <path d="M38.5 81.5 L67.5 52.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt"/>
+      <path d="M69 36.5 V30 H75.5 M83.5 30 H90 V36.5 M90 44.5 V51 H83.5 M75.5 51 H69 V44.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+    </symbol>
+
+    <!-- R3 · CHEVRON — the arcs become rank-stripe chevrons; zero curvature, zero wifi -->
+    <symbol id="r3" viewBox="0 0 120 120">
+      <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+      <path d="M51.25 84.30 L48.05 71.95 L35.70 68.75" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M66.71 80.16 L61.17 58.83 L39.84 53.29" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M82.16 76.01 L74.29 45.71 L43.99 37.84" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="butt" stroke-linejoin="miter"/>
+    </symbol>
+
+    <!-- R4 · CHEVRON CUE — chevrons aimed at the tasked box: insignia + targeting -->
+    <symbol id="r4" viewBox="0 0 120 120">
+      <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+      <path d="M46.42 85.60 L43.94 76.06 L34.40 73.58" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M58.98 82.23 L54.61 65.39 L37.77 61.02" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M71.54 78.87 L65.27 54.73 L41.13 48.46" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+      <path d="M69 36.5 V30 H75.5 M83.5 30 H90 V36.5 M90 44.5 V51 H83.5 M75.5 51 H69 V44.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Heimdall · Brand / 02</div>
+    <h1>Gjallarhorn Refinement <span class="dim">— de-wifi the horn</span></h1>
+    <p class="sub">Team verdict on Doc 01: <strong>C1 wins</strong>, but the base cut reads too "wifi," not enough "defense" —
+    and the <strong>cue-variant direction</strong> (the tasked box) is the right instinct. Four hardened cuts below.
+    Wordmark is locked: <strong>Space Grotesk</strong>.</p>
+    <div class="meta">EDTH 2026 · PARIS &nbsp;//&nbsp; DOC 02 — REFINES DOC 01 / C1 &nbsp;//&nbsp; PICK ONE → FULL IDENTITY SYSTEM</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 00 locked -->
+  <section>
+    <div class="sec-head"><span class="sec-num">00</span><h2>Locked so far</h2></div>
+    <div class="locked">
+      <div class="lock-chip"><span class="k">Name</span><span class="v">HEIMDALL (.ai)</span></div>
+      <div class="lock-chip"><span class="k">Concept</span><span class="v">C1 · Gjallarhorn</span></div>
+      <div class="lock-chip"><span class="k">Direction</span><span class="v">Cue variant — the tasked box</span></div>
+      <div class="lock-chip"><span class="k">Wordmark</span><span class="v" style="letter-spacing:.2em">HEIMDALL<span style="color:var(--muted)">.AI</span> · Space Grotesk</span></div>
+      <div class="lock-chip"><span class="k">Signal</span><span class="v" style="color:var(--cyan)">Bifröst Cyan #41E3FF</span></div>
+    </div>
+  </section>
+
+  <!-- 01 moves -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>What makes "wifi" read — and the counter-moves</h2></div>
+    <div class="moves">
+      <div class="move"><div class="t">Kill the round caps</div><p>Wifi glyphs are <strong>round-capped, smooth, friendly</strong>. Every cut below uses <strong>butt/square terminals</strong> — machined edges, not pebbles.</p></div>
+      <div class="move"><div class="t">Kill the dot</div><p>The dot-under-arcs is the wifi signature. Replaced with a <strong>square station stud</strong> — a sensor post, a hardpoint, a thing that's bolted down.</p></div>
+      <div class="move"><div class="t">Give it a target</div><p>Wifi radiates at nothing. The Gjallarhorn radiates <strong>at the tasked box</strong> — bearing, sector, objective. That's the military grammar: signal with intent.</p></div>
+    </div>
+  </section>
+
+  <!-- 02 candidates -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Four cuts</h2><span class="sec-note">SAME DNA · INCREASING DISTANCE FROM WIFI</span></div>
+
+    <!-- R1 -->
+    <div class="cand">
+      <div class="cand-head"><span class="c-id">R1</span><span class="c-name">SQUARED CUE</span><span class="c-tag">Minimal change</span></div>
+      <div class="cand-body">
+        <div class="hero-tile"><svg width="200" height="200"><use href="#r1"/></svg></div>
+        <div class="cand-info">
+          <p class="rationale">Doc 01's cue variant, machined: <strong>butt caps, station stud, box notched into the outer arc.</strong>
+          The safest evolution — but the two inner arcs are still smooth and concentric, so a trace of wifi survives.</p>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#r1"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#r1"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#r1"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#r1"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#r1"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#r1"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- R2 -->
+    <div class="cand">
+      <div class="cand-head"><span class="c-id">R2</span><span class="c-name">BEARING</span><span class="c-tag rec">★ If we keep the curves</span></div>
+      <div class="cand-body">
+        <div class="hero-tile"><svg width="200" height="200"><use href="#r2"/></svg></div>
+        <div class="cand-info">
+          <p class="rationale">All three arcs are <strong>gapped on the 45° azimuth</strong>, and a thin <strong>bearing line threads the gaps</strong>
+          from the station stud to a tasked box held off beyond the outer arc. Reads as a <strong>fire-control instrument</strong>:
+          range rings, bearing, objective. The wifi read dies because wifi has no line of bearing.</p>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#r2"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#r2"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#r2"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#r2"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#r2"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#r2"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- R3 -->
+    <div class="cand">
+      <div class="cand-head"><span class="c-id">R3</span><span class="c-name">CHEVRON</span><span class="c-tag">Pure insignia</span></div>
+      <div class="cand-body">
+        <div class="hero-tile"><svg width="200" height="200"><use href="#r3"/></svg></div>
+        <div class="cand-info">
+          <p class="rationale">The arcs become <strong>straight-edged chevrons</strong> — zero curvature anywhere, so the wifi
+          association is structurally impossible. What it echoes instead is <strong>rank stripes and radar returns</strong>.
+          Severe and ownable; slightly less "signal" than the curved cuts, and without the box it loses the cue story.</p>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#r3"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#r3"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#r3"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#r3"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#r3"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#r3"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- R4 -->
+    <div class="cand">
+      <div class="cand-head"><span class="c-id">R4</span><span class="c-name">CHEVRON CUE</span><span class="c-tag rec">★ Recommended</span></div>
+      <div class="cand-body">
+        <div class="hero-tile"><svg width="200" height="200"><use href="#r4"/></svg></div>
+        <div class="cand-info">
+          <p class="rationale"><strong>Chevrons aimed at the tasked box.</strong> Rank-insignia geometry carrying the cue gesture:
+          the horn sounds, the stripes point, the box is tasked. No curves → no wifi. Square stud, square box, square
+          terminals → unmistakably military hardware. The story survives intact: <strong>signal radiating from the watch
+          post toward the objective.</strong></p>
+          <div class="row-label">Variants</div>
+          <div class="mini-variants">
+            <div class="v-tile" style="color:var(--cyan)"><svg width="50" height="50"><use href="#r4"/></svg></div>
+            <div class="v-tile" style="color:var(--ice)"><svg width="50" height="50"><use href="#r4"/></svg></div>
+            <div class="v-tile light" style="color:#0A0F1A"><svg width="50" height="50"><use href="#r4"/></svg></div>
+            <div class="v-tile" style="color:var(--amber)"><svg width="50" height="50"><use href="#r4"/></svg></div>
+            <div class="v-tile" style="color:var(--red)"><svg width="50" height="50"><use href="#r4"/></svg></div>
+          </div>
+          <div class="row-label">Scale</div>
+          <div class="scale-row">
+            <div class="scale-item"><svg width="96" height="96"><use href="#r4"/></svg><em>96</em></div>
+            <div class="scale-item"><svg width="48" height="48"><use href="#r4"/></svg><em>48</em></div>
+            <div class="scale-item"><svg width="32" height="32"><use href="#r4"/></svg><em>32</em></div>
+            <div class="scale-item"><svg width="24" height="24"><use href="#r4"/></svg><em>24</em></div>
+            <div class="scale-item"><svg width="16" height="16"><use href="#r4"/></svg><em>16</em></div>
+          </div>
+          <div class="row-label">Lockup</div>
+          <div class="lockup"><svg width="34" height="34"><use href="#r4"/></svg><span class="wm">HEIMDALL<i>.AI</i></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 context + verdict -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>In context &amp; verdict</h2><span class="sec-note">R4 SHOWN IN THE BAR · R2 / R4 IN THE TABS</span></div>
+    <div class="topbar">
+      <div class="brand"><svg width="24" height="24"><use href="#r4"/></svg><b>HEIMDALL</b></div>
+      <div class="div"></div>
+      <nav><span class="on">THEATRE MAP</span><span>INCIDENTS</span><span>CUEING</span><span>REPLAY</span></nav>
+      <div class="clock"><span class="dot"></span>2024-12-25&nbsp;14:02:11Z&nbsp;&nbsp;BALTIC/NORTH&nbsp;SEA</div>
+    </div>
+    <div class="tabs">
+      <div class="tab"><svg width="15" height="15"><use href="#r4"/></svg>Heimdall — Operations</div>
+      <div class="tab off"><svg width="15" height="15"><use href="#r2"/></svg>Heimdall — Operations</div>
+      <div class="tab off"><svg width="15" height="15"><use href="#r1"/></svg>Heimdall — Operations</div>
+    </div>
+
+    <div class="verdict" style="margin-top:30px">
+      <h3>Recommendation</h3>
+      <p><strong>R4 · Chevron Cue.</strong> It answers both critiques at once: the chevrons make a wifi reading
+      structurally impossible (no curves), and the tasked box keeps the cue gesture the team liked — now as the
+      <em>destination</em> of the mark rather than a notch in it. It also picks up a second military echo for free:
+      <strong>rank stripes</strong>. At 16&nbsp;px it simplifies into a clean "stripes + box" silhouette.</p>
+      <p style="margin-bottom:0"><strong>R2 · Bearing</strong> is the alternate if the team prefers keeping the sonar-arc curvature —
+      the bearing line through gapped range rings reads fire-control, not router. R1 is the fallback minimal change; R3 only if
+      we'd rather drop the box entirely.</p>
+    </div>
+  </section>
+
+  <footer>
+    HEIMDALL · GJALLARHORN REFINEMENT · DOC 02 &nbsp;//&nbsp; PICK R1–R4 → FULL BRAND IDENTITY &amp; DESIGN SYSTEM &nbsp;//&nbsp; EDTH 2026 PARIS
+  </footer>
+
+</div>
+</body>
+</html>
