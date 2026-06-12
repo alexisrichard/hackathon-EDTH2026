@@ -152,16 +152,29 @@ body,
 .layer-panel {
   top: 12px;
   left: 12px;
-  padding: 10px 12px;
-  min-width: 168px;
+  padding: 10px 12px 12px;
+  min-width: 210px;
+  max-height: calc(100% - 110px);
+  overflow-y: auto;
 }
 .layer-panel .hd {
   font-family: var(--mono);
   font-size: 8.5px;
   letter-spacing: 0.2em;
-  color: var(--text-muted);
+  color: var(--cyan);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin: 10px 0 5px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.layer-panel .hd:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.layer-panel label.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 .layer-panel label {
   display: flex;

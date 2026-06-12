@@ -99,10 +99,34 @@ def line_feature(geom, name, cat) -> dict:
     }
 
 
+# ISO-3 codes for marine-zone territories (labels along boundary lines)
+TERRITORY_CODES = {
+    "Denmark": "DNK", "Sweden": "SWE", "Finland": "FIN", "Estonia": "EST",
+    "Latvia": "LVA", "Lithuania": "LTU", "Poland": "POL", "Germany": "DEU",
+    "Russia": "RUS", "Norway": "NOR", "United Kingdom": "GBR", "Netherlands": "NLD",
+    "Belgium": "BEL", "France": "FRA", "Alaska": "USA", "Kaliningrad": "RUS",
+}
+
+
 # ---- 1 · jurisdiction --------------------------------------------------------
 def build_jurisdiction() -> None:
     print("[jurisdiction]")
     feats: list[dict] = []
+
+    # Country land borders (incl. coastlines) — Natural Earth, zone='border'
+    ne = load("ne_countries_50m")
+    for _, row in ne.iterrows():
+        name = str(row.get("NAME", "?"))
+        code = str(row.get("ISO_A3", "") or row.get("ADM0_A3", ""))[:3]
+        boundary = row.geometry.boundary
+        if boundary is None or boundary.is_empty:
+            continue
+        boundary = boundary.simplify(0.02)
+        feats.append({
+            "type": "Feature",
+            "geometry": geom_dict(boundary, prec=3),
+            "properties": {"zone": "border", "territory": name, "code": code},
+        })
     for fname, zone, tol in (
         ("marine_regions_eez_baltic", "eez", 0.03),
         ("marine_regions_12nm", "territorial", 0.018),
@@ -144,12 +168,14 @@ def build_jurisdiction() -> None:
             feats.append({
                 "type": "Feature",
                 "geometry": geom_dict(boundary, prec=3),
-                "properties": {"zone": zone, "territory": terr},
+                "properties": {"zone": zone, "territory": terr,
+                               "code": TERRITORY_CODES.get(terr, terr[:3].upper())},
             })
     dump(OUT / "jurisdiction.json", feats, {
-        "source": "Marine Regions (VLIZ), Maritime Boundaries — EEZ v12 + Territorial Seas 12NM",
-        "license": "CC-BY 4.0",
-        "zones": {"eez": "Exclusive Economic Zone boundary", "territorial": "12nm territorial sea (eaux territoriales)"},
+        "source": "Marine Regions (VLIZ) EEZ v12 + Territorial Seas 12NM (CC-BY 4.0); Natural Earth countries (CC0)",
+        "zones": {"border": "country boundary", "eez": "Exclusive Economic Zone boundary",
+                  "territorial": "12nm territorial sea (eaux territoriales)"},
+        "todo": "rescue/SRR zones — no open layer found on Marine Regions WFS; revisit (IMO SRR sources)",
     })
 
 
