@@ -176,6 +176,23 @@ body,
   opacity: 0.4;
   cursor: not-allowed;
 }
+.layer-panel .hd-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+}
+.layer-panel .hd-row input {
+  accent-color: var(--cyan);
+  width: 11px;
+  height: 11px;
+}
 .layer-panel label {
   display: flex;
   align-items: center;

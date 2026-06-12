@@ -113,8 +113,10 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   const f = o as GeoFeature;
   const p = f.properties ?? {};
   if (p.cat !== undefined) {
+    const n = Number(p.n ?? 1);
+    const sites = n > 1 ? ` · ${n} sites merged` : "";
     return {
-      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
+      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat}${sites} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
     };
   }
   if (p.zone !== undefined) {
@@ -235,7 +237,9 @@ function buildLayers(
           id: "infra-pois",
           data: geo.poi.features.filter((f) => poiCats.has(String(f.properties.cat))),
           getPosition: (f: GeoFeature) => pointCoords(f),
-          getRadius: (f: GeoFeature) => 1.6 + Number(f.properties.s) * 4.4,
+          // clustered sites render slightly larger (sqrt-ish growth, capped)
+          getRadius: (f: GeoFeature) =>
+            (1.6 + Number(f.properties.s) * 4.4) * (1 + Math.min(Number(f.properties.n ?? 1), 25) * 0.035),
           radiusUnits: "pixels",
           getFillColor: (f: GeoFeature) => {
             const [r, g, b] = colorForSuspicion(Number(f.properties.s));

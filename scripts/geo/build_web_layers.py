@@ -215,6 +215,67 @@ def poi(lon, lat, name, cat) -> dict:
     }
 
 
+# Cluster radius per category, in degrees latitude (~111 km/deg). OSM industrial
+# complexes arrive as dozens of unnamed polygon fragments — merge same-category
+# points within radius into ONE site, named after the best-named member.
+CLUSTER_RADIUS = {
+    "energy_terminal": 0.040,  # ~4.5 km — refinery/terminal complexes
+    "windfarm": 0.060,         # ~7 km — also dedupes EMODnet vs OSM
+    "anchorage": 0.030,
+    "platform": 0.020,
+    "port": 0.012,             # only true duplicates
+}
+GENERIC_NAMES = {"energy terminal", "wind farm", "anchorage", "platform", "port", "naval base", "light"}
+LON_SCALE = 0.53  # cos(58°) — equirect distance correction for the theatre
+
+
+def cluster_category(feats: list[dict], radius: float) -> list[dict]:
+    """Greedy centroid clustering of same-category point features."""
+    clusters: list[dict] = []
+    for f in feats:
+        x, y = f["geometry"]["coordinates"]
+        name = f["properties"]["name"]
+        hit = None
+        for c in clusters:
+            dx = (c["x"] - x) * LON_SCALE
+            dy = c["y"] - y
+            if dx * dx + dy * dy < radius * radius:
+                hit = c
+                break
+        if hit is None:
+            clusters.append({"x": x, "y": y, "n": 1, "names": [name], "cat": f["properties"]["cat"]})
+        else:
+            hit["n"] += 1
+            hit["x"] += (x - hit["x"]) / hit["n"]  # running centroid
+            hit["y"] += (y - hit["y"]) / hit["n"]
+            hit["names"].append(name)
+    out = []
+    for c in clusters:
+        real = [n for n in c["names"] if n and n.lower() not in GENERIC_NAMES]
+        best = max(real, key=len) if real else c["names"][0]
+        p = poi(c["x"], c["y"], best, c["cat"])
+        p["properties"]["n"] = c["n"]
+        out.append(p)
+    return out
+
+
+def cluster_all(feats: list[dict]) -> list[dict]:
+    by_cat: dict[str, list[dict]] = {}
+    for f in feats:
+        by_cat.setdefault(f["properties"]["cat"], []).append(f)
+    out: list[dict] = []
+    for cat, items in by_cat.items():
+        if cat in CLUSTER_RADIUS:
+            merged = cluster_category(items, CLUSTER_RADIUS[cat])
+            print(f"    {cat}: {len(items)} -> {len(merged)} sites")
+            out.extend(merged)
+        else:
+            for f in items:
+                f["properties"]["n"] = 1
+            out.extend(items)
+    return out
+
+
 def build_poi() -> None:
     print("[poi]")
     feats: list[dict] = []
@@ -267,9 +328,11 @@ def build_poi() -> None:
         g = as_point(r.geometry)
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "light", "lighthouse"))
 
+    feats = cluster_all(feats)
     dump(OUT / "poi.json", feats, {
         "source": "OSM (ODbL), EMODnet (CC-BY 4.0), hand-curated chokepoints",
         "scoring": "v1 class-based strategic score `s` (0-1) — weights in scripts/geo/build_web_layers.py",
+        "clustering": "same-category sites merged within CLUSTER_RADIUS; `n` = member count, name = best-named member",
         "categories": {k: v for k, v in SCORES.items()},
     })
 

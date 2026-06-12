@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   INFRA_THEMES,
   VESSEL_GROUP_LABELS,
@@ -31,14 +32,53 @@ function Row({
   );
 }
 
+/** Group header with a select-all / deselect-all master checkbox
+ *  (indeterminate when the group is mixed). */
+function GroupHead({ title, states, onAll }: { title: string; states: boolean[]; onAll: (v: boolean) => void }) {
+  const all = states.every(Boolean);
+  const none = states.every((s) => !s);
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (ref.current) ref.current.indeterminate = !all && !none;
+  }, [all, none]);
+  return (
+    <div className="hd hd-row">
+      <label title={all ? "deselect all" : "select all"}>
+        <input ref={ref} type="checkbox" checked={all} onChange={() => onAll(!all)} />
+        {title}
+      </label>
+    </div>
+  );
+}
+
 export default function LayerPanel({ overlays, onChange }: Props) {
   const set = (next: Partial<OverlayState>) => onChange({ ...overlays, ...next });
-
   const vesselGroups = Object.keys(VESSEL_GROUP_LABELS) as VesselGroup[];
+  const infraThemes = Object.keys(INFRA_THEMES) as (keyof OverlayState["infra"])[];
+
+  const setAllGeo = (v: boolean) => set({ geo: { borders: v, territorial: v, eez: v } });
+  const setAllInfra = (v: boolean) =>
+    set({ infra: { energy: v, telecom: v, transport: v, military: v } });
+  const setAllVessels = (v: boolean) =>
+    set({
+      vessels: {
+        ...overlays.vessels,
+        cargo: v,
+        tanker: v,
+        fishing: v,
+        passenger: v,
+        military: v,
+        other: v,
+      },
+    });
 
   return (
     <div className="float layer-panel">
-      <div className="hd">Geography</div>
+      <GroupHead
+        title="Geography"
+        states={[overlays.geo.borders, overlays.geo.territorial, overlays.geo.eez]}
+        onAll={setAllGeo}
+      />
       <Row
         label="Country borders"
         checked={overlays.geo.borders}
@@ -56,8 +96,8 @@ export default function LayerPanel({ overlays, onChange }: Props) {
       />
       <Row label="Rescue zones (SRR)" checked={false} disabled hint="no open dataset yet — TODO" />
 
-      <div className="hd">Infrastructure</div>
-      {(Object.keys(INFRA_THEMES) as (keyof OverlayState["infra"])[]).map((theme) => (
+      <GroupHead title="Infrastructure" states={infraThemes.map((t) => overlays.infra[t])} onAll={setAllInfra} />
+      {infraThemes.map((theme) => (
         <Row
           key={theme}
           label={INFRA_THEMES[theme].label}
@@ -66,7 +106,7 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         />
       ))}
 
-      <div className="hd">Vessels</div>
+      <GroupHead title="Vessels" states={vesselGroups.map((g) => overlays.vessels[g])} onAll={setAllVessels} />
       {vesselGroups.map((g) => (
         <Row
           key={g}

@@ -15,7 +15,7 @@ npm run dev          # → http://localhost:5173
   CSS-dimmed to the ops aesthetic. Falls back to the void background offline.
 - **Jurisdictions** — EEZ (solid) + 12 nm territorial seas (dashed), Marine Regions.
 - **Infrastructure** — telecom cables (cyan), power cables (teal), pipelines (amber).
-- **Geopoints** — ~3,500 scored POIs (ports, naval bases, chokepoints, terminals,
+- **Geopoints** — ~2,550 scored & clustered POI sites (ports, naval bases, chokepoints, terminals,
   wind farms, lights…) colored by **v1 strategic score** + optional **heatmap** overlay.
   Data + scoring weights: `scripts/geo/build_web_layers.py` → `public/data/*.json`.
 - **Mock AIS fleet** — EAGLE S scripted incident + ~110 synthetic vessels on Baltic +
