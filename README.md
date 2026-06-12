@@ -53,9 +53,12 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 
 ## Repo layout
 
+> **Working in a team? Read [`REPO_STRUCTURE.md`](REPO_STRUCTURE.md)** — directory ownership lanes, the branch-per-person model, and a "where do I put X" guide.
+
 ```
 .
 ├── CLAUDE.md                       agent/human project guide — auto-loaded by Claude Code
+├── REPO_STRUCTURE.md               repo map: ownership lanes + where things go
 ├── PLAN.md                         project plan (what we're building during the hackathon)
 ├── ONBOARDING.md                   team setup, cross-platform
 ├── README.md                       this file

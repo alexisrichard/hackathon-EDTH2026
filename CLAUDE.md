@@ -81,15 +81,20 @@ python -c "import duckdb; c=duckdb.connect(); c.execute(\"INSTALL httpfs; LOAD h
 jupyter lab                               # notebooks in data/samples/notebooks/
 ```
 
-Repo layout: `scripts/{common,geo,ingest,reference}/` (fetchers + helpers), `data/{geo,reference}/` (committed small data), `outreach/` (team comms), `scripts/overnight.ps1` (heavy bulk downloads, Windows).
+Repo layout: data-prep in `scripts/{common,geo,ingest,reference}/` + `data/{geo,reference}/`; the app in `backend/` (FastAPI), `scoring/` (ML engine), `frontend/` (dashboard); `shared/` for cross-lane contracts. **Full structure, ownership lanes, and a "where do I put X" guide: [`REPO_STRUCTURE.md`](REPO_STRUCTURE.md).**
 
 ---
 
 ## 4. How to work
 
-### Branch isolation (shared repo — this matters)
-- **Never commit or push to `main`.** Three teammates plus agent sessions share this repo; committing on `main` entangles work and reverts trees out from under each other.
-- At the first sign you'll edit/commit, switch to a session branch: `git switch -c claude/<topic>`. For parallel work prefer a worktree. Open a PR rather than pushing to `main`.
+### Collaboration — 3 people, one repo
+Two rules keep us from clobbering each other: **own your directory** and **never commit to `main`**. Full map + ownership lanes + "where do I put X" in **[`REPO_STRUCTURE.md`](REPO_STRUCTURE.md)** — read it before writing code.
+
+- **One lane per person.** Each person owns a top-level directory — `backend/`, `scoring/`, `frontend/` (data-prep `scripts/`+`data/` go with backend; `shared/`+`outreach/` with the lead). Work stays in your lane. Editing someone else's directory → PR + a heads-up to the owner. Directory ownership is what eliminates merge conflicts.
+- **A branch per person, never `main`.** `main` is integration-only and must stay demoable. Work in your own namespace — `<name>/<topic>` (e.g. `alexis/criticality`, `<teammate>/api`, `<teammate>/dashboard`). Claude Code / agent sessions use `claude/<topic>`. Commit there, open a PR to `main`. A global hook hard-blocks commits on `main`.
+- **Merge small, merge often.** Don't sit on a giant personal branch — that's how you hit merge hell Sunday morning. PR to `main` at every working checkpoint and pull `main` back into your branch frequently. Keep `main` green and runnable at all times: it *is* the demo.
+- **Mock the other side.** Every boundary has a mock ([`PLAN.md`](PLAN.md) §10.3). Code against the agreed contract — `shared/api_contract.md` for the API, the `scoring.score.suspicion(...)` signature for the engine — with a stub, and swap in the real thing when it lands. Nobody should ever be blocked waiting on a teammate.
+- **Never commit:** `.env*`, secrets, raw AIS, anything under `data/ais|sar|optical/`, the venv.
 
 ### Plan first, for anything non-trivial
 - Enter plan mode for any task that's 3+ steps or has architectural decisions. Write the plan down, check in before implementing.
