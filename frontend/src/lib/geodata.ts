@@ -44,7 +44,6 @@ export const CAT_LABELS: Record<string, string> = {
   telecom_cable: "Telecom cable",
   power_cable: "Power cable",
   pipeline: "Pipeline",
-  chokepoint: "Chokepoint",
   naval_base: "Naval base",
   energy_terminal: "Energy terminal",
   power_plant: "Power plant",

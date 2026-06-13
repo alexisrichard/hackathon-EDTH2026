@@ -36,7 +36,6 @@ SCORES = {
     "telecom_cable": 0.95,
     "power_cable":   0.95,
     "pipeline":      0.90,
-    "chokepoint":    0.90,
     "power_plant":   0.75,  # thermal; nuclear overridden to 0.90 per-feature
     "naval_base":    0.85,
     "converter":     0.85,  # HVDC converter stations — subsea power-cable landings
@@ -307,10 +306,6 @@ def build_poi() -> None:
     for _, r in load("naval_bases").iterrows():
         g = as_point(r.geometry)
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name:en", "name") or "naval base", "naval_base"))
-
-    for _, r in load("chokepoints").iterrows():
-        g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "chokepoint", "chokepoint"))
 
     ports = load("ports")
     for _, r in ports.iterrows():

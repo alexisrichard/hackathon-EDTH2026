@@ -21,7 +21,6 @@ export type InfraCat =
   | "windfarm"
   | "port"
   | "anchorage"
-  | "chokepoint"
   | "naval_base"
   | "restricted_zone";
 
@@ -45,7 +44,6 @@ export const INFRA_CATS: Record<InfraCat, InfraCatMeta> = {
   telecom_cable: { theme: "Telecom", label: "Submarine cables", kind: "line" },
   port: { theme: "Transport", label: "Ports (commercial/naval)", kind: "point" },
   anchorage: { theme: "Transport", label: "Anchorages", kind: "point" },
-  chokepoint: { theme: "Transport", label: "Chokepoints", kind: "point" },
   naval_base: { theme: "Military", label: "Naval bases", kind: "point" },
   restricted_zone: { theme: "Military", label: "Restricted / exercise zones", kind: "zone" },
 };
@@ -87,7 +85,6 @@ export const DEFAULT_OVERLAYS: OverlayState = {
     windfarm: true,
     port: true,
     anchorage: false, // off by default — shadow-fleet loitering context, toggle on as needed
-    chokepoint: true,
     naval_base: true,
     restricted_zone: true,
   },
