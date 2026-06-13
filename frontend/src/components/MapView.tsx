@@ -371,9 +371,11 @@ function buildLayers(
         sizeUnits: "pixels",
         getColor: (v: ScoredVessel) => {
           const [r, g, b] = colorForSuspicion(v.suspicion);
-          // Dead-reckoned (AIS-dark / frozen) fixes render dim — the position is
-          // a guess, and the map should say so rather than imply confidence.
-          return [r, g, b, v.dark ? 70 : 235];
+          // Dead-reckoned (AIS-dark / frozen) fixes render dim and fade further
+          // the deeper into the gap, so reacquisition (a position jump) lands
+          // while ~invisible instead of as a confident teleport.
+          const alpha = v.dark ? Math.max(15, Math.round(180 * (1 - v.darkness))) : 235;
+          return [r, g, b, alpha];
         },
         getAngle: (v: ScoredVessel) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
         pickable: true,

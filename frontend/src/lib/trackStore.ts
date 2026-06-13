@@ -35,7 +35,8 @@ export interface VesselFix {
   lat: number;
   cog: number; // deg, from segment bearing
   sog: number; // knots
-  dark: boolean; // inside an AIS gap
+  dark: boolean; // dead-reckoned: inside an AIS gap / frozen at last known fix
+  darkness: number; // 0 = live, →1 = deep into the gap (drives fade-out)
 }
 
 /** A fix plus interim suspicion — what the map + alert feed render. */
@@ -142,13 +143,17 @@ export class TrackStore {
       const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
       const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
 
-      let lon: number, lat: number, sog: number, cog: number, dark: boolean;
+      let lon: number, lat: number, sog: number, cog: number, dark: boolean, darkness: number;
       if (untrusted) {
+        // Hold at the last known fix and fade out as the gap elapses, so the
+        // position jump to the next real fix happens while ~invisible — no
+        // glide through land, no jarring teleport, just lost-and-reacquired.
         lon = a[1];
         lat = a[2];
         sog = a[3];
         cog = a[4];
         dark = true;
+        darkness = Math.max(0, Math.min(1, (t - a[0]) / (b[0] - a[0] || 1)));
       } else {
         const span = b[0] - a[0] || 1;
         const f = Math.max(0, Math.min(1, (t - a[0]) / span));
@@ -158,10 +163,11 @@ export class TrackStore {
         const brg = bearing(a[1], a[2], b[1], b[2]);
         cog = Number.isNaN(brg) ? a[4] : brg;
         dark = false;
+        darkness = 0;
       }
 
       const shipType = (SHIP_TYPES.has(v.type as ShipType) ? v.type : "unknown") as ShipType;
-      out.push({ mmsi: v.mmsi, name: v.name, shipType, lon, lat, cog, sog, dark });
+      out.push({ mmsi: v.mmsi, name: v.name, shipType, lon, lat, cog, sog, dark, darkness });
     }
     return out;
   }
