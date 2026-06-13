@@ -154,6 +154,26 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         />
       </div>
 
+      <GroupHead
+        title="Cueing engine"
+        states={[overlays.cueing.cues, overlays.cueing.sar]}
+        onAll={(v) => set({ cueing: { cues: v, sar: v } })}
+      />
+      <div className="layer-rows">
+        <Row
+          label="Task-next cues"
+          checked={overlays.cueing.cues}
+          onToggle={() => set({ cueing: { ...overlays.cueing, cues: !overlays.cueing.cues } })}
+          hint="The ranked task-next queue from the zone scoring engine — boxes to point a sensor at, brightest = #1. Lights up on a flagged incident day."
+        />
+        <Row
+          label="SAR dark contacts"
+          checked={overlays.cueing.sar}
+          onToggle={() => set({ cueing: { ...overlays.cueing, sar: !overlays.cueing.sar } })}
+          hint="Synthetic-aperture-radar detections with no AIS within 2 km — vessels with no broadcast identity. The Nord Stream signature."
+        />
+      </div>
+
       <div className="hd">Analysis</div>
       <div className="layer-rows">
         <Row

@@ -73,6 +73,8 @@ export interface OverlayState {
   };
   fishing: { intensity: boolean };
   analysis: { heatmap: boolean };
+  /** The cueing engine's live output: task-next boxes + SAR dark-vessel detections. */
+  cueing: { cues: boolean; sar: boolean };
   /** Dev-only diagnostics: the 9 known incidents + where we actually have AIS. */
   incidentsDev: { points: boolean; coverage: boolean };
 }
@@ -99,6 +101,7 @@ export const ALL_OVERLAYS: OverlayState = {
   vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: true, labels: true },
   fishing: { intensity: false }, // big contextual heatmap — off by default
   analysis: { heatmap: false },
+  cueing: { cues: true, sar: true },
   incidentsDev: { points: false, coverage: false }, // dev diagnostics — off by default
 };
 
@@ -128,6 +131,7 @@ export const DEFAULT_OVERLAYS: OverlayState = {
   vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: false, labels: true },
   fishing: { intensity: false },
   analysis: { heatmap: false },
+  cueing: { cues: true, sar: true }, // the product — on by default
   incidentsDev: { points: false, coverage: false },
 };
 

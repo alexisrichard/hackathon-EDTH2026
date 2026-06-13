@@ -12,27 +12,22 @@ import { HeatmapLayer } from "@deck.gl/aggregation-layers";
 import { PathStyleExtension } from "@deck.gl/extensions";
 import type { Layer, PickingInfo } from "@deck.gl/core";
 
-import { colorForSuspicion, shapeForShipType } from "../types/encoding";
+import { colorForSensor, colorForSuspicion, shapeForShipType } from "../types/encoding";
 import type { GeoLayers, GeoFeature } from "../lib/geodata";
 import { CAT_LABELS, pointCoords } from "../lib/geodata";
 import { buildIconAtlas, ROTATABLE } from "../lib/icons";
 import { enabledCats, type OverlayState } from "../lib/overlays";
 import type { ScoredVessel } from "../lib/trackStore";
-
-/** A tasking recommendation drawn on the map (bracket box + tag). */
-export interface Cue {
-  bbox: [number, number, number, number];
-  label: string;
-  color: [number, number, number];
-}
+import type { DarkContact, ZoneCue } from "../lib/cues";
 
 interface Props {
   t: number;
   vessels: ScoredVessel[]; // already group-filtered + scored by App
   geo: GeoLayers | null;
   overlays: OverlayState;
-  cue: Cue | null;
-  suspectMmsi: number;
+  cues: ZoneCue[]; // the real ranked task-next queue
+  darkContacts: DarkContact[]; // SAR detections with no AIS
+  suspectMmsi: number | null;
   onMapReady: (map: maplibregl.Map) => void;
 }
 
@@ -108,13 +103,37 @@ function zoneLabelAnchors(geo: GeoLayers): ZoneLabel[] {
   return out;
 }
 
+const CONTRIB_LABELS: Record<string, string> = {
+  behavioral_history: "behaviour",
+  identity_risk: "identity",
+  sar_mismatch: "SAR mismatch",
+};
+
 function getTooltip(info: PickingInfo): { html: string } | null {
   const o = info.object as Record<string, unknown> | GeoFeature | undefined;
   if (!o) return null;
+  // SAR dark contact — a radar detection with no AIS (no MMSI, no properties).
+  if ((o as { mmsi?: number }).mmsi === undefined && (o as { confidence?: unknown }).confidence !== undefined
+      && (o as { lon?: unknown }).lon !== undefined && (o as GeoFeature).properties === undefined) {
+    const d = o as unknown as { confidence: number | null };
+    return {
+      html: `<b>SAR dark contact</b><br/>radar return, no AIS within 2 km<br/><span style="color:#8FA3B8">confidence ${d.confidence != null ? d.confidence.toFixed(2) : "—"} · identity unknown</span>`,
+    };
+  }
   if ((o as { mmsi?: number }).mmsi !== undefined) {
     const v = o as unknown as ScoredVessel;
+    const head = `<b>${v.name}</b> · ${v.shipType.toUpperCase()}<br/>MMSI ${v.mmsi} · ${v.sog.toFixed(1)} kn · COG ${Math.round(v.cog)}°`;
+    if (!v.scored || !v.breakdown) {
+      return { html: `${head}<br/><span style="color:#8FA3B8">${v.why}</span>` };
+    }
+    const b = v.breakdown;
+    const factors = Object.entries(b.contributions)
+      .filter(([, val]) => val > 0.001)
+      .sort((a, c) => c[1] - a[1])
+      .map(([k, val]) => `${CONTRIB_LABELS[k] ?? k} +${val.toFixed(2)}`)
+      .join(" · ");
     return {
-      html: `<b>${v.name}</b> · ${v.shipType.toUpperCase()}<br/>MMSI ${v.mmsi} · ${v.sog.toFixed(1)} kn · COG ${Math.round(v.cog)}°<br/>suspicion <b>${v.suspicion.toFixed(2)}</b><br/><span style="color:#8FA3B8">${v.why}</span>`,
+      html: `${head}<br/>risk <b>${v.suspicion.toFixed(2)}</b> · confidence ${b.confidence.toFixed(2)} · ${b.prior_days}d prior<br/><span style="color:#8FA3B8">${factors || "no prior signal"}</span><br/><span style="color:#5E7088">${v.why}</span>`,
     };
   }
   const f = o as GeoFeature;
@@ -161,8 +180,9 @@ function buildLayers(
   geo: GeoLayers | null,
   ov: OverlayState,
   zoneLabels: ZoneLabel[],
-  cue: Cue | null,
-  suspectMmsi: number,
+  cues: ZoneCue[],
+  darkContacts: DarkContact[],
+  suspectMmsi: number | null,
 ): Layer[] {
   const layers: Layer[] = [];
   const { atlas, mapping } = buildIconAtlas();
@@ -447,26 +467,51 @@ function buildLayers(
     );
   }
 
-  // ---- SAR cue box — follows the hottest vessel (the tasking recommendation) ----
-  if (cue) {
+  // ---- SAR dark-vessel detections — radar contacts with no AIS (no identity) ----
+  if (darkContacts.length) {
+    layers.push(
+      new ScatterplotLayer({
+        id: "sar-dark-contacts",
+        data: darkContacts,
+        getPosition: (d: DarkContact) => [d.lon, d.lat],
+        getRadius: 4,
+        radiusUnits: "pixels",
+        radiusMinPixels: 2.5,
+        stroked: true,
+        getLineColor: [230, 57, 70, 220],
+        lineWidthUnits: "pixels",
+        getLineWidth: 1,
+        getFillColor: (d: DarkContact) => [230, 57, 70, 70 + Math.round((d.confidence ?? 0.5) * 120)],
+        pickable: true,
+      }),
+    );
+  }
+
+  // ---- the real task-next queue — ranked cue boxes (brightest = #1) ----
+  if (cues.length) {
+    const sar = colorForSensor("SAR");
+    const pulse = 0.7 + 0.3 * Math.sin(t / 400);
     layers.push(
       new PathLayer({
-        id: "cue-box",
-        data: cueBracketPaths(cue.bbox).map((path) => ({ path })),
+        id: "cue-boxes",
+        data: cues.flatMap((c) =>
+          cueBracketPaths(c.bbox).map((path) => ({ path, rank: c.rank })),
+        ),
         getPath: (d: { path: [number, number][] }) => d.path,
-        getColor: [...cue.color, 235] as [number, number, number, number],
-        getWidth: 2.2,
+        getColor: (d: { rank: number }) =>
+          [...sar, d.rank === 1 ? 240 : 150] as [number, number, number, number],
+        getWidth: (d: { rank: number }) => (d.rank === 1 ? 2.4 : 1.6),
         widthUnits: "pixels",
-        opacity: 0.7 + 0.3 * Math.sin(t / 400),
-        updateTriggers: { getPath: cue.bbox },
+        opacity: pulse,
+        updateTriggers: { getPath: cues.map((c) => c.bbox.join(",")).join("|") },
       }),
       new TextLayer({
-        id: "cue-tag",
-        data: [{ pos: [cue.bbox[0], cue.bbox[3]], label: cue.label }],
-        getPosition: (d: { pos: [number, number] }) => d.pos,
-        getText: (d: { label: string }) => d.label,
-        getSize: 10,
-        getColor: [...cue.color, 255] as [number, number, number, number],
+        id: "cue-tags",
+        data: cues,
+        getPosition: (c: ZoneCue) => [c.bbox[0], c.bbox[3]],
+        getText: (c: ZoneCue) => `#${c.rank} · ${c.sensor} · ${c.score.toFixed(2)}`,
+        getSize: (c: ZoneCue) => (c.rank === 1 ? 11 : 9.5),
+        getColor: [...sar, 255] as [number, number, number, number],
         getTextAnchor: "start" as const,
         getAlignmentBaseline: "bottom" as const,
         getPixelOffset: [0, -6],
@@ -474,7 +519,7 @@ function buildLayers(
         background: true,
         getBackgroundColor: [6, 10, 18, 220],
         backgroundPadding: [5, 3],
-        updateTriggers: { getText: cue.label, getPosition: cue.bbox },
+        updateTriggers: { getText: cues.map((c) => `${c.rank}:${c.score}`).join("|") },
       }),
     );
   }
@@ -482,7 +527,7 @@ function buildLayers(
   return layers;
 }
 
-export default function MapView({ t, vessels, geo, overlays, cue, suspectMmsi, onMapReady }: Props) {
+export default function MapView({ t, vessels, geo, overlays, cues, darkContacts, suspectMmsi, onMapReady }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const overlayRef = useRef<MapboxOverlay | null>(null);
@@ -530,8 +575,10 @@ export default function MapView({ t, vessels, geo, overlays, cue, suspectMmsi, o
   }, []);
 
   useEffect(() => {
-    overlayRef.current?.setProps({ layers: buildLayers(t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi) });
-  }, [t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi]);
+    overlayRef.current?.setProps({
+      layers: buildLayers(t, vessels, geo, overlays, zoneLabels, cues, darkContacts, suspectMmsi),
+    });
+  }, [t, vessels, geo, overlays, zoneLabels, cues, darkContacts, suspectMmsi]);
 
   return (
     <div className="map-wrap">
