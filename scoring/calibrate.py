@@ -2,11 +2,22 @@
 
 The raw behavioural composite is too hot: loitering, AIS gaps and manoeuvring are
 *normal* for fishing/service vessels, so a class-agnostic score flags them. This
-re-expresses each vessel's behaviour as deviation *within its own ship class* —
-a fishing boat at its class median scores ~0; only genuinely-anomalous-for-class
-behaviour rises. Baselines are learned from the fleet (no per-vessel tuning), so
-it's principled, not hero-fitted. Used by the fleet validator and the backend
-scoring loader so both score identically.
+re-expresses each vessel's behaviour as deviation *within its own ship class*
+(median→0, p90→1 per feature). It strongly re-centres the MASS — fleet p50 drops
+from ~0.78 to ~0.33 — so ordinary class-typical traffic no longer reads as risky.
+
+KNOWN LIMITATION (handed to Côme — behavioural core): the upper TAIL still
+saturates. The raw `dark_events` and `kinematics` features themselves pin at 1.0
+for a large fraction of small `other`/`pleasure` craft, so a dozen multi-axis-
+extreme small boats max out at class_risk≈1.0. Class-relative deviation can't
+un-saturate a feature that's already 1.0 across much of its class — that needs a
+softer feature definition (or a sample-size/confidence guard for 1–2-day priors)
+in `behavioral.py`. Net effect today: treat the prior as a SUPPORTING signal; the
+zone cue's real discrimination comes from combining it with infra + live + SAR.
+
+Baselines are learned from the fleet (no per-vessel tuning), so it's principled,
+not hero-fitted. Used by the fleet validator and the backend scoring loader so
+both score identically.
 """
 from __future__ import annotations
 
