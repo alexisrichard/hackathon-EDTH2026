@@ -371,7 +371,9 @@ function buildLayers(
         sizeUnits: "pixels",
         getColor: (v: ScoredVessel) => {
           const [r, g, b] = colorForSuspicion(v.suspicion);
-          return [r, g, b, 235];
+          // Dead-reckoned (AIS-dark / frozen) fixes render dim — the position is
+          // a guess, and the map should say so rather than imply confidence.
+          return [r, g, b, v.dark ? 70 : 235];
         },
         getAngle: (v: ScoredVessel) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
         pickable: true,

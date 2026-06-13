@@ -58,6 +58,47 @@ function bearing(lon0: number, lat0: number, lon1: number, lat1: number): number
   return ((Math.atan2(dx, dy) * 180) / Math.PI + 360) % 360;
 }
 
+// Above this implied speed, a segment isn't real travel — it's a bad AIS fix or
+// two vessels sharing an MMSI. (Even fast ferries top out ~40 kn.)
+const MAX_KNOTS = 60;
+const KM_PER_NM = 1.852;
+
+function haversineKm(lon0: number, lat0: number, lon1: number, lat1: number): number {
+  const R = 6371,
+    rad = Math.PI / 180;
+  const dLat = (lat1 - lat0) * rad,
+    dLon = (lon1 - lon0) * rad;
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat0 * rad) * Math.cos(lat1 * rad) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function impliedKnots(a: KF, b: KF): number {
+  const dtH = (b[0] - a[0]) / 3600;
+  if (dtH <= 0) return Infinity;
+  return haversineKm(a[1], a[2], b[1], b[2]) / dtH / KM_PER_NM;
+}
+
+/**
+ * Drop isolated position spikes: a keyframe whose *both* neighbouring segments
+ * imply impossible speed is a bad fix (or an MMSI collision) — the vessel was
+ * never there. Done once at load so `positionsAt` stays a hot, simple lerp.
+ */
+function despike(kf: KF[]): KF[] {
+  if (kf.length < 3) return kf;
+  const out: KF[] = [kf[0]];
+  for (let i = 1; i < kf.length - 1; i++) {
+    const a = out[out.length - 1],
+      b = kf[i],
+      c = kf[i + 1];
+    if (impliedKnots(a, b) > MAX_KNOTS && impliedKnots(b, c) > MAX_KNOTS) continue;
+    out.push(b);
+  }
+  out.push(kf[kf.length - 1]);
+  return out;
+}
+
 export class TrackStore {
   private vessels: RawVessel[] = [];
   meta: TrackTile["meta"] | null = null;
@@ -66,6 +107,7 @@ export class TrackStore {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
     const tile = (await res.json()) as TrackTile;
+    for (const v of tile.vessels) v.kf = despike(v.kf);
     this.vessels = tile.vessels;
     this.meta = tile.meta;
   }
@@ -92,20 +134,30 @@ export class TrackStore {
       }
       const a = kf[lo];
       const b = kf[hi];
-      const span = b[0] - a[0] || 1;
-      const f = Math.max(0, Math.min(1, (t - a[0]) / span));
-      const lon = a[1] + (b[1] - a[1]) * f;
-      const lat = a[2] + (b[2] - a[2]) * f;
-      const sog = a[3] + (b[3] - a[3]) * f;
-      const brg = bearing(a[1], a[2], b[1], b[2]);
-      const cog = Number.isNaN(brg) ? a[4] : brg;
 
-      let dark = false;
-      for (const [g0, g1] of v.gaps) {
-        if (t >= g0 && t <= g1) {
-          dark = true;
-          break;
-        }
+      // Don't draw a confident straight line we can't justify. If the segment
+      // spans an AIS gap (we don't know the path) or implies impossible speed
+      // (residual bad fix), freeze at the last known fix and flag it dark /
+      // dead-reckoned — never glide the vessel across land between real pings.
+      const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
+      const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
+
+      let lon: number, lat: number, sog: number, cog: number, dark: boolean;
+      if (untrusted) {
+        lon = a[1];
+        lat = a[2];
+        sog = a[3];
+        cog = a[4];
+        dark = true;
+      } else {
+        const span = b[0] - a[0] || 1;
+        const f = Math.max(0, Math.min(1, (t - a[0]) / span));
+        lon = a[1] + (b[1] - a[1]) * f;
+        lat = a[2] + (b[2] - a[2]) * f;
+        sog = a[3] + (b[3] - a[3]) * f;
+        const brg = bearing(a[1], a[2], b[1], b[2]);
+        cog = Number.isNaN(brg) ? a[4] : brg;
+        dark = false;
       }
 
       const shipType = (SHIP_TYPES.has(v.type as ShipType) ? v.type : "unknown") as ShipType;
@@ -135,6 +187,7 @@ export class TileManager {
   private loading = new Set<string>();
   private missing = new Set<string>();
   private maxResident = 8;
+  private lastFleet: VesselFix[] = [];
 
   constructor(
     private baseUrl: string,
@@ -166,8 +219,16 @@ export class TileManager {
     const key = dayKey(tMs);
     void this.fetchDay(key);
     void this.fetchDay(dayKey(tMs + 86_400_000)); // prefetch next day
+    void this.fetchDay(dayKey(tMs - 86_400_000)); // ...and previous (scrubbing back)
     const store = this.tiles.get(key);
-    return store ? store.positionsAt(Math.floor(tMs / 1000)) : [];
+    if (store) {
+      this.lastFleet = store.positionsAt(Math.floor(tMs / 1000));
+      return this.lastFleet;
+    }
+    // Day genuinely has no tile → empty. Still loading → hold the last frame so
+    // the whole fleet doesn't blink out while a day-tile streams in (esp. at the
+    // UTC midnight boundary or high replay speed).
+    return this.missing.has(key) ? [] : this.lastFleet;
   }
 
   status(tMs: number): "ready" | "loading" | "missing" {
