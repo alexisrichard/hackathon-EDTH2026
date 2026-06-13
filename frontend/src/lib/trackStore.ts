@@ -273,38 +273,34 @@ export class TileManager {
     const cur = this.tiles.get(key);
     const tSec = Math.floor(tMs / 1000);
 
-    // Near a UTC day boundary, each vessel's track is split across two tiles and
-    // falls into a ~1-2 min gap where neither renders it (day-N: t > last_kf;
-    // day-N+1: t < first_kf). Stitch the adjacent tile's keyframes in so the
-    // track stays continuous across midnight instead of vanishing + reappearing.
-    const BOUNDARY_SEC = 300;
-    const intoDay = tSec - Date.parse(`${key}T00:00:00Z`) / 1000;
-    const nbKey = intoDay < BOUNDARY_SEC ? prevKey : 86_400 - intoDay < BOUNDARY_SEC ? nextKey : null;
-    const nb = nbKey ? this.tiles.get(nbKey) : null;
-
-    if (cur && nb && nbKey) {
-      const mk = nbKey < key ? `${nbKey}|${key}` : `${key}|${nbKey}`;
-      if (this.mergedKey !== mk) {
-        const ordered = nbKey < key ? [nb, cur] : [cur, nb];
-        this.mergedVessels = mergeVessels(ordered.map((s) => s.rawVessels));
-        this.mergedKey = mk;
-      }
-      this.lastFleet = positionsFrom(this.mergedVessels!, tSec);
-      return this.lastFleet;
+    if (!cur) {
+      // Current day still streaming → hold the last frame; only blank if the day
+      // genuinely has no tile.
+      return this.missing.has(key) ? [] : this.lastFleet;
     }
 
-    // In the boundary window but the adjacent tile hasn't streamed in yet: hold
-    // the last full fleet rather than showing the single-day view collapse (the
-    // ~1-2 min midnight gap). It self-corrects to the merged view once it loads.
-    if (nbKey && cur && this.lastFleet.length) return this.lastFleet;
-
-    if (cur) {
+    // Each day-tile holds only that day's keyframes, so a vessel's track is split
+    // at every midnight: it ends at its last ping before 00:00 and resumes at its
+    // first ping after — a gap where the single tile renders neither end. Always
+    // stitch the current day with its loaded neighbours (prev + next) so each
+    // track is continuous across BOTH boundaries, with no windowed edge to snap
+    // back at. The merge is cached and only rebuilt when the resident neighbour
+    // set changes (≈once per day crossing); positionsFrom still only returns the
+    // vessels actually present at t, so render cost is unchanged.
+    const prev = this.tiles.get(prevKey);
+    const next = this.tiles.get(nextKey);
+    if (!prev && !next) {
       this.lastFleet = cur.positionsAt(tSec);
       return this.lastFleet;
     }
-    // Day genuinely has no tile → empty. Still loading → hold the last frame so
-    // the whole fleet doesn't blink out while a day-tile streams in.
-    return this.missing.has(key) ? [] : this.lastFleet;
+    const ordered = [prev, cur, next].filter((s): s is TrackStore => !!s);
+    const mk = `${prev ? prevKey : ""}|${key}|${next ? nextKey : ""}`;
+    if (this.mergedKey !== mk) {
+      this.mergedVessels = mergeVessels(ordered.map((s) => s.rawVessels));
+      this.mergedKey = mk;
+    }
+    this.lastFleet = positionsFrom(this.mergedVessels!, tSec);
+    return this.lastFleet;
   }
 
   status(tMs: number): "ready" | "loading" | "missing" {
