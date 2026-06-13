@@ -125,8 +125,65 @@ class ShipTrustTests(unittest.TestCase):
             }
         )
         self.assertEqual(result["risk"], 0.0)
-        self.assertEqual(result["confidence"], 0.15)  # only "watchlist checked"
+        self.assertEqual(result["confidence"], 0.30)  # watchlist + SAR always checked
         self.assertIn("no prior signal", result["explanation"])
+
+    def test_sar_dark_approach_adds_on_top_and_explains(self) -> None:
+        profile = _hero_profile()
+        profile["sar_signals"] = [
+            {"signal_type": "ais_dark_approach", "signal_date": "2024-11-17", "gap_hours": None}
+        ]
+        result = score_vessel_risk(profile)
+        # base (~0.69 from behavioral 0.82 + identity 0.40) + 0.5 SAR, clamped to 1.
+        self.assertGreater(result["risk"], 0.9)
+        self.assertEqual(result["sar_mismatch"], 1.0)
+        self.assertEqual(result["contributions"]["sar_mismatch"], 0.5)
+        self.assertIn("dark approach", result["explanation"])
+
+    def test_sar_signal_dated_after_t_is_excluded(self) -> None:
+        profile = _hero_profile()
+        profile["behavioral_history"]["value"] = 0.0
+        profile["identity_risk"]["value"] = 0.0
+        profile["sar_signals"] = [
+            {"signal_type": "ais_dark_approach", "signal_date": "2025-01-10", "gap_hours": None}
+        ]
+        result = score_vessel_risk(profile)
+        self.assertEqual(result["sar_mismatch"], 0.0)
+        self.assertEqual(len(result["excluded_future_sar"]), 1)
+
+    def test_sar_signal_same_day_but_after_t_is_excluded(self) -> None:
+        # as_of is 2024-11-18T00:00:00Z; a signal 6 h later the SAME day is still
+        # future → must be excluded (instant-granularity no-look-ahead).
+        profile = _hero_profile()
+        profile["behavioral_history"]["value"] = 0.0
+        profile["identity_risk"]["value"] = 0.0
+        profile["sar_signals"] = [
+            {"signal_type": "ais_dark_approach", "signal_date": "2024-11-18T06:00:00Z", "gap_hours": None}
+        ]
+        result = score_vessel_risk(profile)
+        self.assertEqual(result["sar_mismatch"], 0.0)
+        self.assertEqual(len(result["excluded_future_sar"]), 1)
+
+    def test_sar_blackout_weighted_by_gap_duration(self) -> None:
+        def risk_for(gap):
+            p = _hero_profile()
+            p["behavioral_history"]["value"] = 0.0
+            p["identity_risk"]["value"] = 0.0
+            p["sar_signals"] = [
+                {"signal_type": "ais_blackout", "signal_date": "2024-11-18", "gap_hours": gap}
+            ]
+            return score_vessel_risk(p)["sar_mismatch"]
+
+        # 0.7 weight × min(1, gap/24): 24h → 0.7, 12h → 0.35, 2h → ~0.058
+        self.assertAlmostEqual(risk_for(24), 0.7, places=2)
+        self.assertAlmostEqual(risk_for(12), 0.35, places=2)
+        self.assertGreater(risk_for(24), risk_for(2))
+
+    def test_invalid_sar_type_is_rejected(self) -> None:
+        profile = _hero_profile()
+        profile["sar_signals"] = [{"signal_type": "made_up", "signal_date": "2024-11-17"}]
+        with self.assertRaisesRegex(ValueError, "signal_type"):
+            score_vessel_risk(profile)
 
     def test_full_signals_give_full_confidence(self) -> None:
         result = score_vessel_risk(_hero_profile())

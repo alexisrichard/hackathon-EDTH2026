@@ -26,7 +26,7 @@ this is a defensive cue, not an assessment of intent.
 from __future__ import annotations
 
 import math
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Any
 
 # Base sub-signal weights (renormalized over whichever signals are available, so
@@ -37,13 +37,21 @@ BASE_WEIGHTS = {
     "identity_risk": 0.30,
 }
 
+# SAR / AIS-mismatch signals (Signal Brick: dark approaches + AIS blackouts).
+# Point-in-time: a signal counts only if signal_date <= t. A confirmed mismatch
+# ADDS on top of the base — independent corroboration shouldn't be diluted by a
+# benign behavioural/identity average.
+SAR_TYPE_WEIGHTS = {"ais_dark_approach": 1.0, "ais_blackout": 0.7}
+SAR_WEIGHT = 0.5  # max additive risk from a confirmed mismatch
+
 # How much each present signal contributes to confidence (input completeness).
-# Watchlist is always "checked", so having checked it and found nothing is
+# Watchlist + SAR are always "checked", so checking and finding nothing is
 # high-confidence information, not missing information.
 CONFIDENCE_WEIGHTS = {
-    "behavioral_history": 0.60,
-    "identity_risk": 0.25,
+    "behavioral_history": 0.50,
+    "identity_risk": 0.20,
     "watchlist": 0.15,
+    "sar": 0.15,
 }
 
 RISK_DISCLAIMER = (
@@ -61,6 +69,22 @@ def _parse_instant(value: Any, field_name: str) -> datetime:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as exc:
         raise ValueError(f"{field_name} is not a valid ISO-8601 timestamp") from exc
+
+
+def _parse_signal_instant(value: Any, field_name: str) -> datetime:
+    """Accept a UTC timestamp ("2024-11-18T06:00:00Z") or a calendar date
+    ("2024-11-18", → midnight UTC) and return an instant. SAR signals carry full
+    timestamps, so the no-look-ahead check is at instant granularity."""
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field_name} must be an ISO-8601 date or UTC timestamp")
+    text = value.strip()
+    if "T" in text:
+        return _parse_instant(text, field_name)
+    try:
+        d = date.fromisoformat(text)
+    except ValueError as exc:
+        raise ValueError(f"{field_name} is not a valid ISO-8601 date") from exc
+    return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
 
 
 def _parse_day(value: Any, field_name: str) -> date:
@@ -162,6 +186,52 @@ def _evaluate_watchlist(
     return floor, applied, excluded
 
 
+def _evaluate_sar(
+    raw: Any, as_of: datetime
+) -> tuple[float, list[dict[str, Any]], list[dict[str, Any]]]:
+    """Return (value, applied, excluded) for SAR/AIS-mismatch signals.
+
+    ``value`` ∈ [0,1] is the strongest point-in-time mismatch (type weight × gap
+    factor). Only signals with ``signal_date <= as_of`` apply; later ones are
+    excluded (no look-ahead) and reported.
+    """
+    if raw is None:
+        return 0.0, [], []
+    if not isinstance(raw, list):
+        raise ValueError("sar_signals must be a list")
+
+    applied: list[dict[str, Any]] = []
+    excluded: list[dict[str, Any]] = []
+    for index, sig in enumerate(raw):
+        prefix = f"sar_signals[{index}]"
+        if not isinstance(sig, dict):
+            raise ValueError(f"{prefix} must be an object")
+        stype = sig.get("signal_type")
+        if stype not in SAR_TYPE_WEIGHTS:
+            raise ValueError(
+                f"{prefix}.signal_type must be one of {sorted(SAR_TYPE_WEIGHTS)}"
+            )
+        # SAR signals carry full UTC timestamps → enforce no-look-ahead at INSTANT
+        # granularity (unlike sanctions, which are designated by date).
+        when = _parse_signal_instant(sig.get("signal_date"), f"{prefix}.signal_date")
+        gap_hours = sig.get("gap_hours")
+        gap_factor = 1.0
+        if stype == "ais_blackout":
+            gh = float(gap_hours) if isinstance(gap_hours, (int, float)) else 0.0
+            gap_factor = max(0.0, min(1.0, gh / 24.0))
+        strength = round(SAR_TYPE_WEIGHTS[stype] * gap_factor, 4)
+        record = {
+            "signal_type": stype,
+            "signal_date": sig.get("signal_date"),
+            "strength": strength,
+            "gap_hours": gap_hours,
+        }
+        (applied if when <= as_of else excluded).append(record)
+
+    value = max((r["strength"] for r in applied), default=0.0)
+    return value, applied, excluded
+
+
 def _risk_label(risk: float) -> str:
     if risk >= 0.75:
         return "High"
@@ -195,6 +265,12 @@ def _top_behavioral_phrase(components: dict[str, Any]) -> str:
     return "its prior AIS behaviour is anomalous"
 
 
+_SAR_PHRASES = {
+    "ais_dark_approach": "SAR/AIS flagged it as a dark approach (no prior track)",
+    "ais_blackout": "SAR/AIS flagged an AIS blackout over the incident window",
+}
+
+
 def _explanation(
     risk: float,
     contributions: dict[str, float],
@@ -203,6 +279,7 @@ def _explanation(
     identity_available: bool,
     applied_hits: list[dict[str, Any]],
     excluded_hits: list[dict[str, Any]],
+    applied_sar: list[dict[str, Any]],
     as_of: str,
 ) -> str:
     label = _risk_label(risk)
@@ -213,11 +290,14 @@ def _explanation(
             f"an active {strongest['source']} listing effective {strongest['listed_date']} "
             f"applies as of {as_of}"
         )
+    if applied_sar:
+        top_sar = max(applied_sar, key=lambda s: s["strength"])
+        reasons.append(_SAR_PHRASES.get(top_sar["signal_type"], "a SAR/AIS mismatch was confirmed"))
 
     # Name the dominant base contributor by its actual weight in the score —
     # not a fixed threshold — so a maxed component under a moderate composite is
     # still surfaced as the reason rather than dismissed as "limited".
-    base = {k: v for k, v in contributions.items() if v > 0.0}
+    base = {k: v for k, v in contributions.items() if v > 0.0 and k != "sar_mismatch"}
     if base:
         top = max(base, key=lambda k: base[k])
         if base[top] >= 0.10:
@@ -290,6 +370,7 @@ def score_vessel_risk(profile: dict[str, Any]) -> dict[str, Any]:
     floor, applied_hits, excluded_hits = _evaluate_watchlist(
         profile.get("watchlist"), as_of
     )
+    sar_value, applied_sar, excluded_sar = _evaluate_sar(profile.get("sar_signals"), as_of)
 
     # Base = weighted mean over whichever of {behavioral, identity} we have,
     # renormalized so a missing signal cannot inflate or deflate the others.
@@ -312,14 +393,17 @@ def score_vessel_risk(profile: dict[str, Any]) -> dict[str, Any]:
         contributions = {name: 0.0 for name in BASE_WEIGHTS}
         base = 0.0
 
-    # A valid point-in-time watchlist hit floors the risk; benign behaviour can
-    # never average a real listing back down.
-    risk = round(min(1.0, max(base, floor)), 4)
+    # A valid point-in-time watchlist hit floors the risk; a confirmed SAR/AIS
+    # mismatch then adds on top — neither can be averaged away by benign signals.
+    sar_contribution = round(sar_value * SAR_WEIGHT, 4)
+    contributions["sar_mismatch"] = sar_contribution
+    risk = round(min(1.0, max(base, floor) + sar_contribution), 4)
 
     confidence = round(
         CONFIDENCE_WEIGHTS["behavioral_history"] * behavioral_available
         + CONFIDENCE_WEIGHTS["identity_risk"] * identity_available
-        + CONFIDENCE_WEIGHTS["watchlist"],  # the watchlist is always checked
+        + CONFIDENCE_WEIGHTS["watchlist"]  # the watchlist is always checked
+        + CONFIDENCE_WEIGHTS["sar"],  # …and SAR/AIS mismatch is always checked
         4,
     )
 
@@ -336,10 +420,14 @@ def score_vessel_risk(profile: dict[str, Any]) -> dict[str, Any]:
         "watchlist_floor_applied": floor > base,
         "applied_watchlist_hits": applied_hits,
         "excluded_future_hits": excluded_hits,
+        "sar_mismatch": round(sar_value, 4),
+        "applied_sar_signals": applied_sar,
+        "excluded_future_sar": excluded_sar,
         "signals_available": {
             "behavioral_history": behavioral_available,
             "identity_risk": identity_available,
             "watchlist_checked": True,
+            "sar_checked": True,
         },
         "explanation": _explanation(
             risk,
@@ -349,6 +437,7 @@ def score_vessel_risk(profile: dict[str, Any]) -> dict[str, Any]:
             identity_available,
             applied_hits,
             excluded_hits,
+            applied_sar,
             as_of_raw,
         ),
         "disclaimer": RISK_DISCLAIMER,

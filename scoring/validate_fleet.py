@@ -26,9 +26,11 @@ from collections import defaultdict
 from datetime import date, timedelta
 
 from scoring.behavioral import behavioral_history
+from scoring.calibrate import class_relative, percentile
+from scoring.sar_signals import per_vessel as sar_per_vessel
 from scoring.ship_trust import score_vessel_risk
 
-DEFAULT_TILES = "frontend/public/data/ais"
+DEFAULT_TILES = "frontend/public/data/ais_v2"
 
 # Known Baltic incident vessels, for the generalisation check (do they rank high?).
 KNOWN_INCIDENT = {
@@ -42,50 +44,6 @@ def _tile_date(path: str) -> str:
     return os.path.basename(path)[len("tracks_") : -len(".json")]
 
 
-def _percentile(sorted_asc: list[float], q: float) -> float:
-    if not sorted_asc:
-        return 0.0
-    idx = min(len(sorted_asc) - 1, int(q * (len(sorted_asc) - 1)))
-    return sorted_asc[idx]
-
-
-_FEATS = ("dark_events", "loiter", "kinematics")
-
-
-def _class_relative(rows: list[dict]) -> None:
-    """Add a class-relative risk to each row (in place): how extreme is this
-    vessel *for its own class*? Loitering is normal for a fishing boat, so a
-    fishing boat at its class median scores ~0; only deviation above the class
-    norm counts. Baselines are learned from the fleet — no per-vessel tuning.
-    """
-    by_class: dict[str, list[dict]] = defaultdict(list)
-    for r in rows:
-        if r["prior_days"] > 0:
-            by_class[r["type"]].append(r)
-
-    def baseline(pool: list[dict], feat: str) -> tuple[float, float]:
-        vals = sorted(float(r["components"].get(feat, 0.0)) for r in pool)
-        return _percentile(vals, 0.50), _percentile(vals, 0.90)
-
-    global_pool = [r for r in rows if r["prior_days"] > 0]
-    gbase = {f: baseline(global_pool, f) for f in _FEATS}
-    cbase = {
-        cls: {f: baseline(pool, f) for f in _FEATS}
-        for cls, pool in by_class.items()
-        if len(pool) >= 20  # small classes fall back to the global baseline
-    }
-
-    for r in rows:
-        if r["prior_days"] == 0:
-            r["class_risk"] = 0.0
-            continue
-        base = cbase.get(r["type"], gbase)
-        devs = []
-        for f in _FEATS:
-            med, p90 = base[f]
-            val = float(r["components"].get(f, 0.0))
-            devs.append(max(0.0, min(1.0, (val - med) / max(p90 - med, 0.05))))
-        r["class_risk"] = round(sum(devs) / len(devs), 4)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -122,33 +80,51 @@ def main(argv: list[str] | None = None) -> int:
             if v["mmsi"] in targets:
                 prior[v["mmsi"]].append({"date": d, "kf": v["kf"], "gaps": v["gaps"]})
 
+    sar = sar_per_vessel()  # Signal Brick: per-vessel dark approaches / blackouts
+
+    # Pass 1 — raw behavioural features per vessel (needed for the class baselines).
     rows = []
     for mmsi, meta in targets.items():
         days = prior.get(mmsi, [])
         bh = behavioral_history(days, as_of=cut)  # no geo predicate (speed)
-        scored = score_vessel_risk(
-            {
-                "vessel_id": f"MMSI:{mmsi}",
-                "vessel_name": meta["name"],
-                "is_synthetic": False,
-                "as_of": as_of_ts,
-                "behavioral_history": bh if bh["available"] else {"available": False},
-                "identity_risk": {"available": False},
-                "watchlist": [],
-            }
-        )
         rows.append(
             {
                 "mmsi": mmsi,
                 "name": meta["name"],
                 "type": meta["type"],
-                "risk": scored["risk"],
                 "prior_days": len(days),
                 "components": bh.get("components", {}),
+                "available": bh["available"],
+                "known_through": bh.get("known_through"),
             }
         )
 
-    _class_relative(rows)
+    # Calibrate: the raw composite is too hot (a fishing boat loitering like other
+    # fishing boats reads as anomalous). Class-relative deviation fixes that — this
+    # becomes the behavioural value the risk engine consumes.
+    class_relative(rows)
+
+    # Pass 2 — risk from class-relative behaviour + SAR mismatch (point-in-time).
+    for r in rows:
+        bh_input = (
+            {"available": True, "known_through": r["known_through"],
+             "value": r["class_risk"], "components": r["components"]}
+            if r["available"] else {"available": False}
+        )
+        scored = score_vessel_risk(
+            {
+                "vessel_id": f"MMSI:{r['mmsi']}",
+                "vessel_name": r["name"],
+                "is_synthetic": False,
+                "as_of": as_of_ts,
+                "behavioral_history": bh_input,
+                "identity_risk": {"available": False},
+                "watchlist": [],
+                "sar_signals": sar.get(r["mmsi"], []),
+            }
+        )
+        r["risk"] = scored["risk"]
+
     rows.sort(key=lambda r: (-r["risk"], r["mmsi"]))
     risks_asc = sorted(r["risk"] for r in rows)
     n = len(rows)
@@ -158,7 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"window {start} → {cut} ({scanned} day-tiles) | {n} vessels | {with_prior} with prior history\n")
     print("distribution (risk percentiles):")
     for q in (0.50, 0.75, 0.90, 0.95, 0.99):
-        print(f"  p{int(q*100):>2} = {_percentile(risks_asc, q):.3f}")
+        print(f"  p{int(q*100):>2} = {percentile(risks_asc, q):.3f}")
     print(f"  max = {risks_asc[-1]:.3f}\n")
 
     print(f"top {args.top} by risk:")
@@ -181,7 +157,7 @@ def main(argv: list[str] | None = None) -> int:
     crel = sorted(rows, key=lambda r: (-r["class_risk"], r["mmsi"]))
     crel_asc = sorted(r["class_risk"] for r in rows)
     print("\n=== CLASS-RELATIVE risk (experiment: deviation within ship class) ===")
-    print("distribution:", "  ".join(f"p{int(q*100)}={_percentile(crel_asc,q):.3f}" for q in (0.5, 0.9, 0.95, 0.99)))
+    print("distribution:", "  ".join(f"p{int(q*100)}={percentile(crel_asc,q):.3f}" for q in (0.5, 0.9, 0.95, 0.99)))
     print(f"top {args.top} by class-relative risk:")
     for i, r in enumerate(crel[: args.top], 1):
         flag = "  <<< INCIDENT" if r["mmsi"] in KNOWN_INCIDENT else ""
