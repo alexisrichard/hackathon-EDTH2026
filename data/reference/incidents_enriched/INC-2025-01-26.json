@@ -54,20 +54,20 @@
   },
   "timeline": [
     {
-      "time_utc": "2025-01-26T03:00:00Z",
-      "time_precision": "catalogue_anchor",
-      "phase": "event",
-      "description": "Replay anchor during the night in which the Latvia-Sweden communications cable damage was discovered.",
-      "confidence": "medium",
-      "source_ids": ["LOCAL_INCIDENT_CATALOGUE", "SE_PROSECUTOR_2025_RELEASE"]
-    },
-    {
       "time_utc": "2025-01-26T00:00:00Z",
       "time_precision": "date_only",
       "phase": "initial_response",
       "description": "A preliminary investigation into suspected aggravated sabotage was opened and a vessel was seized.",
       "confidence": "high",
       "source_ids": ["SE_PROSECUTOR_2025_OPENED"]
+    },
+    {
+      "time_utc": "2025-01-26T03:00:00Z",
+      "time_precision": "catalogue_anchor",
+      "phase": "event",
+      "description": "Replay anchor during the night in which the Latvia-Sweden communications cable damage was discovered.",
+      "confidence": "medium",
+      "source_ids": ["LOCAL_INCIDENT_CATALOGUE", "SE_PROSECUTOR_2025_RELEASE"]
     },
     {
       "time_utc": "2025-02-03T11:01:17Z",
