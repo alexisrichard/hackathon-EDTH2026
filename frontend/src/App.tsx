@@ -99,6 +99,14 @@ export default function App() {
     [active, overlays.cueing.sar],
   );
 
+  // Pin the alert feed's "PRIMARY CUE" only when the scenario hero is genuinely
+  // the #1 cue's top driver — so the pin can never lie if a future emit changes
+  // the ranking. (For C-Lion1 the hero is the #1 driver; Nord Stream has no hero.)
+  const primaryCueMmsi = useMemo(() => {
+    const top = active?.cues?.[0]?.drivers?.[0]?.mmsi;
+    return active?.hero_mmsi != null && top === active.hero_mmsi ? active.hero_mmsi : null;
+  }, [active]);
+
   const focusVessel = (v: { lon: number; lat: number }) =>
     mapRef.current?.flyTo({ center: [v.lon, v.lat], zoom: 8.2, duration: 1200 });
   const focusCue = (cue: ZoneCue) => {
@@ -143,7 +151,7 @@ export default function App() {
           )}
         </div>
         <aside className="rail">
-          <AlertFeed t={clock.t} vessels={vessels} heroMmsi={active?.hero_mmsi ?? null} onFocus={focusVessel} />
+          <AlertFeed t={clock.t} vessels={vessels} heroMmsi={primaryCueMmsi} onFocus={focusVessel} />
           <CuePanel cues={cues} scenario={active} onTask={focusCue} />
         </aside>
       </div>

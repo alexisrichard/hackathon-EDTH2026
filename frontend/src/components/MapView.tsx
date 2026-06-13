@@ -516,6 +516,7 @@ function buildLayers(
         getAlignmentBaseline: "bottom" as const,
         getPixelOffset: [0, -6],
         fontFamily: "'JetBrains Mono', monospace",
+        characterSet: "auto",
         background: true,
         getBackgroundColor: [6, 10, 18, 220],
         backgroundPadding: [5, 3],

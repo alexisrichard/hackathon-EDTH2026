@@ -34,7 +34,7 @@ export default function AlertFeed({ t, vessels, heroMmsi, onFocus }: Props) {
   // it's the cue the engine surfaced. The rest follow by point-in-time risk.
   const hero = heroMmsi != null ? scored.find((v) => v.mmsi === heroMmsi) : undefined;
   const rest = scored.filter((v) => v.mmsi !== heroMmsi).sort((a, b) => b.suspicion - a.suspicion);
-  const top = (hero ? [hero, ...rest] : rest).slice(0, 5);
+  const top = (hero ? [hero, ...rest] : rest).slice(0, 4);
   const anyBreach = top[0] && top[0].suspicion >= 0.9;
 
   return (

@@ -109,11 +109,15 @@ export async function loadScenarios(): Promise<ScenarioPayload[]> {
   return payloads;
 }
 
-/** The scenario whose evaluation instant falls on the same UTC day as the clock
- *  (so scrubbing onto an incident day lights up its real cues + scores). */
+/** The scenario whose cue applies at the clock instant: same UTC day AND the
+ *  clock is at/after the cue's computation time (`at_ts`). The `at_ts` gate keeps
+ *  the no-look-ahead promise true to the minute — a cue can't light up before the
+ *  SAR pass that produced it, even when scrubbing within the incident day. */
 export function activeScenario(clockT: number, scenarios: ScenarioPayload[]): ScenarioPayload | null {
   const day = dayKey(clockT);
-  return scenarios.find((s) => dayKey(Date.parse(s.at)) === day) ?? null;
+  return (
+    scenarios.find((s) => dayKey(Date.parse(s.at)) === day && clockT >= s.at_ts * 1000) ?? null
+  );
 }
 
 /** mmsi -> point-in-time risk, for the active scenario's theatre. */
