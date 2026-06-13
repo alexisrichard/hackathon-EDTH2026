@@ -1,11 +1,12 @@
 import { useCallback, useRef } from "react";
 import type { ReplayClock } from "../lib/clock";
-import { BREACH_T, WINDOW_END, WINDOW_START, fmtZ } from "../lib/clock";
+import { INCIDENTS, WINDOW_END, WINDOW_START, fmtZ } from "../lib/clock";
+
+const SPAN = WINDOW_END - WINDOW_START;
 
 export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const frac = (clock.t - WINDOW_START) / (WINDOW_END - WINDOW_START);
-  const breachFrac = (BREACH_T - WINDOW_START) / (WINDOW_END - WINDOW_START);
+  const frac = (clock.t - WINDOW_START) / SPAN;
 
   const seekFromEvent = useCallback(
     (clientX: number) => {
@@ -39,14 +40,14 @@ export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
       >
         <div className="rail-line" />
         <div className="played" style={{ width: `${frac * 100}%` }} />
-        <div className="tick" style={{ left: `${breachFrac * 100}%` }} title="Yi Peng 3 on station" />
-        <div className="tick-label" style={{ left: `${breachFrac * 100}%` }}>
-          YI PENG 3
-        </div>
+        {INCIDENTS.map((inc) => {
+          const left = ((inc.t - WINDOW_START) / SPAN) * 100;
+          return <div key={inc.label} className="tick" style={{ left: `${left}%` }} title={inc.label} />;
+        })}
         <div className="handle" style={{ left: `${frac * 100}%` }} />
       </div>
       <span className="scrub-time">
-        {fmtZ(clock.t)} <em>/ DANISH AIS REPLAY · 2024-11-18</em>
+        {fmtZ(clock.t)} <em>/ DANISH AIS · 2022–2026</em>
       </span>
     </footer>
   );

@@ -83,20 +83,18 @@ def dp_keep(x: np.ndarray, y: np.ndarray, tol: float) -> np.ndarray:
     return keep
 
 
-def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("date", help="YYYY-MM-DD")
-    ap.add_argument("--out", default="frontend/public/data/ais")
-    args = ap.parse_args(argv)
-    y, m, d = (int(p) for p in args.date.split("-"))
+def build(date_str: str, out_rel: str = "frontend/public/data/ais", quiet: bool = False) -> dict:
+    """Build one day's track tile. Returns stats dict. Idempotent caller skips existing."""
+    y, m, d = (int(p) for p in date_str.split("-"))
 
     cr = boto3.Session().get_credentials().get_frozen_credentials()
     con = duckdb.connect()
     con.execute("INSTALL httpfs; LOAD httpfs; SET enable_progress_bar=false")
     con.execute(f"CREATE SECRET aws (TYPE s3, KEY_ID '{cr.access_key}', SECRET '{cr.secret_key}', REGION 'eu-west-3')")
     src = f"s3://edth2026-baltic/ais/parquet/source=danish/year={y}/month={m:02d}/day={d:02d}/*.parquet"
-
-    print(f"[ais tracks] {args.date} — reading + thinning to {THIN_SECONDS}s ...", flush=True)
+    args_date = date_str
+    if not quiet:
+        print(f"[ais tracks] {date_str} — reading + thinning to {THIN_SECONDS}s ...", flush=True)
     # Thin to one ping per vessel per 30s bucket (earliest), keep static fields.
     q = f"""
     WITH base AS (
@@ -113,7 +111,8 @@ def main(argv: list[str]) -> int:
     FROM base WHERE rn = 1 ORDER BY mmsi, t
     """
     df = con.execute(q).fetch_df()
-    print(f"  thinned rows: {len(df):,}  vessels: {df['mmsi'].nunique():,}", flush=True)
+    if not quiet:
+        print(f"  thinned rows: {len(df):,}  vessels: {df['mmsi'].nunique():,}", flush=True)
 
     vessels = []
     kf_total = 0
@@ -145,14 +144,16 @@ def main(argv: list[str]) -> int:
         })
         kf_total += len(kf)
 
+    if not vessels:
+        return {"date": args_date, "vessels": 0, "keyframes": 0, "mb": 0.0}
     t0 = int(df["t"].min())
     t1 = int(df["t"].max())
-    out_dir = ROOT / args.out
+    out_dir = ROOT / out_rel
     out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f"tracks_{args.date}.json"
+    out = out_dir / f"tracks_{date_str}.json"
     tile = {
         "meta": {
-            "date": args.date, "start": t0, "end": t1, "bbox": list(BBOX),
+            "date": date_str, "start": t0, "end": t1, "bbox": list(BBOX),
             "source": "Danish Maritime Authority AIS (downsampled keyframes)",
             "thin_seconds": THIN_SECONDS, "dp_tolerance_deg": DP_TOLERANCE_DEG,
             "vessels": len(vessels), "keyframes": kf_total,
@@ -161,8 +162,18 @@ def main(argv: list[str]) -> int:
     }
     out.write_text(json.dumps(tile, separators=(",", ":")), encoding="utf-8")
     mb = out.stat().st_size / 1_048_576
-    print(f"  -> {out.relative_to(ROOT)}  {mb:.1f} MB · {len(vessels):,} vessels · {kf_total:,} keyframes "
-          f"({kf_total / max(len(df),1) * 100:.1f}% of thinned)", flush=True)
+    if not quiet:
+        print(f"  -> {out.relative_to(ROOT)}  {mb:.1f} MB · {len(vessels):,} vessels · {kf_total:,} keyframes "
+              f"({kf_total / max(len(df),1) * 100:.1f}% of thinned)", flush=True)
+    return {"date": args_date, "vessels": len(vessels), "keyframes": kf_total, "mb": round(mb, 2)}
+
+
+def main(argv: list[str]) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("date", help="YYYY-MM-DD")
+    ap.add_argument("--out", default="frontend/public/data/ais")
+    args = ap.parse_args(argv)
+    build(args.date, args.out)
     return 0
 
 

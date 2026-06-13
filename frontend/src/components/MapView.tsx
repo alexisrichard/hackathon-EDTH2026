@@ -17,7 +17,7 @@ import type { GeoLayers, GeoFeature } from "../lib/geodata";
 import { CAT_LABELS, pointCoords } from "../lib/geodata";
 import { buildIconAtlas, ROTATABLE } from "../lib/icons";
 import { enabledCats, type OverlayState } from "../lib/overlays";
-import type { MockVesselState } from "../mock/fleet";
+import type { ScoredVessel } from "../lib/trackStore";
 
 /** A tasking recommendation drawn on the map (bracket box + tag). */
 export interface Cue {
@@ -28,7 +28,7 @@ export interface Cue {
 
 interface Props {
   t: number;
-  vessels: MockVesselState[]; // already group-filtered + scored by App
+  vessels: ScoredVessel[]; // already group-filtered + scored by App
   geo: GeoLayers | null;
   overlays: OverlayState;
   cue: Cue | null;
@@ -112,7 +112,7 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   const o = info.object as Record<string, unknown> | GeoFeature | undefined;
   if (!o) return null;
   if ((o as { mmsi?: number }).mmsi !== undefined) {
-    const v = o as unknown as MockVesselState;
+    const v = o as unknown as ScoredVessel;
     return {
       html: `<b>${v.name}</b> · ${v.shipType.toUpperCase()}<br/>MMSI ${v.mmsi} · ${v.sog.toFixed(1)} kn · COG ${Math.round(v.cog)}°<br/>suspicion <b>${v.suspicion.toFixed(2)}</b><br/><span style="color:#8FA3B8">${v.why}</span>`,
     };
@@ -142,7 +142,7 @@ function getTooltip(info: PickingInfo): { html: string } | null {
 
 function buildLayers(
   t: number,
-  vessels: MockVesselState[],
+  vessels: ScoredVessel[],
   geo: GeoLayers | null,
   ov: OverlayState,
   zoneLabels: ZoneLabel[],
@@ -331,15 +331,15 @@ function buildLayers(
         data: vessels,
         iconAtlas: atlas,
         iconMapping: mapping,
-        getIcon: (v: MockVesselState) => shapeForShipType(v.shipType),
-        getPosition: (v: MockVesselState) => [v.lon, v.lat],
-        getSize: (v: MockVesselState) => 13 + v.suspicion * 10,
+        getIcon: (v: ScoredVessel) => shapeForShipType(v.shipType),
+        getPosition: (v: ScoredVessel) => [v.lon, v.lat],
+        getSize: (v: ScoredVessel) => 13 + v.suspicion * 10,
         sizeUnits: "pixels",
-        getColor: (v: MockVesselState) => {
+        getColor: (v: ScoredVessel) => {
           const [r, g, b] = colorForSuspicion(v.suspicion);
           return [r, g, b, 235];
         },
-        getAngle: (v: MockVesselState) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
+        getAngle: (v: ScoredVessel) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
         pickable: true,
         updateTriggers: { getPosition: t, getColor: t, getAngle: t, getSize: t },
       }),
@@ -350,10 +350,10 @@ function buildLayers(
         new TextLayer({
           id: "vessel-labels",
           data: labelled,
-          getPosition: (v: MockVesselState) => [v.lon, v.lat],
-          getText: (v: MockVesselState) => `${v.name} · ${v.suspicion.toFixed(2)}`,
+          getPosition: (v: ScoredVessel) => [v.lon, v.lat],
+          getText: (v: ScoredVessel) => `${v.name} · ${v.suspicion.toFixed(2)}`,
           getSize: 10.5,
-          getColor: (v: MockVesselState) => (v.suspicion >= 0.75 ? [230, 57, 70, 255] : [143, 163, 184, 255]),
+          getColor: (v: ScoredVessel) => (v.suspicion >= 0.75 ? [230, 57, 70, 255] : [143, 163, 184, 255]),
           getPixelOffset: [0, -20],
           fontFamily: "'JetBrains Mono', monospace",
           background: true,

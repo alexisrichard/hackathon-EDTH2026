@@ -11,11 +11,11 @@ import LayerPanel from "./components/LayerPanel";
 import { useReplayClock } from "./lib/clock";
 import { loadGeoLayers, type GeoLayers } from "./lib/geodata";
 import { DEFAULT_OVERLAYS, VESSEL_GROUPS, type OverlayState } from "./lib/overlays";
-import { TrackStore, type VesselFix } from "./lib/trackStore";
+import { TileManager, type VesselFix } from "./lib/trackStore";
 import { scoreFix, cueFor, SUSPECT_MMSI } from "./lib/scenario";
 import { colorForSensor } from "./types/encoding";
 
-const TRACKS_URL = "/data/ais/tracks_2024-11-18.json";
+const TILES_BASE = "/data/ais";
 const CUE_THRESHOLD = 0.6;
 
 // A scored vessel = a real interpolated fix + interim suspicion.
@@ -28,25 +28,31 @@ export default function App() {
   const clock = useReplayClock();
   const [geo, setGeo] = useState<GeoLayers | null>(null);
   const [overlays, setOverlays] = useState<OverlayState>(DEFAULT_OVERLAYS);
-  const [tracks] = useState(() => new TrackStore());
-  const [ready, setReady] = useState(false);
+  const [tileVersion, setTileVersion] = useState(0);
+  const tiles = useRef<TileManager | null>(null);
+  if (!tiles.current) tiles.current = new TileManager(TILES_BASE, () => setTileVersion((v) => v + 1));
+  const [geoReady, setGeoReady] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   useEffect(() => {
-    Promise.all([loadGeoLayers().then(setGeo), tracks.load(TRACKS_URL)])
-      .then(() => setReady(true))
+    loadGeoLayers()
+      .then((g) => {
+        setGeo(g);
+        setGeoReady(true);
+      })
       .catch((e: Error) => setErr(e.message));
-  }, [tracks]);
+  }, []);
 
   // Real interpolated fleet + interim scores, filtered by vessel-class group.
+  // tileVersion in deps so a freshly-arrived day-tile re-renders the fleet.
   const vessels = useMemo<Vessel[]>(() => {
-    if (!ready) return [];
-    return tracks
-      .positionsAt(clock.t / 1000)
+    return (tiles.current?.positionsAt(clock.t) ?? [])
       .filter((v) => overlays.vessels[VESSEL_GROUPS[v.shipType]])
       .map((v) => ({ ...v, ...scoreFix(v) }));
-  }, [ready, tracks, clock.t, overlays.vessels]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clock.t, overlays.vessels, tileVersion]);
+  const dayStatus = tiles.current?.status(clock.t) ?? "loading";
 
   const maxSuspicion = useMemo(
     () => (vessels.length ? Math.max(...vessels.map((v) => v.suspicion)) : 0),
@@ -95,10 +101,15 @@ export default function App() {
             }}
           />
           <LayerPanel overlays={overlays} onChange={setOverlays} />
-          {!ready && (
+          {!geoReady && (
             <div className="loading">
               <div className="ring" />
-              {err ? `LOAD FAILED: ${err}` : "LOADING THEATRE + AIS REPLAY"}
+              {err ? `LOAD FAILED: ${err}` : "LOADING THEATRE"}
+            </div>
+          )}
+          {geoReady && dayStatus !== "ready" && (
+            <div className="day-status">
+              {dayStatus === "loading" ? "▣ streaming AIS…" : "○ no AIS tile for this day"}
             </div>
           )}
         </div>

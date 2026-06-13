@@ -38,6 +38,12 @@ export interface VesselFix {
   dark: boolean; // inside an AIS gap
 }
 
+/** A fix plus interim suspicion — what the map + alert feed render. */
+export interface ScoredVessel extends VesselFix {
+  suspicion: number;
+  why: string;
+}
+
 const SHIP_TYPES = new Set<ShipType>([
   "cargo", "tanker", "fishing", "passenger", "ropax", "high_speed", "military",
   "law_enforcement", "search_and_rescue", "tug", "pilot", "port_tender",
@@ -110,5 +116,64 @@ export class TrackStore {
 
   vesselCount(): number {
     return this.vessels.length;
+  }
+}
+
+/** UTC day key "YYYY-MM-DD" for epoch-ms t. */
+function dayKey(tMs: number): string {
+  return new Date(tMs).toISOString().slice(0, 10);
+}
+
+/**
+ * Windowed tile streaming — loads one day-tile per UTC day on demand, caches a
+ * few (LRU), prefetches the next day, and routes positionsAt() to the right
+ * day's store. This is what lets the clock roam the whole 6-year archive while
+ * only ~a day of keyframes is ever resident.
+ */
+export class TileManager {
+  private tiles = new Map<string, TrackStore>();
+  private loading = new Set<string>();
+  private missing = new Set<string>();
+  private maxResident = 8;
+
+  constructor(
+    private baseUrl: string,
+    private onChange: () => void,
+  ) {}
+
+  private async fetchDay(key: string): Promise<void> {
+    if (this.tiles.has(key) || this.loading.has(key) || this.missing.has(key)) return;
+    this.loading.add(key);
+    const store = new TrackStore();
+    try {
+      await store.load(`${this.baseUrl}/tracks_${key}.json`);
+      this.tiles.set(key, store);
+      // LRU evict
+      while (this.tiles.size > this.maxResident) {
+        const oldest = this.tiles.keys().next().value as string;
+        this.tiles.delete(oldest);
+      }
+      this.onChange();
+    } catch {
+      this.missing.add(key); // 404 / no tile for this day — don't retry
+    } finally {
+      this.loading.delete(key);
+    }
+  }
+
+  /** Vessels at instant `t` (epoch ms); loads + prefetches tiles as a side effect. */
+  positionsAt(tMs: number): VesselFix[] {
+    const key = dayKey(tMs);
+    void this.fetchDay(key);
+    void this.fetchDay(dayKey(tMs + 86_400_000)); // prefetch next day
+    const store = this.tiles.get(key);
+    return store ? store.positionsAt(Math.floor(tMs / 1000)) : [];
+  }
+
+  status(tMs: number): "ready" | "loading" | "missing" {
+    const key = dayKey(tMs);
+    if (this.tiles.has(key)) return "ready";
+    if (this.missing.has(key)) return "missing";
+    return "loading";
   }
 }

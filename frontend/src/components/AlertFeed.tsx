@@ -1,11 +1,11 @@
-import type { MockVesselState } from "../mock/fleet";
+import type { ScoredVessel } from "../lib/trackStore";
 import { bandForScore, colorHexForSuspicion } from "../types/encoding";
 import { fmtZ } from "../lib/clock";
 
 interface Props {
   t: number;
-  vessels: MockVesselState[];
-  onFocus: (v: MockVesselState) => void;
+  vessels: ScoredVessel[];
+  onFocus: (v: ScoredVessel) => void;
 }
 
 export default function AlertFeed({ t, vessels, onFocus }: Props) {
