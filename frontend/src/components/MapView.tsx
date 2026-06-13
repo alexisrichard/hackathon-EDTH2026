@@ -1,7 +1,7 @@
 /**
  * The theatre map: EOX Sentinel-2 cloudless basemap (MapLibre) with deck.gl
  * data layers overlaid — thematic overlays (geography / infrastructure /
- * vessels / analysis), the mock AIS fleet, and the live cue box.
+ * vessels / analysis), the real interpolated AIS fleet, and the live cue box.
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
