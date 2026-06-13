@@ -208,7 +208,8 @@ body,
   padding-top: 5px;
   margin-top: 5px;
 }
-.layer-panel .infra-theme > label {
+/* Every group's child rows indent uniformly under their header. */
+.layer-panel .layer-rows > label {
   padding-left: 14px;
 }
 .layer-panel label {

@@ -71,18 +71,20 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         states={[overlays.geo.borders, overlays.geo.territorial, overlays.geo.eez]}
         onAll={(v) => set({ geo: { borders: v, territorial: v, eez: v } })}
       />
-      <Row
-        label="Country borders"
-        checked={overlays.geo.borders}
-        onToggle={() => set({ geo: { ...overlays.geo, borders: !overlays.geo.borders } })}
-      />
-      <Row
-        label="Territorial seas (12nm)"
-        checked={overlays.geo.territorial}
-        onToggle={() => set({ geo: { ...overlays.geo, territorial: !overlays.geo.territorial } })}
-      />
-      <Row label="EEZ" checked={overlays.geo.eez} onToggle={() => set({ geo: { ...overlays.geo, eez: !overlays.geo.eez } })} />
-      <Row label="Rescue zones (SRR)" checked={false} disabled hint="no open dataset yet — TODO" />
+      <div className="layer-rows">
+        <Row
+          label="Country borders"
+          checked={overlays.geo.borders}
+          onToggle={() => set({ geo: { ...overlays.geo, borders: !overlays.geo.borders } })}
+        />
+        <Row
+          label="Territorial seas (12nm)"
+          checked={overlays.geo.territorial}
+          onToggle={() => set({ geo: { ...overlays.geo, territorial: !overlays.geo.territorial } })}
+        />
+        <Row label="EEZ" checked={overlays.geo.eez} onToggle={() => set({ geo: { ...overlays.geo, eez: !overlays.geo.eez } })} />
+        <Row label="Rescue zones (SRR)" checked={false} disabled hint="no open dataset yet — TODO" />
+      </div>
 
       <div className="section-label">Infrastructure</div>
       {INFRA_THEME_ORDER.map((theme) => {
@@ -94,14 +96,16 @@ export default function LayerPanel({ overlays, onChange }: Props) {
               states={cats.map((c) => overlays.infra[c])}
               onAll={(v) => setInfraMany(cats, v)}
             />
-            {cats.map((c) => (
-              <Row
-                key={c}
-                label={INFRA_CATS[c].label}
-                checked={overlays.infra[c]}
-                onToggle={() => setInfra(c, !overlays.infra[c])}
-              />
-            ))}
+            <div className="layer-rows">
+              {cats.map((c) => (
+                <Row
+                  key={c}
+                  label={INFRA_CATS[c].label}
+                  checked={overlays.infra[c]}
+                  onToggle={() => setInfra(c, !overlays.infra[c])}
+                />
+              ))}
+            </div>
           </div>
         );
       })}
@@ -115,56 +119,64 @@ export default function LayerPanel({ overlays, onChange }: Props) {
           })
         }
       />
-      {vesselGroups.map((g) => (
+      <div className="layer-rows">
+        {vesselGroups.map((g) => (
+          <Row
+            key={g}
+            label={VESSEL_GROUP_LABELS[g]}
+            checked={overlays.vessels[g]}
+            onToggle={() => set({ vessels: { ...overlays.vessels, [g]: !overlays.vessels[g] } })}
+          />
+        ))}
         <Row
-          key={g}
-          label={VESSEL_GROUP_LABELS[g]}
-          checked={overlays.vessels[g]}
-          onToggle={() => set({ vessels: { ...overlays.vessels, [g]: !overlays.vessels[g] } })}
+          label="Labels"
+          checked={overlays.vessels.labels}
+          onToggle={() => set({ vessels: { ...overlays.vessels, labels: !overlays.vessels.labels } })}
         />
-      ))}
-      <Row
-        label="Labels"
-        checked={overlays.vessels.labels}
-        onToggle={() => set({ vessels: { ...overlays.vessels, labels: !overlays.vessels.labels } })}
-      />
+      </div>
 
       <div className="hd">Fishing</div>
-      <Row
-        label="Fishing intensity (HELCOM)"
-        checked={overlays.fishing.intensity}
-        onToggle={() => set({ fishing: { intensity: !overlays.fishing.intensity } })}
-        hint="Where trawling actually happens — a 'fishing' vessel working outside these grounds is the tell. SW Baltic coverage."
-      />
+      <div className="layer-rows">
+        <Row
+          label="Fishing intensity (HELCOM)"
+          checked={overlays.fishing.intensity}
+          onToggle={() => set({ fishing: { intensity: !overlays.fishing.intensity } })}
+          hint="Where trawling actually happens — a 'fishing' vessel working outside these grounds is the tell. SW Baltic coverage."
+        />
+      </div>
 
       <div className="hd">Analysis</div>
-      <Row
-        label="Strategic heatmap"
-        checked={overlays.analysis.heatmap}
-        onToggle={() => set({ analysis: { heatmap: !overlays.analysis.heatmap } })}
-      />
+      <div className="layer-rows">
+        <Row
+          label="Strategic heatmap"
+          checked={overlays.analysis.heatmap}
+          onToggle={() => set({ analysis: { heatmap: !overlays.analysis.heatmap } })}
+        />
+      </div>
 
       <GroupHead
         title="Incidents — dev"
         states={[overlays.incidentsDev.points, overlays.incidentsDev.coverage]}
         onAll={(v) => set({ incidentsDev: { points: v, coverage: v } })}
       />
-      <Row
-        label="Incident points (9)"
-        checked={overlays.incidentsDev.points}
-        onToggle={() =>
-          set({ incidentsDev: { ...overlays.incidentsDev, points: !overlays.incidentsDev.points } })
-        }
-        hint="The 9 known Baltic seabed-infrastructure incidents, coloured by whether we have on-site AIS that day (green=reliable, amber=marginal, red=gap)."
-      />
-      <Row
-        label="AIS coverage zone"
-        checked={overlays.incidentsDev.coverage}
-        onToggle={() =>
-          set({ incidentsDev: { ...overlays.incidentsDev, coverage: !overlays.incidentsDev.coverage } })
-        }
-        hint="Where Danish AIS reliably receives vessels, derived from real day-files (≥30 distinct vessels/cell = reliable, 5–29 = marginal). Effectively nothing east of Gotland."
-      />
+      <div className="layer-rows">
+        <Row
+          label="Incident points (9)"
+          checked={overlays.incidentsDev.points}
+          onToggle={() =>
+            set({ incidentsDev: { ...overlays.incidentsDev, points: !overlays.incidentsDev.points } })
+          }
+          hint="The 9 known Baltic seabed-infrastructure incidents, coloured by whether we have on-site AIS that day (green=reliable, amber=marginal, red=gap)."
+        />
+        <Row
+          label="AIS coverage zone"
+          checked={overlays.incidentsDev.coverage}
+          onToggle={() =>
+            set({ incidentsDev: { ...overlays.incidentsDev, coverage: !overlays.incidentsDev.coverage } })
+          }
+          hint="Where Danish AIS reliably receives vessels, derived from real day-files (≥30 distinct vessels/cell = reliable, 5–29 = marginal). Effectively nothing east of Gotland."
+        />
+      </div>
     </div>
   );
 }
