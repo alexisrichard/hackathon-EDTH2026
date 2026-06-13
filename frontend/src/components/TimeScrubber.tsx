@@ -4,6 +4,7 @@ import { INCIDENTS, WINDOW_END, WINDOW_START, fmtZ } from "../lib/clock";
 
 const SPAN = WINDOW_END - WINDOW_START;
 const STEP_SECONDS = 30; // one frame = the AIS keyframe-thinning interval
+const STEP_FAST_SECONDS = 3600; // coarse tier — ±1 h
 
 export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -22,15 +23,15 @@ export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
     c.seek(c.t + deltaSec * 1000);
   }, []);
 
-  // ←/→ step a frame (the buttons' keyboard equivalent, for fast pinpointing).
+  // ←/→ step a frame; Shift+←/→ jump ±1 h (keyboard equivalents of the buttons).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        step(STEP_SECONDS);
+        step(e.shiftKey ? STEP_FAST_SECONDS : STEP_SECONDS);
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
-        step(-STEP_SECONDS);
+        step(e.shiftKey ? -STEP_FAST_SECONDS : -STEP_SECONDS);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -52,6 +53,13 @@ export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
     <footer className="scrub">
       <div className="transport">
         <button
+          className="step-btn step-fast"
+          onClick={() => step(-STEP_FAST_SECONDS)}
+          title="back 1 hour · Shift+← · pauses"
+        >
+          ◀◀
+        </button>
+        <button
           className="step-btn"
           onClick={() => step(-STEP_SECONDS)}
           title={`previous frame (−${STEP_SECONDS}s) · ← · pauses`}
@@ -67,6 +75,13 @@ export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
           title={`next frame (+${STEP_SECONDS}s) · → · pauses`}
         >
           ▶
+        </button>
+        <button
+          className="step-btn step-fast"
+          onClick={() => step(STEP_FAST_SECONDS)}
+          title="forward 1 hour · Shift+→ · pauses"
+        >
+          ▶▶
         </button>
       </div>
       <button className="speed" onClick={clock.cycleSpeed} title="cycle replay speed">

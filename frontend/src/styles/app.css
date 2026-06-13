@@ -521,6 +521,10 @@ body,
   color: var(--cyan);
   border-color: var(--cyan);
 }
+.step-fast {
+  font-size: 7.5px;
+  letter-spacing: -1px;
+}
 .play-btn {
   width: 32px;
   height: 32px;
