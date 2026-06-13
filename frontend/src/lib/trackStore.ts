@@ -293,6 +293,11 @@ export class TileManager {
       return this.lastFleet;
     }
 
+    // In the boundary window but the adjacent tile hasn't streamed in yet: hold
+    // the last full fleet rather than showing the single-day view collapse (the
+    // ~1-2 min midnight gap). It self-corrects to the merged view once it loads.
+    if (nbKey && cur && this.lastFleet.length) return this.lastFleet;
+
     if (cur) {
       this.lastFleet = cur.positionsAt(tSec);
       return this.lastFleet;
