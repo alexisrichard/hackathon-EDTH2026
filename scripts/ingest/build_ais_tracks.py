@@ -90,9 +90,9 @@ def build(date_str: str, out_rel: str = "frontend/public/data/ais", quiet: bool 
     con.execute("INSTALL httpfs; LOAD httpfs; SET enable_progress_bar=false")
     # Survive a slow/contended home link: generous timeout + retries, keep-alive.
     for stmt in (
-        "SET http_timeout=300000",       # 5 min per request (default 30s)
-        "SET http_retries=5",
-        "SET http_retry_wait_ms=1000",
+        "SET http_timeout=90000",        # 90s/request — fail-fast; the batch's
+        "SET http_retries=2",            #   per-day subprocess timeout is the backstop
+        "SET http_retry_wait_ms=500",
         "SET http_keep_alive=true",
     ):
         try:
