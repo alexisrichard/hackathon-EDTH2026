@@ -22,7 +22,6 @@ import json
 import sys
 from pathlib import Path
 
-import boto3
 import duckdb
 import numpy as np
 
@@ -87,10 +86,23 @@ def build(date_str: str, out_rel: str = "frontend/public/data/ais", quiet: bool 
     """Build one day's track tile. Returns stats dict. Idempotent caller skips existing."""
     y, m, d = (int(p) for p in date_str.split("-"))
 
-    cr = boto3.Session().get_credentials().get_frozen_credentials()
     con = duckdb.connect()
     con.execute("INSTALL httpfs; LOAD httpfs; SET enable_progress_bar=false")
-    con.execute(f"CREATE SECRET aws (TYPE s3, KEY_ID '{cr.access_key}', SECRET '{cr.secret_key}', REGION 'eu-west-3')")
+    # Survive a slow/contended home link: generous timeout + retries, keep-alive.
+    for stmt in (
+        "SET http_timeout=300000",       # 5 min per request (default 30s)
+        "SET http_retries=5",
+        "SET http_retry_wait_ms=1000",
+        "SET http_keep_alive=true",
+    ):
+        try:
+            con.execute(stmt)
+        except duckdb.Error:
+            pass  # older duckdb may not have all knobs
+    # credential_chain works with both long-term creds (local ~/.aws) and an
+    # EC2 instance-role's temporary creds (session token) — so the in-region
+    # batch needs no key handling.
+    con.execute("CREATE SECRET aws (TYPE s3, PROVIDER credential_chain, REGION 'eu-west-3')")
     src = f"s3://edth2026-baltic/ais/parquet/source=danish/year={y}/month={m:02d}/day={d:02d}/*.parquet"
     args_date = date_str
     if not quiet:
