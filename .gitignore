@@ -66,3 +66,17 @@ data/geo/osm_buoys.geojson
 
 # Logs
 *.log
+
+# Computer-vision / SAR ship-detection pipeline (HRSID) — artifacts live on S3, not git.
+# Prepared YOLO dataset (~5.6k PNG tiles + labels), training runs, trained weights:
+data/hrsid_yolo/
+scoring/runs/
+scoring/weights/
+# Generated dataset YAML holds a machine-specific absolute path:
+scoring/hrsid.yaml
+# Detector outputs:
+detections_*.geojson
+# YOLO pretrained checkpoints auto-downloaded by ultralytics into the repo root:
+yolov8*.pt
+yolo11*.pt
+yolo26*.pt

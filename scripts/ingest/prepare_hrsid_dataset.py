@@ -23,6 +23,7 @@ import sys
 from pathlib import Path
 
 import boto3
+from botocore.exceptions import ProfileNotFound
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -38,7 +39,20 @@ SPLITS = {
 
 
 def s3_client() -> boto3.client:
-    return boto3.Session(profile_name="edth2026").client("s3", region_name="eu-west-3")
+    """S3 client for the project bucket region (eu-west-3).
+
+    Prefers the shared ``edth2026`` profile when present, otherwise falls back
+    to the default credential chain (AWS_PROFILE / default profile / env vars),
+    so the script runs on any machine set up per AGENTS.md §2 (`aws configure`)
+    without requiring a named profile.
+    """
+    try:
+        session = boto3.Session(profile_name="edth2026")
+        if session.get_credentials() is not None:
+            return session.client("s3", region_name="eu-west-3")
+    except ProfileNotFound:
+        pass
+    return boto3.Session().client("s3", region_name="eu-west-3")
 
 
 def load_coco(s3: boto3.client, key: str) -> dict:
