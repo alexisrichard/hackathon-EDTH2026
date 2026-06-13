@@ -77,7 +77,9 @@ export interface OverlayState {
   incidentsDev: { points: boolean; coverage: boolean };
 }
 
-export const DEFAULT_OVERLAYS: OverlayState = {
+/** Everything-on preset — the full layer set. Not the startup state (that's the
+ *  focused DEFAULT_OVERLAYS below); kept for reference / a future "show all". */
+export const ALL_OVERLAYS: OverlayState = {
   geo: { borders: true, territorial: true, eez: true },
   infra: {
     telecom_cable: true,
@@ -101,12 +103,12 @@ export const DEFAULT_OVERLAYS: OverlayState = {
 };
 
 /**
- * Focused "default" view: only the relevant ships (everything but Other) plus
- * the two cut-prone infra lines — telecom cables + pipelines. Everything else
- * (geography, other infra, fishing/analysis/dev overlays) off. One-click via
- * the panel's Default button.
+ * The startup default + the panel's "Default view" preset: only the relevant
+ * ships (everything but Other) plus the two cut-prone infra lines — telecom
+ * cables + pipelines. Everything else (geography, other infra, fishing/analysis/
+ * dev overlays) off.
  */
-export const FOCUS_OVERLAYS: OverlayState = {
+export const DEFAULT_OVERLAYS: OverlayState = {
   geo: { borders: false, territorial: false, eez: false },
   infra: {
     telecom_cable: true,

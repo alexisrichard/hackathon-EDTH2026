@@ -3,7 +3,7 @@ import {
   INFRA_CATS,
   INFRA_THEME_ORDER,
   catsInTheme,
-  FOCUS_OVERLAYS,
+  DEFAULT_OVERLAYS,
   VESSEL_GROUP_LABELS,
   type InfraCat,
   type OverlayState,
@@ -70,7 +70,7 @@ export default function LayerPanel({ overlays, onChange }: Props) {
       <button
         type="button"
         className="layer-default"
-        onClick={() => onChange(FOCUS_OVERLAYS)}
+        onClick={() => onChange(DEFAULT_OVERLAYS)}
         title="Show only the relevant ships (not Other) + telecom cables + pipelines"
       >
         Default view
