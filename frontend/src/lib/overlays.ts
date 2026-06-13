@@ -100,6 +100,35 @@ export const DEFAULT_OVERLAYS: OverlayState = {
   incidentsDev: { points: false, coverage: false }, // dev diagnostics — off by default
 };
 
+/**
+ * Focused "default" view: only the relevant ships (everything but Other) plus
+ * the two cut-prone infra lines — telecom cables + pipelines. Everything else
+ * (geography, other infra, fishing/analysis/dev overlays) off. One-click via
+ * the panel's Default button.
+ */
+export const FOCUS_OVERLAYS: OverlayState = {
+  geo: { borders: false, territorial: false, eez: false },
+  infra: {
+    telecom_cable: true,
+    pipeline: true,
+    power_cable: false,
+    power_plant: false,
+    converter: false,
+    energy_terminal: false,
+    platform: false,
+    windfarm: false,
+    port: false,
+    shipping_lane: false,
+    anchorage: false,
+    naval_base: false,
+    restricted_zone: false,
+  },
+  vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: false, labels: true },
+  fishing: { intensity: false },
+  analysis: { heatmap: false },
+  incidentsDev: { points: false, coverage: false },
+};
+
 /** Enabled categories of a given render kind. */
 export function enabledCats(infra: InfraState, kind: InfraKind): Set<string> {
   return new Set(INFRA_CAT_KEYS.filter((c) => INFRA_CATS[c].kind === kind && infra[c]));

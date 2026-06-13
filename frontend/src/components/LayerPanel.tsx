@@ -3,6 +3,7 @@ import {
   INFRA_CATS,
   INFRA_THEME_ORDER,
   catsInTheme,
+  FOCUS_OVERLAYS,
   VESSEL_GROUP_LABELS,
   type InfraCat,
   type OverlayState,
@@ -66,6 +67,14 @@ export default function LayerPanel({ overlays, onChange }: Props) {
 
   return (
     <div className="float layer-panel">
+      <button
+        type="button"
+        className="layer-default"
+        onClick={() => onChange(FOCUS_OVERLAYS)}
+        title="Show only the relevant ships (not Other) + telecom cables + pipelines"
+      >
+        Default view
+      </button>
       <GroupHead
         title="Geography"
         states={[overlays.geo.borders, overlays.geo.territorial, overlays.geo.eez]}

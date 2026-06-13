@@ -157,6 +157,27 @@ body,
   max-height: calc(100% - 110px);
   overflow-y: auto;
 }
+.layer-panel .layer-default {
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+  padding: 6px 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.layer-panel .layer-default:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: var(--cyan);
+  color: var(--text-ice);
+}
 .layer-panel .hd {
   font-family: var(--mono);
   font-size: 8.5px;
