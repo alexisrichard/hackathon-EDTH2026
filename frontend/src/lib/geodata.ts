@@ -16,7 +16,10 @@ export interface GeoLayers {
 }
 
 async function fetchJson(path: string): Promise<FC> {
-  const res = await fetch(path);
+  // no-store so a `build_web_layers.py` rebuild shows up on a normal reload
+  // (Vite doesn't HMR files under public/, and the browser would otherwise
+  // serve a stale cached copy).
+  const res = await fetch(path, { cache: "no-store" });
   if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
   return (await res.json()) as FC;
 }

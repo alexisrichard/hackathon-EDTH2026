@@ -221,9 +221,10 @@ def poi(lon, lat, name, cat) -> dict:
 CLUSTER_RADIUS = {
     "energy_terminal": 0.040,  # ~4.5 km — refinery/terminal complexes
     "windfarm": 0.060,         # ~7 km — also dedupes EMODnet vs OSM
-    "anchorage": 0.030,
+    "anchorage": 0.045,        # ~5 km — harbour approaches stack up
     "platform": 0.020,
-    "port": 0.012,             # only true duplicates
+    "port": 0.022,             # ~2.4 km — merge multi-node harbour complexes
+    "lighthouse": 0.055,       # ~6 km — coastal navigation-aid chains (the big one)
 }
 GENERIC_NAMES = {"energy terminal", "wind farm", "anchorage", "platform", "port", "naval base", "light"}
 LON_SCALE = 0.53  # cos(58°) — equirect distance correction for the theatre
