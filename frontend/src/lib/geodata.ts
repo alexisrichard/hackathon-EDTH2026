@@ -15,6 +15,19 @@ export interface GeoLayers {
   poi: FC;
   zones: FC;
   fishing: FC;
+  incidents: FC; // dev: 9 known incidents (build_incidents_dev_layers.py)
+  coverage: FC; // dev: data-derived reliable/marginal AIS coverage zone
+}
+
+const EMPTY_FC: FC = { type: "FeatureCollection", features: [] };
+
+/** Like fetchJson but never throws — dev layers may not be built yet. */
+async function fetchJsonOpt(path: string): Promise<FC> {
+  try {
+    return await fetchJson(path);
+  } catch {
+    return EMPTY_FC;
+  }
 }
 
 async function fetchJson(path: string): Promise<FC> {
@@ -27,14 +40,16 @@ async function fetchJson(path: string): Promise<FC> {
 }
 
 export async function loadGeoLayers(): Promise<GeoLayers> {
-  const [jurisdiction, infra, poi, zones, fishing] = await Promise.all([
+  const [jurisdiction, infra, poi, zones, fishing, incidents, coverage] = await Promise.all([
     fetchJson("/data/jurisdiction.json"),
     fetchJson("/data/infra_lines.json"),
     fetchJson("/data/poi.json"),
     fetchJson("/data/zones.json"),
     fetchJson("/data/fishing_intensity.json"),
+    fetchJsonOpt("/data/incidents.json"),
+    fetchJsonOpt("/data/ais_coverage.json"),
   ]);
-  return { jurisdiction, infra, poi, zones, fishing };
+  return { jurisdiction, infra, poi, zones, fishing, incidents, coverage };
 }
 
 /** Pull [lon, lat] out of a Point feature (poi.json is points-only). */

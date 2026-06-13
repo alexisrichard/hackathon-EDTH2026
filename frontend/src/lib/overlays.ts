@@ -73,6 +73,8 @@ export interface OverlayState {
   };
   fishing: { intensity: boolean };
   analysis: { heatmap: boolean };
+  /** Dev-only diagnostics: the 9 known incidents + where we actually have AIS. */
+  incidentsDev: { points: boolean; coverage: boolean };
 }
 
 export const DEFAULT_OVERLAYS: OverlayState = {
@@ -95,6 +97,7 @@ export const DEFAULT_OVERLAYS: OverlayState = {
   vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: true, labels: true },
   fishing: { intensity: false }, // big contextual heatmap — off by default
   analysis: { heatmap: false },
+  incidentsDev: { points: false, coverage: false }, // dev diagnostics — off by default
 };
 
 /** Enabled categories of a given render kind. */

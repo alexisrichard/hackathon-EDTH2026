@@ -143,6 +143,28 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         checked={overlays.analysis.heatmap}
         onToggle={() => set({ analysis: { heatmap: !overlays.analysis.heatmap } })}
       />
+
+      <GroupHead
+        title="Incidents — dev"
+        states={[overlays.incidentsDev.points, overlays.incidentsDev.coverage]}
+        onAll={(v) => set({ incidentsDev: { points: v, coverage: v } })}
+      />
+      <Row
+        label="Incident points (9)"
+        checked={overlays.incidentsDev.points}
+        onToggle={() =>
+          set({ incidentsDev: { ...overlays.incidentsDev, points: !overlays.incidentsDev.points } })
+        }
+        hint="The 9 known Baltic seabed-infrastructure incidents, coloured by whether we have on-site AIS that day (green=reliable, amber=marginal, red=gap)."
+      />
+      <Row
+        label="AIS coverage zone"
+        checked={overlays.incidentsDev.coverage}
+        onToggle={() =>
+          set({ incidentsDev: { ...overlays.incidentsDev, coverage: !overlays.incidentsDev.coverage } })
+        }
+        hint="Where Danish AIS reliably receives vessels, derived from real day-files (≥30 distinct vessels/cell = reliable, 5–29 = marginal). Effectively nothing east of Gotland."
+      />
     </div>
   );
 }

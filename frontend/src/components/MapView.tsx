@@ -119,6 +119,21 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   }
   const f = o as GeoFeature;
   const p = f.properties ?? {};
+  if (p.id !== undefined && p.coverage !== undefined) {
+    const cov = String(p.coverage);
+    const covTxt =
+      p.vessels_80km !== undefined
+        ? `${cov.toUpperCase()} — ${Number(p.vessels_80km)} vessels ≤80 km, nearest ${p.nearest_km ?? "?"} km`
+        : cov.toUpperCase();
+    return {
+      html: `<b>${Number(p.n)}. ${String(p.short)}</b> · ${String(p.date)}${p.time_utc ? " " + String(p.time_utc) + "Z" : ""}<br/>${String(p.name)}<br/>${String(p.vessel)} (${String(p.flag)}) · ${String(p.status)}<br/><span style="color:#8FA3B8">AIS this day: <b>${covTxt}</b></span>`,
+    };
+  }
+  if (p.tier !== undefined) {
+    return {
+      html: `<b>AIS coverage · ${String(p.tier)}</b><br/>≥${Number(p.min_vessels)} distinct vessels/cell over ${Number(p.n_days)} sample days`,
+    };
+  }
   if (p.fhr !== undefined) {
     return { html: `<b>Fishing intensity</b><br/>${Number(p.fhr).toFixed(0)} fishing-hours / cell (HELCOM 2020)` };
   }
@@ -194,6 +209,25 @@ function buildLayers(
           [230, 57, 70, 200],
           [230, 57, 70, 240],
         ],
+      }),
+    );
+  }
+
+  // ---- AIS coverage zone (dev) — base wash under everything else ----
+  if (geo && ov.incidentsDev.coverage && geo.coverage.features.length) {
+    layers.push(
+      new GeoJsonLayer({
+        id: "ais-coverage",
+        data: geo.coverage,
+        stroked: true,
+        filled: true,
+        getFillColor: (f: GeoFeature) =>
+          f.properties.tier === "reliable" ? [47, 214, 181, 40] : [255, 176, 46, 26],
+        getLineColor: (f: GeoFeature) =>
+          f.properties.tier === "reliable" ? [47, 214, 181, 150] : [255, 176, 46, 110],
+        getLineWidth: 1,
+        lineWidthUnits: "pixels",
+        pickable: true,
       }),
     );
   }
@@ -363,6 +397,50 @@ function buildLayers(
         }),
       );
     }
+  }
+
+  // ---- incident points (dev) — the 9 known incidents, coloured by AIS coverage ----
+  if (geo && ov.incidentsDev.points && geo.incidents.features.length) {
+    const covColor: Record<string, [number, number, number]> = {
+      reliable: [46, 196, 132],
+      marginal: [255, 176, 46],
+      gap: [230, 57, 70],
+      unknown: [143, 163, 184],
+    };
+    layers.push(
+      new ScatterplotLayer({
+        id: "incident-points",
+        data: geo.incidents.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getRadius: 6,
+        radiusUnits: "pixels",
+        stroked: true,
+        getLineColor: [255, 255, 255, 230],
+        lineWidthUnits: "pixels",
+        getLineWidth: 1.5,
+        getFillColor: (f: GeoFeature) => {
+          const [r, g, b] = covColor[String(f.properties.coverage)] ?? covColor.unknown;
+          return [r, g, b, 235];
+        },
+        pickable: true,
+      }),
+      new TextLayer({
+        id: "incident-labels",
+        data: geo.incidents.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getText: (f: GeoFeature) => `${f.properties.n}·${String(f.properties.short)}`,
+        getSize: 10,
+        getColor: [233, 240, 247, 255],
+        getTextAnchor: "start" as const,
+        getAlignmentBaseline: "center" as const,
+        getPixelOffset: [10, 0],
+        fontFamily: "'JetBrains Mono', monospace",
+        characterSet: "auto",
+        background: true,
+        getBackgroundColor: [6, 10, 18, 205],
+        backgroundPadding: [4, 2],
+      }),
+    );
   }
 
   // ---- SAR cue box — follows the hottest vessel (the tasking recommendation) ----
