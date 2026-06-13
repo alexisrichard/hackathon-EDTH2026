@@ -100,6 +100,88 @@ function despike(kf: KF[]): KF[] {
   return out;
 }
 
+/**
+ * Interpolate every vessel's fix at instant `t` (epoch seconds). Shared by the
+ * single-day store and the cross-tile boundary merge so both interpolate, gap-
+ * freeze, and fade identically.
+ */
+function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
+  const out: VesselFix[] = [];
+  for (const v of vessels) {
+    const kf = v.kf;
+    const n = kf.length;
+    if (n === 0 || t < kf[0][0] || t > kf[n - 1][0]) continue;
+
+    // binary search for segment [lo, hi] with kf[lo].t <= t <= kf[hi].t
+    let lo = 0,
+      hi = n - 1;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (kf[mid][0] <= t) lo = mid;
+      else hi = mid;
+    }
+    const a = kf[lo];
+    const b = kf[hi];
+
+    // Don't draw a confident straight line we can't justify. Across an AIS gap
+    // or a segment implying impossible speed, hold at the last fix and fade out.
+    const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
+    const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
+
+    let lon: number, lat: number, sog: number, cog: number, dark: boolean, darkness: number;
+    if (untrusted) {
+      lon = a[1];
+      lat = a[2];
+      sog = a[3];
+      cog = a[4];
+      dark = true;
+      darkness = Math.max(0, Math.min(1, (t - a[0]) / (b[0] - a[0] || 1)));
+    } else {
+      const span = b[0] - a[0] || 1;
+      const f = Math.max(0, Math.min(1, (t - a[0]) / span));
+      lon = a[1] + (b[1] - a[1]) * f;
+      lat = a[2] + (b[2] - a[2]) * f;
+      sog = a[3] + (b[3] - a[3]) * f;
+      const brg = bearing(a[1], a[2], b[1], b[2]);
+      cog = Number.isNaN(brg) ? a[4] : brg;
+      dark = false;
+      darkness = 0;
+    }
+
+    const shipType = (SHIP_TYPES.has(v.type as ShipType) ? v.type : "unknown") as ShipType;
+    out.push({ mmsi: v.mmsi, name: v.name, shipType, lon, lat, cog, sog, dark, darkness });
+  }
+  return out;
+}
+
+/**
+ * Union vessels by MMSI across chronologically-ordered tiles, concatenating
+ * keyframes + gaps so a vessel's track is continuous across a day boundary.
+ * `ordered` is earliest-tile-first; within a tile kf is sorted and tiles don't
+ * overlap in time, so the merged kf is sorted without an explicit sort.
+ */
+function mergeVessels(ordered: RawVessel[][]): RawVessel[] {
+  const merged = new Map<number, RawVessel>();
+  for (const vessels of ordered) {
+    for (const v of vessels) {
+      const e = merged.get(v.mmsi);
+      if (e) {
+        e.kf = e.kf.concat(v.kf);
+        e.gaps = e.gaps.concat(v.gaps);
+      } else {
+        merged.set(v.mmsi, {
+          mmsi: v.mmsi,
+          name: v.name,
+          type: v.type,
+          kf: v.kf.slice(),
+          gaps: v.gaps.slice(),
+        });
+      }
+    }
+  }
+  return [...merged.values()];
+}
+
 export class TrackStore {
   private vessels: RawVessel[] = [];
   meta: TrackTile["meta"] | null = null;
@@ -117,59 +199,14 @@ export class TrackStore {
     return this.meta ? [this.meta.start, this.meta.end] : null;
   }
 
+  /** Read-only access to the (despiked) vessels — for cross-tile stitching. */
+  get rawVessels(): RawVessel[] {
+    return this.vessels;
+  }
+
   /** All vessels present at instant `t` (epoch seconds), interpolated. */
   positionsAt(t: number): VesselFix[] {
-    const out: VesselFix[] = [];
-    for (const v of this.vessels) {
-      const kf = v.kf;
-      const n = kf.length;
-      if (n === 0 || t < kf[0][0] || t > kf[n - 1][0]) continue;
-
-      // binary search for segment [i, i+1] with kf[i].t <= t <= kf[i+1].t
-      let lo = 0,
-        hi = n - 1;
-      while (hi - lo > 1) {
-        const mid = (lo + hi) >> 1;
-        if (kf[mid][0] <= t) lo = mid;
-        else hi = mid;
-      }
-      const a = kf[lo];
-      const b = kf[hi];
-
-      // Don't draw a confident straight line we can't justify. If the segment
-      // spans an AIS gap (we don't know the path) or implies impossible speed
-      // (residual bad fix), freeze at the last known fix and flag it dark /
-      // dead-reckoned — never glide the vessel across land between real pings.
-      const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
-      const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
-
-      let lon: number, lat: number, sog: number, cog: number, dark: boolean, darkness: number;
-      if (untrusted) {
-        // Hold at the last known fix and fade out as the gap elapses, so the
-        // position jump to the next real fix happens while ~invisible — no
-        // glide through land, no jarring teleport, just lost-and-reacquired.
-        lon = a[1];
-        lat = a[2];
-        sog = a[3];
-        cog = a[4];
-        dark = true;
-        darkness = Math.max(0, Math.min(1, (t - a[0]) / (b[0] - a[0] || 1)));
-      } else {
-        const span = b[0] - a[0] || 1;
-        const f = Math.max(0, Math.min(1, (t - a[0]) / span));
-        lon = a[1] + (b[1] - a[1]) * f;
-        lat = a[2] + (b[2] - a[2]) * f;
-        sog = a[3] + (b[3] - a[3]) * f;
-        const brg = bearing(a[1], a[2], b[1], b[2]);
-        cog = Number.isNaN(brg) ? a[4] : brg;
-        dark = false;
-        darkness = 0;
-      }
-
-      const shipType = (SHIP_TYPES.has(v.type as ShipType) ? v.type : "unknown") as ShipType;
-      out.push({ mmsi: v.mmsi, name: v.name, shipType, lon, lat, cog, sog, dark, darkness });
-    }
-    return out;
+    return positionsFrom(this.vessels, t);
   }
 
   vesselCount(): number {
@@ -194,6 +231,10 @@ export class TileManager {
   private missing = new Set<string>();
   private maxResident = 8;
   private lastFleet: VesselFix[] = [];
+  // Cached cross-tile merge for the current day-boundary pair (rebuilt only when
+  // the pair changes, i.e. once per boundary crossing — not per frame).
+  private mergedVessels: RawVessel[] | null = null;
+  private mergedKey = "";
 
   constructor(
     private baseUrl: string,
@@ -223,17 +264,41 @@ export class TileManager {
   /** Vessels at instant `t` (epoch ms); loads + prefetches tiles as a side effect. */
   positionsAt(tMs: number): VesselFix[] {
     const key = dayKey(tMs);
+    const nextKey = dayKey(tMs + 86_400_000);
+    const prevKey = dayKey(tMs - 86_400_000);
     void this.fetchDay(key);
-    void this.fetchDay(dayKey(tMs + 86_400_000)); // prefetch next day
-    void this.fetchDay(dayKey(tMs - 86_400_000)); // ...and previous (scrubbing back)
-    const store = this.tiles.get(key);
-    if (store) {
-      this.lastFleet = store.positionsAt(Math.floor(tMs / 1000));
+    void this.fetchDay(nextKey); // prefetch next day
+    void this.fetchDay(prevKey); // ...and previous (scrubbing back)
+
+    const cur = this.tiles.get(key);
+    const tSec = Math.floor(tMs / 1000);
+
+    // Near a UTC day boundary, each vessel's track is split across two tiles and
+    // falls into a ~1-2 min gap where neither renders it (day-N: t > last_kf;
+    // day-N+1: t < first_kf). Stitch the adjacent tile's keyframes in so the
+    // track stays continuous across midnight instead of vanishing + reappearing.
+    const BOUNDARY_SEC = 300;
+    const intoDay = tSec - Date.parse(`${key}T00:00:00Z`) / 1000;
+    const nbKey = intoDay < BOUNDARY_SEC ? prevKey : 86_400 - intoDay < BOUNDARY_SEC ? nextKey : null;
+    const nb = nbKey ? this.tiles.get(nbKey) : null;
+
+    if (cur && nb && nbKey) {
+      const mk = nbKey < key ? `${nbKey}|${key}` : `${key}|${nbKey}`;
+      if (this.mergedKey !== mk) {
+        const ordered = nbKey < key ? [nb, cur] : [cur, nb];
+        this.mergedVessels = mergeVessels(ordered.map((s) => s.rawVessels));
+        this.mergedKey = mk;
+      }
+      this.lastFleet = positionsFrom(this.mergedVessels!, tSec);
+      return this.lastFleet;
+    }
+
+    if (cur) {
+      this.lastFleet = cur.positionsAt(tSec);
       return this.lastFleet;
     }
     // Day genuinely has no tile → empty. Still loading → hold the last frame so
-    // the whole fleet doesn't blink out while a day-tile streams in (esp. at the
-    // UTC midnight boundary or high replay speed).
+    // the whole fleet doesn't blink out while a day-tile streams in.
     return this.missing.has(key) ? [] : this.lastFleet;
   }
 
