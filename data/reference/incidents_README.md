@@ -33,14 +33,28 @@ Hand-curated timeline of Baltic Sea undersea-infrastructure damage events since 
 | `confirmed` | Court conviction or official state admission |
 | `strong` | Vessel detained, anchor recovered, investigation active, no acquittal yet |
 | `suspected` | Vessel of interest identified but no detention or no clear link |
-| `dismissed` | Investigation closed without charges (e.g., prosecutor failed to prove intent) |
+| `dismissed` | Case or charges dismissed; read `notes` for the reason (which may be procedural or jurisdictional, not factual) |
 | `accidental` | Official ruling of accidental damage |
 | `disputed` | Multiple conflicting positions; inquiry inconclusive |
 | `unknown` | No attribution determined |
 
 **Important for modeling:** A `dismissed` or `accidental` ruling does NOT invalidate the row as a positive label. The behavioral *pattern* (anchor drag over a cable, AIS dropout near critical infrastructure, etc.) is exactly what our scoring engine should catch — regardless of whether a court later found intent. Use these rows for training feature distributions; use `confirmed` + `strong` rows for narrative + jury appeal in the pitch.
 
-## Current coverage (as of 2026-05-18)
+## Enriched replay dossiers
+
+Three high-value incidents now have source-traceable JSON dossiers under
+`incidents_enriched/`:
+
+- `INC-2023-10-08.json` - Balticconnector / Newnew Polar Bear
+- `INC-2024-12-25.json` - EstLink 2 / Eagle S
+- `INC-2025-01-26.json` - Latvia-Sweden cable / Vezhen
+
+The dossiers separate physical cause, vessel association, intent assessment,
+and legal status. They also include a timeline, confidence levels, local
+weather and Sentinel catalogue context, and defensive demo wording. See
+`incidents_enriched/README.md` before consuming them.
+
+## Current coverage (as of 2026-06-13)
 
 **9 events**, covering the named Baltic incidents from Sep 2022 through Jan 2026:
 

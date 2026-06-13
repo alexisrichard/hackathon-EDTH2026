@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "INC-2023-10-08",
+  "title": "Balticconnector and telecom cable damage",
+  "last_reviewed_utc": "2026-06-13",
+  "event_time": {
+    "replay_anchor_utc": "2023-10-08T01:20:00Z",
+    "precision": "catalogue_anchor",
+    "confidence": "medium",
+    "note": "Inherited from incidents.csv. Treat as a replay anchor within the overnight damage sequence, not as a verified instant of anchor contact."
+  },
+  "location": {
+    "latitude": 59.9,
+    "longitude": 23.4,
+    "precision": "event_centroid",
+    "confidence": "medium",
+    "note": "Approximate Gulf of Finland incident centroid from incidents.csv; not a forensic contact coordinate."
+  },
+  "infrastructure": [
+    {
+      "name": "Balticconnector",
+      "type": "gas_pipeline",
+      "effect": "damaged_and_out_of_service",
+      "confidence": "high"
+    },
+    {
+      "name": "Estonia-Finland telecommunications cable",
+      "type": "telecom_cable",
+      "effect": "damaged_in_related_overnight_sequence",
+      "confidence": "medium"
+    },
+    {
+      "name": "Estonia-Sweden telecommunications cable",
+      "type": "telecom_cable",
+      "effect": "damaged_in_related_overnight_sequence",
+      "confidence": "medium"
+    }
+  ],
+  "vessel": {
+    "name": "Newnew Polar Bear",
+    "flag": "Hong Kong",
+    "type": "container_ship",
+    "mmsi": null,
+    "imo": null,
+    "association": "Finnish investigators state that its anchor caused the Balticconnector damage.",
+    "association_confidence": "high"
+  },
+  "classification": {
+    "incident_type": "undersea_infrastructure_damage",
+    "physical_cause": {
+      "label": "anchor_drag",
+      "confidence": "high",
+      "basis": "Finnish investigators documented a seabed drag trail leading to the pipeline, recovered an anchor with contact traces, and linked the sequence to the vessel."
+    },
+    "intent_assessment": {
+      "label": "not_publicly_established",
+      "confidence": "high",
+      "basis": "The technical cause and vessel association are established in the cited police releases, but those releases do not establish premeditation."
+    },
+    "legal_status": {
+      "label": "cross_border_investigation_cooperation_ongoing_in_latest_cited_update",
+      "as_of": "2025-05-09",
+      "confidence": "high",
+      "basis": "The Finnish National Bureau of Investigation said cooperation with Chinese and Hong Kong authorities continued."
+    }
+  },
+  "timeline": [
+    {
+      "time_utc": "2023-10-08T01:20:00Z",
+      "time_precision": "catalogue_anchor",
+      "phase": "event",
+      "description": "Replay anchor for the overnight infrastructure-damage sequence.",
+      "confidence": "medium",
+      "source_ids": ["LOCAL_INCIDENT_CATALOGUE"]
+    },
+    {
+      "time_utc": "2023-10-24T14:46:00Z",
+      "time_precision": "publication_time",
+      "phase": "technical_finding",
+      "description": "Finnish police reported a 1.5-4 metre-wide drag trail leading to the pipeline, an anchor near the damage, and traces indicating pipeline contact.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2023_TECHNICAL_CAUSE"]
+    },
+    {
+      "time_utc": "2025-05-09T12:49:00Z",
+      "time_precision": "publication_time",
+      "phase": "investigative_status",
+      "description": "Finnish police stated that the damage was caused by the Newnew Polar Bear's anchor and that international cooperation continued.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2025_COOPERATION"]
+    }
+  ],
+  "evidence": [
+    {
+      "type": "seabed_trace",
+      "finding": "A broad drag trail led to the pipeline damage point, followed by a narrower trace consistent with the anchor-chain connection.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2023_TECHNICAL_CAUSE"]
+    },
+    {
+      "type": "recovered_object",
+      "finding": "An anchor recovered near the damage had traces indicating contact with the pipeline.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2023_TECHNICAL_CAUSE"]
+    },
+    {
+      "type": "vessel_correlation",
+      "finding": "Investigators correlated the physical evidence with analysed vessel traffic and could not visually confirm both forward anchors aboard Newnew Polar Bear.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2023_TECHNICAL_CAUSE"]
+    }
+  ],
+  "local_data": {
+    "ais_track": {
+      "available": false,
+      "note": "No validated incident vessel track is packaged in this dossier."
+    },
+    "weather_sample": {
+      "sample_time_utc": "2023-10-08T01:00:00Z",
+      "wave_height_m": 0.8,
+      "wind_speed_10m_kmh": 28.1,
+      "wind_gusts_10m_kmh": 52.6,
+      "source_file": "../marine_weather/INC-2023-10-08.json",
+      "caveat": "Open-Meteo model/reanalysis sample at the approximate incident centroid; contextual only."
+    },
+    "sentinel_catalogue": {
+      "source_file": "../sentinel_scenes.csv",
+      "sentinel_1_scene_count": 16,
+      "sentinel_2_scene_count": 30,
+      "nearest_sentinel_1_utc": "2023-10-10T04:50:34.473243Z",
+      "nearest_sentinel_1_offset_hours": 51.51,
+      "nearest_sentinel_2_utc": "2023-10-09T09:54:10.440000Z",
+      "nearest_sentinel_2_offset_hours": 32.57,
+      "note": "Catalogue availability only; no claim that these scenes show the causal sequence."
+    }
+  },
+  "demo_guidance": {
+    "safe_summary": "Confirmed anchor-drag damage associated with a named vessel; deliberate intent is not established in the cited official record.",
+    "cueing_signals": [
+      "vessel route intersects critical infrastructure",
+      "movement compatible with sustained dragging",
+      "infrastructure outage or pressure anomaly",
+      "poor or delayed satellite coverage increases uncertainty"
+    ],
+    "do_not_say": "Do not describe the vessel or crew as having deliberately sabotaged the pipeline."
+  },
+  "sources": [
+    {
+      "id": "LOCAL_INCIDENT_CATALOGUE",
+      "publisher": "EDTH 2026 project",
+      "title": "Baltic incident catalogue",
+      "url": "../incidents.csv",
+      "published_at": null,
+      "source_type": "local_catalogue"
+    },
+    {
+      "id": "FI_POLICE_2023_TECHNICAL_CAUSE",
+      "publisher": "Police of Finland, National Bureau of Investigation",
+      "title": "National Bureau of Investigation has clarified technically the cause of gas pipeline damage",
+      "url": "https://poliisi.fi/en/-/national-bureau-of-investigation-has-clarified-technically-the-cause-of-gas-pipeline-damage",
+      "published_at": "2023-10-24T17:46:00+03:00",
+      "source_type": "competent_authority"
+    },
+    {
+      "id": "FI_POLICE_2025_COOPERATION",
+      "publisher": "Police of Finland, National Bureau of Investigation",
+      "title": "Cooperation in Balticconnector case to continue",
+      "url": "https://poliisi.fi/en/-/cooperation-in-balticconnector-case-to-continue",
+      "published_at": "2025-05-09T15:49:00+03:00",
+      "source_type": "competent_authority"
+    }
+  ]
+}
+
