@@ -61,6 +61,13 @@ data/geo/bathymetry_*.nc
 data/geo/bathymetry_*.tif
 data/geo/osm_buoys.geojson
 
+# Generated demo outputs — re-runnable locally
+demo_map_*.html
+sar_*.png
+comparison_before_after.png
+detections_yi_peng3.geojson
+*.ipynb
+
 # Notebook checkpoints
 .ipynb_checkpoints/
 
