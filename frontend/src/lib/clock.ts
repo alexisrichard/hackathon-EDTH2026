@@ -6,11 +6,12 @@
  */
 import { useEffect, useRef, useState } from "react";
 
-export const WINDOW_START = Date.UTC(2024, 11, 25, 10, 0, 0);
-export const WINDOW_END = Date.UTC(2024, 11, 25, 16, 0, 0);
-/** Ground truth: Estlink 2 went down 2024-12-25 ~14:00Z (cue must fire BEFORE). */
-export const BREACH_T = Date.UTC(2024, 11, 25, 14, 0, 0);
-export const DEFAULT_T = Date.UTC(2024, 11, 25, 13, 10, 0);
+// Real Danish AIS replay window — Yi Peng 3 / C-Lion1 day (2024-11-18).
+export const WINDOW_START = Date.UTC(2024, 10, 18, 0, 0, 0);
+export const WINDOW_END = Date.UTC(2024, 10, 19, 0, 0, 0);
+/** Yi Peng 3 goes near-stationary (0.2 kn) over the cable corridor ~08:40Z. */
+export const BREACH_T = Date.UTC(2024, 10, 18, 8, 41, 0);
+export const DEFAULT_T = Date.UTC(2024, 10, 18, 8, 41, 0);
 
 export const SPEEDS = [1, 10, 60, 300, 900];
 

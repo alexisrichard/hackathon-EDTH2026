@@ -39,14 +39,14 @@ export default function TimeScrubber({ clock }: { clock: ReplayClock }) {
       >
         <div className="rail-line" />
         <div className="played" style={{ width: `${frac * 100}%` }} />
-        <div className="tick" style={{ left: `${breachFrac * 100}%` }} title="Estlink 2 cut — 14:00Z" />
+        <div className="tick" style={{ left: `${breachFrac * 100}%` }} title="Yi Peng 3 on station" />
         <div className="tick-label" style={{ left: `${breachFrac * 100}%` }}>
-          ESTLINK 2
+          YI PENG 3
         </div>
         <div className="handle" style={{ left: `${frac * 100}%` }} />
       </div>
       <span className="scrub-time">
-        {fmtZ(clock.t)} <em>/ EAGLE S REPLAY · HELD-OUT INCIDENT</em>
+        {fmtZ(clock.t)} <em>/ DANISH AIS REPLAY · 2024-11-18</em>
       </span>
     </footer>
   );

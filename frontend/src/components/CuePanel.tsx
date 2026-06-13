@@ -1,14 +1,12 @@
-import { CUE_BBOX, CUE_FIRES_T } from "../mock/fleet";
-import { BREACH_T } from "../lib/clock";
+import type { Cue } from "./MapView";
 
 interface Props {
-  t: number;
+  cue: Cue | null;
+  suspicion: number;
   onTask: () => void;
 }
 
-export default function CuePanel({ t, onTask }: Props) {
-  const live = t >= CUE_FIRES_T;
-  const [x0, y0, x1, y1] = CUE_BBOX;
+export default function CuePanel({ cue, suspicion, onTask }: Props) {
   return (
     <>
       <div className="rail-head">
@@ -24,33 +22,33 @@ export default function CuePanel({ t, onTask }: Props) {
         </svg>
         TASK-NEXT QUEUE
       </div>
-      <div className={`cue-item ${live ? "" : "upcoming"}`}>
+      <div className={`cue-item ${cue ? "" : "upcoming"}`}>
         <div className="r1">
           <span className="rank">#1</span>
           <span className="chip sar">SAR</span>
-          <span className="sc">{live ? (t >= BREACH_T ? "1.00" : "0.93") : "—"}</span>
+          <span className="sc">{cue ? suspicion.toFixed(2) : "—"}</span>
         </div>
-        <div className="r2">
-          BOX {x0.toFixed(2)}–{x1.toFixed(2)}E · {y0.toFixed(2)}–{y1.toFixed(2)}N
-        </div>
-        <div className="why">
-          {live
-            ? "EAGLE S driving cell score; pass window closes 14:00Z."
-            : "No active recommendation — engine watching the theatre."}
-        </div>
-        <button className="btn primary" disabled={!live} onClick={onTask}>
-          Task
-        </button>
+        {cue ? (
+          <>
+            <div className="r2">
+              BOX {cue.bbox[0].toFixed(2)}–{cue.bbox[2].toFixed(2)}E · {cue.bbox[1].toFixed(2)}–{cue.bbox[3].toFixed(2)}N
+            </div>
+            <div className="why">{cue.label.replace("CUE-01 · SAR · ", "")} driving cell score — recommend a SAR pass.</div>
+            <button className="btn primary" onClick={onTask}>
+              Task
+            </button>
+          </>
+        ) : (
+          <div className="why">No active recommendation — engine watching the theatre.</div>
+        )}
       </div>
       <div className="cue-item upcoming">
         <div className="r1">
           <span className="rank">#2</span>
           <span className="chip optical">OPTICAL</span>
-          <span className="sc">0.41</span>
+          <span className="sc">—</span>
         </div>
-        <div className="r2">BOX 24.60–24.95E · 59.40–59.60N</div>
-        <div className="why">Anchorage drift cluster; daylight window ok.</div>
-        <button className="btn secondary">Task</button>
+        <div className="why">Awaiting scoring-tier output (Côme's engine).</div>
       </div>
     </>
   );

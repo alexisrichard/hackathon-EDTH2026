@@ -12,20 +12,27 @@ import { HeatmapLayer } from "@deck.gl/aggregation-layers";
 import { PathStyleExtension } from "@deck.gl/extensions";
 import type { Layer, PickingInfo } from "@deck.gl/core";
 
-import { colorForSuspicion, colorForSensor, shapeForShipType } from "../types/encoding";
+import { colorForSuspicion, shapeForShipType } from "../types/encoding";
 import type { GeoLayers, GeoFeature } from "../lib/geodata";
 import { CAT_LABELS, pointCoords } from "../lib/geodata";
 import { buildIconAtlas, ROTATABLE } from "../lib/icons";
 import { enabledCats, type OverlayState } from "../lib/overlays";
 import type { MockVesselState } from "../mock/fleet";
-import { CUE_BBOX, CUE_FIRES_T, EAGLE_S_MMSI } from "../mock/fleet";
-import { BREACH_T, fmtZ } from "../lib/clock";
+
+/** A tasking recommendation drawn on the map (bracket box + tag). */
+export interface Cue {
+  bbox: [number, number, number, number];
+  label: string;
+  color: [number, number, number];
+}
 
 interface Props {
   t: number;
-  vessels: MockVesselState[]; // already group-filtered by App
+  vessels: MockVesselState[]; // already group-filtered + scored by App
   geo: GeoLayers | null;
   overlays: OverlayState;
+  cue: Cue | null;
+  suspectMmsi: number;
   onMapReady: (map: maplibregl.Map) => void;
 }
 
@@ -139,6 +146,8 @@ function buildLayers(
   geo: GeoLayers | null,
   ov: OverlayState,
   zoneLabels: ZoneLabel[],
+  cue: Cue | null,
+  suspectMmsi: number,
 ): Layer[] {
   const layers: Layer[] = [];
   const { atlas, mapping } = buildIconAtlas();
@@ -336,7 +345,7 @@ function buildLayers(
       }),
     );
     if (ov.vessels.labels) {
-      const labelled = vessels.filter((v) => v.suspicion >= 0.45 || v.mmsi === EAGLE_S_MMSI);
+      const labelled = vessels.filter((v) => v.suspicion >= 0.45 || v.mmsi === suspectMmsi);
       layers.push(
         new TextLayer({
           id: "vessel-labels",
@@ -356,27 +365,26 @@ function buildLayers(
     }
   }
 
-  // ---- SAR cue box — fires before the breach ----
-  if (t >= CUE_FIRES_T) {
-    const sar = colorForSensor("SAR");
+  // ---- SAR cue box — follows the hottest vessel (the tasking recommendation) ----
+  if (cue) {
     layers.push(
       new PathLayer({
         id: "cue-box",
-        data: cueBracketPaths(CUE_BBOX).map((path) => ({ path })),
+        data: cueBracketPaths(cue.bbox).map((path) => ({ path })),
         getPath: (d: { path: [number, number][] }) => d.path,
-        getColor: [...sar, 235] as [number, number, number, number],
+        getColor: [...cue.color, 235] as [number, number, number, number],
         getWidth: 2.2,
         widthUnits: "pixels",
         opacity: 0.7 + 0.3 * Math.sin(t / 400),
+        updateTriggers: { getPath: cue.bbox },
       }),
       new TextLayer({
         id: "cue-tag",
-        data: [{ pos: [CUE_BBOX[0], CUE_BBOX[3]] }],
+        data: [{ pos: [cue.bbox[0], cue.bbox[3]], label: cue.label }],
         getPosition: (d: { pos: [number, number] }) => d.pos,
-        getText: () =>
-          t < BREACH_T ? `CUE-01 · SAR · TASK BY ${fmtZ(BREACH_T).slice(11, 16)}Z` : "CUE-01 · SAR · BREACH 14:00Z",
+        getText: (d: { label: string }) => d.label,
         getSize: 10,
-        getColor: t < BREACH_T ? ([...sar, 255] as [number, number, number, number]) : [255, 69, 56, 255],
+        getColor: [...cue.color, 255] as [number, number, number, number],
         getTextAnchor: "start" as const,
         getAlignmentBaseline: "bottom" as const,
         getPixelOffset: [0, -6],
@@ -384,7 +392,7 @@ function buildLayers(
         background: true,
         getBackgroundColor: [6, 10, 18, 220],
         backgroundPadding: [5, 3],
-        updateTriggers: { getText: t >= BREACH_T, getColor: t >= BREACH_T },
+        updateTriggers: { getText: cue.label, getPosition: cue.bbox },
       }),
     );
   }
@@ -392,7 +400,7 @@ function buildLayers(
   return layers;
 }
 
-export default function MapView({ t, vessels, geo, overlays, onMapReady }: Props) {
+export default function MapView({ t, vessels, geo, overlays, cue, suspectMmsi, onMapReady }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const overlayRef = useRef<MapboxOverlay | null>(null);
@@ -440,8 +448,8 @@ export default function MapView({ t, vessels, geo, overlays, onMapReady }: Props
   }, []);
 
   useEffect(() => {
-    overlayRef.current?.setProps({ layers: buildLayers(t, vessels, geo, overlays, zoneLabels) });
-  }, [t, vessels, geo, overlays, zoneLabels]);
+    overlayRef.current?.setProps({ layers: buildLayers(t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi) });
+  }, [t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi]);
 
   return (
     <div className="map-wrap">
