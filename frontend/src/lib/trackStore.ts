@@ -63,6 +63,12 @@ function bearing(lon0: number, lat0: number, lon1: number, lat1: number): number
 // two vessels sharing an MMSI. (Even fast ferries top out ~40 kn.)
 const MAX_KNOTS = 60;
 const KM_PER_NM = 1.852;
+// Beyond this we genuinely don't know where the vessel is — don't dead-reckon it
+// (and don't let a shifting tile window resurrect a sparse pinger across a day).
+const MAX_BRIDGE_SECONDS = 3600;
+// A >10-min jump across a tile seam is a real absence the per-day builder
+// couldn't flag (its gaps stop at midnight), not a continuous track.
+const SEAM_GAP_SECONDS = 600;
 
 function haversineKm(lon0: number, lat0: number, lon1: number, lat1: number): number {
   const R = 6371,
@@ -128,6 +134,11 @@ function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
     const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
     const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
 
+    // Too long a gap to dead-reckon → the vessel is genuinely absent; don't
+    // render it (this is what kept sparse pingers from being resurrected across
+    // a whole day as the merge window slides at midnight).
+    if (untrusted && b[0] - a[0] > MAX_BRIDGE_SECONDS) continue;
+
     let lon: number, lat: number, sog: number, cog: number, dark: boolean, darkness: number;
     if (untrusted) {
       lon = a[1];
@@ -164,8 +175,14 @@ function mergeVessels(ordered: RawVessel[][]): RawVessel[] {
   const merged = new Map<number, RawVessel>();
   for (const vessels of ordered) {
     for (const v of vessels) {
+      if (v.kf.length === 0) continue;
       const e = merged.get(v.mmsi);
       if (e) {
+        // Flag the seam between this tile and the previous one: a long jump means
+        // the vessel was absent across (part of) a day — a real gap the per-day
+        // builder couldn't see — so it must not be bridged as a continuous track.
+        const seam = v.kf[0][0] - e.kf[e.kf.length - 1][0];
+        if (seam > SEAM_GAP_SECONDS) e.gaps.push([e.kf[e.kf.length - 1][0], v.kf[0][0]]);
         e.kf = e.kf.concat(v.kf);
         e.gaps = e.gaps.concat(v.gaps);
       } else {
