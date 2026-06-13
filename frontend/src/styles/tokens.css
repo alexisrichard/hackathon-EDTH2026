@@ -1,0 +1,54 @@
+/* HEIMDALL design tokens — reference: brand/heimdall_brand_identity.html (Doc 03).
+   Product colors (ramp/bands/sensors) mirror shared/encoding/display_encoding.json. */
+:root {
+  --bg-void: #060a12;
+  --bg-deep: #0b1220;
+  --bg-card: #0f1726;
+  --bg-elevated: #141e33;
+  --bg-hover: #1a2640;
+  --bg-input: #0a101c;
+
+  --text-ice: #e8f1f8;
+  --text-slate: #8fa3b8;
+  --text-muted: #4a5a74;
+  --text-faint: #2e3b55;
+  --text-inverse: #060a12;
+
+  --cyan: #41e3ff;
+  --cyan-glow: rgba(65, 227, 255, 0.3);
+  --cyan-bg: rgba(65, 227, 255, 0.08);
+
+  --nominal: #2fd6b5;
+  --alert: #ffb02e;
+  --breach: #ff4538;
+
+  --band-calm: #388ed3;
+  --band-watch: #2ec4b6;
+  --band-elevated: #ffd166;
+  --band-high: #ef8a38;
+  --band-critical: #e63946;
+
+  --sensor-sar: #7aa2f7;
+  --sensor-opt: #9ece6a;
+  --sensor-ais: #7dcfff;
+  --sensor-das: #bb9af7;
+
+  --line: #1c2740;
+  --line-heavy: #2a3a5c;
+
+  --shadow-2: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-3: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --glow-cyan: 0 0 14px rgba(65, 227, 255, 0.25);
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-pill: 999px;
+
+  --sans: "Space Grotesk", -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --ease: cubic-bezier(0.25, 0.6, 0.25, 1);
+}
