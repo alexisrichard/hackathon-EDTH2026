@@ -91,13 +91,18 @@ export interface VesselTrack {
 // ---- Scoring (mirror scoring.py) -----------------------------------------------
 
 export interface ScoreBreakdown {
-  kinematic_anomaly: number;
-  /** 1 = perfectly normal, 0 = totally incoherent. Formula uses (1 − this). */
-  class_coherence: number;
-  local_criticality: number;
-  dark_modifier: number;
+  infrastructure_proximity: number;
+  unusual_movement: number;
+  /** 1 = a very recent AIS observation; staleness uses (1 - this). */
+  ais_recency: number;
+  infrastructure_importance: number;
+  satellite_availability: number;
+  contributions: Record<string, number>;
   why: string;
-  /** Composite suspicion in [0, 1] (computed field on the backend). */
+  disclaimer: string;
+  /** Preferred transparent collection-priority score. */
+  score: number;
+  /** Backward-compatible alias for score. */
   suspicion: number;
 }
 

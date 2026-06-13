@@ -1,0 +1,383 @@
+{
+  "scenario": {
+    "id": "synthetic-baltic-demo-001",
+    "name": "Synthetic Baltic infrastructure-protection demonstration",
+    "description": "Fictional vessel movements and fictional collection windows for a defensive maritime-domain awareness demo.",
+    "as_of": "2026-06-12T14:00:00Z",
+    "is_synthetic": true,
+    "operational_use": false,
+    "disclaimer": "Training and hackathon demonstration only. This scenario does not describe real vessel behaviour, real satellite availability, hostile intent, or targeting."
+  },
+  "infrastructure": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-CABLE-01",
+          "name": "Synthetic North Link",
+          "type": "submarine_cable",
+          "importance": 1.0,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [[24.45, 59.40], [25.10, 59.70]]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-POWER-01",
+          "name": "Synthetic Island Interconnector",
+          "type": "submarine_power_cable",
+          "importance": 0.9,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [[18.70, 57.20], [19.30, 57.70]]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-PIPE-01",
+          "name": "Synthetic Southern Pipeline",
+          "type": "pipeline",
+          "importance": 0.8,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [[14.80, 55.00], [15.50, 55.40]]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-PORT-01",
+          "name": "Synthetic Protected Port",
+          "type": "port",
+          "importance": 0.7,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [12.70, 56.20]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-WIND-01",
+          "name": "Synthetic Offshore Energy Site",
+          "type": "offshore_energy",
+          "importance": 0.6,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [21.30, 58.20]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-CABLE-02",
+          "name": "Synthetic Eastern Link",
+          "type": "submarine_cable",
+          "importance": 0.85,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [[27.00, 60.00], [27.80, 60.30]]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "DEMO-AREA-01",
+          "name": "Synthetic low-importance area",
+          "type": "demo_area",
+          "importance": 0.2,
+          "is_synthetic": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [16.88, 58.70]
+        }
+      }
+    ]
+  },
+  "vessel_tracks": [
+    {
+      "vessel_id": "DEMO-001",
+      "vessel_name": "Synthetic Vessel Alpha",
+      "vessel_type": "cargo",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 24.55, "lat": 59.45, "sog": 10.2, "cog": 42.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 24.66, "lat": 59.52, "sog": 6.0, "cog": 66.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 24.75, "lat": 59.55, "sog": 2.1, "cog": 118.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-002",
+      "vessel_name": "Synthetic Vessel Bravo",
+      "vessel_type": "tanker",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 18.75, "lat": 57.30, "sog": 11.0, "cog": 38.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 18.87, "lat": 57.40, "sog": 8.3, "cog": 34.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 18.95, "lat": 57.48, "sog": 6.8, "cog": 31.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-003",
+      "vessel_name": "Synthetic Vessel Charlie",
+      "vessel_type": "bulk_carrier",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 15.00, "lat": 55.05, "sog": 9.4, "cog": 50.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 15.12, "lat": 55.12, "sog": 4.0, "cog": 95.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 15.20, "lat": 55.18, "sog": 3.5, "cog": 140.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-004",
+      "vessel_name": "Synthetic Vessel Delta",
+      "vessel_type": "ferry",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 12.40, "lat": 56.00, "sog": 14.0, "cog": 45.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 12.52, "lat": 56.10, "sog": 13.8, "cog": 44.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 12.62, "lat": 56.17, "sog": 13.5, "cog": 43.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-005",
+      "vessel_name": "Synthetic Vessel Echo",
+      "vessel_type": "service",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 21.05, "lat": 58.05, "sog": 7.0, "cog": 40.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 21.12, "lat": 58.10, "sog": 6.5, "cog": 42.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 21.18, "lat": 58.15, "sog": 6.2, "cog": 41.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-006",
+      "vessel_name": "Synthetic Vessel Foxtrot",
+      "vessel_type": "cargo",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 27.10, "lat": 60.02, "sog": 8.0, "cog": 55.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 27.22, "lat": 60.08, "sog": 7.8, "cog": 54.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 27.34, "lat": 60.14, "sog": 7.7, "cog": 55.0}
+      ]
+    },
+    {
+      "vessel_id": "DEMO-007",
+      "vessel_name": "Synthetic Vessel Golf",
+      "vessel_type": "research",
+      "is_synthetic": true,
+      "track": [
+        {"t": "2026-06-12T13:40:00Z", "lon": 16.80, "lat": 58.70, "sog": 5.0, "cog": 90.0},
+        {"t": "2026-06-12T13:50:00Z", "lon": 16.85, "lat": 58.70, "sog": 3.0, "cog": 90.0},
+        {"t": "2026-06-12T14:00:00Z", "lon": 16.88, "lat": 58.70, "sog": 1.5, "cog": 90.0}
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "vessel_id": "DEMO-001",
+      "vessel_name": "Synthetic Vessel Alpha",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [24.75, 59.55],
+      "factors": {
+        "infrastructure_proximity": 0.95,
+        "unusual_movement": 0.90,
+        "ais_recency": 0.95,
+        "infrastructure_importance": 1.00
+      },
+      "infrastructure": {
+        "id": "DEMO-CABLE-01",
+        "name": "Synthetic North Link",
+        "type": "submarine_cable",
+        "distance_km": 1.2
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T14:20:00Z",
+          "end": "2026-06-12T14:30:00Z",
+          "sensor": "SAR",
+          "availability": 0.95,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-002",
+      "vessel_name": "Synthetic Vessel Bravo",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [18.95, 57.48],
+      "factors": {
+        "infrastructure_proximity": 0.88,
+        "unusual_movement": 0.55,
+        "ais_recency": 0.90,
+        "infrastructure_importance": 0.90
+      },
+      "infrastructure": {
+        "id": "DEMO-POWER-01",
+        "name": "Synthetic Island Interconnector",
+        "type": "submarine_power_cable",
+        "distance_km": 2.8
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T14:35:00Z",
+          "end": "2026-06-12T14:45:00Z",
+          "sensor": "SAR",
+          "availability": 0.85,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-003",
+      "vessel_name": "Synthetic Vessel Charlie",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [15.20, 55.18],
+      "factors": {
+        "infrastructure_proximity": 0.92,
+        "unusual_movement": 0.80,
+        "ais_recency": 0.40,
+        "infrastructure_importance": 0.80
+      },
+      "infrastructure": {
+        "id": "DEMO-PIPE-01",
+        "name": "Synthetic Southern Pipeline",
+        "type": "pipeline",
+        "distance_km": 1.9
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T14:50:00Z",
+          "end": "2026-06-12T15:00:00Z",
+          "sensor": "optical",
+          "availability": 0.70,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-004",
+      "vessel_name": "Synthetic Vessel Delta",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [12.62, 56.17],
+      "factors": {
+        "infrastructure_proximity": 0.65,
+        "unusual_movement": 0.10,
+        "ais_recency": 0.98,
+        "infrastructure_importance": 0.70
+      },
+      "infrastructure": {
+        "id": "DEMO-PORT-01",
+        "name": "Synthetic Protected Port",
+        "type": "port",
+        "distance_km": 7.0
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T14:15:00Z",
+          "end": "2026-06-12T14:25:00Z",
+          "sensor": "optical",
+          "availability": 0.80,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-005",
+      "vessel_name": "Synthetic Vessel Echo",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [21.18, 58.15],
+      "factors": {
+        "infrastructure_proximity": 0.72,
+        "unusual_movement": 0.25,
+        "ais_recency": 0.85,
+        "infrastructure_importance": 0.60
+      },
+      "infrastructure": {
+        "id": "DEMO-WIND-01",
+        "name": "Synthetic Offshore Energy Site",
+        "type": "offshore_energy",
+        "distance_km": 5.5
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T15:05:00Z",
+          "end": "2026-06-12T15:15:00Z",
+          "sensor": "SAR",
+          "availability": 0.65,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-006",
+      "vessel_name": "Synthetic Vessel Foxtrot",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [27.34, 60.14],
+      "factors": {
+        "infrastructure_proximity": 0.80,
+        "unusual_movement": 0.15,
+        "ais_recency": 0.92,
+        "infrastructure_importance": 0.85
+      },
+      "infrastructure": {
+        "id": "DEMO-CABLE-02",
+        "name": "Synthetic Eastern Link",
+        "type": "submarine_cable",
+        "distance_km": 3.5
+      },
+      "satellite_windows": [
+        {
+          "start": "2026-06-12T14:40:00Z",
+          "end": "2026-06-12T14:50:00Z",
+          "sensor": "SAR",
+          "availability": 0.75,
+          "is_synthetic": true
+        }
+      ]
+    },
+    {
+      "vessel_id": "DEMO-007",
+      "vessel_name": "Synthetic Vessel Golf",
+      "is_synthetic": true,
+      "observed_at": "2026-06-12T14:00:00Z",
+      "position": [16.88, 58.70],
+      "factors": {
+        "infrastructure_proximity": 0.30,
+        "unusual_movement": 0.60,
+        "ais_recency": 0.75,
+        "infrastructure_importance": 0.20
+      },
+      "infrastructure": {
+        "id": "DEMO-AREA-01",
+        "name": "Synthetic low-importance area",
+        "type": "demo_area",
+        "distance_km": 18.0
+      },
+      "satellite_windows": []
+    }
+  ]
+}

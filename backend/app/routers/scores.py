@@ -17,8 +17,8 @@ def get_scores(
     q: TimeQuery = Depends(time_params),
     ds: DataSource = Depends(data_source),
 ) -> ScoresResponse:
-    """Return each vessel's composite suspicion + four-term breakdown + display
-    hints at instant ``t`` (defaults to the demo instant), sorted hottest-first."""
+    """Return each vessel's five-factor collection priority + display hints at
+    instant ``t`` (defaults to the demo instant), sorted highest-first."""
     scored = ds.scores_at(t=q.t, bbox=q.bbox)
     # Echo the instant the scores were actually evaluated at (the data source
     # resolves a None t to its demo instant), so the response t matches the

@@ -4,12 +4,13 @@ Recreates the **Estlink 2 / Eagle S** incident (25 Dec 2024, Gulf of Finland)
 densely enough to actually render and demo:
 
 * **EAGLE S** (suspect tanker) enters from the east and *slows to a crawl
-  directly over the Estlink 2 power cable*, dragging its anchor. Its suspicion
-  climbs over the replay window as it loiters over the cable and its AIS goes
-  intermittent — exactly the behavioral pattern the engine should catch.
+  directly over the Estlink 2 power cable*, dragging its anchor. Its collection
+  priority climbs over the replay window as it loiters over the cable and its AIS goes
+  intermittent — exactly the pattern that should trigger a defensive
+  observation recommendation.
 * A handful of **normal** vessels behave coherently: a Helsinki–Tallinn RoPax
   ferry, a westbound container ship, an anchored bulk carrier, a coastal fishing
-  vessel. Their suspicion stays low.
+  vessel. Their collection priority stays low.
 
 Geometry is anchored to the *real* Estlink 2 cable route (from
 ``data/geo/submarine_power_cables.geojson``) so positions sit on the actual
@@ -31,7 +32,7 @@ from app.models.vessel import Vessel, VesselPosition
 
 # --- Demo window -----------------------------------------------------------------
 # Christmas Eve 2024, Gulf of Finland. The cable was cut ~12:30 UTC; we run a
-# four-hour window so the suspicion arc has room to build and the cue to fire
+# four-hour window so the priority arc has room to build and the cue to fire
 # *before* the cut.
 DEMO_START = datetime(2024, 12, 25, 12, 0, tzinfo=timezone.utc)
 DEMO_CUT = datetime(2024, 12, 25, 14, 0, tzinfo=timezone.utc)  # cable goes red
@@ -85,7 +86,7 @@ class MockVessel:
         raise NotImplementedError
 
     def terms_at(self, t: datetime) -> dict:
-        """Return the four score terms + a `why` string at instant ``t``."""
+        """Return four observation factors plus a narrative at instant ``t``."""
         raise NotImplementedError
 
 
@@ -112,8 +113,8 @@ class _SuspectEagleS(MockVessel):
     recommend tasking this box — the cable goes down 14 minutes later"):
     transit at ~10 kn until ~12:53 (f≈0.22), decelerate onto the cable crossing by
     ~13:24 (f≈0.35), then loiter / anchor-drag at ~1–2 kn through the cut and after.
-    Suspicion is built from the four interpretable terms and climbs as the vessel
-    parks on the cable and its AIS reports thin out.
+    Collection priority is built from five interpretable factors and climbs as
+    the vessel parks on the cable and its AIS reports thin out.
     """
 
     # Phase boundaries as fractions of the demo window (12:00–16:00):
@@ -163,29 +164,24 @@ class _SuspectEagleS(MockVessel):
             kin = 0.15 + f * 0.5
         else:
             kin = _clamp(0.3 + (f - self._F_TRANSIT_END) * 3.0)  # ramps toward ~1.0
-        # Class coherence: a tanker loitering over a cable is *incoherent* (low).
-        # Drops sharply once it starts braking onto the crossing.
-        coherence = _clamp(0.88 - max(0.0, f - self._F_TRANSIT_END) * 3.0)
-        # Local criticality: rises as it converges on the cable crossing, peaking
-        # once it's over Estlink 2.
+        # Proximity rises as it converges on the cable crossing.
         crit = min(0.95, _clamp(0.3 + f * 1.6))
-        # Dark modifier: nominal 1.0; stays 1.0 (intermittent AIS, never confirmed lit).
-        dark = 1.0
         # AIS gap minutes grow as it loiters (for the narrative string).
         gap_min = int(max(0.0, f - self._F_DECEL_END) * 120)
+        ais_recency = _clamp(1.0 - gap_min / 60.0)
         sog = self.position_at(t).sog or 0.0
         why = (
             f"Declared tanker behaving like a loiterer: slowed to {sog:.0f} kn directly "
-            f"over Estlink 2 (criticality {crit:.2f}), class-coherence {coherence:.2f}"
+            f"over Estlink 2 (proximity {crit:.2f})"
         )
         if gap_min > 0:
             why += f", AIS gap {gap_min} min"
         why += "."
         return {
-            "kinematic_anomaly": round(kin, 3),
-            "class_coherence": round(coherence, 3),
-            "local_criticality": round(crit, 3),
-            "dark_modifier": round(dark, 3),
+            "infrastructure_proximity": round(crit, 3),
+            "unusual_movement": round(kin, 3),
+            "ais_recency": round(ais_recency, 3),
+            "infrastructure_importance": 0.95,
             "why": why,
         }
 
@@ -215,12 +211,12 @@ class _NormalTransit(MockVessel):
         )
 
     def terms_at(self, t: datetime) -> dict:
-        # Coherent behavior: low kinematic anomaly, high coherence, modest criticality.
+        # Routine behavior: low movement anomaly and modest local importance.
         return {
-            "kinematic_anomaly": 0.12,
-            "class_coherence": 0.9,
-            "local_criticality": round(self.crit_base, 3),
-            "dark_modifier": 1.0,
+            "infrastructure_proximity": round(self.crit_base, 3),
+            "unusual_movement": 0.12,
+            "ais_recency": 0.98,
+            "infrastructure_importance": round(self.crit_base, 3),
             "why": (
                 f"Declared {self.vessel.ship_type.value} transiting normally "
                 f"(~{self.sog_kn:.0f} kn), behavior coherent with class."
@@ -247,13 +243,12 @@ class _AnchoredBulker(MockVessel):
         )
 
     def terms_at(self, t: datetime) -> dict:
-        # At anchor in an anchorage is normal -> very low suspicion despite low SOG,
-        # because criticality at the anchorage is low and coherence is high.
+        # At anchor in an anchorage is routine despite low speed.
         return {
-            "kinematic_anomaly": 0.2,
-            "class_coherence": 0.88,
-            "local_criticality": 0.08,
-            "dark_modifier": 1.0,
+            "infrastructure_proximity": 0.08,
+            "unusual_movement": 0.08,
+            "ais_recency": 0.98,
+            "infrastructure_importance": 0.08,
             "why": "At anchor in a designated anchorage; nav status 'at anchor', coherent.",
         }
 

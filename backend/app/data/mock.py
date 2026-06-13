@@ -14,7 +14,7 @@ scrubs.
 from __future__ import annotations
 
 import csv
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from app.core.display import band_for_score, color_for_suspicion, color_hex_for_suspicion, shape_for_ship_type
@@ -25,6 +25,7 @@ from app.models.geo import BBox, CriticalityGrid, CueRecommendation, GridCell
 from app.models.scenario import Incident, Scenario
 from app.models.scoring import DisplayHints, ScoreBreakdown, ScoredVessel
 from app.models.vessel import VesselTrack
+from scoring import rank_tasking, score_observation
 
 # data/reference/incidents.csv, resolved from repo root.
 # backend/app/data/mock.py -> parents[3] == repo root.
@@ -70,8 +71,13 @@ class MockDataSource(DataSource):
 
     def _scored_at(self, mv: ms.MockVessel, t: datetime) -> ScoredVessel:
         pos = mv.position_at(t)
-        terms = mv.terms_at(t)
-        breakdown = ScoreBreakdown(**terms)
+        result = score_observation(self._observation_for(mv, t))
+        breakdown = ScoreBreakdown(
+            **result["factors"],
+            contributions=result["contributions"],
+            why=f"{mv.terms_at(t)['why']} {result['explanation']}",
+            disclaimer=result["disclaimer"],
+        )
         return ScoredVessel(
             vessel=mv.vessel,
             t=t,
@@ -79,6 +85,56 @@ class MockDataSource(DataSource):
             breakdown=breakdown,
             display=self._display_for(mv.vessel.ship_type, breakdown.suspicion),
         )
+
+    @staticmethod
+    def _iso_z(value: datetime) -> str:
+        return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+    def _observation_for(self, mv: ms.MockVessel, t: datetime) -> dict:
+        """Adapt one scripted vessel state to the scoring engine contract."""
+        pos = mv.position_at(t)
+        terms = mv.terms_at(t)
+        sensor = (
+            SensorType.SAR
+            if terms["unusual_movement"] >= 0.6 or terms["ais_recency"] < 0.7
+            else SensorType.OPTICAL
+        )
+        window_start = t + timedelta(minutes=20)
+        window_end = window_start + timedelta(minutes=10)
+        return {
+            "vessel_id": str(mv.vessel.mmsi),
+            "vessel_name": mv.vessel.name,
+            "is_synthetic": True,
+            "observed_at": self._iso_z(t),
+            "position": [pos.lon, pos.lat],
+            "factors": {
+                "infrastructure_proximity": terms["infrastructure_proximity"],
+                "unusual_movement": terms["unusual_movement"],
+                "ais_recency": terms["ais_recency"],
+                "infrastructure_importance": terms["infrastructure_importance"],
+            },
+            "infrastructure": {
+                "id": "DEMO-ESTLINK-2" if mv.is_suspect else "DEMO-CORRIDOR",
+                "name": "Synthetic Estlink 2 protection corridor"
+                if mv.is_suspect
+                else "Synthetic monitored maritime corridor",
+                "type": "submarine_power_cable"
+                if mv.is_suspect
+                else "demo_area",
+                "distance_km": round(
+                    20.0 * (1.0 - terms["infrastructure_proximity"]), 2
+                ),
+            },
+            "satellite_windows": [
+                {
+                    "start": self._iso_z(window_start),
+                    "end": self._iso_z(window_end),
+                    "sensor": sensor.value,
+                    "availability": 0.95 if mv.is_suspect else 0.70,
+                    "is_synthetic": True,
+                }
+            ],
+        }
 
     # -- DataSource API -----------------------------------------------------------
 
@@ -178,38 +234,33 @@ class MockDataSource(DataSource):
         bbox: BBox | None = None,
     ) -> list[CueRecommendation]:
         when = self._resolve_t(t)
-        grid = self.criticality_grid(when, bbox)
-        scored_by_mmsi = {s.vessel.mmsi: s for s in self.scores_at(when)}
-        ranked = sorted(grid.cells, key=lambda cell: cell.cue_score, reverse=True)
-        ranked = [c for c in ranked if c.cue_score > 0.1][:top]
+        observations = [self._observation_for(mv, when) for mv in self._fleet]
+        if bbox is not None:
+            observations = [
+                observation
+                for observation in observations
+                if _in_bbox(
+                    observation["position"][0],
+                    observation["position"][1],
+                    bbox,
+                )
+            ]
+        ranked = rank_tasking(observations, top_n=top)
 
         cues: list[CueRecommendation] = []
-        for i, cell in enumerate(ranked, start=1):
-            # Sensor choice: a slow/loitering or AIS-dark driver -> SAR (all-weather,
-            # sees dark vessels); otherwise an optical confirmation pass.
-            drivers = [scored_by_mmsi[m] for m in cell.driver_mmsis if m in scored_by_mmsi]
-            top_driver = max(drivers, key=lambda s: s.suspicion, default=None)
-            sensor = SensorType.SAR if (top_driver and top_driver.suspicion >= 0.4) else SensorType.OPTICAL
-            if top_driver is not None and top_driver.suspicion >= 0.2:
-                why = (
-                    f"{top_driver.vessel.name or top_driver.vessel.mmsi}: "
-                    f"{top_driver.breakdown.why} Recommend a {sensor.value} pass."
-                )
-            else:
-                why = (
-                    f"High strategic criticality ({cell.criticality:.2f}); "
-                    f"persistent watch recommended ({sensor.value})."
-                )
+        for item in ranked:
+            cue_bbox = tuple(item["bbox"])
+            window = item["recommended_window"]
             cues.append(
                 CueRecommendation(
-                    rank=i,
-                    cell_id=cell.cell_id,
-                    bbox=cell.bbox,
-                    t=when,
-                    sensor=sensor,
-                    score=cell.cue_score,
-                    driver_mmsis=cell.driver_mmsis,
-                    why=why,
+                    rank=len(cues) + 1,
+                    cell_id=item["grid_id"],
+                    bbox=cue_bbox,
+                    t=datetime.fromisoformat(window["start"].replace("Z", "+00:00")),
+                    sensor=SensorType(window["sensor"]),
+                    score=item["score"],
+                    driver_mmsis=[int(driver) for driver in item["drivers"]],
+                    why=f"{item['explanation']} {item['disclaimer']}",
                 )
             )
         return cues
