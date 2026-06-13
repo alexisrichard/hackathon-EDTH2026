@@ -37,7 +37,9 @@ SCORES = {
     "power_cable":   0.95,
     "pipeline":      0.90,
     "chokepoint":    0.90,
+    "power_plant":   0.75,  # thermal; nuclear overridden to 0.90 per-feature
     "naval_base":    0.85,
+    "converter":     0.85,  # HVDC converter stations — subsea power-cable landings
     "energy_terminal": 0.80,
     "restricted_zone": 0.70,  # military / danger / exercise areas
     "port":          0.65,
@@ -71,6 +73,23 @@ def geom_dict(geom, prec: int = PREC) -> dict:
 def as_point(geom):
     """Representative point for any geometry."""
     return geom if geom.geom_type == "Point" else geom.centroid
+
+
+# Coastal band — drops far-inland clutter (Belarus oil fields, Scandinavian
+# micro-hydro) while keeping anything maritime-relevant. ~0.55° ≈ 40–60 km.
+_COAST_BAND = None
+
+
+def near_coast(geom) -> bool:
+    global _COAST_BAND
+    if _COAST_BAND is None:
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
+        cl = gpd.read_file(GEO / "ne_coastline_10m.geojson")
+        if cl.crs and cl.crs.to_epsg() != 4326:
+            cl = cl.to_crs(epsg=4326)
+        _COAST_BAND = prep(unary_union(list(cl.geometry)).buffer(0.55))
+    return _COAST_BAND.contains(as_point(geom))
 
 
 def load(name: str) -> gpd.GeoDataFrame:
@@ -303,9 +322,38 @@ def build_poi() -> None:
 
     refi = load("refineries_lng")
     for _, r in refi.iterrows():
+        if not near_coast(r.geometry):  # drops inland Belarus oil-field gathering stations
+            continue
         c = r.geometry.centroid
         name = first(r.to_dict(), "name", "operator") or "energy terminal"
         feats.append(poi(c.x, c.y, name, "energy_terminal"))
+
+    # power plants — strategic carriers only; nuclear scored highest + always kept
+    STRAT_SRC = ("nuclear", "gas", "coal", "oil", "diesel", "combined")
+    for _, r in load("power_plants").iterrows():
+        src = str(r.get("plant:source") or "").lower()
+        nuclear = "nuclear" in src or str(r.get("plant:method")) == "fission"
+        if not nuclear and not any(s in src for s in STRAT_SRC):
+            continue  # drop hydro / biomass / biogas / solar
+        if not nuclear and not near_coast(r.geometry):
+            continue  # keep all nuclear; coastal-clip thermal
+        g = as_point(r.geometry)
+        name = first(r.to_dict(), "name") or (f"{src.split(';')[0]} power plant" if src else "power plant")
+        f = poi(g.x, g.y, name, "power_plant")
+        f["properties"]["kind"] = "nuclear" if nuclear else (src.split(";")[0] or "thermal")
+        if nuclear:
+            f["properties"]["s"] = 0.90
+        feats.append(f)
+
+    # HVDC converter stations — subsea power-cable landings (substation=converter
+    # only; the bare power=converter tag is full of pipeline cathodic-protection units)
+    for _, r in load("converter_stations").iterrows():
+        if str(r.get("substation")) != "converter":
+            continue
+        if not near_coast(r.geometry):  # keep subsea-cable landings, drop inland AC/DC substations
+            continue
+        g = as_point(r.geometry)
+        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "HVDC converter", "converter"))
 
     for _, r in load("emodnet_windfarms_point").iterrows():
         g = as_point(r.geometry)

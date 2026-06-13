@@ -47,6 +47,8 @@ export const CAT_LABELS: Record<string, string> = {
   chokepoint: "Chokepoint",
   naval_base: "Naval base",
   energy_terminal: "Energy terminal",
+  power_plant: "Power plant",
+  converter: "HVDC converter",
   restricted_zone: "Restricted / exercise zone",
   port: "Port",
   windfarm: "Wind farm",

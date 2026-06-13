@@ -14,6 +14,8 @@ export type InfraCat =
   | "telecom_cable"
   | "power_cable"
   | "pipeline"
+  | "power_plant"
+  | "converter"
   | "energy_terminal"
   | "platform"
   | "windfarm"
@@ -35,6 +37,8 @@ export interface InfraCatMeta {
 export const INFRA_CATS: Record<InfraCat, InfraCatMeta> = {
   pipeline: { theme: "Energy", label: "Pipelines", kind: "line" },
   power_cable: { theme: "Energy", label: "Power cables", kind: "line" },
+  power_plant: { theme: "Energy", label: "Power plants (incl. nuclear)", kind: "point" },
+  converter: { theme: "Energy", label: "HVDC converters", kind: "point" },
   energy_terminal: { theme: "Energy", label: "Terminals / refineries", kind: "point" },
   platform: { theme: "Energy", label: "Offshore platforms", kind: "point" },
   windfarm: { theme: "Energy", label: "Wind farms", kind: "point" },
@@ -76,6 +80,8 @@ export const DEFAULT_OVERLAYS: OverlayState = {
     telecom_cable: true,
     power_cable: true,
     pipeline: true,
+    power_plant: true,
+    converter: true,
     energy_terminal: true,
     platform: true,
     windfarm: true,

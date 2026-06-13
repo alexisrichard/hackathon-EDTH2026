@@ -174,6 +174,28 @@ LAYERS: dict[str, str] = {
   way["man_made"="offshore_platform"];
 );
 """,
+    # Power plants (non-wind — wind is covered by offshore_wind). Strategic
+    # carriers only, to avoid sweeping in small solar/biomass installations.
+    "power_plants": """
+(
+  way["power"="plant"]["plant:source"~"nuclear|coal|gas|oil|hydro|diesel|geothermal|combined",i];
+  relation["power"="plant"]["plant:source"~"nuclear|coal|gas|oil|hydro|diesel|geothermal|combined",i];
+  way["power"="plant"]["plant:method"="fission"];
+  relation["power"="plant"]["plant:method"="fission"];
+);
+""",
+    # HVDC converter stations — where subsea power cables (Estlink, NordBalt,
+    # Baltic Cable, NordLink…) come ashore. Prime targets, on-thesis.
+    "converter_stations": """
+(
+  node["power"="substation"]["substation"="converter"];
+  way["power"="substation"]["substation"="converter"];
+  relation["power"="substation"]["substation"="converter"];
+  node["power"="converter"];
+  way["power"="converter"];
+  relation["power"="converter"];
+);
+""",
     # Offshore wind: target wind farms as relations/areas. Baltic-specific tags.
     "offshore_wind": """
 (
