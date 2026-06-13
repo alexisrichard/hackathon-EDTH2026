@@ -19,6 +19,7 @@ from pathlib import Path
 import boto3
 import duckdb
 import folium
+import geopandas as gpd
 import numpy as np
 import rasterio
 from rasterio.transform import xy as rio_xy
@@ -327,6 +328,57 @@ def build_nordstream_map(out_html: Path):
             str(sar_png), bounds=bounds, opacity=0.55,
             name="Sentinel-1 SAR (Sep 29 16:37 UTC)",
         ).add_to(m)
+
+    # CFAR detection overlay
+    detections_path = ROOT / "detections_nordstream.geojson"
+    if detections_path.exists():
+        dets = gpd.read_file(detections_path)
+        # Separate matched and dark, filter to high-confidence
+        matched_dets = dets[~dets["dark_vessel"] & (dets["confidence"] >= 0.7)]
+        dark_dets    = dets[dets["dark_vessel"]  & (dets["confidence"] >= 0.93)]
+        print(f"  CFAR matched (conf≥0.7): {len(matched_dets)}  dark (conf≥0.93): {len(dark_dets)}")
+
+        det_layer_matched = folium.FeatureGroup(name=f"SAR detections — AIS-matched ({len(matched_dets)})", show=True)
+        for _, r in matched_dets.iterrows():
+            name  = r["matched_name"] or "Unknown"
+            mmsi  = int(r["matched_mmsi"]) if r["matched_mmsi"] else "?"
+            tip   = f"✅ AIS-matched: {name} (MMSI {mmsi})<br>SAR confidence: {r['confidence']:.2f}"
+            folium.CircleMarker(
+                [r.geometry.y, r.geometry.x],
+                radius=5, color="#00ff88", fill=True, fill_opacity=0.9,
+                tooltip=tip,
+            ).add_to(det_layer_matched)
+        det_layer_matched.add_to(m)
+
+        det_layer_dark = folium.FeatureGroup(name=f"SAR detections — NO AIS / dark ({len(dark_dets)})", show=True)
+        for _, r in dark_dets.iterrows():
+            tip = (
+                f"⚠️ Dark vessel (no AIS match within 2 km)<br>"
+                f"SAR confidence: {r['confidence']:.2f}<br>"
+                f"Nearest AIS: {r['dist_km']:.1f} km"
+            )
+            radius = 7 if r["confidence"] >= 1.0 else 5
+            folium.CircleMarker(
+                [r.geometry.y, r.geometry.x],
+                radius=radius, color="#ff4444", fill=True, fill_opacity=0.85,
+                tooltip=tip,
+            ).add_to(det_layer_dark)
+        det_layer_dark.add_to(m)
+
+    # Legend
+    legend_html = """
+    <div style="position:fixed;bottom:30px;left:30px;z-index:1000;
+                background:rgba(0,0,0,0.75);color:#fff;padding:12px 16px;
+                border-radius:8px;font-size:13px;line-height:1.8">
+      <b>Nord Stream — SAR Dark-Vessel Detection</b><br>
+      <span style="color:#00ccff">●</span> AIS-broadcasting vessel (in area ±6h)<br>
+      <span style="color:#00ff88">●</span> SAR detection matched to AIS<br>
+      <span style="color:#ff4444">●</span> SAR detection — NO AIS (dark vessel)<br>
+      <span style="color:#ff0000">●</span> Explosion site<br>
+      <span style="color:#ff6600">——</span> Nord Stream pipeline (approx)
+    </div>
+    """
+    m.get_root().html.add_child(folium.Element(legend_html))
 
     folium.LayerControl().add_to(m)
     m.save(str(out_html))

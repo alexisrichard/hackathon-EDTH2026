@@ -315,12 +315,10 @@ def load_ais_snapshot(
     # Collect the S3 paths for the day(s) that overlap the time window
     days_needed = set()
     cur = t_from.date()
-    while cur <= t_to.date():
+    end = t_to.date()
+    while cur <= end:
         days_needed.add(cur)
-        cur = cur.replace(day=cur.day + 1) if cur.day < 28 else (cur + timedelta(days=1)).date()
-        if cur > t_to.date():
-            break
-    days_needed.add(t_to.date())
+        cur += timedelta(days=1)
 
     paths = []
     for d in sorted(days_needed):
