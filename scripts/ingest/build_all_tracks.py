@@ -83,10 +83,17 @@ def main(argv: list[str]) -> int:
 
     done = 0
     kf = 0
-    with ProcessPoolExecutor(max_workers=workers) as ex:
+    # max_tasks_per_child recycles workers so per-day pandas memory can't creep
+    # and OOM-kill a worker (which would poison the whole pool).
+    with ProcessPoolExecutor(max_workers=workers, max_tasks_per_child=8) as ex:
         futs = {ex.submit(_build_one, d): d for d in todo}
         for f in as_completed(futs):
-            r = f.result()
+            try:
+                r = f.result()
+            except Exception as e:  # a dead worker shouldn't abort the batch
+                print(f"  [{done}/{len(todo)}] {futs[f]} POOL-ERROR {str(e)[:80]}", flush=True)
+                done += 1
+                continue
             done += 1
             if "error" in r:
                 print(f"  [{done}/{len(todo)}] {r['date']} ERROR {r['error']}", flush=True)
