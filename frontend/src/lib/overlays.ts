@@ -21,6 +21,7 @@ export type InfraCat =
   | "windfarm"
   | "port"
   | "anchorage"
+  | "shipping_lane"
   | "naval_base"
   | "restricted_zone";
 
@@ -43,6 +44,7 @@ export const INFRA_CATS: Record<InfraCat, InfraCatMeta> = {
   windfarm: { theme: "Energy", label: "Wind farms", kind: "point" },
   telecom_cable: { theme: "Telecom", label: "Submarine cables", kind: "line" },
   port: { theme: "Transport", label: "Ports (commercial/naval)", kind: "point" },
+  shipping_lane: { theme: "Transport", label: "Shipping lanes (TSS)", kind: "line" },
   anchorage: { theme: "Transport", label: "Anchorages", kind: "point" },
   naval_base: { theme: "Military", label: "Naval bases", kind: "point" },
   restricted_zone: { theme: "Military", label: "Restricted / exercise zones", kind: "zone" },
@@ -69,6 +71,7 @@ export interface OverlayState {
     other: boolean;
     labels: boolean;
   };
+  fishing: { intensity: boolean };
   analysis: { heatmap: boolean };
 }
 
@@ -84,11 +87,13 @@ export const DEFAULT_OVERLAYS: OverlayState = {
     platform: true,
     windfarm: true,
     port: true,
+    shipping_lane: true,
     anchorage: false, // off by default — shadow-fleet loitering context, toggle on as needed
     naval_base: true,
     restricted_zone: true,
   },
   vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: true, labels: true },
+  fishing: { intensity: false }, // big contextual heatmap — off by default
   analysis: { heatmap: false },
 };
 

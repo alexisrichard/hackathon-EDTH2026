@@ -112,6 +112,12 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   }
   const f = o as GeoFeature;
   const p = f.properties ?? {};
+  if (p.fhr !== undefined) {
+    return { html: `<b>Fishing intensity</b><br/>${Number(p.fhr).toFixed(0)} fishing-hours / cell (HELCOM 2020)` };
+  }
+  if (p.cat === "shipping_lane") {
+    return { html: `<b>Shipping lane</b><br/>Traffic separation scheme · ${String(p.name ?? "")}` };
+  }
   if (p.cat !== undefined) {
     const n = Number(p.n ?? 1);
     const extra = p.kind ? ` · ${String(p.kind)}` : n > 1 ? ` · ${n} sites merged` : "";
@@ -136,6 +142,29 @@ function buildLayers(
 ): Layer[] {
   const layers: Layer[] = [];
   const { atlas, mapping } = buildIconAtlas();
+
+  // ---- fishing intensity heatmap (green — where trawling actually happens) ----
+  if (geo && ov.fishing.intensity) {
+    layers.push(
+      new HeatmapLayer({
+        id: "fishing-intensity",
+        data: geo.fishing.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getWeight: (f: GeoFeature) => Number(f.properties.fhr),
+        radiusPixels: 40,
+        intensity: 1,
+        threshold: 0.05,
+        colorRange: [
+          [16, 70, 55, 60],
+          [24, 120, 90, 110],
+          [60, 170, 110, 150],
+          [150, 210, 90, 180],
+          [220, 235, 130, 205],
+          [245, 250, 170, 230],
+        ],
+      }),
+    );
+  }
 
   // ---- analysis: unified strategic heatmap (all POIs, theme-independent) ----
   if (geo && ov.analysis.heatmap) {
@@ -231,11 +260,13 @@ function buildLayers(
         } as never),
       );
     }
-    if (lineCats.size) {
+    // solid infrastructure lines (cables, pipelines)
+    const solidCats = new Set([...lineCats].filter((c) => c !== "shipping_lane"));
+    if (solidCats.size) {
       layers.push(
         new GeoJsonLayer({
           id: "infra-lines",
-          data: { ...geo.infra, features: geo.infra.features.filter((f) => lineCats.has(String(f.properties.cat))) },
+          data: { ...geo.infra, features: geo.infra.features.filter((f) => solidCats.has(String(f.properties.cat))) },
           stroked: true,
           filled: false,
           getLineColor: (f: GeoFeature) => INFRA_COLORS[String(f.properties.cat)] ?? [143, 163, 184, 120],
@@ -243,6 +274,24 @@ function buildLayers(
           lineWidthUnits: "pixels",
           pickable: true,
         }),
+      );
+    }
+    // shipping lanes — dashed, muted (routing context, not a target)
+    if (lineCats.has("shipping_lane")) {
+      layers.push(
+        new GeoJsonLayer({
+          id: "shipping-lanes",
+          data: { ...geo.infra, features: geo.infra.features.filter((f) => f.properties.cat === "shipping_lane") },
+          stroked: true,
+          filled: false,
+          getLineColor: [125, 150, 190, 95],
+          getLineWidth: 1,
+          lineWidthUnits: "pixels",
+          extensions: [new PathStyleExtension({ dash: true })],
+          getDashArray: [6, 5],
+          dashJustified: false,
+          pickable: true,
+        } as never),
       );
     }
     if (poiCats.size) {

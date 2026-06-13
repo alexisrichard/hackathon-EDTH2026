@@ -45,6 +45,7 @@ SCORES = {
     "windfarm":      0.60,
     "platform":      0.60,
     "anchorage":     0.40,
+    "shipping_lane": 0.25,  # context line, not a target (score unused for rendering)
     # lighthouses dropped — navigation aids, not strategic targets
 }
 
@@ -222,9 +223,16 @@ def build_lines() -> None:
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "pipeline", "pipeline"))
 
+    # Shipping lanes — IMO traffic separation schemes (lane/boundary/line).
+    tss = load("osm_tss")
+    tss = tss[tss.geometry.geom_type == "LineString"]
+    for _, r in tss.iterrows():
+        label = str(r.get("seamark:type") or "").replace("separation_", "").replace("_", " ") or "shipping lane"
+        feats.append(line_feature(r.geometry.simplify(0.003), label, "shipping_lane"))
+
     dump(OUT / "infra_lines.json", feats, {
         "source": "OSM (ODbL) + EMODnet Human Activities (CC-BY 4.0)",
-        "categories": {k: SCORES[k] for k in ("telecom_cable", "power_cable", "pipeline")},
+        "categories": {k: SCORES[k] for k in ("telecom_cable", "power_cable", "pipeline", "shipping_lane")},
     })
 
 
@@ -413,9 +421,39 @@ def build_zones() -> None:
     })
 
 
+# ---- 5 · fishing intensity (heatmap input) -----------------------------------
+# HELCOM AIS-derived fishing effort. `fhr` = fishing hours per 0.05° cell.
+# Lets an operator spot a "fishing" vessel working where nobody actually fishes
+# — the fake-trawler tell. Coverage: SW Baltic / Kattegat–Bornholm (2020 Q1).
+def build_fishing() -> None:
+    print("[fishing]")
+    g = load("helcom_fishing_intensity_total_2016_2021")
+    feats: list[dict] = []
+    for _, r in g.iterrows():
+        fhr = r.get("fhr")
+        if not isinstance(fhr, (int, float)) or fhr <= 0:
+            continue
+        lon, lat = r.get("lon"), r.get("lat")
+        if not isinstance(lon, (int, float)) or not isinstance(lat, (int, float)):
+            c = r.geometry.centroid
+            lon, lat = c.x, c.y
+        feats.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [round(float(lon), 3), round(float(lat), 3)]},
+            "properties": {"fhr": round(float(fhr), 1)},
+        })
+    dump(OUT / "fishing_intensity.json", feats, {
+        "source": "HELCOM AIS-derived fishing intensity, gear total, 2020 Q1",
+        "field": "fhr = fishing hours per ~0.05° cell",
+        "coverage": "SW Baltic / Kattegat–Bornholm (HELCOM extent)",
+        "note": "zero-effort cells dropped",
+    })
+
+
 if __name__ == "__main__":
     build_jurisdiction()
     build_lines()
     build_poi()
     build_zones()
+    build_fishing()
     print("done.")

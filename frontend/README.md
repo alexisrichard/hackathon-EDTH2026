@@ -16,13 +16,16 @@ npm run dev          # → http://localhost:5173
 - **Geography** — country borders + EEZ + 12 nm territorial seas (Marine Regions), with
   ISO zone codes labelled along the maritime lines.
 - **Infrastructure** — per-category toggles grouped by theme, each with a select-all master:
-  *Energy* (pipelines · power cables · terminals · platforms · wind), *Telecom* (submarine
-  cables), *Transport* (commercial/naval ports · anchorages · chokepoints), *Military*
-  (naval bases · restricted/exercise zones, rendered as red dashed areas).
-- **Geopoints** — ~840 scored & **clustered** POI sites colored by **v1 strategic score**
-  + optional **heatmap**. Lighthouses dropped (nav aids, not targets); ports filtered to
-  working harbours; anchorages off by default. Data + scoring weights:
-  `scripts/geo/build_web_layers.py` → `public/data/*.json`.
+  *Energy* (pipelines · power cables · **power plants incl. nuclear** · **HVDC converters** ·
+  terminals · platforms · wind), *Telecom* (submarine cables), *Transport* (commercial/naval
+  ports · **shipping lanes / TSS** · anchorages), *Military* (naval bases · restricted/exercise
+  zones, red dashed areas).
+- **Fishing** — HELCOM fishing-intensity heatmap (green): where trawling actually happens, so a
+  "fishing" vessel working *outside* these grounds stands out (the fake-trawler tell). SW Baltic coverage.
+- **Geopoints** — ~1,000 scored & **clustered** POI sites colored by **v1 strategic score**
+  + optional strategic **heatmap**. Lighthouses dropped; ports filtered to working harbours;
+  energy/power layers coastal-clipped (drops inland oil-field clutter); anchorages off by
+  default. Data + scoring weights: `scripts/geo/build_web_layers.py` → `public/data/*.json`.
 - **Mock AIS fleet** — EAGLE S scripted incident + ~110 synthetic vessels on Baltic +
   North Sea lanes (`src/mock/fleet.ts`), shape=type / color=suspicion per the shared
   encoding. Replay clock: play/pause/speed/scrub; the suspicion arc crosses the

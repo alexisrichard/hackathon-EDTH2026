@@ -129,6 +129,14 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         onToggle={() => set({ vessels: { ...overlays.vessels, labels: !overlays.vessels.labels } })}
       />
 
+      <div className="hd">Fishing</div>
+      <Row
+        label="Fishing intensity (HELCOM)"
+        checked={overlays.fishing.intensity}
+        onToggle={() => set({ fishing: { intensity: !overlays.fishing.intensity } })}
+        hint="Where trawling actually happens — a 'fishing' vessel working outside these grounds is the tell. SW Baltic coverage."
+      />
+
       <div className="hd">Analysis</div>
       <Row
         label="Strategic heatmap"
