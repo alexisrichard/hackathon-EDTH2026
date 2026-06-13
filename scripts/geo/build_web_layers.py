@@ -92,6 +92,31 @@ def near_coast(geom) -> bool:
     return _COAST_BAND.contains(as_point(geom))
 
 
+# Tight (~8 km) coastline band — a subsea cable "lands" here. Used to drop
+# OSM cable fragments that dead-end in open water (incomplete traces).
+_LANDING_BAND = None
+
+
+def lands_on_coast(geom) -> bool:
+    """True if BOTH endpoints of a (Multi)LineString are near a coast (coast-to-coast)."""
+    global _LANDING_BAND
+    if _LANDING_BAND is None:
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
+        cl = gpd.read_file(GEO / "ne_coastline_10m.geojson")
+        if cl.crs and cl.crs.to_epsg() != 4326:
+            cl = cl.to_crs(epsg=4326)
+        _LANDING_BAND = prep(unary_union(list(cl.geometry)).buffer(0.08))
+    from shapely.geometry import Point
+    if geom.geom_type == "MultiLineString":
+        cs = [p for ln in geom.geoms for p in ln.coords]
+    else:
+        cs = list(geom.coords)
+    if len(cs) < 2:
+        return False
+    return _LANDING_BAND.contains(Point(cs[0])) and _LANDING_BAND.contains(Point(cs[-1]))
+
+
 def load(name: str) -> gpd.GeoDataFrame:
     gdf = gpd.read_file(GEO / f"{name}.geojson")
     if gdf.crs and gdf.crs.to_epsg() != 4326:
@@ -207,14 +232,24 @@ def build_lines() -> None:
     print("[infra lines]")
     feats: list[dict] = []
 
+    # Coast-to-coast only: subsea cables must land on two shores. Drops OSM
+    # fragments that dead-end in open water (incomplete traces).
     cables = load("submarine_cables")
     cables = cables[cables.geometry.length > 0.03]  # drop harbor stubs
+    kept = dropped = 0
     for _, r in cables.iterrows():
+        if not lands_on_coast(r.geometry):
+            dropped += 1
+            continue
+        kept += 1
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "submarine cable", "telecom_cable"))
+    print(f"    telecom cables: kept {kept} coast-to-coast, dropped {dropped} dead-ending", flush=True)
 
     power = load("submarine_power_cables")
     for _, r in power.iterrows():
+        if not lands_on_coast(r.geometry):
+            continue
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "power cable", "power_cable"))
 
