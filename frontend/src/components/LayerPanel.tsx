@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 import {
-  INFRA_THEMES,
+  INFRA_CATS,
+  INFRA_THEME_ORDER,
+  catsInTheme,
   VESSEL_GROUP_LABELS,
+  type InfraCat,
   type OverlayState,
   type VesselGroup,
 } from "../lib/overlays";
@@ -32,10 +35,9 @@ function Row({
   );
 }
 
-/** Group header with a select-all / deselect-all master checkbox
- *  (indeterminate when the group is mixed). */
+/** Group header with a select-all / deselect-all master (indeterminate when mixed). */
 function GroupHead({ title, states, onAll }: { title: string; states: boolean[]; onAll: (v: boolean) => void }) {
-  const all = states.every(Boolean);
+  const all = states.length > 0 && states.every(Boolean);
   const none = states.every((s) => !s);
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -54,30 +56,20 @@ function GroupHead({ title, states, onAll }: { title: string; states: boolean[];
 export default function LayerPanel({ overlays, onChange }: Props) {
   const set = (next: Partial<OverlayState>) => onChange({ ...overlays, ...next });
   const vesselGroups = Object.keys(VESSEL_GROUP_LABELS) as VesselGroup[];
-  const infraThemes = Object.keys(INFRA_THEMES) as (keyof OverlayState["infra"])[];
 
-  const setAllGeo = (v: boolean) => set({ geo: { borders: v, territorial: v, eez: v } });
-  const setAllInfra = (v: boolean) =>
-    set({ infra: { energy: v, telecom: v, transport: v, military: v } });
-  const setAllVessels = (v: boolean) =>
-    set({
-      vessels: {
-        ...overlays.vessels,
-        cargo: v,
-        tanker: v,
-        fishing: v,
-        passenger: v,
-        military: v,
-        other: v,
-      },
-    });
+  const setInfra = (cat: InfraCat, v: boolean) => set({ infra: { ...overlays.infra, [cat]: v } });
+  const setInfraMany = (cats: InfraCat[], v: boolean) => {
+    const infra = { ...overlays.infra };
+    cats.forEach((c) => (infra[c] = v));
+    set({ infra });
+  };
 
   return (
     <div className="float layer-panel">
       <GroupHead
         title="Geography"
         states={[overlays.geo.borders, overlays.geo.territorial, overlays.geo.eez]}
-        onAll={setAllGeo}
+        onAll={(v) => set({ geo: { borders: v, territorial: v, eez: v } })}
       />
       <Row
         label="Country borders"
@@ -89,24 +81,40 @@ export default function LayerPanel({ overlays, onChange }: Props) {
         checked={overlays.geo.territorial}
         onToggle={() => set({ geo: { ...overlays.geo, territorial: !overlays.geo.territorial } })}
       />
-      <Row
-        label="EEZ"
-        checked={overlays.geo.eez}
-        onToggle={() => set({ geo: { ...overlays.geo, eez: !overlays.geo.eez } })}
-      />
+      <Row label="EEZ" checked={overlays.geo.eez} onToggle={() => set({ geo: { ...overlays.geo, eez: !overlays.geo.eez } })} />
       <Row label="Rescue zones (SRR)" checked={false} disabled hint="no open dataset yet — TODO" />
 
-      <GroupHead title="Infrastructure" states={infraThemes.map((t) => overlays.infra[t])} onAll={setAllInfra} />
-      {infraThemes.map((theme) => (
-        <Row
-          key={theme}
-          label={INFRA_THEMES[theme].label}
-          checked={overlays.infra[theme]}
-          onToggle={() => set({ infra: { ...overlays.infra, [theme]: !overlays.infra[theme] } })}
-        />
-      ))}
+      <div className="section-label">Infrastructure</div>
+      {INFRA_THEME_ORDER.map((theme) => {
+        const cats = catsInTheme(theme);
+        return (
+          <div key={theme} className="infra-theme">
+            <GroupHead
+              title={theme}
+              states={cats.map((c) => overlays.infra[c])}
+              onAll={(v) => setInfraMany(cats, v)}
+            />
+            {cats.map((c) => (
+              <Row
+                key={c}
+                label={INFRA_CATS[c].label}
+                checked={overlays.infra[c]}
+                onToggle={() => setInfra(c, !overlays.infra[c])}
+              />
+            ))}
+          </div>
+        );
+      })}
 
-      <GroupHead title="Vessels" states={vesselGroups.map((g) => overlays.vessels[g])} onAll={setAllVessels} />
+      <GroupHead
+        title="Vessels"
+        states={vesselGroups.map((g) => overlays.vessels[g])}
+        onAll={(v) =>
+          set({
+            vessels: { ...overlays.vessels, cargo: v, tanker: v, fishing: v, passenger: v, military: v, other: v },
+          })
+        }
+      />
       {vesselGroups.map((g) => (
         <Row
           key={g}

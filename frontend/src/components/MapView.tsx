@@ -16,7 +16,7 @@ import { colorForSuspicion, colorForSensor, shapeForShipType } from "../types/en
 import type { GeoLayers, GeoFeature } from "../lib/geodata";
 import { CAT_LABELS, pointCoords } from "../lib/geodata";
 import { buildIconAtlas, ROTATABLE } from "../lib/icons";
-import { INFRA_THEMES, type OverlayState } from "../lib/overlays";
+import { enabledCats, type OverlayState } from "../lib/overlays";
 import type { MockVesselState } from "../mock/fleet";
 import { CUE_BBOX, CUE_FIRES_T, EAGLE_S_MMSI } from "../mock/fleet";
 import { BREACH_T, fmtZ } from "../lib/clock";
@@ -114,9 +114,9 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   const p = f.properties ?? {};
   if (p.cat !== undefined) {
     const n = Number(p.n ?? 1);
-    const sites = n > 1 ? ` · ${n} sites merged` : "";
+    const extra = p.kind ? ` · ${String(p.kind)}` : n > 1 ? ` · ${n} sites merged` : "";
     return {
-      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat}${sites} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
+      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat}${extra} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
     };
   }
   if (p.zone !== undefined) {
@@ -208,15 +208,29 @@ function buildLayers(
     }
   }
 
-  // ---- infrastructure (thematic) ----
+  // ---- infrastructure (per-category) ----
   if (geo) {
-    const lineCats = new Set<string>();
-    const poiCats = new Set<string>();
-    (Object.keys(INFRA_THEMES) as (keyof OverlayState["infra"])[]).forEach((theme) => {
-      if (!ov.infra[theme]) return;
-      INFRA_THEMES[theme].lines.forEach((c) => lineCats.add(c));
-      INFRA_THEMES[theme].pois.forEach((c) => poiCats.add(c));
-    });
+    const lineCats = enabledCats(ov.infra, "line");
+    const poiCats = enabledCats(ov.infra, "point");
+
+    // restricted / military zones (polygons)
+    if (ov.infra.restricted_zone) {
+      layers.push(
+        new GeoJsonLayer({
+          id: "restricted-zones",
+          data: geo.zones,
+          stroked: true,
+          filled: true,
+          getFillColor: [255, 69, 56, 26],
+          getLineColor: [255, 69, 56, 150],
+          getLineWidth: 1.2,
+          lineWidthUnits: "pixels",
+          extensions: [new PathStyleExtension({ dash: true })],
+          getDashArray: [4, 3],
+          pickable: true,
+        } as never),
+      );
+    }
     if (lineCats.size) {
       layers.push(
         new GeoJsonLayer({

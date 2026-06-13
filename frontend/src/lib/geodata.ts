@@ -13,6 +13,7 @@ export interface GeoLayers {
   jurisdiction: FC;
   infra: FC;
   poi: FC;
+  zones: FC;
 }
 
 async function fetchJson(path: string): Promise<FC> {
@@ -25,12 +26,13 @@ async function fetchJson(path: string): Promise<FC> {
 }
 
 export async function loadGeoLayers(): Promise<GeoLayers> {
-  const [jurisdiction, infra, poi] = await Promise.all([
+  const [jurisdiction, infra, poi, zones] = await Promise.all([
     fetchJson("/data/jurisdiction.json"),
     fetchJson("/data/infra_lines.json"),
     fetchJson("/data/poi.json"),
+    fetchJson("/data/zones.json"),
   ]);
-  return { jurisdiction, infra, poi };
+  return { jurisdiction, infra, poi, zones };
 }
 
 /** Pull [lon, lat] out of a Point feature (poi.json is points-only). */
@@ -45,9 +47,9 @@ export const CAT_LABELS: Record<string, string> = {
   chokepoint: "Chokepoint",
   naval_base: "Naval base",
   energy_terminal: "Energy terminal",
+  restricted_zone: "Restricted / exercise zone",
   port: "Port",
   windfarm: "Wind farm",
   platform: "Platform",
   anchorage: "Anchorage",
-  lighthouse: "Light",
 };

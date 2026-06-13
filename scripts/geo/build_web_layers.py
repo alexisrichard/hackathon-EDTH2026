@@ -39,12 +39,16 @@ SCORES = {
     "chokepoint":    0.90,
     "naval_base":    0.85,
     "energy_terminal": 0.80,
+    "restricted_zone": 0.70,  # military / danger / exercise areas
     "port":          0.65,
     "windfarm":      0.60,
     "platform":      0.60,
     "anchorage":     0.40,
-    "lighthouse":    0.30,
+    # lighthouses dropped — navigation aids, not strategic targets
 }
+
+# Working harbours only — OSM tags ~2,200 recreational marinas as "ports".
+COMMERCIAL_PORTS = {"cargo", "container", "bulk", "passenger", "ferry", "naval", "fishing"}
 
 PREC = 4  # coordinate decimals (~11 m)
 
@@ -290,11 +294,12 @@ def build_poi() -> None:
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "chokepoint", "chokepoint"))
 
     ports = load("ports")
-    ports = ports[ports["leisure"].isna()] if "leisure" in ports.columns else ports
-    named = ports[ports.apply(lambda r: bool(first(r.to_dict(), "name", "seamark:name")), axis=1)]
-    for _, r in named.iterrows():
+    for _, r in ports.iterrows():
+        cat = str(r.get("seamark:harbour:category") or "")
+        if cat not in COMMERCIAL_PORTS:  # skip the ~2,200 recreational marinas
+            continue
         g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "seamark:name"), "port"))
+        feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "seamark:name") or f"{cat} harbour", "port"))
 
     refi = load("refineries_lng")
     for _, r in refi.iterrows():
@@ -318,17 +323,6 @@ def build_poi() -> None:
         g = r.geometry.centroid
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "description") or "anchorage", "anchorage"))
 
-    lh = load("osm_lighthouses")
-    def lh_range(r):
-        try:
-            return float(str(r.get("seamark:light:range", "")).split(";")[0])
-        except (ValueError, TypeError):
-            return 0.0
-    lh = lh[lh.apply(lambda r: lh_range(r) >= 12 or bool(first(r.to_dict(), "name")), axis=1)]
-    for _, r in lh.iterrows():
-        g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "light", "lighthouse"))
-
     feats = cluster_all(feats)
     dump(OUT / "poi.json", feats, {
         "source": "OSM (ODbL), EMODnet (CC-BY 4.0), hand-curated chokepoints",
@@ -338,8 +332,47 @@ def build_poi() -> None:
     })
 
 
+# ---- 4 · restricted / military zones (polygons) -------------------------------
+# OSM tags 1,277 "restricted areas" but most are bird sanctuaries / nature
+# reserves / swimming areas. Keep only the defense-relevant ones.
+ZONE_CATEGORIES = {"military", "safety"}  # seamark:restricted_area:category
+
+
+def build_zones() -> None:
+    print("[zones]")
+    g = load("osm_restricted_areas")
+    feats: list[dict] = []
+    def clean(v) -> str:  # geopandas missing values are NaN floats -> "nan"
+        s = str(v).strip()
+        return "" if s.lower() in ("nan", "none", "") else s
+
+    for _, r in g.iterrows():
+        p = r.to_dict()
+        cat = clean(p.get("seamark:restricted_area:category"))
+        mil = clean(p.get("military"))  # training_area / danger_area / range
+        if cat not in ZONE_CATEGORIES and not mil:
+            continue
+        geom = r.geometry
+        if geom is None or geom.is_empty:
+            continue
+        geom = geom.simplify(0.004)
+        kind = mil.replace("_", " ") if mil else cat
+        name = first(p, "name", "seamark:name") or f"{kind} zone"
+        feats.append({
+            "type": "Feature",
+            "geometry": geom_dict(geom, prec=4),
+            "properties": {"cat": "restricted_zone", "name": name, "kind": kind, "s": SCORES["restricted_zone"]},
+        })
+    dump(OUT / "zones.json", feats, {
+        "source": "OSM seamark restricted_area (ODbL), filtered to military/danger/safety",
+        "note": "excludes bird sanctuaries, nature reserves, swimming areas (not defense-relevant)",
+        "score": SCORES["restricted_zone"],
+    })
+
+
 if __name__ == "__main__":
     build_jurisdiction()
     build_lines()
     build_poi()
+    build_zones()
     print("done.")
