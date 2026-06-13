@@ -15,7 +15,7 @@ import { TileManager, type VesselFix } from "./lib/trackStore";
 import { scoreFix, cueFor, SUSPECT_MMSI } from "./lib/scenario";
 import { colorForSensor } from "./types/encoding";
 
-const TILES_BASE = "/data/ais";
+const TILES_BASE = "/data/ais_v2"; // stitched, self-aligned tiles (no runtime merge)
 const CUE_THRESHOLD = 0.6;
 
 // A scored vessel = a real interpolated fix + interim suspicion.

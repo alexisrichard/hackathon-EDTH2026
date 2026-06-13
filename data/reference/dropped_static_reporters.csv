@@ -1,0 +1,3976 @@
+mmsi,reason,span_km,ping_count,name,type
+0,base_station,724.926,27656,MMSI 0,other
+1,base_station,480.465,485,Duopilen,other
+2,base_station,312.361,4,MMSI 2,other
+5,base_station,378.16,159,Skanti Uais 2000,other
+148,base_station,780.717,2339,Ss Martha St,military
+192,base_station,133.344,74,MMSI 192,other
+211,base_station,270.72,21,MMSI 211,other
+636,base_station,123.208,74,Kinyras,tanker
+1001,base_station,534.928,36,Airborne Sar,other
+1024,stationary,0.011,2,MMSI 1024,other
+2116,stationary,0.015,2,MMSI 2116,other
+2157,base_station,350.487,8,Aw139,other
+2165,base_station,489.286,51,MMSI 2165,other
+2328,base_station,19.054,5,MMSI 2328,other
+2332,base_station,645.314,642,MMSI 2332,other
+2352,base_station,99.343,830,MMSI 2352,other
+3638,stationary,0.089,816,3638,other
+4747,stationary,0.003,6,MMSI 4747,other
+5322,base_station,1074.23,3297,M/S Jan2,other
+8192,stationary,0.01,2,MMSI 8192,other
+49111,base_station,626.611,63,Test,other
+49114,base_station,740.779,45,Test,other
+261505,base_station,322.45,547,Sar0511,military
+262195,stationary,0.0,2,MMSI 262195,other
+305036,base_station,502.414,416,Kaie,cargo
+736224,base_station,8.155,3,Greif,fishing
+1037330,base_station,107.536,62,Wench,other
+1168452,base_station,74.157,4,MMSI 1168452,other
+1193046,base_station,139.592,130,MMSI 1193046,other
+2112454,stationary,0.0,4,MMSI 2112454,other
+2112481,stationary,0.0,2,MMSI 2112481,other
+2112521,stationary,0.0,2,MMSI 2112521,other
+2112522,stationary,0.0,2,MMSI 2112522,other
+2112641,base_station,13.498,8,MMSI 2112641,other
+2112642,base_station,13.498,7,MMSI 2112642,other
+2112643,stationary,0.0,6,MMSI 2112643,other
+2112644,stationary,0.0,6,MMSI 2112644,other
+2180172,stationary,0.019,22,MMSI 2180172,other
+2180173,stationary,0.041,18,MMSI 2180173,other
+2182607,stationary,0.008,74,MMSI 2182607,other
+2182801,stationary,0.011,36,MMSI 2182801,other
+2182803,stationary,0.007,74,MMSI 2182803,other
+2182805,stationary,0.012,74,MMSI 2182805,other
+2182807,base_station,32.626,1381,MMSI 2182807,other
+2182809,stationary,0.021,1192,MMSI 2182809,other
+2182811,stationary,0.031,260,MMSI 2182811,other
+2182813,stationary,0.013,648,MMSI 2182813,other
+2182815,stationary,0.004,18,MMSI 2182815,other
+2189827,stationary,0.0,2,MMSI 2189827,other
+2190047,stationary,0.006,3202,MMSI 2190047,other
+2190048,base_station,0.322,2357,MMSI 2190048,other
+2190049,base_station,96.116,3203,MMSI 2190049,other
+2190051,base_station,825.804,3187,MMSI 2190051,other
+2190052,base_station,261.93,3141,MMSI 2190052,other
+2190064,base_station,194.566,3203,MMSI 2190064,other
+2190067,stationary,0.003,2350,MMSI 2190067,other
+2190068,base_station,20.164,3204,MMSI 2190068,other
+2190069,base_station,0.763,3203,MMSI 2190069,other
+2190072,base_station,205.836,3199,MMSI 2190072,other
+2190073,base_station,74.815,3203,MMSI 2190073,other
+2190074,stationary,0.011,3196,MMSI 2190074,other
+2190075,base_station,267.313,3206,MMSI 2190075,other
+2190076,base_station,0.766,3224,MMSI 2190076,other
+2190077,base_station,71.433,3213,MMSI 2190077,other
+2194016,stationary,0.019,3182,MMSI 2194016,other
+2300046,stationary,0.009,4,MMSI 2300046,other
+2300047,stationary,0.007,6,MMSI 2300047,other
+2300048,stationary,0.004,12,MMSI 2300048,other
+2300049,stationary,0.023,6,MMSI 2300049,other
+2300050,stationary,0.013,60,MMSI 2300050,other
+2300051,stationary,0.007,66,MMSI 2300051,other
+2300052,stationary,0.011,88,MMSI 2300052,other
+2300053,stationary,0.006,68,MMSI 2300053,other
+2300066,stationary,0.001,2,MMSI 2300066,other
+2300071,stationary,0.002,2,MMSI 2300071,other
+2300072,stationary,0.006,8,MMSI 2300072,other
+2300073,stationary,0.008,30,MMSI 2300073,other
+2300075,stationary,0.009,92,MMSI 2300075,other
+2300077,stationary,0.001,2,MMSI 2300077,other
+2300082,stationary,0.003,2,MMSI 2300082,other
+2300084,stationary,0.012,44,MMSI 2300084,other
+2300087,stationary,0.003,2,MMSI 2300087,other
+2300088,stationary,0.008,32,MMSI 2300088,other
+2300104,stationary,0.003,2,MMSI 2300104,other
+2300105,stationary,0.005,10,MMSI 2300105,other
+2300106,stationary,0.01,18,MMSI 2300106,other
+2300107,stationary,0.008,104,MMSI 2300107,other
+2300108,stationary,0.007,20,MMSI 2300108,other
+2300117,stationary,0.007,2,MMSI 2300117,other
+2300119,stationary,0.005,30,MMSI 2300119,other
+2300120,stationary,0.006,8,MMSI 2300120,other
+2300121,stationary,0.019,2,MMSI 2300121,other
+2300122,stationary,0.003,2,MMSI 2300122,other
+2300130,stationary,0.013,20,MMSI 2300130,other
+2573104,stationary,0.009,96,MMSI 2573104,other
+2573105,base_station,1.563,170,MMSI 2573105,other
+2573110,stationary,0.089,640,MMSI 2573110,other
+2573115,base_station,10.457,3135,MMSI 2573115,other
+2573120,stationary,0.014,400,MMSI 2573120,other
+2576179,stationary,0.002,2,MMSI 2576179,other
+2576189,stationary,0.0,2,MMSI 2576189,other
+2579999,base_station,847.638,3338,MMSI 2579999,other
+2610400,stationary,0.001,92,MMSI 2610400,other
+2610800,stationary,0.002,2820,MMSI 2610800,other
+2611260,stationary,0.004,262,MMSI 2611260,other
+2611270,stationary,0.003,176,MMSI 2611270,other
+2611400,stationary,0.001,254,MMSI 2611400,other
+2611800,stationary,0.003,1046,MMSI 2611800,other
+2614100,stationary,0.003,818,MMSI 2614100,other
+2614200,stationary,0.0,1094,MMSI 2614200,other
+2614300,base_station,0.878,1313,MMSI 2614300,other
+2614400,base_station,77.047,2947,MMSI 2614400,other
+2614500,base_station,54.716,2539,MMSI 2614500,other
+2614700,base_station,5.348,3063,MMSI 2614700,other
+2614800,base_station,24.319,1820,MMSI 2614800,other
+2614823,stationary,0.0,2,MMSI 2614823,other
+2614900,stationary,0.006,12,MMSI 2614900,other
+2616700,stationary,0.003,766,MMSI 2616700,other
+2616900,stationary,0.003,530,MMSI 2616900,other
+2618101,stationary,0.003,1148,MMSI 2618101,other
+2618104,stationary,0.001,2,MMSI 2618104,other
+2650542,stationary,0.003,2,MMSI 2650542,other
+2655014,stationary,0.0,4,MMSI 2655014,other
+2655021,stationary,0.002,3202,MMSI 2655021,other
+2655025,stationary,0.0,4,MMSI 2655025,other
+2655030,stationary,0.0,6,MMSI 2655030,other
+2655040,stationary,0.002,14,MMSI 2655040,other
+2655065,stationary,0.0,14,MMSI 2655065,other
+2655069,stationary,0.0,32,MMSI 2655069,other
+2655075,stationary,0.003,146,MMSI 2655075,other
+2655080,stationary,0.004,208,MMSI 2655080,other
+2655085,stationary,0.001,264,MMSI 2655085,other
+2655087,stationary,0.003,744,MMSI 2655087,other
+2655090,base_station,31.885,189,MMSI 2655090,other
+2655100,stationary,0.002,356,MMSI 2655100,other
+2655101,stationary,0.002,96,MMSI 2655101,other
+2655105,stationary,0.006,400,MMSI 2655105,other
+2655110,stationary,0.003,452,MMSI 2655110,other
+2655115,base_station,0.577,1298,MMSI 2655115,other
+2655120,base_station,27.032,2497,MMSI 2655120,other
+2655125,base_station,0.475,3195,MMSI 2655125,other
+2655130,stationary,0.003,3202,MMSI 2655130,other
+2655135,stationary,0.003,3202,MMSI 2655135,other
+2655140,base_station,1.664,3203,MMSI 2655140,other
+2655146,stationary,0.002,3202,MMSI 2655146,other
+2655148,stationary,0.004,3202,MMSI 2655148,other
+2655150,base_station,3.194,3230,MMSI 2655150,other
+2655153,stationary,0.004,3202,MMSI 2655153,other
+2655155,stationary,0.002,478,MMSI 2655155,other
+2655160,stationary,0.001,1726,MMSI 2655160,other
+2655161,stationary,0.003,2230,MMSI 2655161,other
+2655162,stationary,0.004,596,MMSI 2655162,other
+2655170,stationary,0.002,2960,MMSI 2655170,other
+2655180,stationary,0.003,1168,MMSI 2655180,other
+2655185,base_station,120.527,2890,MMSI 2655185,other
+2665101,stationary,0.0,4,MMSI 2665101,other
+2665150,stationary,0.0,2,MMSI 2665150,other
+2731260,base_station,0.644,166,MMSI 2731260,other
+2731272,stationary,0.002,90,MMSI 2731272,other
+2731282,stationary,0.003,238,MMSI 2731282,other
+2734451,stationary,0.0,2,MMSI 2734451,other
+2734462,stationary,0.002,148,MMSI 2734462,other
+2734469,stationary,0.0,2,MMSI 2734469,other
+2734488,stationary,0.002,328,MMSI 2734488,other
+2750110,stationary,0.0,6,MMSI 2750110,other
+2750120,base_station,90.695,8,MMSI 2750120,other
+2750150,stationary,0.006,116,MMSI 2750150,other
+2750160,stationary,0.002,136,MMSI 2750160,other
+2750170,stationary,0.0,44,MMSI 2750170,other
+2750180,stationary,0.004,178,MMSI 2750180,other
+2750190,stationary,0.002,174,MMSI 2750190,other
+2766000,stationary,0.008,30,MMSI 2766000,other
+2766010,base_station,0.678,84,MMSI 2766010,other
+2766020,stationary,0.113,48,MMSI 2766020,other
+2766030,base_station,0.212,111,MMSI 2766030,other
+2766040,stationary,0.006,32,MMSI 2766040,other
+2766050,stationary,0.01,86,MMSI 2766050,other
+2766060,stationary,0.006,54,MMSI 2766060,other
+2766080,stationary,0.0,2,MMSI 2766080,other
+2766100,stationary,0.004,6,MMSI 2766100,other
+2766140,stationary,0.001,4,MMSI 2766140,other
+2766190,stationary,0.0,2,MMSI 2766190,other
+2770030,base_station,4.225,22,Klaipedavts,other
+2770090,stationary,0.004,236,MMSI 2770090,other
+2770100,stationary,0.004,42,MMSI 2770100,other
+2770110,stationary,0.001,16,MMSI 2770110,other
+2855000,stationary,0.035,14,MMSI 2855000,other
+9000010,stationary,0.009,2,Onwashenzhen,other
+9000016,base_station,30.303,7,Onwashenzhen,other
+9000180,base_station,32.603,16,Onwashenzhen,other
+9000366,stationary,0.0,2,Onwashenzhen,other
+9000517,base_station,23.581,20,Onwashenzhen,other
+9001444,base_station,195.561,28,MMSI 9001444,other
+9004549,stationary,0.002,2,Onwashenzhen,other
+9004575,stationary,0.002,2,Onwashenzhen,other
+9005049,base_station,28.291,55,Onwashenzhen,other
+9107448,base_station,2.317,129,Onwa7448,other
+9109416,base_station,31.577,187,Onwa9416,other
+9112856,base_station,18.524,195,MMSI 9112856,other
+9117243,stationary,0.008,80,Onwa17243,other
+9119386,stationary,0.011,20,Onwa19386,other
+9125609,base_station,57.113,6,Onwa25609,other
+9127116,base_station,53.345,27,Onwa27116,other
+9127986,base_station,71.155,471,Onwa27986,pleasure
+9128328,base_station,56.013,13,Onwa28328,other
+9129299,stationary,0.001,2,Onwa29299,other
+9129369,stationary,0.001,2,MMSI 9129369,other
+9129386,stationary,0.001,2,Onwa29386,other
+9129479,base_station,69.44,78,Onwa29479,other
+9129484,base_station,64.894,8,Onwa29484,other
+9129506,base_station,111.989,81,Onwa29506,other
+9129512,base_station,13.473,173,Onwa29512,other
+9130259,stationary,0.075,4,Onwa30259,other
+9130389,base_station,1.015,3,Onwa30389,other
+9130620,base_station,1.333,8,MMSI 9130620,other
+9130695,base_station,129.396,85,Onwa30695,other
+9130700,base_station,325.293,149,Onwa30700,other
+9130730,base_station,42.133,151,MMSI 9130730,other
+9130753,base_station,231.496,44,MMSI 9130753,other
+9130789,stationary,0.001,2,Onwa30789,other
+9130986,stationary,0.13,2,MMSI 9130986,other
+9131532,stationary,0.002,2,MMSI 9131532,other
+9131535,base_station,7.759,16,Onwa31535,other
+9131690,stationary,0.003,22,2210900172B,other
+9132056,base_station,2.675,8,Onwa32056,other
+9132628,stationary,0.004,2,Onwa32628,other
+9132759,base_station,27.834,84,Onwa 1,other
+9133094,base_station,252.112,8,Onwa33094,other
+9133117,stationary,0.002,2,Onwa33117,pleasure
+9133759,stationary,0.011,12,Onwa33759,other
+9133972,base_station,22.056,27,Onwa33972,other
+9134186,base_station,49.13,157,Onwa34186,other
+9134196,stationary,0.0,2,Onwa34196,pleasure
+9134212,stationary,0.003,2,Onwa34212,pleasure
+9134220,stationary,0.0,2,Onwa34220,pleasure
+9134229,stationary,0.002,6,Onwa34229,pleasure
+9134560,base_station,40.402,14,Onwa34560 Thode,other
+9136322,stationary,0.007,10,Onwa36322,pleasure
+9137939,base_station,135.249,104,MMSI 9137939,other
+9139278,stationary,0.001,2,Onwa39278,pleasure
+9140847,stationary,0.015,4,Onwa40847,other
+9141477,stationary,0.012,2,Onwa41477,pleasure
+9143846,stationary,0.004,2,Onwa43846,other
+9225695,base_station,32.079,6,Mv Argus,other
+9700098,base_station,45.183,143,Keep Clear 0.25 N 10,fishing
+11265529,base_station,529.315,1083,MMSI 11265529,other
+11505840,base_station,0.831,2,MMSI 11505840,other
+13060554,base_station,114.309,62,Net Boj Gg237 Marika,other
+13070585,base_station,39.951,62,Keep Clear 2Nm   -00,other
+14090841,stationary,0.111,2,MMSI 14090841,other
+16085558,base_station,62.78,52,MMSI 16085558,other
+16286976,stationary,0.007,2,MMSI 16286976,other
+16724282,stationary,0.004,2,MMSI 16724282,other
+19149114,stationary,0.024,2,MMSI 19149114,other
+21135600,base_station,88.556,150,Hansekogge,other
+21801711,stationary,0.033,16,MMSI 21801711,other
+24922400,stationary,0.007,2,Cgas Triger,tanker
+26550330,base_station,15.76,7,Swedish Warship,other
+26570873,stationary,0.006,2,Net-Buoy Gg34    -00,other
+33182800,base_station,0.612,8,Polar Nattoralik Mob,other
+42456723,base_station,28.017,31,MMSI 42456723,other
+76974222,base_station,297.537,24,Sy Wookiee,pleasure
+76989782,base_station,50.352,16,Hope,other
+77069722,base_station,13.511,5,Crazyboats Solo Sail,other
+77679002,base_station,1.834,3,Savfisk,other
+77679122,base_station,18.606,8,54Nord,pleasure
+91800006,stationary,0.001,2,Onwa33Nt 60%,fishing
+91800007,stationary,0.05,2,Onwa33Nt 35%,other
+91800067,base_station,5.341,6,L 237 East End,fishing
+91800068,base_station,2.682,5,L 237 West End 06,fishing
+91800072,base_station,3.797,7,L 237 West End,other
+91800113,base_station,5.542,6,L237 East End 07,fishing
+91800128,base_station,2.615,4,L237 East End 07,fishing
+91800198,stationary,0.007,2,Onwa33Nt 82%,fishing
+91800265,base_station,119.284,11,MMSI 91800265,other
+91806066,stationary,0.022,2,Onwa33Nt 84%,other
+91808888,base_station,101.116,264,Onwa33Nt,fishing
+97000031,base_station,16.914,48,Keep Clear 0.5Nm,fishing
+97000033,stationary,0.0,2,Keep Clear 0.5Nm,other
+97000046,base_station,61.783,365,Keep Clear 0.5Nm 78%,fishing
+97000047,base_station,146.116,201,Net Boj To Ragna  10,fishing
+97000048,base_station,87.535,1372,Keep Clear 0.5 Nm 98,other
+97000050,base_station,81.037,965,Keep Clear 0.5Nm 09,other
+97000070,base_station,117.064,1102,Keep Clear 0.5Nm 100,fishing
+97000071,base_station,45.317,153,Keep Clear 0.5Nm 100,fishing
+97000090,base_station,64.565,991,Keep Clear 0.5Nm 94%,other
+97000091,base_station,123.885,2996,Keep Clear 0.5 Nm 10,fishing
+97000092,base_station,90.341,701,Keep Clear 0.25Nm 94,fishing
+97000093,base_station,123.5,1519,Keep Clear 0.25Nm 91,fishing
+97000099,stationary,0.004,2,Keep Clear 0.25Nm 79,fishing
+97000100,base_station,106.02,496,Keep Clear 0.25Nm 10,other
+97000101,base_station,53.29,340,Keep Clear 0.25Nm 10,other
+97000102,base_station,79.292,168,Keep Clear 0.25Nm 10,fishing
+97000103,base_station,80.3,348,Keep Clear 0.25Nm 37,other
+97001001,base_station,147.311,226,Bouy Gg237 Marika 10,other
+97001101,base_station,6.679,2,Hm94 Anchor Buoy 97%,fishing
+99912345,base_station,13.539,6,Karel Doorman,other
+99999999,base_station,143.316,43,MMSI 99999999,other
+109010172,stationary,0.008,2,109010172,other
+109040090,stationary,0.046,14,Iver Grej,other
+109050026,stationary,0.059,2,Breda [Dk],pleasure
+109050787,stationary,0.034,4,109050787,other
+109060056,stationary,0.0,2,Nesegutten Bouy,other
+109060219,stationary,0.046,2,Stormbryn Bouy,other
+109080049,stationary,0.011,2,Gg760 Terneskar Bouy,other
+111265133,stationary,0.023,58,Ffk133,other
+116666682,stationary,0.0,2,MMSI 116666682,other
+117440512,stationary,0.003,2,MMSI 117440512,other
+117473316,stationary,0.011,2,MMSI 117473316,other
+118632762,stationary,0.008,2,MMSI 118632762,other
+119000050,stationary,0.002,6,Stalnabb,other
+119000151,stationary,0.02,2,Sara Iii,pleasure
+119000174,stationary,0.001,2,Onwashenzhen,fishing
+119000177,stationary,0.001,2,Onwashenzhen,other
+119000734,stationary,0.001,2,Onwashenzhen,other
+119000736,stationary,0.013,2,Onwashenzhen,other
+119000782,stationary,0.0,2,Onwashenzhen,other
+119001027,stationary,0.001,2,MMSI 119001027,other
+119001472,stationary,0.002,2,Onwashenzhen,other
+119001499,stationary,0.003,2,Onwashenzhen,other
+119001510,stationary,0.0,2,MMSI 119001510,other
+119001554,stationary,0.001,2,Onwashenzhen,other
+119001664,stationary,0.003,4,Sy Pinguin,pleasure
+119001842,stationary,0.002,2,Onwashenzhen,other
+119001970,stationary,0.007,2,Onwashenzhen,other
+119002145,stationary,0.022,14,Onwashenzhen,other
+119002156,stationary,0.004,2,MMSI 119002156,other
+119002163,stationary,0.004,2,Onwashenzhen,other
+119002371,stationary,0.004,2,Onwashenzhen,other
+119002907,stationary,0.003,2,Onwashenzhen,other
+119002910,stationary,0.003,2,Onwashenzhen,other
+119002938,stationary,0.0,2,Onwashenzhen,other
+119013226,stationary,0.0,2,MMSI 119013226,other
+139211066,stationary,0.002,2,MMSI 139211066,other
+140849466,stationary,0.04,2,MMSI 140849466,other
+200736224,stationary,0.147,2,MMSI 200736224,other
+205192685,stationary,0.014,210,MMSI 205192685,other
+205268490,stationary,0.003,4,MMSI 205268490,other
+205278330,stationary,0.01,2,Marie Therese,other
+205380870,stationary,0.001,2,Fussel,other
+205539790,stationary,0.001,2,MMSI 205539790,other
+209020378,stationary,0.002,4,MMSI 209020378,other
+209783936,stationary,0.004,2,MMSI 209783936,other
+210017415,stationary,0.011,2,S/Y Cassiopeia,other
+210220000,stationary,0.001,2,MMSI 210220000,other
+210585000,stationary,0.002,4,MMSI 210585000,other
+210931500,stationary,0.001,2,Novah,other
+211000822,stationary,0.011,2,MMSI 211000822,other
+211001170,stationary,0.007,8,Horn,other
+211001230,stationary,0.002,4,Furuno Service,other
+211002150,stationary,0.006,2,MMSI 211002150,other
+211003520,stationary,0.002,6,Sam Service,passenger
+211003530,stationary,0.014,70,MMSI 211003530,other
+211003531,stationary,0.006,10,MMSI 211003531,other
+211024842,stationary,0.0,2,Ps Visurgis,other
+211037224,stationary,0.07,10,Yuna,other
+211100690,stationary,0.006,4,Maestra,other
+211103990,stationary,0.06,10,MMSI 211103990,other
+211105310,stationary,0.004,2,Shahin,other
+211106910,stationary,0.005,6,Magdalene 1,passenger
+211106920,stationary,0.003,2,MMSI 211106920,other
+211108770,stationary,0.008,4,Iona,other
+211109840,stationary,0.085,4,MMSI 211109840,other
+211109880,stationary,0.001,2,Nessie,other
+211111111,stationary,0.007,2,MMSI 211111111,other
+211113000,stationary,0.006,6,Phantom,other
+211114744,stationary,0.004,4,Teramba,other
+211118990,stationary,0.0,2,Seestern,pleasure
+211119330,stationary,0.002,4,Lunni,other
+211121290,stationary,0.007,2,Kleine Brise,other
+211122280,stationary,0.007,6,MMSI 211122280,other
+211125000,stationary,0.0,2,Freyja,other
+211126080,stationary,0.003,2,Maria,fishing
+211126910,stationary,0.003,4,Ninja,pleasure
+211129070,stationary,0.083,2,Argo,pleasure
+211131170,stationary,0.001,2,Xanten,other
+211131260,stationary,0.004,2,Sperber,other
+211131730,stationary,0.003,4,MMSI 211131730,other
+211133860,stationary,0.01,2,MMSI 211133860,other
+211141390,stationary,0.003,10,Grey Matter,other
+211142890,stationary,0.01,2,MMSI 211142890,other
+211146130,stationary,0.008,6,Luehe,other
+211156010,stationary,0.013,10,Sy Cocoon,pleasure
+211160320,stationary,0.006,4,Luettje Luv,other
+211160820,stationary,0.003,4,Heinemann Ii,pleasure
+211162070,stationary,0.008,6,MMSI 211162070,other
+211164480,stationary,0.003,2,Schnattchen,other
+211176800,stationary,0.003,4,Dreamer,other
+211178950,stationary,0.001,2,Hannah Nydahl,other
+211178970,stationary,0.079,2,Nadir,other
+211179870,stationary,0.001,2,MMSI 211179870,pleasure
+211180170,stationary,0.108,2,Relationship V,other
+211180750,stationary,0.005,12,Dorado,other
+211183000,stationary,0.199,4,Wencke,other
+211184800,stationary,0.009,34,Tweela,pleasure
+211189010,stationary,0.002,2,Lycka,other
+211191500,stationary,0.0,2,MMSI 211191500,other
+211192600,stationary,0.035,26,MMSI 211192600,other
+211192860,stationary,0.011,110,Muffel,other
+211195200,stationary,0.0,2,Riva,pleasure
+211199790,stationary,0.001,2,Barakita,pleasure
+211201750,stationary,0.003,2,Svemax,other
+211201810,stationary,0.003,2,Black Kiwi,other
+211208040,stationary,0.0,2,Neo Samana,other
+211211211,stationary,0.156,2,Tu,wing_in_ground
+211212470,stationary,0.002,124,MMSI 211212470,other
+211213880,stationary,0.002,2,MMSI 211213880,other
+211214890,stationary,0.003,2,Meerzeit,other
+211215130,stationary,0.002,2,MMSI 211215130,pleasure
+211216340,stationary,0.009,2,Frankfurt,other
+211216410,stationary,0.003,2,MMSI 211216410,other
+211216890,stationary,0.006,2,H.C.Hagemann 1,other
+211220470,stationary,0.007,10,MMSI 211220470,other
+211223540,stationary,0.011,480,MMSI 211223540,other
+211223620,stationary,0.006,10,MMSI 211223620,other
+211224160,stationary,0.0,2,Baby June,other
+211225380,stationary,0.004,2,Kehrheim,pleasure
+211225880,stationary,0.003,4,Last Minute,pleasure
+211226820,stationary,0.002,2,MMSI 211226820,other
+211227410,stationary,0.027,44,Schaarhoern,other
+211228220,stationary,0.041,2,Cora,tanker
+211228540,stationary,0.013,58,Searoad I,other
+211230380,stationary,0.023,8,Tigger,pleasure
+211230850,stationary,0.002,6,Y407,other
+211230910,stationary,0.052,152,MMSI 211230910,other
+211232150,stationary,0.006,32,Veritas Ii,pleasure
+211233260,stationary,0.03,2,Pi,other
+211234230,stationary,0.007,58,My Jassj,other
+211237210,stationary,0.002,10,Viking Dagur,other
+211243210,stationary,0.003,2,Ms Oldenburg,other
+211243240,stationary,0.002,8,MMSI 211243240,other
+211245360,stationary,0.0,2,MMSI 211245360,other
+211246180,stationary,0.13,48,MMSI 211246180,other
+211246600,stationary,0.008,22,MMSI 211246600,other
+211249950,stationary,0.022,2,Kalani,pleasure
+211252240,stationary,0.003,2,Ulla  Iii,other
+211252540,stationary,0.012,50,MMSI 211252540,other
+211263300,stationary,0.0,2,Chili,other
+211263800,stationary,0.009,8,Hochschule Wismar,other
+211265970,stationary,0.006,8,Flachmann 2,other
+211269730,stationary,0.003,2,MMSI 211269730,other
+211271540,stationary,0.158,12,Hanna,other
+211273160,stationary,0.003,2,Aglaia,pleasure
+211286830,stationary,0.12,8,MMSI 211286830,pleasure
+211287370,stationary,0.001,2,MMSI 211287370,other
+211287960,stationary,0.011,4,Milani,pleasure
+211288060,stationary,0.0,2,Beberich,pleasure
+211290390,stationary,0.001,2,MMSI 211290390,other
+211295740,stationary,0.089,2,MMSI 211295740,other
+211295810,stationary,0.006,24,Early Bird,other
+211300470,stationary,0.002,4,Oestersjoen,other
+211300600,stationary,0.012,16,Skamander,other
+211304080,stationary,0.001,2,MMSI 211304080,other
+211307920,stationary,0.011,206,Bonito,pleasure
+211309570,stationary,0.011,18,Ager,other
+211310840,stationary,0.003,6,Thetis,other
+211315520,stationary,0.006,4,Elbe 1,other
+211315831,stationary,0.132,4,Gyda,other
+211317590,stationary,0.007,10,MMSI 211317590,other
+211323640,stationary,0.052,2,Yucabay,other
+211325100,stationary,0.026,14,Beaufort,other
+211325290,stationary,0.027,4,MMSI 211325290,other
+211326240,stationary,0.013,2,Pivo 2,other
+211331480,stationary,0.0,2,De Vrouw Christina,pleasure
+211337230,stationary,0.152,4,Reinhold Deymann 1,other
+211338930,stationary,0.0,2,Sy Felix,other
+211341110,stationary,0.001,2,MMSI 211341110,other
+211342220,stationary,0.183,6,MMSI 211342220,other
+211342670,stationary,0.0,2,Anna Julia,other
+211344720,stationary,0.008,148,Kieler Sprotte,other
+211345940,stationary,0.001,2,My Kaept N P,pleasure
+211346400,stationary,0.0,2,MMSI 211346400,other
+211346660,stationary,0.002,18,MMSI 211346660,pleasure
+211348930,stationary,0.013,2,MMSI 211348930,other
+211351130,stationary,0.003,6,Arc En Ciel,other
+211361360,stationary,0.004,2,Volonte,other
+211362680,stationary,0.012,30,My Stroertebecker,other
+211370650,stationary,0.006,6,Kima,other
+211372320,stationary,0.002,2,Emylou,other
+211378560,stationary,0.002,2,Dicki,other
+211383350,stationary,0.002,2,Shannon,other
+211386770,stationary,0.009,78,Pacific,other
+211387760,stationary,0.003,2,White Pearl,other
+211388600,stationary,0.016,20,MMSI 211388600,other
+211390630,stationary,0.0,2,Knuff,other
+211392020,stationary,0.059,6,Wsp1,other
+211394690,stationary,0.001,2,MMSI 211394690,other
+211394840,stationary,0.004,2,Marco-Polo,other
+211400990,stationary,0.001,2,Pegasus,other
+211402980,stationary,0.002,2,Segelohr,other
+211403800,stationary,0.007,2,Zelda,other
+211403870,stationary,0.011,2,Yukeem,other
+211404490,stationary,0.001,2,Pyxis,pleasure
+211410960,stationary,0.003,4,Gaia,pleasure
+211422030,stationary,0.005,2,Quiet Storm,pleasure
+211425380,stationary,0.001,2,MMSI 211425380,other
+211437260,stationary,0.007,38,MMSI 211437260,other
+211440220,stationary,0.001,2,Bonavista,other
+211448520,stationary,0.008,6,Aller,other
+211454080,stationary,0.006,4,Trainer,pleasure
+211456240,stationary,0.002,2,MMSI 211456240,other
+211457790,stationary,0.006,6,MMSI 211457790,other
+211459430,stationary,0.004,4,MMSI 211459430,other
+211461030,stationary,0.004,8,MMSI 211461030,other
+211461710,stationary,0.003,4,MMSI 211461710,other
+211464260,stationary,0.014,12,Weser Pilot,other
+211466010,stationary,0.122,12,Saltkrokan,pleasure
+211469610,stationary,0.002,2,MMSI 211469610,other
+211470570,stationary,0.001,2,MMSI 211470570,other
+211470760,stationary,0.009,12,Kantara,pleasure
+211471190,stationary,0.011,2,Atlantic,other
+211471910,stationary,0.0,2,MMSI 211471910,other
+211473210,stationary,0.0,2,MMSI 211473210,other
+211474010,stationary,0.001,4,MMSI 211474010,other
+211474020,stationary,0.011,4,Ms Riehe,other
+211479010,stationary,0.005,10,Atlanta,pleasure
+211490880,stationary,0.035,70,Eb Kietz,other
+211494810,stationary,0.18,2,MMSI 211494810,other
+211496020,stationary,0.003,2,Asterix,other
+211497750,stationary,0.012,12,MMSI 211497750,other
+211499290,stationary,0.004,6,Ellen,other
+211499870,stationary,0.001,2,MMSI 211499870,other
+211505940,stationary,0.001,2,Werra,other
+211507170,stationary,0.0,4,Granit,other
+211508440,stationary,0.012,2,MMSI 211508440,other
+211510860,stationary,0.003,4,MMSI 211510860,other
+211511120,stationary,0.03,2,MMSI 211511120,other
+211511240,stationary,0.005,4,MMSI 211511240,other
+211511370,stationary,0.009,2,MMSI 211511370,other
+211512340,stationary,0.001,2,MMSI 211512340,other
+211513450,stationary,0.0,2,MMSI 211513450,other
+211514060,stationary,0.0,2,Lemy,other
+211514110,stationary,0.003,2,MMSI 211514110,other
+211514890,stationary,0.005,22,MMSI 211514890,other
+211516750,stationary,0.003,2,MMSI 211516750,other
+211516780,stationary,0.001,2,MMSI 211516780,other
+211517160,stationary,0.003,2,Arison,cargo
+211517490,stationary,0.135,4,MMSI 211517490,other
+211517620,stationary,0.006,4,MMSI 211517620,other
+211519320,stationary,0.012,2,Samaro,other
+211521080,stationary,0.003,2,MMSI 211521080,other
+211521860,stationary,0.005,4,Casa Maris,pleasure
+211522500,stationary,0.004,2,MMSI 211522500,other
+211522820,stationary,0.001,4,Josefin,other
+211529560,stationary,0.012,12,Hh 2015,cargo
+211529610,stationary,0.088,20,Hh 93,dredger
+211529690,stationary,0.017,852,Frisia Xiv,other
+211530830,stationary,0.075,2,Hanni,other
+211531070,stationary,0.0,4,MMSI 211531070,other
+211534430,stationary,0.008,4,Xanadu,other
+211534580,stationary,0.0,2,MMSI 211534580,other
+211537030,stationary,0.006,2,Mare Hh,other
+211537840,stationary,0.102,18,Sy Serefe,other
+211538230,stationary,0.014,130,Lady,pleasure
+211538260,stationary,0.001,2,MMSI 211538260,other
+211538940,stationary,0.001,2,Apprenticeship,pleasure
+211540030,stationary,0.014,52,Victoria,pleasure
+211540690,stationary,0.002,2,MMSI 211540690,other
+211542050,stationary,0.019,2,MMSI 211542050,other
+211542130,stationary,0.007,12,Koenig Wasa,other
+211543840,stationary,0.046,2,MMSI 211543840,other
+211544290,stationary,0.008,2,MMSI 211544290,other
+211545400,stationary,0.007,4,Dlrg Kiek Ut,other
+211546160,stationary,0.001,2,MMSI 211546160,other
+211548860,stationary,0.003,2,MMSI 211548860,other
+211549010,stationary,0.0,2,Aventura,pleasure
+211549360,stationary,0.0,2,Alaska,other
+211550190,stationary,0.001,2,MMSI 211550190,pleasure
+211552800,stationary,0.048,6,MMSI 211552800,other
+211553080,stationary,0.004,28,Falke,other
+211555450,stationary,0.007,8,Sl Aland,other
+211555840,stationary,0.0,6,June,pleasure
+211561650,stationary,0.168,2,MMSI 211561650,other
+211562700,stationary,0.001,2,Havelglueck,other
+211564200,stationary,0.006,6,Sweet Molly,pleasure
+211567350,stationary,0.013,16,Double O Seven,other
+211567620,stationary,0.001,2,Big Foot,other
+211573280,stationary,0.003,4,Kranslin,other
+211574410,stationary,0.0,2,MMSI 211574410,other
+211574730,stationary,0.011,4,Kruemel,other
+211577790,stationary,0.003,6,Guste Mewes,pleasure
+211578340,stationary,0.002,4,Vive La Vie,other
+211580350,stationary,0.002,2,MMSI 211580350,other
+211583130,stationary,0.003,4,MMSI 211583130,other
+211583150,stationary,0.076,18,MMSI 211583150,other
+211588410,stationary,0.138,4,MMSI 211588410,other
+211589150,stationary,0.008,2,Bluetooth,other
+211589990,stationary,0.007,64,MMSI 211589990,other
+211590980,stationary,0.001,2,MMSI 211590980,other
+211591320,stationary,0.0,2,MMSI 211591320,other
+211592060,stationary,0.01,4,Regina Sperling,other
+211593080,stationary,0.001,2,MMSI 211593080,other
+211596190,stationary,0.001,2,MMSI 211596190,other
+211596340,stationary,0.008,78,Second Try,other
+211608270,stationary,0.001,2,MMSI 211608270,other
+211609030,stationary,0.003,2,Elsa,other
+211615790,stationary,0.001,2,Nobile,other
+211626560,stationary,0.056,4,MMSI 211626560,other
+211626590,stationary,0.002,4,MMSI 211626590,other
+211627200,stationary,0.003,2,MMSI 211627200,other
+211627250,stationary,0.003,16,MMSI 211627250,other
+211628920,stationary,0.003,2,MMSI 211628920,other
+211630110,stationary,0.001,2,MMSI 211630110,other
+211633540,stationary,0.009,6,MMSI 211633540,other
+211635080,stationary,0.14,2,MMSI 211635080,other
+211638490,stationary,0.003,2,Nautilus,other
+211641090,stationary,0.189,8,MMSI 211641090,other
+211641200,stationary,0.002,2,Sy Pili-Pala,other
+211645300,stationary,0.016,8,MMSI 211645300,pleasure
+211647260,stationary,0.014,8,Aquamarin,other
+211647870,stationary,0.007,4,Moi,other
+211647910,stationary,0.174,2,MMSI 211647910,other
+211647990,stationary,0.003,2,MMSI 211647990,other
+211650830,stationary,0.132,2,MMSI 211650830,other
+211651950,stationary,0.009,4,Firestarter,other
+211655810,stationary,0.0,2,Sailaway,other
+211656340,stationary,0.004,2,Dauntless,other
+211657080,stationary,0.003,2,Legrema,other
+211657540,stationary,0.008,14,MMSI 211657540,other
+211659940,stationary,0.0,2,MMSI 211659940,other
+211662170,stationary,0.02,432,MMSI 211662170,other
+211663550,stationary,0.002,2,MMSI 211663550,other
+211663570,stationary,0.033,2,Molch,other
+211663860,stationary,0.0,2,Spandavia,other
+211664810,stationary,0.082,4,MMSI 211664810,other
+211667960,stationary,0.004,4,MMSI 211667960,other
+211668220,stationary,0.002,2,MMSI 211668220,other
+211670730,stationary,0.0,2,MMSI 211670730,other
+211671300,stationary,0.001,2,MMSI 211671300,other
+211672440,stationary,0.06,24,MMSI 211672440,other
+211673830,stationary,0.0,2,Dlrg Luebeck,other
+211675280,stationary,0.005,36,Henne,other
+211676250,stationary,0.003,2,Anakiwa,other
+211680660,stationary,0.014,6,Legrema,pleasure
+211682170,stationary,0.001,2,Joker,pleasure
+211684800,stationary,0.0,2,MMSI 211684800,other
+211685490,stationary,0.003,2,MMSI 211685490,other
+211691420,stationary,0.025,4,Carmen K.,other
+211698790,stationary,0.026,2,MMSI 211698790,other
+211701820,stationary,0.009,2,MMSI 211701820,other
+211705050,stationary,0.004,4,Saphir,pleasure
+211705350,stationary,0.002,2,MMSI 211705350,other
+211705550,stationary,0.008,12,Relax,other
+211709370,stationary,0.046,6,Seeadler,other
+211711650,stationary,0.003,4,MMSI 211711650,other
+211713390,stationary,0.006,18,Frigg,other
+211714340,stationary,0.002,2,Open-End,other
+211716810,stationary,0.006,16,MMSI 211716810,other
+211722690,stationary,0.032,2,Albatros,other
+211723520,stationary,0.015,68,Doggerbank,other
+211724460,stationary,0.001,2,MMSI 211724460,other
+211725480,stationary,0.002,6,Juist,other
+211728310,stationary,0.006,12,Lena,other
+211740780,stationary,0.0,2,Di Lucca,pleasure
+211745580,stationary,0.001,2,Josie,pleasure
+211746250,stationary,0.001,2,Wusel,other
+211750990,stationary,0.009,8,MMSI 211750990,other
+211754100,stationary,0.001,2,MMSI 211754100,other
+211754270,stationary,0.002,2,MMSI 211754270,other
+211754320,stationary,0.001,2,Widder,other
+211754840,stationary,0.005,20,MMSI 211754840,other
+211755400,stationary,0.003,4,Eised 2,other
+211759150,stationary,0.003,2,Aniwa,other
+211760700,stationary,0.003,2,MMSI 211760700,other
+211761920,stationary,0.038,12,Grosser Kurfuerst,other
+211762680,stationary,0.001,2,Giudecca,other
+211762930,stationary,0.069,2,Sirius,pleasure
+211763380,stationary,0.001,4,MMSI 211763380,other
+211765010,stationary,0.003,4,Suzanne,pleasure
+211765550,stationary,0.016,16,MMSI 211765550,other
+211768770,stationary,0.152,4,Ca Roule,other
+211768950,stationary,0.001,2,MMSI 211768950,other
+211770140,stationary,0.099,2,MMSI 211770140,other
+211771020,stationary,0.002,2,Thanjo,pleasure
+211773580,stationary,0.068,4,MMSI 211773580,other
+211776600,stationary,0.001,2,MMSI 211776600,other
+211777560,stationary,0.003,2,MMSI 211777560,other
+211777830,stationary,0.011,26,MMSI 211777830,other
+211778450,stationary,0.069,10,MMSI 211778450,other
+211779540,stationary,0.001,2,MMSI 211779540,other
+211781900,stationary,0.005,2,Bagger Stier,dredger
+211783880,stationary,0.043,22,Susanne,other
+211786420,stationary,0.001,2,MMSI 211786420,other
+211788920,stationary,0.01,4,Xerxes,other
+211789550,stationary,0.008,12,Lycka,other
+211796470,stationary,0.001,2,MMSI 211796470,other
+211797580,stationary,0.002,6,Flexi,other
+211800140,stationary,0.122,2,MMSI 211800140,other
+211800180,stationary,0.002,2,MMSI 211800180,other
+211801230,stationary,0.002,2,Offline,other
+211803020,stationary,0.003,2,Aurelia,other
+211803340,stationary,0.004,6,My Eyes Delight,other
+211806020,stationary,0.053,4,Yolo,pleasure
+211806910,stationary,0.004,2,Biene,other
+211807030,stationary,0.053,8,MMSI 211807030,other
+211809910,stationary,0.006,2,Alita,other
+211810110,stationary,0.039,4,MMSI 211810110,other
+211811600,stationary,0.003,6,Mio,pleasure
+211812750,stationary,0.005,2,Flinthoern,pleasure
+211814730,stationary,0.046,6,MMSI 211814730,pleasure
+211816290,stationary,0.001,4,MMSI 211816290,other
+211817610,stationary,0.0,2,Margaretha,other
+211821310,stationary,0.0,2,MMSI 211821310,other
+211822990,stationary,0.181,2070,Schwebefaehre,other
+211828110,stationary,0.001,2,Watenstedt,other
+211830650,stationary,0.006,2,Nahua,pleasure
+211834230,stationary,0.0,2,Gustav,other
+211835740,stationary,0.005,4,Ars Vivendi,other
+211837350,stationary,0.0,2,Doemitz,other
+211837710,stationary,0.007,10,Geraldine,other
+211837750,stationary,0.002,2,MMSI 211837750,pleasure
+211838060,stationary,0.006,6,Annegret,other
+211841140,stationary,0.001,4,MMSI 211841140,other
+211842170,stationary,0.002,2,Crumpet,other
+211844780,stationary,0.04,40,MMSI 211844780,other
+211846120,stationary,0.001,2,Pelian,other
+211848030,stationary,0.189,2,Lianca,other
+211848240,stationary,0.006,2,Seapearl,other
+211849950,stationary,0.01,8,J.N.,other
+211851840,stationary,0.019,2,Zoe Live,other
+211854900,stationary,0.031,26,Phie,other
+211856760,stationary,0.002,2,Keen Tied,other
+211857210,stationary,0.0,2,Sumerton,other
+211859920,stationary,0.175,33,Habicht,pleasure
+211877820,stationary,0.01,8,Peter Pan,other
+211879130,stationary,0.0,2,Margaret,other
+211879710,stationary,0.001,2,Jasmin,pleasure
+211884000,stationary,0.006,4,Luneplate,anti_pollution
+211887460,stationary,0.075,8,MMSI 211887460,other
+211890000,stationary,0.027,402,Kloar Kimming,other
+211890260,stationary,0.01,50,MMSI 211890260,other
+211892750,stationary,0.004,2,MMSI 211892750,other
+211894140,stationary,0.014,4,Haven Van Schlschl,pleasure
+211894590,stationary,0.0,2,Muelheim,other
+211897850,stationary,0.001,2,Mzb 35,other
+211899990,stationary,0.004,2,Pollux,other
+211918000,stationary,0.002,10,MMSI 211918000,other
+211999980,stationary,0.001,2,MMSI 211999980,other
+212121212,stationary,0.114,2,Yco,other
+214010365,stationary,0.001,2,MMSI 214010365,other
+218000170,stationary,0.011,2,Queen,other
+218001650,stationary,0.04,2,Luna,other
+218008330,stationary,0.0,2,Rob,other
+218011050,stationary,0.003,4,MMSI 218011050,other
+218011660,stationary,0.167,2,Seaquest,other
+218017340,stationary,0.0,2,Old Lady,pleasure
+218019940,stationary,0.01,6,Aaliyah,other
+218020500,stationary,0.006,2,MMSI 218020500,other
+218022590,stationary,0.141,96,Skipper,other
+218027190,stationary,0.1,16,Lotus,other
+218027360,stationary,0.002,2,Makker 21,other
+218029270,stationary,0.1,306,MMSI 218029270,other
+218031230,stationary,0.008,4,MMSI 218031230,other
+218032910,stationary,0.0,2,Teeklipper,other
+218033630,stationary,0.001,2,Chilltime,other
+218035220,stationary,0.0,2,Dorsten,other
+218035360,stationary,0.001,2,Spindrift,other
+218036210,stationary,0.018,8,Marabu,other
+218037530,stationary,0.04,2,MMSI 218037530,other
+218041620,stationary,0.007,4,Orion,other
+218041900,stationary,0.001,2,MMSI 218041900,other
+218043750,stationary,0.01,2,Frejas,other
+218046230,stationary,0.001,2,Trimare Ii,other
+218046500,stationary,0.007,80,Leeloo,other
+218048020,stationary,0.009,2,Relana,other
+218051530,stationary,0.0,2,MMSI 218051530,other
+218052070,stationary,0.008,6,Dafne,other
+218052500,stationary,0.017,18,Caru,other
+218053400,stationary,0.001,2,MMSI 218053400,other
+218053500,stationary,0.0,2,MMSI 218053500,other
+218054220,stationary,0.003,8,MMSI 218054220,other
+218058160,stationary,0.0,2,MMSI 218058160,other
+218058360,stationary,0.121,2,MMSI 218058360,other
+218060870,stationary,0.001,4,MMSI 218060870,other
+219000016,stationary,0.015,2,MMSI 219000016,other
+219000017,stationary,0.085,34,Telenautic,other
+219000076,stationary,0.147,168,Mrd1,other
+219000077,stationary,0.001,2,Mrd2,other
+219000225,stationary,0.011,1484,Slipshavn Mhv Skole,other
+219000338,stationary,0.018,8,MMSI 219000338,other
+219000339,stationary,0.061,2,MMSI 219000339,other
+219000342,stationary,0.006,2,Mrd6,other
+219000542,stationary,0.001,2,Sweet Dream,pleasure
+219001191,stationary,0.007,2,Dynekilen,cargo
+219001234,stationary,0.001,2,Andrea,other
+219001246,stationary,0.045,2,Servus,pilot
+219001614,stationary,0.034,40,Else To,other
+219002226,stationary,0.042,2250,Havternen,other
+219002847,stationary,0.065,138,Liv Hm93,other
+219002948,stationary,0.004,2,Etiva,pleasure
+219003847,stationary,0.005,6,MMSI 219003847,other
+219004183,stationary,0.098,36,MMSI 219004183,other
+219004247,stationary,0.009,10,Gefion,other
+219004333,stationary,0.001,2,Annette,other
+219004902,stationary,0.0,2,MMSI 219004902,other
+219005289,stationary,0.003,2,Dagmar,other
+219005325,stationary,0.009,8,Ddd,other
+219005938,stationary,0.004,4,Gitte Christina E325,fishing
+219006033,stationary,0.071,2,Luna,fishing
+219006038,stationary,0.001,2,Nd53,pleasure
+219006156,stationary,0.001,2,Nd140 Bettina,other
+219006257,stationary,0.003,2,Vibeke,other
+219006348,stationary,0.086,468,Zille 1,other
+219006592,stationary,0.008,6,Bolette Munkholm,other
+219006678,stationary,0.024,6,Kaperen,other
+219007108,stationary,0.033,36,S/Y Kamina,other
+219007319,stationary,0.011,2,Martin N,other
+219008931,stationary,0.0,2,T).!,other
+219008998,stationary,0.006,14,Better Than Fiction,other
+219009082,stationary,0.009,302,Boelgebabsen,other
+219009397,stationary,0.004,2,Elisabeth M,high_speed
+219010764,stationary,0.03,2764,Sunrise,other
+219011101,stationary,0.0,2,Pryedator,pleasure
+219011499,stationary,0.0,2,MMSI 219011499,other
+219011649,stationary,0.004,12,Rs 33 Louise Fusager,other
+219011790,stationary,0.002,2,Qi,other
+219011987,stationary,0.001,2,Ro,other
+219012283,stationary,0.009,2,Tinkerbell,other
+219012334,stationary,0.0,2,Test,other
+219012871,stationary,0.008,2,Mystique,other
+219012944,stationary,0.039,6,Nanoq,other
+219013225,stationary,0.0,2,MMSI 219013225,other
+219013495,stationary,0.006,2,Freja Af Mou,pleasure
+219014493,stationary,0.013,4,Njord,other
+219014798,stationary,0.125,6,MMSI 219014798,other
+219014906,stationary,0.004,2,Natali,other
+219015091,stationary,0.019,2,Sy Iris - Solosailor,other
+219015297,stationary,0.008,6,MMSI 219015297,other
+219015365,stationary,0.017,14,Inn-Star,other
+219015427,stationary,0.0,2,Vigen,tug
+219015693,stationary,0.045,56,Skipperpiben Xl,other
+219015813,stationary,0.002,2,Sputnik,pleasure
+219015816,stationary,0.006,10,Frk Himmelblaa 3,pleasure
+219016307,stationary,0.003,2,Heltripeka,pleasure
+219016548,stationary,0.153,82,Lady Swan,other
+219016595,stationary,0.005,2,MMSI 219016595,other
+219016718,stationary,0.02,2,Peach Melba,other
+219016889,stationary,0.013,42,Baggers,other
+219017011,stationary,0.001,2,Loke Viking Frc,other
+219017037,stationary,0.01,2,Westh-Point,other
+219017321,stationary,0.0,2,Jesper Saj,other
+219017541,stationary,0.022,2,Esvagt Dc 6,other
+219017782,stationary,0.086,10,Maersk Tackler,other
+219017783,stationary,0.009,2,Maersk Tracer,tug
+219018127,stationary,0.003,2,Pyrenees,other
+219018372,stationary,0.033,14,Bacon,pleasure
+219018489,stationary,0.006,2,Sar Bil Esbjerg,search_and_rescue
+219018515,stationary,0.004,4,MMSI 219018515,other
+219018624,stationary,0.01,10,MMSI 219018624,other
+219018754,stationary,0.002,4,Team Solyst,other
+219019453,stationary,0.059,26,Complex Ii,other
+219019579,stationary,0.008,2,A.P.Julica,other
+219019814,stationary,0.006,2,Esvagt Stb 7B 3,search_and_rescue
+219020030,stationary,0.046,34,Airborne,pleasure
+219021477,stationary,0.008,6,Saelen,other
+219021646,stationary,0.006,18,Styrbjoern Ii,pleasure
+219021823,stationary,0.0,2,X Mei,other
+219021954,stationary,0.003,2,Sibylle,other
+219022075,stationary,0.01,2,Gry,pleasure
+219022231,stationary,0.008,2,Nirwana,pleasure
+219022420,stationary,0.008,2,Team Suellen,other
+219022624,stationary,0.007,2,Christina,other
+219022708,stationary,0.004,2,Martine,other
+219022859,stationary,0.001,2,Soehesten Freja,other
+219023206,stationary,0.003,2,Scott Iv,other
+219023452,stationary,0.004,12,Sea Antelope,pleasure
+219023535,stationary,0.004,12,Strit,other
+219023561,stationary,0.004,2,Pern,other
+219023608,stationary,0.036,4,MMSI 219023608,other
+219023752,stationary,0.127,1604,Bla Fritid,other
+219023843,stationary,0.008,18,Sirius,other
+219024101,stationary,0.0,12,Ragnar,other
+219024199,stationary,0.006,478,MMSI 219024199,other
+219024237,stationary,0.012,2,Team M-Banden,pleasure
+219024274,stationary,0.002,2,Cassiopeia,pleasure
+219024980,stationary,0.064,2,MMSI 219024980,other
+219025078,stationary,0.01,14,Sea Star,other
+219025436,stationary,0.001,2,Maja,other
+219025498,stationary,0.019,16,Svend T,other
+219025557,stationary,0.004,4,Pegasus,other
+219025649,stationary,0.001,2,Havkrydseren,other
+219026290,stationary,0.02,8,China Girl,other
+219026718,stationary,0.006,10,Adele,other
+219026834,stationary,0.006,6,Karen,other
+219027022,stationary,0.006,8,Relax,pleasure
+219027065,stationary,0.003,2,Stena Forecaster,other
+219027160,stationary,0.011,48,7Sea,other
+219027276,stationary,0.036,4,MMSI 219027276,other
+219027287,stationary,0.001,8,Nette,other
+219027396,stationary,0.014,4,Sally,other
+219027733,stationary,0.004,4,Flender 2,pleasure
+219027780,stationary,0.003,2,Lille Bjorn Ii,other
+219028371,stationary,0.099,50,Loevehjerte,pleasure
+219028399,stationary,0.024,6,Miss Elvir,pleasure
+219028462,stationary,0.016,2,Angel,other
+219028582,stationary,0.07,4,3X2,other
+219028760,stationary,0.032,72,Luna,other
+219028782,stationary,0.008,4,Minos,other
+219028862,stationary,0.003,2,Hakuna Matata,other
+219029165,stationary,0.003,2,Cappuccino,other
+219029942,stationary,0.173,1800,Cariad,other
+219030079,stationary,0.016,4,Aarsleff 19,other
+219030122,stationary,0.006,2,Esvagt Frb 105,other
+219030123,stationary,0.001,2,Esvagt Frb 106,other
+219030352,stationary,0.069,4,Grady,other
+219030594,stationary,0.003,4,Dora,pleasure
+219030849,stationary,0.009,4,Endragon,pleasure
+219030940,stationary,0.009,4,Scarab Racing,pleasure
+219031024,stationary,0.0,2,Heimdal R,dredger
+219031067,stationary,0.013,26,La Vita,pleasure
+219031274,stationary,0.021,1358,Tunnel Harbour Rdby,other
+219031285,stationary,0.004,2,Lynet,other
+219031321,stationary,0.011,4,Carpe Diem,pleasure
+219031396,stationary,0.004,2,MMSI 219031396,other
+219031490,stationary,0.13,14,Fru Falck,other
+219031508,stationary,0.004,2,Arvika,pleasure
+219032041,stationary,0.03,6,Camille,other
+219032294,stationary,0.019,8,Nordlyset,pleasure
+219032319,stationary,0.004,6,Artemis,pleasure
+219033025,stationary,0.0,2,Ditteline,other
+219033108,stationary,0.007,2,MMSI 219033108,other
+219033201,stationary,0.137,34,Savannah,other
+219033350,stationary,0.02,2,Abelone,other
+219033809,stationary,0.001,2,Vsbv Asneas,other
+219033825,stationary,0.082,4,MMSI 219033825,other
+219033873,stationary,0.004,4,Laxen,other
+219033894,stationary,0.078,14,Jenny May,other
+219034113,stationary,0.008,84,Nirvana,pleasure
+219034157,stationary,0.019,16,My Love,other
+219034256,stationary,0.011,4,Ok Teqnik,other
+219034268,stationary,0.007,2,Wind Discovery,dredger
+219034353,stationary,0.046,768,Cgvance,anti_pollution
+219034497,stationary,0.022,72,Twiggy,pleasure
+219034647,stationary,0.009,90,Orion,other
+219034667,stationary,0.107,12,Sofie,other
+219034692,stationary,0.004,28,M/S Bech,other
+219034903,stationary,0.0,2,MMSI 219034903,other
+219034966,stationary,0.008,16,Merle,pleasure
+219034993,stationary,0.032,22,Josey,other
+219035157,stationary,0.011,42,Comedian,other
+219035159,stationary,0.058,20,Mie,other
+219035239,stationary,0.006,8,Alma,other
+219035359,stationary,0.003,4,MMSI 219035359,pleasure
+219035415,stationary,0.011,24,Sigfred,pleasure
+219035429,stationary,0.006,26,Neon,other
+219035504,stationary,0.054,208,Pasjo,pleasure
+219035545,stationary,0.003,38,Pontus,other
+219035569,stationary,0.022,16,Green Pearl,other
+219035629,stationary,0.009,160,Sophia,other
+219035636,stationary,0.001,2,MMSI 219035636,other
+219035704,stationary,0.009,8,Frigg,other
+219035713,stationary,0.028,12,Mentor,pleasure
+219035778,stationary,0.073,36,Siesta,other
+219035811,stationary,0.019,4,Mira,other
+219035838,stationary,0.003,2,Warrior,other
+219035906,stationary,0.012,26,Sofia,other
+219035914,stationary,0.04,4,Vejeroe 2,other
+219035927,stationary,0.004,2,Dolphin 04 Usv,other
+219035951,stationary,0.002,2,Roxy,other
+219035952,stationary,0.046,10,MMSI 219035952,other
+219035971,stationary,0.001,2,Caroline,passenger
+219035981,stationary,0.006,2,Undervejs,other
+219036007,stationary,0.001,2,Hyggen,pleasure
+219036024,stationary,0.004,2,Norma,other
+219036058,stationary,0.018,24,Fru Aaen,other
+219036072,stationary,0.017,20,Le Duck,other
+219036107,stationary,0.128,2,MMSI 219036107,other
+219036109,stationary,0.011,4,Ellen,other
+219036129,stationary,0.002,2,Vica,other
+219036165,stationary,0.0,2,Excalibur,other
+219036182,stationary,0.031,16,Edith Ii,pleasure
+219051000,stationary,0.001,2,Sar-Bil Klintholm,other
+219078000,stationary,0.004,2,Esvagt Delta,other
+219342000,stationary,0.006,390,MMSI 219342000,other
+219380055,stationary,0.013,2,Cobham_Satcom,other
+219380077,stationary,0.058,732,Testshiptwo,other
+219411000,stationary,0.0,2,Blue Beta,other
+219460000,stationary,0.0,2,Fob Swath 3,cargo
+219475000,stationary,0.012,8,Gitte,other
+219557624,stationary,0.041,18,MMSI 219557624,other
+219611000,stationary,0.026,1216,Furuno Test,pleasure
+219741000,stationary,0.065,428,Thorbjorn,other
+219905000,stationary,0.003,2,L68 Janga Bork,other
+219951000,stationary,0.001,2,Cassiopfia,other
+219999999,stationary,0.002,2,Test  Ais,other
+220015000,stationary,0.073,420,Havet,other
+220193000,stationary,0.118,22,Fortuna,other
+220592000,stationary,0.027,2,Maersk Terrier,tug
+220999999,stationary,0.006,6,Fls Test Ais,fishing
+221565280,stationary,0.0,2,Lys,other
+224046550,stationary,0.003,2,Saga,other
+227336250,stationary,0.006,2,Yomanaya,other
+227564750,stationary,0.013,70,Filia Maris,pleasure
+227923930,stationary,0.062,4,Speed Of Hope,other
+228314700,stationary,0.008,4,Sy Cocoon,other
+229000312,stationary,0.103,6,Cy Bishop'S Horizon,pleasure
+230067500,stationary,0.002,2,MMSI 230067500,other
+230110670,stationary,0.006,4,Seili,other
+230110890,stationary,0.001,2,MMSI 230110890,other
+230131090,stationary,0.002,2,MMSI 230131090,other
+230167500,stationary,0.02,2,Finke,other
+230168060,stationary,0.128,2,MMSI 230168060,other
+230175990,stationary,0.111,2,MMSI 230175990,other
+230180000,stationary,0.001,2,Rosella,other
+230182000,stationary,0.001,2,MMSI 230182000,other
+230914000,stationary,0.055,2,MMSI 230914000,other
+230938660,stationary,0.001,2,MMSI 230938660,other
+230980000,stationary,0.022,6,Uto,other
+231167000,stationary,0.003,2,Bordoyarnes,other
+231891090,stationary,0.019,2,Mars,other
+232019796,stationary,0.003,2,MMSI 232019796,other
+232025425,stationary,0.003,2,Hawila,other
+232036491,stationary,0.001,2,The Wee Hours,pleasure
+232039717,stationary,0.046,4,MMSI 232039717,other
+232039987,stationary,0.0,2,Distant Dreams,other
+232042786,stationary,0.006,6,Leia,other
+232043126,stationary,0.091,2,Triumph,pleasure
+232045695,stationary,0.036,6,Goelo Worker,other
+232051856,stationary,0.013,6,MMSI 232051856,other
+232055115,stationary,0.002,2,MMSI 232055115,other
+232055130,stationary,0.008,2,Sofd Tender Boat 8,other
+232058502,stationary,0.002,2,Ventura,other
+232058572,stationary,0.002,2,Sunshot,other
+232063802,stationary,0.056,2,MMSI 232063802,other
+232065093,stationary,0.008,6,Campina,other
+232065651,stationary,0.008,44,Abel-J,other
+232332952,stationary,0.001,2,Cgvance,other
+233333333,stationary,0.037,14,MMSI 233333333,other
+235020603,stationary,0.003,4,Amalia,other
+235021614,stationary,0.006,2,Sapphire,other
+235081131,stationary,0.001,2,MMSI 235081131,other
+235090535,stationary,0.002,2,Timberlend,other
+235104946,stationary,0.002,2,Abracadabra,pleasure
+235106228,stationary,0.006,8,Megans Dream,other
+237661300,stationary,0.001,2,Arion,other
+238634740,stationary,0.0,2,Lady S,other
+240900344,stationary,0.016,2,240900344,other
+244000628,stationary,0.006,2,Anna-Roza,other
+244001262,stationary,0.006,2,Meraki,other
+244002944,stationary,0.0,2,MMSI 244002944,other
+244022244,stationary,0.0,2,Bandit,pleasure
+244060412,stationary,0.0,2,MMSI 244060412,other
+244060997,stationary,0.026,58,Cor. 13:13,other
+244084297,stationary,0.001,2,MMSI 244084297,other
+244110512,stationary,0.011,2,MMSI 244110512,other
+244129543,stationary,0.002,2,MMSI 244129543,other
+244130028,stationary,0.003,2,MMSI 244130028,other
+244150272,stationary,0.002,4,Boogschutter,other
+244150808,stationary,0.027,4,MMSI 244150808,other
+244153622,stationary,0.019,6,Hamburg V,other
+244180784,stationary,0.045,2,Grafelingh,other
+244190077,stationary,0.003,2,MMSI 244190077,pleasure
+244250627,stationary,0.001,2,MMSI 244250627,pleasure
+244290158,stationary,0.0,2,Alcyon,other
+244316264,stationary,0.008,2,Wending,other
+244371698,stationary,0.005,106,Hercules,other
+244375515,stationary,0.04,2,MMSI 244375515,other
+244394136,stationary,0.129,2,MMSI 244394136,other
+244521830,stationary,0.014,4,Snyffl,other
+244615717,stationary,0.001,2,Ijsseloord,other
+244620328,stationary,0.0,2,MMSI 244620328,other
+244620891,stationary,0.006,4,MMSI 244620891,other
+244630733,stationary,0.0,2,MMSI 244630733,other
+244650035,stationary,0.003,4,Fidato,other
+244660427,stationary,0.006,2,MMSI 244660427,other
+244660693,stationary,0.0,2,MMSI 244660693,other
+244660804,stationary,0.007,2,MMSI 244660804,other
+244660963,stationary,0.003,4,Iduna,other
+244661000,stationary,0.001,2,Rt Emotion,other
+244670015,stationary,0.0,2,MMSI 244670015,other
+244670140,stationary,0.01,2,MMSI 244670140,other
+244670268,stationary,0.004,4,Wantij,other
+244670547,stationary,0.001,2,MMSI 244670547,other
+244670581,stationary,0.0,2,MMSI 244670581,other
+244670742,stationary,0.004,2,MMSI 244670742,other
+244670772,stationary,0.003,2,MMSI 244670772,other
+244670835,stationary,0.002,2,MMSI 244670835,other
+244670877,stationary,0.012,2,Afhankelijk,other
+244690032,stationary,0.0,2,MMSI 244690032,other
+244690195,stationary,0.022,4,Riva Jolie,other
+244690665,stationary,0.002,4,MMSI 244690665,other
+244690840,stationary,0.003,2,MMSI 244690840,other
+244690874,stationary,0.007,4,Jachthoorn,other
+244690908,stationary,0.003,2,MMSI 244690908,other
+244700065,stationary,0.001,2,MMSI 244700065,other
+244700293,stationary,0.116,4,Henja,other
+244700530,stationary,0.002,2,MMSI 244700530,other
+244700660,stationary,0.003,2,Red Fox,cargo
+244710210,stationary,0.014,4,Denzo,other
+244710266,stationary,0.125,2,MMSI 244710266,other
+244710395,stationary,0.002,2,MMSI 244710395,other
+244710431,stationary,0.006,2,MMSI 244710431,other
+244710492,stationary,0.002,2,MMSI 244710492,other
+244730300,stationary,0.002,2,MMSI 244730300,other
+244730309,stationary,0.001,2,Drakar,other
+244730903,stationary,0.003,2,Seolto,wing_in_ground
+244730970,stationary,0.003,2,MMSI 244730970,other
+244740327,stationary,0.003,4,MMSI 244740327,other
+244740893,stationary,0.003,4,MMSI 244740893,other
+244750025,stationary,0.002,2,MMSI 244750025,other
+244750413,stationary,0.004,2,Imago,other
+244750529,stationary,0.001,2,MMSI 244750529,other
+244780097,stationary,0.027,214,MMSI 244780097,other
+244820121,stationary,0.009,2,Adagio,other
+244830359,stationary,0.002,2,Zuiderling,other
+245688036,stationary,0.002,2,MMSI 245688036,other
+245796000,stationary,0.002,4,Vm49,other
+246018000,stationary,0.0,2,Wisby Wave,other
+246759000,stationary,0.001,2,Waterstroom,other
+247286800,stationary,0.003,2,Royal,cargo
+249000642,stationary,0.009,116,Marie Sofie,pleasure
+249462000,stationary,0.101,2,MMSI 249462000,other
+250400006,stationary,0.009,2,Net-94%,other
+250500007,stationary,0.035,6,250500007,other
+251200008,stationary,0.033,10,Net-99%,other
+251848840,stationary,0.004,10,Mona,other
+255639120,stationary,0.006,4,Vastvag Vg92,other
+255805619,stationary,0.0,2,Ludolf Oldendorff,other
+255915830,stationary,0.194,6,MMSI 255915830,other
+256000000,stationary,0.007,2,MMSI 256000000,other
+256749512,stationary,0.012,120,Argus,other
+257005283,stationary,0.001,2,MMSI 257005283,tanker
+257005337,stationary,0.001,2,MMSI 257005337,other
+257005647,stationary,0.002,2,MMSI 257005647,other
+257005674,stationary,0.068,642,Cmosim,other
+257005675,stationary,0.006,2,MMSI 257005675,tanker
+257005691,stationary,0.001,2,MMSI 257005691,tanker
+257006099,stationary,0.068,70,MMSI 257006099,other
+257006980,stationary,0.001,2,MMSI 257006980,other
+257009890,stationary,0.0,2,MMSI 257009890,fishing
+257011110,stationary,0.004,4,MMSI 257011110,other
+257014800,stationary,0.004,2,Solbris Taxibaat,other
+257021790,stationary,0.0,2,Aurora,other
+257022060,stationary,0.133,2,MMSI 257022060,other
+257022590,stationary,0.081,14,MMSI 257022590,other
+257028050,stationary,0.003,8,Karen Margrethe,fishing
+257033680,stationary,0.01,2,MMSI 257033680,other
+257037920,stationary,0.06,38,MMSI 257037920,other
+257041130,stationary,0.018,2,Main,pleasure
+257041630,stationary,0.078,8,Freedom Ii,other
+257042620,stationary,0.0,2,MMSI 257042620,other
+257042760,stationary,0.008,4,Kompis,other
+257043060,stationary,0.0,2,MMSI 257043060,pleasure
+257043390,stationary,0.005,4,Sandra Iii,pleasure
+257045260,stationary,0.011,2,Artemis,other
+257047260,stationary,0.003,4,Esperance 2,pleasure
+257055250,stationary,0.0,2,Charlie,other
+257056570,stationary,0.006,4,Freinik Bal,other
+257061500,stationary,0.016,18,Losiana,other
+257062600,stationary,0.006,4,MMSI 257062600,other
+257064520,stationary,0.0,2,Akeroe,pleasure
+257064540,stationary,0.003,2,MMSI 257064540,other
+257065620,stationary,0.002,8,Busen,other
+257068600,stationary,0.002,2,Saga,other
+257076140,stationary,0.001,2,MMSI 257076140,law_enforcement
+257076240,stationary,0.012,148,Merethe,other
+257080520,stationary,0.0,2,Butterflyflip,other
+257081110,stationary,0.008,4,MMSI 257081110,other
+257081470,stationary,0.006,2,Aurora,other
+257081570,stationary,0.038,2,M/S Brimoey,other
+257090090,stationary,0.004,8,Pelikan 2,other
+257092660,stationary,0.009,2,MMSI 257092660,other
+257093860,stationary,0.003,2,Team Krokodille,other
+257094370,stationary,0.003,2,Pimi,pleasure
+257098570,stationary,0.003,2,Tokani,other
+257099430,stationary,0.048,6,Technotroll 2.0,pleasure
+257101500,stationary,0.006,6,Rode Kors Svelvik,other
+257103220,stationary,0.002,4,Soelvskjaer,other
+257106500,stationary,0.002,2,M/Y Herock,other
+257106820,stationary,0.176,2,Lady A,pleasure
+257110540,stationary,0.006,2,Mia Bell,other
+257126700,stationary,0.139,34,Kvikk Ii,other
+257127100,stationary,0.008,12,Bas,other
+257129920,stationary,0.007,2,Endelig,other
+257132930,stationary,0.056,2,Mannesbuen,fishing
+257135710,stationary,0.006,2,Malos,other
+257136060,stationary,0.018,6,Dolphin02,other
+257158920,stationary,0.009,12,Sonbas Senior,other
+257179240,stationary,0.0,2,MMSI 257179240,fishing
+257199320,stationary,0.002,4,Juventus,other
+257240700,stationary,0.004,6,MMSI 257240700,other
+257246020,stationary,0.008,2,Haabet,other
+257296900,stationary,0.004,6,Belle Royal,other
+257305740,stationary,0.005,10,Sunshine,other
+257305800,stationary,0.016,12,Royal Viking,other
+257308740,stationary,0.003,2,MMSI 257308740,other
+257338700,stationary,0.002,4,Fyroy,other
+257392400,stationary,0.001,2,MMSI 257392400,other
+257432110,stationary,0.194,74,Hargun,fishing
+257531280,stationary,0.011,10,Milestone,pleasure
+257551080,stationary,0.015,2,Simetra,other
+257558700,stationary,0.001,2,Vekteren,other
+257558790,stationary,0.0,2,Angoline,other
+257563490,stationary,0.002,2,MMSI 257563490,other
+257566280,stationary,0.001,2,MMSI 257566280,other
+257595270,stationary,0.006,2,Don Quixote,pleasure
+257605650,stationary,0.002,2,Salacia,other
+257608050,stationary,0.024,2,MMSI 257608050,other
+257609150,stationary,0.001,2,Frida,other
+257633450,stationary,0.002,4,Amarone,other
+257636390,stationary,0.114,2,Carolina Af Askoen,other
+257646990,stationary,0.002,2,Peace Of Mind Ii,other
+257679610,stationary,0.0,2,Havkosen,other
+257689890,stationary,0.001,2,Kuling,pleasure
+257703290,stationary,0.002,2,MMSI 257703290,pleasure
+257735270,stationary,0.003,2,Happy,other
+257741900,stationary,0.002,4,Springeren,other
+257742690,stationary,0.069,2,MMSI 257742690,pleasure
+257745270,stationary,0.006,4,Lat-X,pleasure
+257760600,stationary,0.002,10,MMSI 257760600,other
+257772860,stationary,0.002,2,MMSI 257772860,other
+257775700,stationary,0.002,2,MMSI 257775700,other
+257780590,stationary,0.076,6,Bulle Ii,pleasure
+257795580,stationary,0.001,2,Hermosa,pleasure
+257821880,stationary,0.018,2,Anna,other
+257827170,stationary,0.018,2,Ida 2,other
+257828790,stationary,0.009,18,Basco,other
+257831580,stationary,0.011,4,Stella Siri,other
+257846000,stationary,0.001,2,Ov Utvaer,anti_pollution
+257847080,stationary,0.002,2,Frida,other
+257852960,stationary,0.002,2,Haaligaangen,other
+257867470,stationary,0.002,4,Froeya,other
+257873960,stationary,0.042,2,MMSI 257873960,other
+257876950,stationary,0.003,4,Vinderla,other
+257881490,stationary,0.0,2,Otilie,pleasure
+257886170,stationary,0.097,4,Blia,other
+257904570,stationary,0.001,2,Hildring,pleasure
+257909990,stationary,0.0,2,Adele,other
+257910130,stationary,0.107,2,MMSI 257910130,other
+257928800,stationary,0.149,2,MMSI 257928800,other
+257935390,stationary,0.0,2,MMSI 257935390,other
+257956880,stationary,0.002,2,Sy Hippo,other
+257972060,stationary,0.011,52,Alexis,other
+257987690,stationary,0.011,32,Touch And Go,pleasure
+257992670,stationary,0.005,4,Nemo,pleasure
+257995950,stationary,0.002,2,MMSI 257995950,other
+257998940,stationary,0.055,4,Rav,other
+257999449,stationary,0.011,24,Vdes300_Skoyen,other
+258005570,stationary,0.005,8,Chablis,other
+258009340,stationary,0.006,2,Iv Dreams,other
+258010990,stationary,0.002,2,Tomina,other
+258011750,stationary,0.0,2,Nulte Iii,other
+258012160,stationary,0.004,4,MMSI 258012160,other
+258017270,stationary,0.0,2,Hringhorni,other
+258025390,stationary,0.0,2,So What,other
+258027060,stationary,0.015,2,Pgs Wb358 Pandora,other
+258030170,stationary,0.006,4,Lysglimt,other
+258031230,stationary,0.004,4,S/Y Fomle,other
+258033710,stationary,0.003,22,Amazing Grey,other
+258056720,stationary,0.004,6,Mathilde,other
+258082080,stationary,0.008,2,Leviro,other
+258091550,stationary,0.002,2,Line,other
+258093470,stationary,0.008,2,MMSI 258093470,other
+258102500,stationary,0.001,2,Bork,other
+258105690,stationary,0.001,2,Linus Oxo,pleasure
+258112090,stationary,0.057,4,Windsong Iii,pleasure
+258112270,stationary,0.003,2,MMSI 258112270,other
+258113490,stationary,0.003,6,Charmar,other
+258115230,stationary,0.124,8,Ibis,other
+258128330,stationary,0.001,2,Quinaya,other
+258129350,stationary,0.0,8,MMSI 258129350,pleasure
+258131560,stationary,0.002,4,Reina,other
+258131870,stationary,0.079,22,MMSI 258131870,other
+258137660,stationary,0.001,2,Vesper,other
+258141570,stationary,0.003,16,MMSI 258141570,other
+258146270,stationary,0.002,2,Estepona,pleasure
+258149280,stationary,0.002,4,MMSI 258149280,other
+258159060,stationary,0.002,2,Sirius,pleasure
+258163370,stationary,0.0,2,MMSI 258163370,other
+258173770,stationary,0.002,2,Barents Queen,other
+258178540,stationary,0.002,2,Ellen Merete,other
+258195620,stationary,0.002,4,Chrica Iii,pleasure
+258206230,stationary,0.0,2,MMSI 258206230,other
+258237230,stationary,0.007,2,Sjougla 2,other
+258248850,stationary,0.001,2,Jumbo,pleasure
+258340970,stationary,0.009,2,S/Y Anima Ventus,pleasure
+258517210,stationary,0.052,2,MMSI 258517210,other
+258594910,stationary,0.001,4,Esso Oljevern 1,other
+258595012,stationary,0.089,2,Tender Boat 10,other
+258987660,stationary,0.001,2,Eikholmen,other
+258998472,stationary,0.0,2,MMSI 258998472,other
+258998980,stationary,0.18,2,Emma 2,other
+259000490,stationary,0.0,2,Festina Lente,other
+259002830,stationary,0.183,2,MMSI 259002830,other
+259007880,stationary,0.002,2,MMSI 259007880,other
+259012470,stationary,0.005,2,Luna,other
+259013050,stationary,0.001,2,MMSI 259013050,other
+259013420,stationary,0.011,14,Viking,other
+259015810,stationary,0.098,4,Voila,other
+259020650,stationary,0.019,2,Delta,high_speed
+259026390,stationary,0.005,44,Shuttle 0001,other
+259027100,stationary,0.008,4,Basse,other
+259029070,stationary,0.002,2,Valder,other
+259045080,stationary,0.0,2,Quiet Life 2,other
+259045460,stationary,0.0,2,Medusa,other
+259049530,stationary,0.001,2,Go'Gutten,other
+259050030,stationary,0.003,6,Fifty Seven,pleasure
+259904001,stationary,0.078,48,MMSI 259904001,other
+261000020,stationary,0.0,2,Grace,other
+261000210,stationary,0.042,24,Agis,other
+261000279,stationary,0.0,2,Only Love Me,pleasure
+261002058,stationary,0.186,2,MMSI 261002058,other
+261002390,stationary,0.002,2,MMSI 261002390,other
+261002690,stationary,0.0,2,Miss Victoria,pleasure
+261002743,stationary,0.001,2,Melija,other
+261002783,stationary,0.075,2,Ssas,other
+261004881,stationary,0.002,2,MMSI 261004881,other
+261005330,stationary,0.004,2,Jas-80,other
+261005700,stationary,0.083,4,Rapsodia,pleasure
+261006310,stationary,0.002,2,Almak,pleasure
+261006460,stationary,0.006,4,Kranich,other
+261006570,stationary,0.081,30,MMSI 261006570,other
+261006910,stationary,0.007,4,Jas 12,other
+261006961,stationary,0.005,2,Veriblu Vento,other
+261008070,stationary,0.003,8,MMSI 261008070,other
+261008236,stationary,0.187,2,MMSI 261008236,other
+261008893,stationary,0.003,2,MMSI 261008893,other
+261010250,stationary,0.004,22,MMSI 261010250,other
+261010333,stationary,0.002,8,MMSI 261010333,other
+261012590,stationary,0.16,2,Ust-119,other
+261013320,stationary,0.004,22,Nordykk,other
+261014220,stationary,0.029,14,Kpt.Wisniewski,fishing
+261014410,stationary,0.062,2,Apol Thorgal,other
+261015990,stationary,0.173,2,MMSI 261015990,other
+261016430,stationary,0.017,78,MMSI 261016430,other
+261016980,stationary,0.018,46,MMSI 261016980,other
+261021150,stationary,0.002,2,MMSI 261021150,other
+261021570,stationary,0.039,2,MMSI 261021570,other
+261022240,stationary,0.005,4,Sarina,other
+261023670,stationary,0.007,4,Orka Hel,pleasure
+261023710,stationary,0.004,18,Nie-8,other
+261023810,stationary,0.0,2,MMSI 261023810,other
+261023830,stationary,0.009,10,Kuz-47,other
+261026860,stationary,0.002,2,S/Y Fifra,other
+261027110,stationary,0.027,6,Kontroler 20,other
+261031680,stationary,0.023,4,Lew,other
+261031810,stationary,0.003,2,MMSI 261031810,other
+261038420,stationary,0.0,2,El Gregor,pleasure
+261041590,stationary,0.0,2,MMSI 261041590,other
+261070560,stationary,0.03,112,Jar-23,pleasure
+261080450,stationary,0.007,24,Mg One,pleasure
+261182085,stationary,0.0,4,MMSI 261182085,other
+261182144,stationary,0.001,2,MMSI 261182144,other
+261182419,stationary,0.003,4,MMSI 261182419,other
+261182515,stationary,0.001,2,MMSI 261182515,other
+261182553,stationary,0.002,2,MMSI 261182553,other
+261182587,stationary,0.001,2,MMSI 261182587,other
+261182637,stationary,0.001,2,MMSI 261182637,other
+261182647,stationary,0.008,4,Krystyna,other
+261182688,stationary,0.003,2,MMSI 261182688,other
+261182730,stationary,0.004,2,MMSI 261182730,other
+261182740,stationary,0.0,2,Bonata,other
+261182810,stationary,0.001,2,Andromeda,other
+261183150,stationary,0.001,2,MMSI 261183150,other
+261183450,stationary,0.005,4,MMSI 261183450,other
+261183810,stationary,0.0,2,MMSI 261183810,other
+261183980,stationary,0.0,4,MMSI 261183980,other
+261184040,stationary,0.002,2,MMSI 261184040,other
+261184390,stationary,0.008,44,MMSI 261184390,other
+261185000,stationary,0.003,2,Narwal,other
+261186044,stationary,0.001,2,Bm 5280,other
+261186089,stationary,0.002,2,MMSI 261186089,other
+261186171,stationary,0.001,2,Mizuari,other
+261186363,stationary,0.008,2,Zubr,other
+261186366,stationary,0.007,4,MMSI 261186366,other
+261186436,stationary,0.002,2,MMSI 261186436,other
+261186445,stationary,0.004,20,MMSI 261186445,other
+261186446,stationary,0.026,18,MMSI 261186446,other
+261186458,stationary,0.011,2,Blue Runner,other
+261186750,stationary,0.011,8,MMSI 261186750,other
+261187080,stationary,0.001,2,Parada,other
+261187610,stationary,0.001,2,Fioretto,pleasure
+261188300,stationary,0.001,2,MMSI 261188300,other
+261234000,stationary,0.002,6,MMSI 261234000,other
+261264000,stationary,0.007,2,Orp Sarbsko,military
+261328000,stationary,0.011,2,H-8,other
+261999124,stationary,0.009,22,Po 24,other
+265001880,stationary,0.01,4,Salle Iv,other
+265005410,stationary,0.009,18,Vision,pleasure
+265009040,stationary,0.012,98,Mickan,pleasure
+265010220,stationary,0.016,12,Miss Satisfied,pleasure
+265012440,stationary,0.002,2,Penta 85,other
+265016720,stationary,0.004,4,Barta,other
+265016930,stationary,0.004,2,MMSI 265016930,other
+265018020,stationary,0.175,16,I Wonder,pleasure
+265020640,stationary,0.001,2,Blue Swan,other
+265021030,stationary,0.012,2,Penta 85,other
+265024090,stationary,0.087,2,Magnum,other
+265026450,stationary,0.0,2,MMSI 265026450,other
+265027690,stationary,0.004,2,Medvind,other
+265029560,stationary,0.002,4,Aimi,other
+265032900,stationary,0.008,28,Celeste,pleasure
+265033010,stationary,0.007,4,Cervisia,other
+265033720,stationary,0.001,2,MMSI 265033720,other
+265033860,stationary,0.003,4,Till Lyst,other
+265034280,stationary,0.015,2,Harmoni,pleasure
+265036100,stationary,0.112,24,Seari,other
+265036890,stationary,0.002,2,Hav 2,other
+265037920,stationary,0.012,2,Seaon 96,other
+265040650,stationary,0.002,4,Linnea,pleasure
+265044580,stationary,0.0,2,MMSI 265044580,other
+265048330,stationary,0.0,2,Lago,other
+265051380,stationary,0.004,4,Trollingman,pleasure
+265053120,stationary,0.009,24,Live Firing Exercise,other
+265053130,stationary,0.004,22,Live Firing Exercise,other
+265054210,stationary,0.008,156,Live Firing Exercise,other
+265054220,stationary,0.001,2,Knctest3,other
+265054230,stationary,0.006,34,Live Firing Exercise,other
+265058130,stationary,0.09,4,Rescue S-33,other
+265059210,stationary,0.001,2,Inka,pleasure
+265059850,stationary,0.001,2,MMSI 265059850,other
+265060940,stationary,0.004,6,M/Y Jagaren,other
+265061320,stationary,0.027,4,Peak,other
+265066410,stationary,0.008,4,MMSI 265066410,other
+265066920,stationary,0.001,2,MMSI 265066920,other
+265067020,stationary,0.0,2,Albatross,pleasure
+265067420,stationary,0.009,4,Freydis,pleasure
+265069150,stationary,0.189,22,Height Restriction,other
+265072224,stationary,0.006,2,Booty,other
+265072240,stationary,0.017,4,Booty,other
+265072401,stationary,0.0,2,MMSI 265072401,other
+265073840,stationary,0.009,2,Thetis Iii,other
+265074380,stationary,0.006,2,MMSI 265074380,other
+265075420,stationary,0.062,8,Why Not!,other
+265075540,stationary,0.002,4,Amazing,other
+265075640,stationary,0.027,2,Gg800 Kingston,other
+265076460,stationary,0.009,12,Strategion,other
+265077220,stationary,0.051,2,Kbv 153,other
+265078100,stationary,0.008,4,Lady Sabina,other
+265078450,stationary,0.139,144,Vilshamn,other
+265078510,stationary,0.106,242,Ann Charlotte,other
+265079950,stationary,0.005,2,Greta,other
+265080470,stationary,0.009,24,Calitea,other
+265082350,stationary,0.008,84,Nessie,other
+265082660,stationary,0.0,2,MMSI 265082660,other
+265083120,stationary,0.019,4,MMSI 265083120,other
+265083590,stationary,0.004,6,Arwen,other
+265083900,stationary,0.006,6,Lasse Maja Iii,other
+265084460,stationary,0.001,2,Stalnabb,pleasure
+265111111,stationary,0.002,2,MMSI 265111111,other
+265277000,stationary,0.016,222,Calmare Nyckel,other
+265501120,stationary,0.009,4,M21 Saga,other
+265501171,stationary,0.015,2,Hulda,other
+265503900,stationary,0.003,6,MMSI 265503900,other
+265505900,stationary,0.002,4,MMSI 265505900,other
+265507780,stationary,0.006,4,Kraft,other
+265508760,stationary,0.002,2,Gotlandia,other
+265508900,stationary,0.155,2,MMSI 265508900,other
+265509200,stationary,0.013,6,Kbv 483,other
+265509220,stationary,0.004,2,MMSI 265509220,other
+265513130,stationary,0.01,8,MMSI 265513130,other
+265513280,stationary,0.0,2,Pilot 358 Se,pilot
+265514770,stationary,0.006,6,MMSI 265514770,other
+265519660,stationary,0.001,2,MMSI 265519660,other
+265521890,stationary,0.004,2,MMSI 265521890,other
+265522510,stationary,0.001,2,MMSI 265522510,other
+265528850,stationary,0.004,2,S/Y Trece,other
+265530460,stationary,0.001,2,MMSI 265530460,other
+265532230,stationary,0.0,2,MMSI 265532230,other
+265541690,stationary,0.006,48,MMSI 265541690,other
+265542290,stationary,0.002,4,S/Y Marytom,other
+265542460,stationary,0.003,4,Blue Pearl,pleasure
+265547223,stationary,0.003,2,Rescue Varingen,other
+265549190,stationary,0.0,2,MMSI 265549190,other
+265549430,stationary,0.006,2,MMSI 265549430,other
+265554490,stationary,0.0,2,Mirella,other
+265554780,stationary,0.007,10,Windflower,other
+265559691,stationary,0.021,74,MMSI 265559691,other
+265561170,stationary,0.002,2,Lotta,other
+265561260,stationary,0.001,2,Zina,other
+265561460,stationary,0.026,1240,Athena Sa-Resource,other
+265562270,stationary,0.007,2,Tyra,other
+265566420,stationary,0.003,4,MMSI 265566420,other
+265566860,stationary,0.017,400,Svanen West,passenger
+265568280,stationary,0.002,2,Oscar,other
+265572370,stationary,0.002,2,Freydis,other
+265577470,stationary,0.008,2,MMSI 265577470,other
+265578940,stationary,0.004,4,Wilma I,other
+265579820,stationary,0.002,2,Match Too,other
+265580530,stationary,0.0,2,MMSI 265580530,other
+265581130,stationary,0.007,12,Kirribilli,other
+265581890,stationary,0.004,6,Tripode,other
+265582480,stationary,0.017,26,MMSI 265582480,other
+265582750,stationary,0.07,6,MMSI 265582750,other
+265585870,stationary,0.0,2,MMSI 265585870,other
+265586120,stationary,0.008,160,Santana Ii,other
+265587680,stationary,0.003,2,Indra,other
+265590180,stationary,0.004,2,Sunnan Express,passenger
+265590620,stationary,0.013,2,Svea,other
+265601390,stationary,0.003,2,Harruaida,other
+265603060,stationary,0.004,4,Rescue Stina Sore,other
+265604530,stationary,0.002,2,MMSI 265604530,other
+265606540,stationary,0.006,8,MMSI 265606540,other
+265606900,stationary,0.0,2,Kurtisan,pleasure
+265607520,stationary,0.05,4,Cecilia,other
+265614570,stationary,0.006,2,Yessica,other
+265614950,stationary,0.006,2,Cora,pleasure
+265618300,stationary,0.028,22,Betty Boop,cargo
+265618510,stationary,0.002,4,Luro V,other
+265619100,stationary,0.006,4,Harmony,other
+265619590,stationary,0.121,4,Risor,fishing
+265620140,stationary,0.003,2,Mistral Avance 36,other
+265623790,stationary,0.026,120,MMSI 265623790,pleasure
+265627640,stationary,0.011,322,MMSI 265627640,other
+265629800,stationary,0.001,2,MMSI 265629800,other
+265631360,stationary,0.011,2,Piri Piri Av Lomma,pleasure
+265631550,stationary,0.008,512,MMSI 265631550,other
+265632150,stationary,0.004,2,MMSI 265632150,other
+265636060,stationary,0.009,26,Batman 7,other
+265649230,stationary,0.028,4,Alf Lundgren,other
+265652310,stationary,0.003,2,Athena,other
+265657250,stationary,0.003,2,Ms Diana Gustafs Tax,other
+265657430,stationary,0.001,2,Daisy Arcona 400,pleasure
+265657550,stationary,0.003,10,Seaterrier 1001,other
+265658750,stationary,0.004,4,Fiorella,other
+265659660,stationary,0.158,26,Delphi Engewiken,other
+265662250,stationary,0.037,10,Flora,passenger
+265665050,stationary,0.006,4,Optimist,other
+265671620,stationary,0.014,2,MMSI 265671620,other
+265671880,stationary,0.001,2,Luna,other
+265674820,stationary,0.021,26,Bore,other
+265675220,stationary,0.001,2,MMSI 265675220,other
+265675870,stationary,0.006,2,Kluque,pleasure
+265679000,stationary,0.01,30,Matbar,other
+265683100,stationary,0.183,2,MMSI 265683100,other
+265685010,stationary,0.003,4,Kajsa,pleasure
+265686680,stationary,0.0,2,MMSI 265686680,other
+265687960,stationary,0.003,2,Tre Kronor,fishing
+265688200,stationary,0.002,2,MMSI 265688200,other
+265690080,stationary,0.003,2,MMSI 265690080,other
+265701900,stationary,0.007,120,MMSI 265701900,other
+265702150,stationary,0.004,2,Solenne,pleasure
+265704130,stationary,0.002,2,Kerstin,other
+265705890,stationary,0.007,4,Gungner,pleasure
+265707250,stationary,0.001,2,MMSI 265707250,other
+265709030,stationary,0.044,92,MMSI 265709030,other
+265711710,stationary,0.003,2,Argo,other
+265713010,stationary,0.022,8,Marinwebben Test,other
+265713810,stationary,0.0,2,MMSI 265713810,other
+265714440,stationary,0.001,4,Pricken,tug
+265714450,stationary,0.001,2,Cat Coo,other
+265716410,stationary,0.014,38,El Corazon,pleasure
+265719880,stationary,0.009,2,Impulsive,pleasure
+265720410,stationary,0.019,4,Himinglava,other
+265727500,stationary,0.002,2,MMSI 265727500,other
+265730460,stationary,0.016,30,Monsun,other
+265731590,stationary,0.003,8,Blasut,pleasure
+265732980,stationary,0.006,16,Elvira,other
+265743720,stationary,0.0,2,Sando 785,pleasure
+265743800,stationary,0.016,2,MMSI 265743800,other
+265745260,stationary,0.006,2,Chibidarra,pleasure
+265747130,stationary,0.008,2,Alto,other
+265749060,stationary,0.0,2,Alice,other
+265752450,stationary,0.0,2,Mariella,other
+265758600,stationary,0.003,6,MMSI 265758600,other
+265759530,stationary,0.033,14,Exlex Solo,other
+265759880,stationary,0.002,2,S/Y Vagskvalp,other
+265760620,stationary,0.0,2,Flory,other
+265761990,stationary,0.004,2,MMSI 265761990,other
+265762030,stationary,0.098,2,MMSI 265762030,other
+265762900,stationary,0.174,2,MMSI 265762900,other
+265768610,stationary,0.083,6,Sparkling Angel,pleasure
+265771720,stationary,0.004,4,Sol,other
+265773120,stationary,0.174,2,Lillasyster Iii,other
+265775770,stationary,0.01,2,MMSI 265775770,other
+265777810,stationary,0.001,2,Kajsa,other
+265777950,stationary,0.045,2,Chloe,other
+265778410,stationary,0.002,2,Anna,other
+265778670,stationary,0.022,70,Skjutstation Torhamn,other
+265779000,stationary,0.011,12,Hovdingen,other
+265779090,stationary,0.003,4,Baljan Sfb9917Storon,other
+265780490,stationary,0.003,4,Magott,pleasure
+265780910,stationary,0.001,2,MMSI 265780910,other
+265782460,stationary,0.007,2,Team Entrecote,other
+265783800,stationary,0.003,4,Nordic Soul,other
+265794080,stationary,0.005,2,MMSI 265794080,other
+265794530,stationary,0.004,4,Svartklubben,other
+265795740,stationary,0.011,10,La Goulue,pleasure
+265796460,stationary,0.006,4,Bellatrix,other
+265799760,stationary,0.004,4,Arcansas,pleasure
+265805880,stationary,0.165,12,Kbv 418,other
+265806840,stationary,0.003,4,Khaleesi,other
+265812020,stationary,0.0,2,Kaisa Iii,other
+265814740,stationary,0.0,2,Pilgrim,pleasure
+265816350,stationary,0.007,8,MMSI 265816350,other
+265818650,stationary,0.0,2,Njord,other
+265818680,stationary,0.005,2,Lady Anna,pleasure
+265820940,stationary,0.008,8,MMSI 265820940,other
+265822160,stationary,0.002,2,Aurora,other
+265826530,stationary,0.038,2,102 Specter,other
+265826730,stationary,0.0,2,MMSI 265826730,other
+265829020,stationary,0.02,424,Ringenas Skjutfaelt,other
+265830940,stationary,0.012,8,MMSI 265830940,other
+265831510,stationary,0.0,2,Ravi,other
+265833530,stationary,0.113,18,Lailai,other
+265833670,stationary,0.001,4,Terezia,other
+265902200,stationary,0.029,936,Ab Ramantenn,other
+265902290,stationary,0.012,46,Www.Ssbilbehor.Se,other
+265902310,stationary,0.012,1216,Nautic Center Ab,other
+265902450,stationary,0.007,100,Www.Vindomarin.Se,other
+265959000,stationary,0.174,94,#Prov & Dem#,fishing
+266037000,stationary,0.021,1030,Karlskronavarvet,other
+266125000,stationary,0.002,2,MMSI 266125000,other
+269057520,stationary,0.022,2,MMSI 269057520,other
+269090000,stationary,0.0,2,Primo Loco,pleasure
+269101150,stationary,0.003,8,Lifgun,pleasure
+269122170,stationary,0.008,6,Puffin,other
+269140000,stationary,0.008,14,Blue Box,other
+270251000,stationary,0.0,2,MMSI 270251000,other
+270253000,stationary,0.163,2,MMSI 270253000,other
+270547000,stationary,0.0,2,MMSI 270547000,other
+271052149,stationary,0.003,6,Delicay Xiv,tug
+273000000,stationary,0.0,2,MMSI 273000000,pleasure
+273213280,stationary,0.147,2,MMSI 273213280,other
+273253530,stationary,0.012,18,Ratnik,other
+273257770,stationary,0.001,4,MMSI 273257770,other
+273271720,stationary,0.002,2,Bk-1 D33,other
+273312080,stationary,0.142,14,MMSI 273312080,other
+273334420,stationary,0.004,2,Alexandr Uvarov,other
+273340290,stationary,0.01,6,MMSI 273340290,other
+273341290,stationary,0.002,2,MMSI 273341290,other
+273350450,stationary,0.003,2,MMSI 273350450,other
+273372240,stationary,0.0,2,MMSI 273372240,other
+273423390,stationary,0.006,12,Felicia,pleasure
+273426650,stationary,0.003,2,MMSI 273426650,other
+273432700,stationary,0.154,2,MMSI 273432700,other
+273433750,stationary,0.005,4,MMSI 273433750,other
+273448580,stationary,0.029,4,MMSI 273448580,other
+273452640,stationary,0.002,2,Mrtk-0775,other
+273456070,stationary,0.021,4,Vityaz,tug
+273541450,stationary,0.089,2,Ivan Papanin,other
+273611040,stationary,0.001,2,MMSI 273611040,other
+273619740,stationary,0.001,2,MMSI 273619740,other
+273837200,stationary,0.007,8,MMSI 273837200,other
+275016000,stationary,0.123,2,MMSI 275016000,other
+275026000,stationary,0.009,4,MMSI 275026000,other
+275041152,stationary,0.006,14,MMSI 275041152,other
+275041216,stationary,0.078,2,MMSI 275041216,other
+275183000,stationary,0.0,2,MMSI 275183000,other
+275231000,stationary,0.002,2,MMSI 275231000,other
+275347000,stationary,0.002,2,Santa,other
+275437000,stationary,0.003,2,MMSI 275437000,other
+275441000,stationary,0.001,2,MMSI 275441000,other
+275552000,stationary,0.001,2,MMSI 275552000,other
+276007950,stationary,0.008,2,MMSI 276007950,other
+276008120,stationary,0.0,2,Baltic Digger,dredger
+276818000,stationary,0.001,6,MMSI 276818000,other
+276822000,stationary,0.082,4,Piret,other
+276823000,stationary,0.027,8,MMSI 276823000,other
+276824000,stationary,0.002,2,MMSI 276824000,other
+276827000,stationary,0.001,2,Kihnuvirve,other
+277177440,stationary,0.001,4,Alibi,pleasure
+277188130,stationary,0.081,2,Dia,other
+277188620,stationary,0.003,4,Flora,other
+277199060,stationary,0.001,2,Patria,other
+277199640,stationary,0.005,2,Klaipeda,other
+277201450,stationary,0.011,6,Titania,other
+277217000,stationary,0.0,2,652,fishing
+277370000,stationary,0.006,2,Gelme,other
+277459000,stationary,0.001,2,MMSI 277459000,other
+277587000,stationary,0.0,2,MMSI 277587000,other
+277589001,stationary,0.001,2,Frc-Vilkas,other
+308188000,stationary,0.045,42,MMSI 308188000,other
+310459060,stationary,0.002,2,Arcadia Tender 11,other
+310556010,stationary,0.037,2,MMSI 310556010,other
+310624020,stationary,0.04,4,Qv Tender 11,other
+311000200,stationary,0.0,2,Fluvius Plym,other
+311000506,stationary,0.126,34,Nat Geo Islander 2,passenger
+311000699,stationary,0.022,2,Seven Seas Voyager 8,other
+311000879,stationary,0.001,2,Norwegian Encore,other
+311001093,stationary,0.023,2,Silver Moon L/B N.6,other
+311483000,stationary,0.011,4,Fpso Fluminense,tanker
+312679000,stationary,0.016,78,Helene,other
+312899000,stationary,0.01,6,Shaula,other
+314729000,stationary,0.003,4,MMSI 314729000,other
+316013080,stationary,0.051,20,Maersk Dispatcher,other
+316013360,stationary,0.003,2,Maersk Detector,tug
+316015986,stationary,0.003,8,Resourceful,other
+319150000,stationary,0.003,2,MMSI 319150000,other
+319253300,stationary,0.002,2,MMSI 319253300,other
+319446000,stationary,0.001,2,MMSI 319446000,other
+319741000,stationary,0.118,10,M.Y.Skat,other
+319762000,stationary,0.13,18,MMSI 319762000,other
+331000152,stationary,0.067,6,Kammani,other
+331000249,stationary,0.0,2,Aarluk,other
+331100042,stationary,0.02,2,MMSI 331100042,pleasure
+331102000,stationary,0.002,2,MMSI 331102000,other
+331114000,stationary,0.032,962,Polar Nuka Gr 3-33,other
+331142001,stationary,0.011,2,Kaassassuk Mobbaad,other
+331612000,stationary,0.001,8,Arfivik,other
+331868000,stationary,0.072,16,Look No Prince,other
+338406664,stationary,0.01,4,T/T Scout 2,other
+338406684,stationary,0.03,16,T/T Scout 1,other
+338924130,stationary,0.19,4,Usv Rampage Havoc10,other
+339301440,stationary,0.004,14,Poseidons Wrath,other
+352005023,stationary,0.008,10,V Cetus,cargo
+352114000,stationary,0.003,2,Magnificat,other
+353778000,stationary,0.01,4,MMSI 353778000,other
+355117000,stationary,0.001,2,World Crest,other
+355860000,stationary,0.007,8,Sakizaya Wisdom,cargo
+372232000,stationary,0.009,2,Xxxxx,other
+375528000,stationary,0.001,2,MMSI 375528000,other
+376292000,stationary,0.001,2,MMSI 376292000,other
+376613000,stationary,0.001,8,MMSI 376613000,other
+377135000,stationary,0.021,38,Skate 3,other
+377526000,stationary,0.0,2,MMSI 377526000,other
+414873000,stationary,0.0,2,Pu An Tong,other
+423528000,stationary,0.001,2,Laguna,other
+440038912,stationary,0.004,2,MMSI 440038912,other
+477201900,stationary,0.006,2,Zhen Hua 27,other
+477907900,stationary,0.011,4,MMSI 477907900,other
+533132807,stationary,0.028,2,Flying Fox,other
+538005619,stationary,0.002,4,MMSI 538005619,other
+538006775,stationary,0.009,2,Elandra Oak,other
+538009428,stationary,0.021,4,Mont Fort,cargo
+538009464,stationary,0.02,2,MMSI 538009464,other
+538009519,stationary,0.008,6,Magic Pluto,other
+538011299,stationary,0.003,4,Fjeld Svea,cargo
+538071460,stationary,0.01,2,Kismet,pleasure
+538071815,stationary,0.024,22,Sealife,other
+538072318,stationary,0.008,10,MMSI 538072318,other
+544111120,stationary,0.001,2,Omega 2,tanker
+555555558,stationary,0.001,2,MMSI 555555558,other
+563097200,stationary,0.011,2,MMSI 563097200,other
+563246700,stationary,0.013,4,21 Panda,other
+563248000,stationary,0.006,6,MMSI 563248000,other
+563307000,stationary,0.002,2,Crimson Majesty,cargo
+585910030,stationary,0.024,2,585910030,other
+586706372,stationary,0.073,4,Maritana Boje1,other
+636016580,stationary,0.008,2,MMSI 636016580,other
+636017586,stationary,0.003,2,Helena Oldendorff,other
+636018550,stationary,0.001,2,Clyde,other
+678380000,stationary,0.009,14,Harald Blatand,pleasure
+704643072,stationary,0.003,8,MMSI 704643072,other
+771123521,stationary,0.002,2,MMSI 771123521,other
+794066302,stationary,0.011,2,MMSI 794066302,other
+799964632,stationary,0.009,2,MMSI 799964632,other
+821938711,stationary,0.025,2,821938711,other
+826501756,stationary,0.027,2,826501756,pleasure
+826510897,stationary,0.007,2,MMSI 826510897,other
+887211011,stationary,0.134,2,Sar Buoy 71 Se,other
+887211038,stationary,0.021,2,MMSI 887211038,other
+887211165,stationary,0.001,2,MMSI 887211165,other
+887211182,stationary,0.058,2,Ge-Wtd71-Buoy_Ylvi,other
+887211205,stationary,0.007,2,Ge-Wtd71-Buoy,other
+887211414,stationary,0.193,6,Hm227B1 92%,other
+887211890,stationary,0.003,2,Sar Buoy,other
+887222146,stationary,0.032,2,Sar Buoy,other
+887222152,stationary,0.004,2,Sar Buoy,other
+887222155,stationary,0.006,2,Sar Buoy,other
+887233229,stationary,0.065,2,Airdrop-V13-33229,other
+918000122,stationary,0.041,2,Onwa33Nt 95%,other
+918000141,stationary,0.002,2,Onwa33Nt 85%,other
+941000228,stationary,0.002,2,Ll59Concord Driftnet,other
+941000391,stationary,0.013,8,Ll59Concord Driftnet,other
+941213088,stationary,0.033,2,2655 Bauja 2   12.0V,other
+941221793,stationary,0.007,2,941221793,other
+963108502,stationary,0.007,2,Britannia Port Frc,other
+963108512,stationary,0.021,2,Britannia T12,other
+963108514,stationary,0.009,2,Britannia T14,other
+963108515,stationary,0.009,2,MMSI 963108515,other
+963108516,stationary,0.008,2,Britannia T16,other
+970010235,stationary,0.033,4,MMSI 970010235,other
+970010331,stationary,0.0,2,MMSI 970010331,other
+970010425,stationary,0.179,4,MMSI 970010425,other
+970011023,stationary,0.058,2,MMSI 970011023,other
+970011971,stationary,0.038,8,MMSI 970011971,other
+970012133,stationary,0.0,2,MMSI 970012133,other
+970012159,stationary,0.0,2,MMSI 970012159,other
+970012521,stationary,0.0,2,MMSI 970012521,other
+970012805,stationary,0.0,2,MMSI 970012805,other
+970012850,stationary,0.0,2,MMSI 970012850,other
+970013451,stationary,0.0,2,MMSI 970013451,other
+970013589,stationary,0.019,2,MMSI 970013589,other
+970013669,stationary,0.0,2,MMSI 970013669,other
+970013704,stationary,0.0,2,MMSI 970013704,other
+970013874,stationary,0.0,2,MMSI 970013874,other
+970013921,stationary,0.0,2,MMSI 970013921,other
+970013967,stationary,0.0,2,MMSI 970013967,other
+970013982,stationary,0.01,2,MMSI 970013982,other
+970014121,stationary,0.0,2,MMSI 970014121,other
+970014295,stationary,0.006,2,Jfq1 91%,fishing
+970014359,stationary,0.0,2,MMSI 970014359,other
+970014362,stationary,0.0,2,MMSI 970014362,other
+970014422,stationary,0.0,2,MMSI 970014422,other
+970014430,stationary,0.0,2,MMSI 970014430,other
+970014431,stationary,0.0,2,MMSI 970014431,other
+970014524,stationary,0.0,2,MMSI 970014524,other
+970014534,stationary,0.0,2,MMSI 970014534,other
+970014535,stationary,0.0,2,MMSI 970014535,other
+970014700,stationary,0.011,2,MMSI 970014700,other
+970014712,stationary,0.0,2,MMSI 970014712,other
+970014727,stationary,0.0,2,MMSI 970014727,other
+970014946,stationary,0.0,2,MMSI 970014946,other
+970015012,stationary,0.03,2,MMSI 970015012,other
+970015027,stationary,0.0,2,MMSI 970015027,other
+970015041,stationary,0.009,2,MMSI 970015041,other
+970015083,stationary,0.0,2,MMSI 970015083,other
+970015087,stationary,0.0,2,MMSI 970015087,other
+970015125,stationary,0.0,2,MMSI 970015125,other
+970015134,stationary,0.0,2,MMSI 970015134,other
+970015177,stationary,0.14,6,MMSI 970015177,other
+970015178,stationary,0.04,8,MMSI 970015178,other
+970015207,stationary,0.013,2,MMSI 970015207,other
+970015230,stationary,0.0,2,MMSI 970015230,other
+970015231,stationary,0.157,6,MMSI 970015231,other
+970015242,stationary,0.0,2,MMSI 970015242,other
+970015246,stationary,0.0,2,MMSI 970015246,other
+970015477,stationary,0.0,2,MMSI 970015477,other
+970015506,stationary,0.0,2,MMSI 970015506,other
+970015516,stationary,0.0,2,MMSI 970015516,other
+970015848,stationary,0.0,2,MMSI 970015848,other
+970015850,stationary,0.0,2,MMSI 970015850,other
+970015863,stationary,0.0,2,MMSI 970015863,other
+970015864,stationary,0.101,4,MMSI 970015864,other
+970015865,stationary,0.088,4,MMSI 970015865,other
+970015867,stationary,0.0,2,MMSI 970015867,other
+970015891,stationary,0.009,2,MMSI 970015891,other
+970015908,stationary,0.167,8,MMSI 970015908,other
+970016013,stationary,0.0,2,MMSI 970016013,other
+970016081,stationary,0.0,2,MMSI 970016081,other
+970016258,stationary,0.021,2,MMSI 970016258,other
+970016293,stationary,0.017,2,MMSI 970016293,other
+970016372,stationary,0.0,2,MMSI 970016372,other
+970016617,stationary,0.0,2,MMSI 970016617,other
+970016664,stationary,0.0,2,MMSI 970016664,other
+970016687,stationary,0.0,2,MMSI 970016687,other
+970016789,stationary,0.0,2,MMSI 970016789,other
+970016985,stationary,0.0,2,MMSI 970016985,other
+970016987,stationary,0.145,4,MMSI 970016987,other
+970016992,stationary,0.0,2,MMSI 970016992,other
+970017135,stationary,0.0,2,MMSI 970017135,other
+970017223,stationary,0.0,2,MMSI 970017223,other
+970017225,stationary,0.013,2,MMSI 970017225,other
+970017230,stationary,0.0,2,MMSI 970017230,other
+970017264,stationary,0.0,2,MMSI 970017264,other
+970017288,stationary,0.195,4,MMSI 970017288,other
+970017387,stationary,0.0,2,MMSI 970017387,other
+970017391,stationary,0.016,4,MMSI 970017391,other
+970017406,stationary,0.142,4,MMSI 970017406,other
+970017407,stationary,0.138,4,MMSI 970017407,other
+970017408,stationary,0.107,4,MMSI 970017408,other
+970017410,stationary,0.002,2,MMSI 970017410,other
+970017411,stationary,0.128,4,MMSI 970017411,other
+970017413,stationary,0.15,4,MMSI 970017413,other
+970017417,stationary,0.0,2,MMSI 970017417,other
+970017480,stationary,0.0,2,MMSI 970017480,other
+970017529,stationary,0.0,2,MMSI 970017529,other
+970017590,stationary,0.0,2,MMSI 970017590,other
+970017638,stationary,0.012,2,MMSI 970017638,other
+970017705,stationary,0.0,2,MMSI 970017705,other
+970017749,stationary,0.0,2,MMSI 970017749,other
+970017751,stationary,0.0,2,MMSI 970017751,other
+970017787,stationary,0.0,2,MMSI 970017787,other
+970017810,stationary,0.003,2,MMSI 970017810,other
+970017841,stationary,0.0,2,MMSI 970017841,other
+970017861,stationary,0.141,4,MMSI 970017861,other
+970017862,stationary,0.113,4,MMSI 970017862,other
+970017864,stationary,0.0,2,MMSI 970017864,other
+970017881,stationary,0.0,2,MMSI 970017881,other
+970017894,stationary,0.0,2,MMSI 970017894,other
+970017898,stationary,0.0,2,MMSI 970017898,other
+970017899,stationary,0.0,2,MMSI 970017899,other
+970017904,stationary,0.0,2,MMSI 970017904,other
+970017963,stationary,0.011,2,MMSI 970017963,other
+970018022,stationary,0.006,2,MMSI 970018022,other
+970018023,stationary,0.0,2,MMSI 970018023,other
+970018093,stationary,0.0,2,MMSI 970018093,other
+970018157,stationary,0.045,2,MMSI 970018157,other
+970018194,stationary,0.0,2,MMSI 970018194,other
+970018298,stationary,0.0,2,MMSI 970018298,other
+970018307,stationary,0.0,2,MMSI 970018307,other
+970018314,stationary,0.0,2,MMSI 970018314,other
+970018320,stationary,0.069,2,MMSI 970018320,other
+970018321,stationary,0.0,2,MMSI 970018321,other
+970018326,stationary,0.0,2,MMSI 970018326,other
+970018332,stationary,0.027,4,MMSI 970018332,other
+970018339,stationary,0.01,2,MMSI 970018339,other
+970018445,stationary,0.0,2,MMSI 970018445,other
+970018517,stationary,0.104,2,MMSI 970018517,other
+970018584,stationary,0.044,4,MMSI 970018584,other
+970018604,stationary,0.068,4,MMSI 970018604,other
+970018623,stationary,0.0,2,MMSI 970018623,other
+970018665,stationary,0.0,2,MMSI 970018665,other
+970018675,stationary,0.0,2,MMSI 970018675,other
+970018760,stationary,0.029,2,MMSI 970018760,other
+970018800,stationary,0.0,2,MMSI 970018800,other
+970018801,stationary,0.0,2,MMSI 970018801,other
+970018845,stationary,0.0,2,MMSI 970018845,other
+970018874,stationary,0.0,2,MMSI 970018874,other
+970019056,stationary,0.0,2,MMSI 970019056,other
+970019087,stationary,0.0,2,MMSI 970019087,other
+970019156,stationary,0.0,2,MMSI 970019156,other
+970019169,stationary,0.0,2,MMSI 970019169,other
+970019193,stationary,0.0,2,MMSI 970019193,other
+970019242,stationary,0.011,2,MMSI 970019242,other
+970019261,stationary,0.0,2,MMSI 970019261,other
+970019262,stationary,0.011,4,MMSI 970019262,other
+970019268,stationary,0.0,2,MMSI 970019268,other
+970019270,stationary,0.0,2,MMSI 970019270,other
+970019271,stationary,0.0,2,MMSI 970019271,other
+970019273,stationary,0.018,2,MMSI 970019273,other
+970019277,stationary,0.011,4,MMSI 970019277,other
+970019278,stationary,0.0,2,MMSI 970019278,other
+970019283,stationary,0.009,2,MMSI 970019283,other
+970019284,stationary,0.016,2,MMSI 970019284,other
+970019307,stationary,0.0,2,MMSI 970019307,other
+970019309,stationary,0.0,2,MMSI 970019309,other
+970019325,stationary,0.022,4,MMSI 970019325,other
+970019334,stationary,0.031,2,MMSI 970019334,other
+970019343,stationary,0.0,2,MMSI 970019343,other
+970019365,stationary,0.0,2,MMSI 970019365,other
+970019379,stationary,0.0,2,MMSI 970019379,other
+970019411,stationary,0.159,6,MMSI 970019411,other
+970019433,stationary,0.019,6,MMSI 970019433,other
+970019453,stationary,0.096,4,MMSI 970019453,other
+970019454,stationary,0.132,6,MMSI 970019454,other
+970019461,stationary,0.0,2,MMSI 970019461,other
+970019528,stationary,0.0,2,MMSI 970019528,other
+970019534,stationary,0.0,2,MMSI 970019534,other
+970019540,stationary,0.0,2,MMSI 970019540,other
+970019597,stationary,0.0,2,MMSI 970019597,other
+970019602,stationary,0.0,2,MMSI 970019602,other
+970019606,stationary,0.028,2,MMSI 970019606,other
+970019608,stationary,0.0,2,MMSI 970019608,other
+970019611,stationary,0.0,2,MMSI 970019611,other
+970019676,stationary,0.036,2,MMSI 970019676,other
+970019677,stationary,0.0,2,MMSI 970019677,other
+970019681,stationary,0.0,2,MMSI 970019681,other
+970019684,stationary,0.015,2,MMSI 970019684,other
+970019757,stationary,0.0,2,MMSI 970019757,other
+970019758,stationary,0.0,2,MMSI 970019758,other
+970019807,stationary,0.0,2,MMSI 970019807,other
+970019821,stationary,0.046,4,MMSI 970019821,other
+970019882,stationary,0.198,4,MMSI 970019882,other
+970019883,stationary,0.197,6,MMSI 970019883,other
+970019918,stationary,0.0,2,MMSI 970019918,other
+970019946,stationary,0.0,2,MMSI 970019946,other
+970019973,stationary,0.065,2,MMSI 970019973,other
+970019983,stationary,0.0,2,MMSI 970019983,other
+970019986,stationary,0.003,2,MMSI 970019986,other
+970019995,stationary,0.012,2,MMSI 970019995,other
+970020097,stationary,0.014,2,MMSI 970020097,other
+970020101,stationary,0.0,2,MMSI 970020101,other
+970020274,stationary,0.0,2,MMSI 970020274,other
+970020349,stationary,0.055,6,MMSI 970020349,other
+970020350,stationary,0.0,2,MMSI 970020350,other
+970020353,stationary,0.0,2,MMSI 970020353,other
+970020376,stationary,0.0,2,MMSI 970020376,other
+970020377,stationary,0.0,2,MMSI 970020377,other
+970020381,stationary,0.0,2,MMSI 970020381,other
+970020382,stationary,0.009,2,MMSI 970020382,other
+970020384,stationary,0.016,4,MMSI 970020384,other
+970020385,stationary,0.0,2,MMSI 970020385,other
+970020389,stationary,0.007,2,MMSI 970020389,other
+970020404,stationary,0.117,4,MMSI 970020404,other
+970020464,stationary,0.0,2,MMSI 970020464,other
+970020469,stationary,0.0,2,MMSI 970020469,other
+970020470,stationary,0.0,2,MMSI 970020470,other
+970020474,stationary,0.0,2,MMSI 970020474,other
+970020475,stationary,0.045,4,MMSI 970020475,other
+970020479,stationary,0.149,4,MMSI 970020479,other
+970020481,stationary,0.049,4,MMSI 970020481,other
+970020539,stationary,0.0,2,MMSI 970020539,other
+970020545,stationary,0.013,2,MMSI 970020545,other
+970020550,stationary,0.003,2,MMSI 970020550,other
+970020571,stationary,0.046,4,MMSI 970020571,other
+970020659,stationary,0.051,2,MMSI 970020659,other
+970020670,stationary,0.0,2,MMSI 970020670,other
+970020675,stationary,0.0,2,MMSI 970020675,other
+970020686,stationary,0.043,2,MMSI 970020686,other
+970020702,stationary,0.0,2,MMSI 970020702,other
+970020703,stationary,0.0,2,MMSI 970020703,other
+970020707,stationary,0.0,2,MMSI 970020707,other
+970020746,stationary,0.0,2,MMSI 970020746,other
+970020757,stationary,0.0,2,MMSI 970020757,other
+970020799,stationary,0.009,2,MMSI 970020799,other
+970020800,stationary,0.011,2,MMSI 970020800,other
+970020801,stationary,0.0,2,MMSI 970020801,other
+970020809,stationary,0.0,2,MMSI 970020809,other
+970020816,stationary,0.0,2,MMSI 970020816,other
+970020818,stationary,0.03,2,MMSI 970020818,other
+970020859,stationary,0.0,2,MMSI 970020859,other
+970020882,stationary,0.017,4,MMSI 970020882,other
+970020892,stationary,0.0,2,MMSI 970020892,other
+970020923,stationary,0.0,2,MMSI 970020923,other
+970020961,stationary,0.0,2,MMSI 970020961,other
+970020968,stationary,0.0,2,MMSI 970020968,other
+970020982,stationary,0.0,2,MMSI 970020982,other
+970020985,stationary,0.0,2,MMSI 970020985,other
+970021003,stationary,0.0,2,MMSI 970021003,other
+970021004,stationary,0.0,2,MMSI 970021004,other
+970021081,stationary,0.0,2,MMSI 970021081,other
+970021118,stationary,0.0,2,MMSI 970021118,other
+970021120,stationary,0.0,2,MMSI 970021120,other
+970021261,stationary,0.028,4,MMSI 970021261,other
+970021262,stationary,0.0,2,MMSI 970021262,other
+970021265,stationary,0.004,2,MMSI 970021265,other
+970021269,stationary,0.03,4,MMSI 970021269,other
+970021273,stationary,0.021,4,MMSI 970021273,other
+970021300,stationary,0.0,2,MMSI 970021300,other
+970021301,stationary,0.0,2,MMSI 970021301,other
+970021408,stationary,0.005,2,MMSI 970021408,other
+970021517,stationary,0.0,2,MMSI 970021517,other
+970021518,stationary,0.0,2,MMSI 970021518,other
+970021521,stationary,0.0,2,MMSI 970021521,other
+970021542,stationary,0.013,2,MMSI 970021542,other
+970021558,stationary,0.135,4,MMSI 970021558,other
+970021613,stationary,0.0,2,MMSI 970021613,other
+970021655,stationary,0.0,2,MMSI 970021655,other
+970021663,stationary,0.0,2,MMSI 970021663,other
+970021679,stationary,0.0,2,MMSI 970021679,other
+970021700,stationary,0.0,2,MMSI 970021700,other
+970021740,stationary,0.0,2,MMSI 970021740,other
+970021747,stationary,0.0,2,MMSI 970021747,other
+970021767,stationary,0.0,2,MMSI 970021767,other
+970021771,stationary,0.048,6,MMSI 970021771,other
+970021830,stationary,0.013,2,MMSI 970021830,other
+970021833,stationary,0.029,2,MMSI 970021833,other
+970021855,stationary,0.0,2,MMSI 970021855,other
+970021880,stationary,0.014,2,MMSI 970021880,other
+970021935,stationary,0.014,2,MMSI 970021935,other
+970021939,stationary,0.013,2,MMSI 970021939,other
+970022097,stationary,0.004,2,MMSI 970022097,other
+970022114,stationary,0.0,2,MMSI 970022114,other
+970022124,stationary,0.0,2,MMSI 970022124,other
+970022137,stationary,0.0,2,MMSI 970022137,other
+970022208,stationary,0.0,2,MMSI 970022208,other
+970022232,stationary,0.0,2,MMSI 970022232,other
+970022239,stationary,0.005,2,MMSI 970022239,other
+970022319,stationary,0.0,2,MMSI 970022319,other
+970022338,stationary,0.0,2,MMSI 970022338,other
+970022349,stationary,0.0,2,MMSI 970022349,other
+970022350,stationary,0.0,2,MMSI 970022350,other
+970022357,stationary,0.029,2,MMSI 970022357,other
+970022364,stationary,0.0,2,MMSI 970022364,other
+970022409,stationary,0.0,2,MMSI 970022409,other
+970022445,stationary,0.0,2,MMSI 970022445,other
+970022484,stationary,0.0,2,MMSI 970022484,other
+970022531,stationary,0.0,2,MMSI 970022531,other
+970022535,stationary,0.0,2,MMSI 970022535,other
+970022539,stationary,0.022,2,MMSI 970022539,other
+970022540,stationary,0.041,4,MMSI 970022540,other
+970022604,stationary,0.106,2,MMSI 970022604,other
+970022613,stationary,0.0,2,MMSI 970022613,other
+970022696,stationary,0.0,2,MMSI 970022696,other
+970022707,stationary,0.013,2,MMSI 970022707,other
+970022708,stationary,0.0,2,MMSI 970022708,other
+970022756,stationary,0.0,2,MMSI 970022756,other
+970022793,stationary,0.0,2,MMSI 970022793,other
+970022809,stationary,0.0,2,MMSI 970022809,other
+970022815,stationary,0.0,2,MMSI 970022815,other
+970022939,stationary,0.0,2,MMSI 970022939,other
+970022991,stationary,0.013,4,MMSI 970022991,other
+970022999,stationary,0.009,2,MMSI 970022999,other
+970023002,stationary,0.022,2,MMSI 970023002,other
+970023003,stationary,0.0,2,MMSI 970023003,other
+970023010,stationary,0.038,2,MMSI 970023010,other
+970023146,stationary,0.0,2,MMSI 970023146,other
+970023147,stationary,0.0,2,MMSI 970023147,other
+970023150,stationary,0.0,2,MMSI 970023150,other
+970023227,stationary,0.0,2,MMSI 970023227,other
+970023291,stationary,0.0,2,MMSI 970023291,other
+970023299,stationary,0.0,2,MMSI 970023299,other
+970023307,stationary,0.0,2,MMSI 970023307,other
+970023321,stationary,0.0,2,MMSI 970023321,other
+970023346,stationary,0.0,2,MMSI 970023346,other
+970023351,stationary,0.0,2,MMSI 970023351,other
+970023362,stationary,0.0,2,MMSI 970023362,other
+970023383,stationary,0.0,2,MMSI 970023383,other
+970023399,stationary,0.0,2,MMSI 970023399,other
+970023402,stationary,0.0,2,MMSI 970023402,other
+970023404,stationary,0.02,2,MMSI 970023404,other
+970023477,stationary,0.0,2,MMSI 970023477,other
+970023523,stationary,0.0,2,MMSI 970023523,other
+970023555,stationary,0.0,2,MMSI 970023555,other
+970023645,stationary,0.061,2,MMSI 970023645,other
+970023650,stationary,0.0,2,MMSI 970023650,other
+970023652,stationary,0.001,2,MMSI 970023652,other
+970023653,stationary,0.0,2,MMSI 970023653,other
+970023656,stationary,0.0,2,MMSI 970023656,other
+970023735,stationary,0.017,2,MMSI 970023735,other
+970023753,stationary,0.028,2,MMSI 970023753,other
+970023757,stationary,0.0,2,MMSI 970023757,other
+970024005,stationary,0.0,2,MMSI 970024005,other
+970024024,stationary,0.01,2,MMSI 970024024,other
+970024028,stationary,0.0,2,MMSI 970024028,other
+970024488,stationary,0.07,4,MMSI 970024488,other
+970024511,stationary,0.0,2,MMSI 970024511,other
+970024517,stationary,0.0,2,MMSI 970024517,other
+970024532,stationary,0.124,6,MMSI 970024532,other
+970024550,stationary,0.0,2,MMSI 970024550,other
+970024638,stationary,0.0,2,MMSI 970024638,other
+970024665,stationary,0.01,2,MMSI 970024665,other
+970024820,stationary,0.0,2,MMSI 970024820,other
+970024924,stationary,0.0,2,MMSI 970024924,other
+970024938,stationary,0.0,2,MMSI 970024938,other
+970024944,stationary,0.0,2,MMSI 970024944,other
+970025267,stationary,0.0,2,MMSI 970025267,other
+970025280,stationary,0.083,2,MMSI 970025280,other
+970025284,stationary,0.095,2,MMSI 970025284,other
+970025307,stationary,0.0,2,MMSI 970025307,other
+970025338,stationary,0.0,2,MMSI 970025338,other
+970025339,stationary,0.011,2,MMSI 970025339,other
+970025342,stationary,0.0,2,MMSI 970025342,other
+970025515,stationary,0.0,2,MMSI 970025515,other
+970025671,stationary,0.0,2,MMSI 970025671,other
+970025672,stationary,0.023,2,MMSI 970025672,other
+970025678,stationary,0.033,2,MMSI 970025678,other
+970025796,stationary,0.0,2,MMSI 970025796,other
+970025832,stationary,0.0,2,MMSI 970025832,other
+970025841,stationary,0.006,2,MMSI 970025841,other
+970025843,stationary,0.0,2,MMSI 970025843,other
+970025906,stationary,0.0,2,MMSI 970025906,other
+970025925,stationary,0.0,2,MMSI 970025925,other
+970025937,stationary,0.0,2,MMSI 970025937,other
+970026047,stationary,0.097,4,MMSI 970026047,other
+970026063,stationary,0.001,2,MMSI 970026063,other
+970026086,stationary,0.0,2,MMSI 970026086,other
+970026092,stationary,0.003,2,MMSI 970026092,other
+970026128,stationary,0.0,2,MMSI 970026128,other
+970026138,stationary,0.0,2,MMSI 970026138,other
+970026163,stationary,0.01,4,MMSI 970026163,other
+970026167,stationary,0.0,2,MMSI 970026167,other
+970026230,stationary,0.015,2,MMSI 970026230,other
+970026254,stationary,0.0,2,MMSI 970026254,other
+970026278,stationary,0.046,2,MMSI 970026278,other
+970026336,stationary,0.0,2,MMSI 970026336,other
+970026345,stationary,0.0,2,MMSI 970026345,other
+970026388,stationary,0.0,2,MMSI 970026388,other
+970026394,stationary,0.0,2,MMSI 970026394,other
+970026528,stationary,0.0,2,MMSI 970026528,other
+970026560,stationary,0.0,2,MMSI 970026560,other
+970026583,stationary,0.055,4,MMSI 970026583,other
+970026676,stationary,0.0,2,MMSI 970026676,other
+970026694,stationary,0.0,2,MMSI 970026694,other
+970026770,stationary,0.0,2,MMSI 970026770,other
+970026779,stationary,0.0,2,MMSI 970026779,other
+970026780,stationary,0.0,2,MMSI 970026780,other
+970026959,stationary,0.0,2,MMSI 970026959,other
+970026979,stationary,0.0,2,MMSI 970026979,other
+970027091,stationary,0.0,2,MMSI 970027091,other
+970027096,stationary,0.014,2,MMSI 970027096,other
+970027099,stationary,0.02,2,MMSI 970027099,other
+970027153,stationary,0.0,2,MMSI 970027153,other
+970027216,stationary,0.0,2,MMSI 970027216,other
+970027223,stationary,0.0,2,MMSI 970027223,other
+970027443,stationary,0.0,2,MMSI 970027443,other
+970027465,stationary,0.0,2,MMSI 970027465,other
+970027629,stationary,0.121,2,MMSI 970027629,other
+970027666,stationary,0.0,2,MMSI 970027666,other
+970027669,stationary,0.022,2,MMSI 970027669,other
+970027680,stationary,0.029,8,MMSI 970027680,other
+970027683,stationary,0.0,2,MMSI 970027683,other
+970027685,stationary,0.0,2,MMSI 970027685,other
+970027696,stationary,0.0,2,MMSI 970027696,other
+970027745,stationary,0.051,6,MMSI 970027745,other
+970027849,stationary,0.0,2,MMSI 970027849,other
+970027901,stationary,0.0,2,MMSI 970027901,other
+970027904,stationary,0.0,2,MMSI 970027904,other
+970027908,stationary,0.0,2,MMSI 970027908,other
+970027945,stationary,0.0,2,MMSI 970027945,other
+970028042,stationary,0.0,2,MMSI 970028042,other
+970028075,stationary,0.0,2,MMSI 970028075,other
+970028076,stationary,0.0,2,MMSI 970028076,other
+970028082,stationary,0.0,2,MMSI 970028082,other
+970028088,stationary,0.0,2,MMSI 970028088,other
+970028118,stationary,0.0,2,MMSI 970028118,other
+970028152,stationary,0.053,2,MMSI 970028152,other
+970028177,stationary,0.0,2,MMSI 970028177,other
+970028227,stationary,0.0,2,MMSI 970028227,other
+970028229,stationary,0.0,2,MMSI 970028229,other
+970028232,stationary,0.006,2,MMSI 970028232,other
+970028236,stationary,0.0,2,MMSI 970028236,other
+970028241,stationary,0.005,2,MMSI 970028241,other
+970028487,stationary,0.0,2,MMSI 970028487,other
+970028565,stationary,0.006,2,MMSI 970028565,other
+970028791,stationary,0.0,2,MMSI 970028791,other
+970028830,stationary,0.049,2,MMSI 970028830,other
+970029095,stationary,0.0,2,MMSI 970029095,other
+970029120,stationary,0.0,2,MMSI 970029120,other
+970029128,stationary,0.0,2,MMSI 970029128,other
+970029180,stationary,0.0,2,MMSI 970029180,other
+970029266,stationary,0.014,2,MMSI 970029266,other
+970029270,stationary,0.0,2,MMSI 970029270,other
+970029271,stationary,0.0,2,MMSI 970029271,other
+970029275,stationary,0.002,2,MMSI 970029275,other
+970029282,stationary,0.0,2,MMSI 970029282,other
+970029324,stationary,0.0,2,MMSI 970029324,other
+970029326,stationary,0.0,2,MMSI 970029326,other
+970029343,stationary,0.0,2,MMSI 970029343,other
+970029349,stationary,0.0,2,MMSI 970029349,other
+970029395,stationary,0.0,2,MMSI 970029395,other
+970029467,stationary,0.0,2,MMSI 970029467,other
+970029601,stationary,0.0,2,MMSI 970029601,other
+970029617,stationary,0.053,10,MMSI 970029617,other
+970029622,stationary,0.0,2,MMSI 970029622,other
+970029730,stationary,0.0,2,MMSI 970029730,other
+970029735,stationary,0.0,2,MMSI 970029735,other
+970029756,stationary,0.0,2,MMSI 970029756,other
+970030084,stationary,0.0,2,MMSI 970030084,other
+970030238,stationary,0.031,2,MMSI 970030238,other
+970030267,stationary,0.0,2,MMSI 970030267,other
+970030311,stationary,0.0,2,MMSI 970030311,other
+970030323,stationary,0.0,2,MMSI 970030323,other
+970030779,stationary,0.0,2,MMSI 970030779,other
+970030980,stationary,0.0,2,MMSI 970030980,other
+970031601,stationary,0.0,2,MMSI 970031601,other
+970031723,stationary,0.0,2,MMSI 970031723,other
+970031724,stationary,0.0,2,MMSI 970031724,other
+970031753,stationary,0.0,2,MMSI 970031753,other
+970031822,stationary,0.0,2,MMSI 970031822,other
+970031892,stationary,0.125,4,MMSI 970031892,other
+970031902,stationary,0.0,2,MMSI 970031902,other
+970031906,stationary,0.05,4,MMSI 970031906,other
+970032072,stationary,0.003,2,MMSI 970032072,other
+970032084,stationary,0.0,2,MMSI 970032084,other
+970032086,stationary,0.003,2,MMSI 970032086,other
+970032090,stationary,0.0,2,MMSI 970032090,other
+970032108,stationary,0.008,2,MMSI 970032108,other
+970032139,stationary,0.013,2,MMSI 970032139,other
+970032271,stationary,0.0,2,MMSI 970032271,other
+970032278,stationary,0.0,2,MMSI 970032278,other
+970032281,stationary,0.0,2,MMSI 970032281,other
+970032296,stationary,0.0,2,MMSI 970032296,other
+970032299,stationary,0.0,2,MMSI 970032299,other
+970032456,stationary,0.0,2,MMSI 970032456,other
+970032457,stationary,0.017,2,MMSI 970032457,other
+970032458,stationary,0.0,2,MMSI 970032458,other
+970032552,stationary,0.0,2,MMSI 970032552,other
+970032656,stationary,0.0,2,MMSI 970032656,other
+970032740,stationary,0.013,2,MMSI 970032740,other
+970032772,stationary,0.0,2,MMSI 970032772,other
+970032887,stationary,0.0,2,MMSI 970032887,other
+970033035,stationary,0.0,2,MMSI 970033035,other
+970033138,stationary,0.0,2,MMSI 970033138,other
+970033551,stationary,0.027,4,MMSI 970033551,other
+970033558,stationary,0.0,2,MMSI 970033558,other
+970033731,stationary,0.0,2,MMSI 970033731,other
+970033960,stationary,0.0,2,MMSI 970033960,other
+970033977,stationary,0.0,2,MMSI 970033977,other
+970034137,stationary,0.003,2,MMSI 970034137,other
+970034291,stationary,0.0,2,MMSI 970034291,other
+970034524,stationary,0.0,2,MMSI 970034524,other
+970034868,stationary,0.0,2,MMSI 970034868,other
+970034869,stationary,0.021,2,MMSI 970034869,other
+970035134,stationary,0.0,2,MMSI 970035134,other
+970035170,stationary,0.0,2,MMSI 970035170,other
+970035197,stationary,0.0,2,MMSI 970035197,other
+970035342,stationary,0.0,2,MMSI 970035342,other
+970035377,stationary,0.0,2,MMSI 970035377,other
+970035897,stationary,0.0,2,MMSI 970035897,other
+970036200,stationary,0.0,2,MMSI 970036200,other
+970036289,stationary,0.026,2,MMSI 970036289,other
+970036324,stationary,0.006,2,MMSI 970036324,other
+970036397,stationary,0.0,2,MMSI 970036397,other
+970036399,stationary,0.0,2,MMSI 970036399,other
+970036639,stationary,0.0,2,MMSI 970036639,other
+970037246,stationary,0.0,2,MMSI 970037246,other
+970037259,stationary,0.0,2,MMSI 970037259,other
+970037737,stationary,0.002,2,MMSI 970037737,other
+970110028,stationary,0.0,2,MMSI 970110028,other
+970110034,stationary,0.021,2,MMSI 970110034,other
+970110044,stationary,0.0,2,MMSI 970110044,other
+970110065,stationary,0.0,2,MMSI 970110065,other
+970110079,stationary,0.042,2,MMSI 970110079,other
+970110081,stationary,0.015,2,MMSI 970110081,other
+970110103,stationary,0.041,2,MMSI 970110103,other
+970110155,stationary,0.0,2,MMSI 970110155,other
+970110471,stationary,0.004,2,MMSI 970110471,other
+970110722,stationary,0.0,2,MMSI 970110722,other
+970110727,stationary,0.0,2,MMSI 970110727,other
+970110766,stationary,0.026,2,MMSI 970110766,other
+970110802,stationary,0.019,4,MMSI 970110802,other
+970110948,stationary,0.0,2,MMSI 970110948,other
+970111004,stationary,0.009,2,Aarsleff 30,other
+970111005,stationary,0.01,2,Aarsleff 31,other
+970111011,stationary,0.024,2,MMSI 970111011,other
+970111081,stationary,0.03,2,MMSI 970111081,other
+970111115,stationary,0.052,2,MMSI 970111115,other
+970111536,stationary,0.0,2,MMSI 970111536,other
+970111570,stationary,0.0,2,MMSI 970111570,other
+970111851,stationary,0.0,2,MMSI 970111851,other
+970112347,stationary,0.007,2,MMSI 970112347,other
+970112475,stationary,0.196,4,MMSI 970112475,other
+970112551,stationary,0.002,2,MMSI 970112551,other
+970112648,stationary,0.128,4,MMSI 970112648,other
+970112653,stationary,0.0,2,MMSI 970112653,other
+970112656,stationary,0.006,2,MMSI 970112656,other
+970112672,stationary,0.0,2,MMSI 970112672,other
+970112850,stationary,0.0,2,MMSI 970112850,other
+970112871,stationary,0.101,4,MMSI 970112871,other
+970113171,stationary,0.0,2,MMSI 970113171,other
+970113179,stationary,0.0,2,MMSI 970113179,other
+970113194,stationary,0.0,2,MMSI 970113194,other
+970113294,stationary,0.029,2,MMSI 970113294,other
+970113455,stationary,0.033,2,MMSI 970113455,other
+970113505,stationary,0.012,2,MMSI 970113505,other
+970113611,stationary,0.0,2,MMSI 970113611,other
+970113720,stationary,0.0,2,MMSI 970113720,other
+970113732,stationary,0.0,2,MMSI 970113732,other
+970113871,stationary,0.0,2,MMSI 970113871,other
+970113881,stationary,0.0,2,MMSI 970113881,other
+970114122,stationary,0.0,2,MMSI 970114122,other
+970114206,stationary,0.0,2,MMSI 970114206,other
+970114222,stationary,0.048,2,MMSI 970114222,other
+970114318,stationary,0.0,2,MMSI 970114318,other
+970114383,stationary,0.0,2,MMSI 970114383,other
+970114678,stationary,0.029,2,MMSI 970114678,other
+970115017,stationary,0.0,2,MMSI 970115017,other
+970115135,stationary,0.012,2,MMSI 970115135,other
+970115181,stationary,0.0,2,MMSI 970115181,other
+970115280,stationary,0.004,4,MMSI 970115280,other
+970115330,stationary,0.0,2,MMSI 970115330,other
+970115396,stationary,0.0,2,MMSI 970115396,other
+970115422,stationary,0.007,4,MMSI 970115422,other
+970115469,stationary,0.0,2,MMSI 970115469,other
+970115631,stationary,0.0,2,MMSI 970115631,other
+970115642,stationary,0.0,2,MMSI 970115642,other
+970115670,stationary,0.009,2,MMSI 970115670,other
+970115707,stationary,0.008,2,MMSI 970115707,other
+970115761,stationary,0.0,2,MMSI 970115761,other
+970115778,stationary,0.0,2,MMSI 970115778,other
+970115840,stationary,0.005,2,MMSI 970115840,other
+970115945,stationary,0.017,2,MMSI 970115945,other
+970116157,stationary,0.0,2,MMSI 970116157,other
+970116534,stationary,0.062,2,MMSI 970116534,other
+970116746,stationary,0.0,2,MMSI 970116746,other
+970116969,stationary,0.0,2,MMSI 970116969,other
+970117084,stationary,0.0,2,MMSI 970117084,other
+970117206,stationary,0.0,2,MMSI 970117206,other
+970117239,stationary,0.0,2,MMSI 970117239,other
+970117258,stationary,0.0,2,MMSI 970117258,other
+970117310,stationary,0.0,2,MMSI 970117310,other
+970117312,stationary,0.032,2,MMSI 970117312,other
+970117319,stationary,0.0,2,MMSI 970117319,other
+970117385,stationary,0.0,2,MMSI 970117385,other
+970117394,stationary,0.019,2,MMSI 970117394,other
+970117408,stationary,0.032,2,MMSI 970117408,other
+970117431,stationary,0.0,2,MMSI 970117431,other
+970117444,stationary,0.0,2,MMSI 970117444,other
+970117485,stationary,0.0,2,MMSI 970117485,other
+970117504,stationary,0.0,2,MMSI 970117504,other
+970117511,stationary,0.013,2,MMSI 970117511,other
+970117653,stationary,0.032,2,MMSI 970117653,other
+970117676,stationary,0.0,2,MMSI 970117676,other
+970117705,stationary,0.0,2,MMSI 970117705,other
+970117707,stationary,0.0,2,MMSI 970117707,other
+970117709,stationary,0.015,2,MMSI 970117709,other
+970117711,stationary,0.021,2,MMSI 970117711,other
+970117726,stationary,0.0,2,MMSI 970117726,other
+970117742,stationary,0.0,2,MMSI 970117742,other
+970117799,stationary,0.0,2,MMSI 970117799,other
+970117858,stationary,0.0,2,MMSI 970117858,other
+970117877,stationary,0.058,4,MMSI 970117877,other
+970117878,stationary,0.0,2,MMSI 970117878,other
+970117982,stationary,0.155,4,MMSI 970117982,other
+970117986,stationary,0.0,2,MMSI 970117986,other
+970117987,stationary,0.0,2,MMSI 970117987,other
+970118189,stationary,0.006,2,MMSI 970118189,other
+970118251,stationary,0.0,2,MMSI 970118251,other
+970118279,stationary,0.0,2,MMSI 970118279,other
+970118349,stationary,0.0,2,MMSI 970118349,other
+970118364,stationary,0.024,2,MMSI 970118364,other
+970118372,stationary,0.0,2,MMSI 970118372,other
+970118375,stationary,0.0,2,MMSI 970118375,other
+970118390,stationary,0.0,2,MMSI 970118390,other
+970118396,stationary,0.0,2,MMSI 970118396,other
+970118428,stationary,0.0,2,MMSI 970118428,other
+970118455,stationary,0.0,2,MMSI 970118455,other
+970118456,stationary,0.0,2,MMSI 970118456,other
+970118473,stationary,0.0,2,MMSI 970118473,other
+970118521,stationary,0.0,2,MMSI 970118521,other
+970118558,stationary,0.012,2,MMSI 970118558,other
+970118565,stationary,0.0,2,MMSI 970118565,other
+970118571,stationary,0.0,2,MMSI 970118571,other
+970118609,stationary,0.0,2,MMSI 970118609,other
+970118639,stationary,0.0,2,MMSI 970118639,other
+970118657,stationary,0.019,2,MMSI 970118657,other
+970118708,stationary,0.0,2,MMSI 970118708,other
+970118748,stationary,0.0,2,MMSI 970118748,other
+970118768,stationary,0.0,2,MMSI 970118768,other
+970118777,stationary,0.018,4,MMSI 970118777,other
+970118885,stationary,0.022,2,MMSI 970118885,other
+970118959,stationary,0.0,2,MMSI 970118959,other
+970118963,stationary,0.0,2,MMSI 970118963,other
+970119030,stationary,0.0,2,MMSI 970119030,other
+970119053,stationary,0.0,2,MMSI 970119053,other
+970119064,stationary,0.0,2,MMSI 970119064,other
+970119097,stationary,0.0,2,MMSI 970119097,other
+970119116,stationary,0.0,2,MMSI 970119116,other
+970119125,stationary,0.0,2,MMSI 970119125,other
+970119127,stationary,0.0,2,MMSI 970119127,other
+970119185,stationary,0.02,2,MMSI 970119185,other
+970119205,stationary,0.021,2,MMSI 970119205,other
+970119215,stationary,0.015,2,MMSI 970119215,other
+970119217,stationary,0.0,2,MMSI 970119217,other
+970119218,stationary,0.0,2,MMSI 970119218,other
+970119260,stationary,0.004,2,MMSI 970119260,other
+970119272,stationary,0.0,2,MMSI 970119272,other
+970119462,stationary,0.003,2,MMSI 970119462,other
+970119480,stationary,0.0,2,MMSI 970119480,other
+970119497,stationary,0.0,2,MMSI 970119497,other
+970119548,stationary,0.017,2,MMSI 970119548,other
+970119570,stationary,0.0,2,MMSI 970119570,other
+970119719,stationary,0.0,2,MMSI 970119719,other
+970119739,stationary,0.0,2,MMSI 970119739,other
+970119753,stationary,0.0,2,MMSI 970119753,other
+970119767,stationary,0.027,2,MMSI 970119767,other
+970119776,stationary,0.036,4,MMSI 970119776,other
+970119778,stationary,0.0,2,MMSI 970119778,other
+970119791,stationary,0.008,2,MMSI 970119791,other
+970119800,stationary,0.007,2,MMSI 970119800,other
+970119801,stationary,0.0,2,MMSI 970119801,other
+970119822,stationary,0.0,2,MMSI 970119822,other
+970119834,stationary,0.003,2,MMSI 970119834,other
+970119865,stationary,0.056,4,MMSI 970119865,other
+970119940,stationary,0.0,2,MMSI 970119940,other
+970160280,stationary,0.004,2,MMSI 970160280,other
+970160316,stationary,0.006,2,MMSI 970160316,other
+970160398,stationary,0.001,2,MMSI 970160398,other
+970170043,stationary,0.007,2,MMSI 970170043,other
+970170124,stationary,0.001,2,MMSI 970170124,other
+970170130,stationary,0.003,2,MMSI 970170130,other
+970170144,stationary,0.009,2,MMSI 970170144,other
+970170175,stationary,0.001,2,MMSI 970170175,other
+970170209,stationary,0.007,2,MMSI 970170209,other
+970170253,stationary,0.001,2,MMSI 970170253,other
+970170303,stationary,0.004,2,MMSI 970170303,other
+970170377,stationary,0.003,2,MMSI 970170377,other
+970170386,stationary,0.003,2,MMSI 970170386,other
+970170387,stationary,0.029,2,MMSI 970170387,other
+970170518,stationary,0.0,2,MMSI 970170518,other
+970170559,stationary,0.0,2,MMSI 970170559,other
+970170733,stationary,0.016,2,MMSI 970170733,other
+970170801,stationary,0.002,2,MMSI 970170801,other
+970170919,stationary,0.001,2,MMSI 970170919,other
+970171155,stationary,0.026,2,MMSI 970171155,other
+970171171,stationary,0.001,2,MMSI 970171171,other
+970171228,stationary,0.009,2,MMSI 970171228,other
+970171620,stationary,0.005,2,MMSI 970171620,other
+970171623,stationary,0.004,2,MMSI 970171623,other
+970171626,stationary,0.008,2,MMSI 970171626,other
+970171657,stationary,0.002,2,MMSI 970171657,other
+970171678,stationary,0.011,2,MMSI 970171678,other
+970171734,stationary,0.006,2,MMSI 970171734,other
+970171738,stationary,0.006,2,MMSI 970171738,other
+970171786,stationary,0.032,2,MMSI 970171786,other
+970172037,stationary,0.028,2,MMSI 970172037,other
+970172048,stationary,0.002,2,MMSI 970172048,other
+970172061,stationary,0.011,2,MMSI 970172061,other
+970172062,stationary,0.006,2,MMSI 970172062,other
+970172174,stationary,0.056,4,MMSI 970172174,other
+970172234,stationary,0.018,2,MMSI 970172234,other
+970172244,stationary,0.0,2,MMSI 970172244,other
+970172246,stationary,0.012,2,MMSI 970172246,other
+970172329,stationary,0.007,4,MMSI 970172329,other
+970172504,stationary,0.013,2,MMSI 970172504,other
+970172512,stationary,0.012,2,MMSI 970172512,other
+970172515,stationary,0.044,2,MMSI 970172515,other
+970172530,stationary,0.062,2,MMSI 970172530,other
+970172628,stationary,0.013,2,MMSI 970172628,other
+970172764,stationary,0.008,2,MMSI 970172764,other
+970172787,stationary,0.042,6,MMSI 970172787,other
+970172956,stationary,0.011,2,MMSI 970172956,other
+970172997,stationary,0.009,2,MMSI 970172997,other
+970173092,stationary,0.139,2,MMSI 970173092,other
+970173148,stationary,0.026,2,MMSI 970173148,other
+970173156,stationary,0.065,2,MMSI 970173156,other
+970173172,stationary,0.037,2,MMSI 970173172,other
+970173258,stationary,0.0,2,MMSI 970173258,other
+970173261,stationary,0.007,2,MMSI 970173261,other
+970173350,stationary,0.001,2,MMSI 970173350,other
+970173370,stationary,0.022,2,MMSI 970173370,other
+970173374,stationary,0.043,2,MMSI 970173374,other
+970173428,stationary,0.019,2,MMSI 970173428,other
+970173535,stationary,0.013,2,MMSI 970173535,other
+970173605,stationary,0.0,2,MMSI 970173605,other
+970173867,stationary,0.002,2,MMSI 970173867,other
+970173869,stationary,0.004,2,MMSI 970173869,other
+970173896,stationary,0.109,4,MMSI 970173896,other
+970173918,stationary,0.076,2,MMSI 970173918,other
+970173961,stationary,0.011,2,MMSI 970173961,other
+970174155,stationary,0.065,2,MMSI 970174155,other
+970174198,stationary,0.0,2,MMSI 970174198,other
+970174440,stationary,0.011,2,MMSI 970174440,other
+970174513,stationary,0.008,2,MMSI 970174513,other
+970174518,stationary,0.002,2,MMSI 970174518,other
+970174541,stationary,0.048,2,MMSI 970174541,other
+970174588,stationary,0.056,2,MMSI 970174588,other
+970174751,stationary,0.03,2,MMSI 970174751,other
+970174881,stationary,0.004,2,MMSI 970174881,other
+970175015,stationary,0.107,6,MMSI 970175015,other
+970175017,stationary,0.004,2,MMSI 970175017,other
+970175079,stationary,0.114,4,MMSI 970175079,other
+970175156,stationary,0.001,2,MMSI 970175156,other
+970175455,stationary,0.029,2,MMSI 970175455,other
+970175692,stationary,0.002,2,MMSI 970175692,other
+970175699,stationary,0.003,2,MMSI 970175699,other
+970175934,stationary,0.011,2,MMSI 970175934,other
+970175970,stationary,0.008,2,MMSI 970175970,other
+970175971,stationary,0.004,2,MMSI 970175971,other
+970175973,stationary,0.005,2,MMSI 970175973,other
+970176311,stationary,0.018,2,MMSI 970176311,other
+970176368,stationary,0.0,2,MMSI 970176368,other
+970176414,stationary,0.002,2,MMSI 970176414,other
+970176458,stationary,0.081,2,MMSI 970176458,other
+970176550,stationary,0.009,2,MMSI 970176550,other
+970176552,stationary,0.035,2,MMSI 970176552,other
+970176782,stationary,0.08,2,MMSI 970176782,other
+970176860,stationary,0.085,2,MMSI 970176860,other
+970177172,stationary,0.057,2,MMSI 970177172,other
+970178021,stationary,0.048,2,MMSI 970178021,other
+970178037,stationary,0.001,2,MMSI 970178037,other
+970178041,stationary,0.013,2,MMSI 970178041,other
+970178098,stationary,0.001,2,MMSI 970178098,other
+970178110,stationary,0.005,2,MMSI 970178110,other
+970178128,stationary,0.005,2,MMSI 970178128,other
+970178155,stationary,0.001,2,MMSI 970178155,other
+970178241,stationary,0.001,2,MMSI 970178241,other
+970178256,stationary,0.018,2,MMSI 970178256,other
+970178273,stationary,0.009,2,MMSI 970178273,other
+970178276,stationary,0.001,2,MMSI 970178276,other
+970178281,stationary,0.036,4,MMSI 970178281,other
+970178282,stationary,0.0,2,MMSI 970178282,other
+970178310,stationary,0.003,2,MMSI 970178310,other
+970178316,stationary,0.008,2,MMSI 970178316,other
+970178376,stationary,0.001,2,MMSI 970178376,other
+970178380,stationary,0.008,2,MMSI 970178380,other
+970178413,stationary,0.018,2,MMSI 970178413,other
+970178450,stationary,0.008,2,MMSI 970178450,other
+970178494,stationary,0.001,2,MMSI 970178494,other
+970178497,stationary,0.001,2,MMSI 970178497,other
+970178501,stationary,0.006,2,MMSI 970178501,other
+970178530,stationary,0.0,2,MMSI 970178530,other
+970178532,stationary,0.0,2,MMSI 970178532,other
+970178611,stationary,0.004,2,MMSI 970178611,other
+970178664,stationary,0.001,2,MMSI 970178664,other
+970178772,stationary,0.012,2,MMSI 970178772,other
+970178781,stationary,0.0,2,MMSI 970178781,other
+970178808,stationary,0.003,2,MMSI 970178808,other
+970178936,stationary,0.0,2,MMSI 970178936,other
+970178946,stationary,0.03,2,MMSI 970178946,other
+970179104,stationary,0.011,2,MMSI 970179104,other
+970179126,stationary,0.006,2,MMSI 970179126,other
+970179213,stationary,0.001,2,MMSI 970179213,other
+970179315,stationary,0.086,2,MMSI 970179315,other
+970179364,stationary,0.013,2,MMSI 970179364,other
+970179378,stationary,0.006,2,MMSI 970179378,other
+970179422,stationary,0.052,6,MMSI 970179422,other
+970179493,stationary,0.009,2,MMSI 970179493,other
+970179506,stationary,0.016,2,MMSI 970179506,other
+970179513,stationary,0.001,2,MMSI 970179513,other
+970179526,stationary,0.002,2,MMSI 970179526,other
+970179568,stationary,0.002,2,MMSI 970179568,other
+970179634,stationary,0.045,2,MMSI 970179634,other
+970179692,stationary,0.001,2,MMSI 970179692,other
+970179907,stationary,0.146,4,MMSI 970179907,other
+970211034,stationary,0.066,2,MMSI 970211034,other
+970211035,stationary,0.019,2,MMSI 970211035,other
+970211385,stationary,0.001,2,MMSI 970211385,other
+970211481,stationary,0.051,2,MMSI 970211481,other
+970211855,stationary,0.004,2,MMSI 970211855,other
+970212630,stationary,0.04,2,MMSI 970212630,other
+970212646,stationary,0.032,6,MMSI 970212646,other
+970212929,stationary,0.193,2,MMSI 970212929,other
+970215113,stationary,0.016,2,MMSI 970215113,other
+970215129,stationary,0.001,2,MMSI 970215129,other
+970215171,stationary,0.0,2,MMSI 970215171,other
+970215223,stationary,0.01,2,MMSI 970215223,other
+970215224,stationary,0.155,2,MMSI 970215224,other
+970215230,stationary,0.0,2,MMSI 970215230,other
+970215237,stationary,0.062,2,MMSI 970215237,other
+970215241,stationary,0.014,2,MMSI 970215241,other
+970215244,stationary,0.003,2,MMSI 970215244,other
+970215247,stationary,0.04,4,MMSI 970215247,other
+970215249,stationary,0.002,2,MMSI 970215249,other
+970215265,stationary,0.0,2,MMSI 970215265,other
+970215277,stationary,0.0,2,MMSI 970215277,other
+970215287,stationary,0.004,2,MMSI 970215287,other
+970215309,stationary,0.0,2,MMSI 970215309,other
+970215332,stationary,0.008,2,MMSI 970215332,other
+970215341,stationary,0.179,2,MMSI 970215341,other
+970216482,stationary,0.052,10,MMSI 970216482,other
+970216495,stationary,0.009,4,MMSI 970216495,other
+970216496,stationary,0.035,14,MMSI 970216496,other
+970216505,stationary,0.07,2,MMSI 970216505,other
+970216513,stationary,0.068,2,MMSI 970216513,other
+970216516,stationary,0.0,2,MMSI 970216516,other
+970217556,stationary,0.005,2,MMSI 970217556,other
+970217902,stationary,0.0,2,MMSI 970217902,other
+970218192,stationary,0.0,2,MMSI 970218192,other
+970219514,stationary,0.108,2,MMSI 970219514,other
+970219524,stationary,0.003,2,MMSI 970219524,other
+970219792,stationary,0.004,2,MMSI 970219792,other
+970220148,stationary,0.0,2,MMSI 970220148,other
+970220173,stationary,0.003,2,MMSI 970220173,other
+970220307,stationary,0.042,2,MMSI 970220307,other
+970220490,stationary,0.0,2,MMSI 970220490,other
+970220673,stationary,0.069,2,MMSI 970220673,other
+970220693,stationary,0.003,2,MMSI 970220693,other
+970220835,stationary,0.07,2,MMSI 970220835,other
+970220921,stationary,0.001,2,MMSI 970220921,other
+970220936,stationary,0.01,2,MMSI 970220936,other
+970220950,stationary,0.002,2,MMSI 970220950,other
+970220966,stationary,0.004,2,MMSI 970220966,other
+970220976,stationary,0.001,2,MMSI 970220976,other
+970220981,stationary,0.05,2,MMSI 970220981,other
+970221012,stationary,0.011,2,MMSI 970221012,other
+970221037,stationary,0.001,2,MMSI 970221037,other
+970221063,stationary,0.022,2,MMSI 970221063,other
+970221729,stationary,0.007,2,MMSI 970221729,other
+970222790,stationary,0.001,2,MMSI 970222790,other
+970222844,stationary,0.001,2,MMSI 970222844,other
+970222942,stationary,0.043,2,MMSI 970222942,other
+970227122,stationary,0.002,2,MMSI 970227122,other
+970227201,stationary,0.009,2,MMSI 970227201,other
+970227653,stationary,0.007,2,MMSI 970227653,other
+970228534,stationary,0.0,2,MMSI 970228534,other
+970228576,stationary,0.003,2,MMSI 970228576,other
+970228665,stationary,0.016,4,MMSI 970228665,other
+970228726,stationary,0.001,2,MMSI 970228726,other
+970228727,stationary,0.002,2,MMSI 970228727,other
+970228736,stationary,0.001,2,MMSI 970228736,other
+970228754,stationary,0.003,2,MMSI 970228754,other
+970230350,stationary,0.009,2,MMSI 970230350,other
+970233253,stationary,0.0,2,MMSI 970233253,other
+970233579,stationary,0.0,2,MMSI 970233579,other
+970237625,stationary,0.003,2,MMSI 970237625,other
+970237777,stationary,0.003,2,MMSI 970237777,other
+970237927,stationary,0.0,2,MMSI 970237927,other
+970238214,stationary,0.02,4,MMSI 970238214,other
+970238482,stationary,0.045,2,MMSI 970238482,other
+970238508,stationary,0.001,2,MMSI 970238508,other
+970238985,stationary,0.001,2,MMSI 970238985,other
+970239042,stationary,0.001,2,MMSI 970239042,other
+970239047,stationary,0.005,2,MMSI 970239047,other
+970239090,stationary,0.011,2,MMSI 970239090,other
+970239104,stationary,0.002,2,MMSI 970239104,other
+970239599,stationary,0.013,2,MMSI 970239599,other
+970240785,stationary,0.008,2,MMSI 970240785,other
+970242121,stationary,0.0,4,MMSI 970242121,other
+970246568,stationary,0.155,2,MMSI 970246568,other
+970246836,stationary,0.057,2,MMSI 970246836,other
+970255203,stationary,0.006,2,MMSI 970255203,other
+970255251,stationary,0.0,2,MMSI 970255251,other
+970257182,stationary,0.011,2,MMSI 970257182,other
+970258483,stationary,0.003,2,MMSI 970258483,other
+970258626,stationary,0.025,4,MMSI 970258626,other
+970259414,stationary,0.002,2,MMSI 970259414,other
+970259423,stationary,0.039,2,MMSI 970259423,other
+970259437,stationary,0.024,8,MMSI 970259437,other
+970259476,stationary,0.009,2,MMSI 970259476,other
+970259495,stationary,0.001,2,MMSI 970259495,other
+970280222,stationary,0.022,2,MMSI 970280222,other
+970281316,stationary,0.005,2,MMSI 970281316,other
+970281330,stationary,0.06,2,MMSI 970281330,other
+970282977,stationary,0.014,2,MMSI 970282977,other
+970283678,stationary,0.004,2,MMSI 970283678,other
+970283906,stationary,0.0,2,MMSI 970283906,other
+970283944,stationary,0.018,2,MMSI 970283944,other
+970284668,stationary,0.001,2,MMSI 970284668,other
+970285323,stationary,0.004,2,MMSI 970285323,other
+970285976,stationary,0.01,2,MMSI 970285976,other
+970286472,stationary,0.034,2,MMSI 970286472,other
+970286500,stationary,0.042,2,MMSI 970286500,other
+970286564,stationary,0.061,2,MMSI 970286564,other
+970286740,stationary,0.007,2,MMSI 970286740,other
+970287473,stationary,0.024,2,MMSI 970287473,other
+970287807,stationary,0.008,2,MMSI 970287807,other
+970287812,stationary,0.013,2,MMSI 970287812,other
+970289843,stationary,0.004,2,MMSI 970289843,other
+970291213,stationary,0.0,2,MMSI 970291213,other
+970470101,stationary,0.0,2,MMSI 970470101,other
+970470124,stationary,0.012,2,MMSI 970470124,other
+970470382,stationary,0.0,2,MMSI 970470382,other
+970470399,stationary,0.003,2,MMSI 970470399,other
+970470566,stationary,0.003,2,MMSI 970470566,other
+970470753,stationary,0.0,2,MMSI 970470753,other
+970471033,stationary,0.0,2,MMSI 970471033,other
+970471307,stationary,0.0,2,MMSI 970471307,other
+970471431,stationary,0.0,2,MMSI 970471431,other
+970471572,stationary,0.0,2,MMSI 970471572,other
+970471579,stationary,0.0,2,MMSI 970471579,other
+970471587,stationary,0.0,2,MMSI 970471587,other
+970471592,stationary,0.006,2,MMSI 970471592,other
+970471667,stationary,0.022,4,MMSI 970471667,other
+970471722,stationary,0.0,2,MMSI 970471722,other
+970471723,stationary,0.013,2,MMSI 970471723,other
+970471724,stationary,0.015,2,MMSI 970471724,other
+970471857,stationary,0.0,2,MMSI 970471857,other
+970471949,stationary,0.0,2,MMSI 970471949,other
+970471951,stationary,0.0,2,MMSI 970471951,other
+970471953,stationary,0.026,4,MMSI 970471953,other
+970472038,stationary,0.0,2,MMSI 970472038,other
+970472043,stationary,0.0,2,MMSI 970472043,other
+970712503,stationary,0.0,2,MMSI 970712503,other
+970845738,stationary,0.011,2,MMSI 970845738,other
+970854118,stationary,0.006,2,Legato Odense,other
+970854156,stationary,0.001,2,Legato Odense,other
+970854181,stationary,0.012,2,MMSI 970854181,other
+970854386,stationary,0.006,2,Volpino,other
+970854628,stationary,0.006,2,Namaau,other
+970856371,stationary,0.001,2,Calypso,other
+970860141,stationary,0.007,2,MMSI 970860141,other
+970860145,stationary,0.002,2,MMSI 970860145,other
+970860146,stationary,0.061,4,MMSI 970860146,other
+970860150,stationary,0.003,2,MMSI 970860150,other
+970860151,stationary,0.032,2,MMSI 970860151,other
+970860153,stationary,0.003,2,MMSI 970860153,other
+970860154,stationary,0.049,2,MMSI 970860154,other
+970860158,stationary,0.001,2,MMSI 970860158,other
+970860173,stationary,0.004,2,MMSI 970860173,other
+970860228,stationary,0.002,2,MMSI 970860228,other
+970860235,stationary,0.009,2,MMSI 970860235,other
+970860238,stationary,0.006,2,MMSI 970860238,other
+970860239,stationary,0.186,4,MMSI 970860239,other
+970860243,stationary,0.003,2,MMSI 970860243,other
+970860277,stationary,0.013,2,MMSI 970860277,other
+970860313,stationary,0.003,2,MMSI 970860313,other
+970860316,stationary,0.003,2,MMSI 970860316,other
+970860318,stationary,0.006,2,MMSI 970860318,other
+970860320,stationary,0.012,2,MMSI 970860320,other
+970860323,stationary,0.003,2,MMSI 970860323,other
+970860333,stationary,0.126,6,MMSI 970860333,other
+970860334,stationary,0.074,6,MMSI 970860334,other
+970860367,stationary,0.007,2,MMSI 970860367,other
+970860378,stationary,0.004,2,MMSI 970860378,other
+970860380,stationary,0.005,2,MMSI 970860380,other
+970860382,stationary,0.006,2,MMSI 970860382,other
+970860441,stationary,0.01,2,MMSI 970860441,other
+970860445,stationary,0.199,6,MMSI 970860445,other
+970860453,stationary,0.026,4,MMSI 970860453,other
+970860471,stationary,0.004,2,MMSI 970860471,other
+970860512,stationary,0.008,2,MMSI 970860512,other
+970860584,stationary,0.005,2,MMSI 970860584,other
+970860664,stationary,0.007,2,MMSI 970860664,other
+970860756,stationary,0.001,2,MMSI 970860756,other
+970860904,stationary,0.003,2,MMSI 970860904,other
+972125061,stationary,0.0,2,MMSI 972125061,other
+972170456,stationary,0.003,2,MMSI 972170456,other
+972171871,stationary,0.022,2,MMSI 972171871,other
+972211691,stationary,0.009,2,MMSI 972211691,other
+972211692,stationary,0.035,4,MMSI 972211692,other
+972211694,stationary,0.031,2,MMSI 972211694,other
+972211697,stationary,0.003,4,MMSI 972211697,other
+972211698,stationary,0.001,2,MMSI 972211698,other
+972211699,stationary,0.032,4,MMSI 972211699,other
+972211700,stationary,0.001,2,MMSI 972211700,other
+972211702,stationary,0.001,2,MMSI 972211702,other
+972211704,stationary,0.067,2,MMSI 972211704,other
+972211705,stationary,0.001,2,MMSI 972211705,other
+972211706,stationary,0.004,2,MMSI 972211706,other
+972211718,stationary,0.002,2,MMSI 972211718,other
+972213636,stationary,0.0,2,MMSI 972213636,other
+972215811,stationary,0.013,2,MMSI 972215811,other
+972215820,stationary,0.008,2,MMSI 972215820,other
+972222072,stationary,0.077,2,MMSI 972222072,other
+972222474,stationary,0.009,2,MMSI 972222474,other
+972226267,stationary,0.05,2,MMSI 972226267,other
+972226916,stationary,0.006,2,MMSI 972226916,other
+972227734,stationary,0.004,2,MMSI 972227734,other
+972228263,stationary,0.008,2,MMSI 972228263,other
+972230359,stationary,0.002,2,MMSI 972230359,other
+972230368,stationary,0.0,2,MMSI 972230368,other
+972230372,stationary,0.03,4,MMSI 972230372,other
+972230375,stationary,0.003,2,MMSI 972230375,other
+972230377,stationary,0.035,4,MMSI 972230377,other
+972230378,stationary,0.002,2,MMSI 972230378,other
+972230383,stationary,0.0,2,MMSI 972230383,other
+972230385,stationary,0.002,2,MMSI 972230385,other
+972230387,stationary,0.004,2,MMSI 972230387,other
+972230388,stationary,0.003,2,MMSI 972230388,other
+972230398,stationary,0.001,2,MMSI 972230398,other
+972230400,stationary,0.012,2,MMSI 972230400,other
+972230406,stationary,0.001,2,MMSI 972230406,other
+972230408,stationary,0.002,2,MMSI 972230408,other
+972230411,stationary,0.018,2,MMSI 972230411,other
+972230416,stationary,0.001,2,MMSI 972230416,other
+972230420,stationary,0.004,2,MMSI 972230420,other
+972230426,stationary,0.006,2,MMSI 972230426,other
+972230429,stationary,0.003,2,MMSI 972230429,other
+972230430,stationary,0.043,4,MMSI 972230430,other
+972230431,stationary,0.001,2,MMSI 972230431,other
+972230436,stationary,0.001,2,MMSI 972230436,other
+972230441,stationary,0.001,2,MMSI 972230441,other
+972230447,stationary,0.002,2,MMSI 972230447,other
+972230458,stationary,0.003,2,MMSI 972230458,other
+972230470,stationary,0.003,2,MMSI 972230470,other
+972230476,stationary,0.0,2,MMSI 972230476,other
+972230478,stationary,0.008,2,MMSI 972230478,other
+972230479,stationary,0.001,2,MMSI 972230479,other
+972230482,stationary,0.019,2,MMSI 972230482,other
+972230485,stationary,0.049,2,MMSI 972230485,other
+972230496,stationary,0.009,2,MMSI 972230496,other
+972230498,stationary,0.001,2,MMSI 972230498,other
+972230511,stationary,0.023,2,MMSI 972230511,other
+972230512,stationary,0.008,2,MMSI 972230512,other
+972230514,stationary,0.006,2,MMSI 972230514,other
+972230519,stationary,0.0,2,MMSI 972230519,other
+972230529,stationary,0.012,2,MMSI 972230529,other
+972230533,stationary,0.004,2,MMSI 972230533,other
+972230535,stationary,0.021,4,MMSI 972230535,other
+972230540,stationary,0.0,2,MMSI 972230540,other
+972230553,stationary,0.001,2,MMSI 972230553,other
+972230560,stationary,0.001,2,MMSI 972230560,other
+972230574,stationary,0.001,2,MMSI 972230574,other
+972230575,stationary,0.018,2,MMSI 972230575,other
+972230578,stationary,0.021,2,MMSI 972230578,other
+972230587,stationary,0.004,2,MMSI 972230587,other
+972230588,stationary,0.001,2,MMSI 972230588,other
+972230589,stationary,0.0,2,MMSI 972230589,other
+972230597,stationary,0.002,2,MMSI 972230597,other
+972230600,stationary,0.046,2,MMSI 972230600,other
+972230604,stationary,0.0,2,MMSI 972230604,other
+972230610,stationary,0.004,2,MMSI 972230610,other
+972230614,stationary,0.017,2,MMSI 972230614,other
+972230623,stationary,0.017,2,MMSI 972230623,other
+972230627,stationary,0.0,2,MMSI 972230627,other
+972230629,stationary,0.013,2,MMSI 972230629,other
+972230633,stationary,0.006,2,MMSI 972230633,other
+972230646,stationary,0.002,2,MMSI 972230646,other
+972230659,stationary,0.0,2,MMSI 972230659,other
+972230665,stationary,0.001,2,MMSI 972230665,other
+972230670,stationary,0.001,2,MMSI 972230670,other
+972230673,stationary,0.021,2,MMSI 972230673,other
+972230676,stationary,0.011,2,MMSI 972230676,other
+972230682,stationary,0.0,2,MMSI 972230682,other
+972230685,stationary,0.003,2,MMSI 972230685,other
+972230689,stationary,0.02,2,MMSI 972230689,other
+972230690,stationary,0.002,2,MMSI 972230690,other
+972230691,stationary,0.002,2,MMSI 972230691,other
+972230693,stationary,0.002,2,MMSI 972230693,other
+972230695,stationary,0.003,2,MMSI 972230695,other
+972230696,stationary,0.001,2,MMSI 972230696,other
+972230697,stationary,0.049,8,MMSI 972230697,other
+972230700,stationary,0.132,4,MMSI 972230700,other
+972230705,stationary,0.002,2,MMSI 972230705,other
+972230707,stationary,0.002,2,MMSI 972230707,other
+972230708,stationary,0.003,2,MMSI 972230708,other
+972230711,stationary,0.006,2,MMSI 972230711,other
+972230716,stationary,0.002,2,MMSI 972230716,other
+972230717,stationary,0.009,2,MMSI 972230717,other
+972230718,stationary,0.018,2,MMSI 972230718,other
+972230720,stationary,0.003,2,MMSI 972230720,other
+972230730,stationary,0.003,2,MMSI 972230730,other
+972230738,stationary,0.003,2,MMSI 972230738,other
+972230750,stationary,0.003,2,MMSI 972230750,other
+972230766,stationary,0.008,2,MMSI 972230766,other
+972230783,stationary,0.001,2,MMSI 972230783,other
+972230784,stationary,0.002,2,MMSI 972230784,other
+972230786,stationary,0.007,2,MMSI 972230786,other
+972230787,stationary,0.001,2,MMSI 972230787,other
+972230793,stationary,0.009,4,MMSI 972230793,other
+972230800,stationary,0.024,2,MMSI 972230800,other
+972230806,stationary,0.014,2,MMSI 972230806,other
+972230810,stationary,0.001,2,MMSI 972230810,other
+972230818,stationary,0.002,2,MMSI 972230818,other
+972230823,stationary,0.001,2,MMSI 972230823,other
+972230831,stationary,0.004,2,MMSI 972230831,other
+972230833,stationary,0.001,2,MMSI 972230833,other
+972230837,stationary,0.002,2,MMSI 972230837,other
+972230838,stationary,0.001,2,MMSI 972230838,other
+972230848,stationary,0.006,2,MMSI 972230848,other
+972230860,stationary,0.0,2,MMSI 972230860,other
+972230868,stationary,0.006,4,MMSI 972230868,other
+972230871,stationary,0.023,2,MMSI 972230871,other
+972230873,stationary,0.01,2,MMSI 972230873,other
+972230874,stationary,0.033,2,MMSI 972230874,other
+972230877,stationary,0.011,2,MMSI 972230877,other
+972230884,stationary,0.002,2,MMSI 972230884,other
+972230886,stationary,0.002,2,MMSI 972230886,other
+972230888,stationary,0.001,2,MMSI 972230888,other
+972230889,stationary,0.023,2,MMSI 972230889,other
+972230896,stationary,0.002,2,MMSI 972230896,other
+972230898,stationary,0.001,2,MMSI 972230898,other
+972230900,stationary,0.004,2,MMSI 972230900,other
+972230903,stationary,0.004,4,MMSI 972230903,other
+972230906,stationary,0.002,2,MMSI 972230906,other
+972230907,stationary,0.024,2,MMSI 972230907,other
+972230909,stationary,0.001,2,MMSI 972230909,other
+972230914,stationary,0.002,2,MMSI 972230914,other
+972230920,stationary,0.0,2,MMSI 972230920,other
+972230925,stationary,0.004,2,MMSI 972230925,other
+972230929,stationary,0.035,2,MMSI 972230929,other
+972230936,stationary,0.0,2,MMSI 972230936,other
+972230942,stationary,0.045,2,MMSI 972230942,other
+972230952,stationary,0.0,2,MMSI 972230952,other
+972230956,stationary,0.002,2,MMSI 972230956,other
+972230959,stationary,0.047,6,MMSI 972230959,other
+972230961,stationary,0.089,2,MMSI 972230961,other
+972230962,stationary,0.024,4,MMSI 972230962,other
+972230966,stationary,0.001,2,MMSI 972230966,other
+972230972,stationary,0.008,2,MMSI 972230972,other
+972230973,stationary,0.036,2,MMSI 972230973,other
+972230980,stationary,0.004,2,MMSI 972230980,other
+972230981,stationary,0.02,2,MMSI 972230981,other
+972230986,stationary,0.055,2,MMSI 972230986,other
+972230987,stationary,0.013,4,MMSI 972230987,other
+972230989,stationary,0.012,2,MMSI 972230989,other
+972230990,stationary,0.001,2,MMSI 972230990,other
+972230997,stationary,0.001,2,MMSI 972230997,other
+972231004,stationary,0.0,2,MMSI 972231004,other
+972231020,stationary,0.003,2,MMSI 972231020,other
+972231026,stationary,0.0,2,MMSI 972231026,other
+972231027,stationary,0.014,2,MMSI 972231027,other
+972231029,stationary,0.0,2,MMSI 972231029,other
+972231039,stationary,0.001,2,MMSI 972231039,other
+972231046,stationary,0.001,2,MMSI 972231046,other
+972231047,stationary,0.0,2,MMSI 972231047,other
+972231056,stationary,0.0,2,MMSI 972231056,other
+972231057,stationary,0.001,2,MMSI 972231057,other
+972231060,stationary,0.002,2,MMSI 972231060,other
+972231066,stationary,0.001,2,MMSI 972231066,other
+972231068,stationary,0.0,2,MMSI 972231068,other
+972231073,stationary,0.008,2,MMSI 972231073,other
+972231077,stationary,0.002,2,MMSI 972231077,other
+972231079,stationary,0.035,2,MMSI 972231079,other
+972231080,stationary,0.009,2,MMSI 972231080,other
+972231088,stationary,0.001,2,MMSI 972231088,other
+972231091,stationary,0.015,2,MMSI 972231091,other
+972231096,stationary,0.006,2,MMSI 972231096,other
+972231098,stationary,0.004,2,MMSI 972231098,other
+972231101,stationary,0.001,2,MMSI 972231101,other
+972231104,stationary,0.002,2,MMSI 972231104,other
+972231105,stationary,0.009,2,MMSI 972231105,other
+972231110,stationary,0.002,2,MMSI 972231110,other
+972231111,stationary,0.015,2,MMSI 972231111,other
+972231114,stationary,0.0,2,MMSI 972231114,other
+972231118,stationary,0.009,2,MMSI 972231118,other
+972231125,stationary,0.001,2,MMSI 972231125,other
+972231130,stationary,0.004,2,MMSI 972231130,other
+972231135,stationary,0.045,2,MMSI 972231135,other
+972231136,stationary,0.054,2,MMSI 972231136,other
+972231141,stationary,0.0,2,MMSI 972231141,other
+972231144,stationary,0.024,2,MMSI 972231144,other
+972231157,stationary,0.05,4,MMSI 972231157,other
+972231166,stationary,0.008,2,MMSI 972231166,other
+972231183,stationary,0.029,2,MMSI 972231183,other
+972231185,stationary,0.038,2,MMSI 972231185,other
+972231194,stationary,0.002,2,MMSI 972231194,other
+972231196,stationary,0.035,2,MMSI 972231196,other
+972231216,stationary,0.011,2,MMSI 972231216,other
+972231225,stationary,0.0,2,MMSI 972231225,other
+972231226,stationary,0.003,2,MMSI 972231226,other
+972231231,stationary,0.0,2,MMSI 972231231,other
+972231234,stationary,0.008,2,MMSI 972231234,other
+972231236,stationary,0.023,2,MMSI 972231236,other
+972231237,stationary,0.004,2,MMSI 972231237,other
+972231238,stationary,0.001,2,MMSI 972231238,other
+972231239,stationary,0.001,2,MMSI 972231239,other
+972231245,stationary,0.012,2,MMSI 972231245,other
+972231246,stationary,0.023,2,MMSI 972231246,other
+972231248,stationary,0.002,2,MMSI 972231248,other
+972231253,stationary,0.001,2,MMSI 972231253,other
+972231256,stationary,0.003,2,MMSI 972231256,other
+972231261,stationary,0.002,2,MMSI 972231261,other
+972231263,stationary,0.003,2,MMSI 972231263,other
+972231265,stationary,0.019,2,MMSI 972231265,other
+972231267,stationary,0.002,2,MMSI 972231267,other
+972231268,stationary,0.002,2,MMSI 972231268,other
+972231270,stationary,0.011,2,MMSI 972231270,other
+972231283,stationary,0.0,2,MMSI 972231283,other
+972231288,stationary,0.0,2,MMSI 972231288,other
+972231289,stationary,0.013,2,MMSI 972231289,other
+972231300,stationary,0.001,2,MMSI 972231300,other
+972231302,stationary,0.0,2,MMSI 972231302,other
+972231307,stationary,0.009,2,MMSI 972231307,other
+972231463,stationary,0.0,2,MMSI 972231463,other
+972231464,stationary,0.126,2,MMSI 972231464,other
+972231470,stationary,0.018,4,MMSI 972231470,other
+972231471,stationary,0.0,2,MMSI 972231471,other
+972231477,stationary,0.001,2,MMSI 972231477,other
+972231478,stationary,0.001,2,MMSI 972231478,other
+972231499,stationary,0.011,2,MMSI 972231499,other
+972231501,stationary,0.001,2,MMSI 972231501,other
+972231502,stationary,0.002,2,MMSI 972231502,other
+972231512,stationary,0.001,2,MMSI 972231512,other
+972231515,stationary,0.015,2,MMSI 972231515,other
+972231517,stationary,0.002,2,MMSI 972231517,other
+972231521,stationary,0.0,2,MMSI 972231521,other
+972231529,stationary,0.027,2,MMSI 972231529,other
+972231532,stationary,0.007,2,MMSI 972231532,other
+972231542,stationary,0.038,4,MMSI 972231542,other
+972231553,stationary,0.001,2,MMSI 972231553,other
+972231554,stationary,0.001,2,MMSI 972231554,other
+972231560,stationary,0.002,2,MMSI 972231560,other
+972231562,stationary,0.016,2,MMSI 972231562,other
+972231567,stationary,0.001,2,MMSI 972231567,other
+972231574,stationary,0.001,2,MMSI 972231574,other
+972231578,stationary,0.0,2,MMSI 972231578,other
+972231591,stationary,0.001,2,MMSI 972231591,other
+972231602,stationary,0.0,2,MMSI 972231602,other
+972231605,stationary,0.04,2,MMSI 972231605,other
+972231606,stationary,0.006,2,MMSI 972231606,other
+972231610,stationary,0.062,2,MMSI 972231610,other
+972231632,stationary,0.001,2,MMSI 972231632,other
+972231634,stationary,0.022,4,MMSI 972231634,other
+972231642,stationary,0.042,2,MMSI 972231642,other
+972231645,stationary,0.003,2,MMSI 972231645,other
+972231657,stationary,0.004,2,MMSI 972231657,other
+972231658,stationary,0.007,2,MMSI 972231658,other
+972231665,stationary,0.0,2,MMSI 972231665,other
+972231666,stationary,0.002,2,MMSI 972231666,other
+972231669,stationary,0.012,2,MMSI 972231669,other
+972231673,stationary,0.001,2,MMSI 972231673,other
+972231675,stationary,0.004,2,MMSI 972231675,other
+972231677,stationary,0.029,4,MMSI 972231677,other
+972231680,stationary,0.012,4,MMSI 972231680,other
+972231683,stationary,0.0,2,MMSI 972231683,other
+972231685,stationary,0.009,4,MMSI 972231685,other
+972231696,stationary,0.043,2,MMSI 972231696,other
+972231701,stationary,0.01,2,MMSI 972231701,other
+972231705,stationary,0.002,2,MMSI 972231705,other
+972236470,stationary,0.001,2,MMSI 972236470,other
+972236484,stationary,0.003,2,MMSI 972236484,other
+972237445,stationary,0.002,2,MMSI 972237445,other
+972237471,stationary,0.05,2,MMSI 972237471,other
+972237472,stationary,0.004,2,MMSI 972237472,other
+972237493,stationary,0.012,4,MMSI 972237493,other
+972245141,stationary,0.001,2,MMSI 972245141,other
+972245150,stationary,0.002,2,MMSI 972245150,other
+972410373,stationary,0.0,2,MMSI 972410373,other
+972410385,stationary,0.031,2,MMSI 972410385,other
+972411105,stationary,0.032,2,MMSI 972411105,other
+972411398,stationary,0.006,2,MMSI 972411398,other
+972411399,stationary,0.023,2,MMSI 972411399,other
+972411424,stationary,0.049,2,MMSI 972411424,other
+972413178,stationary,0.009,2,MMSI 972413178,other
+972413448,stationary,0.013,2,MMSI 972413448,other
+972413848,stationary,0.031,2,MMSI 972413848,other
+972427221,stationary,0.002,2,MMSI 972427221,other
+972570494,stationary,0.006,2,MMSI 972570494,other
+972570520,stationary,0.002,2,MMSI 972570520,other
+972600142,stationary,0.005,2,MMSI 972600142,other
+972600149,stationary,0.017,2,MMSI 972600149,other
+972600220,stationary,0.0,2,MMSI 972600220,other
+972600353,stationary,0.01,2,MMSI 972600353,other
+972600391,stationary,0.051,2,MMSI 972600391,other
+972600766,stationary,0.008,2,MMSI 972600766,other
+972600873,stationary,0.018,2,MMSI 972600873,other
+972601234,stationary,0.016,4,MMSI 972601234,other
+972601262,stationary,0.04,2,MMSI 972601262,other
+972601321,stationary,0.048,4,MMSI 972601321,other
+972601327,stationary,0.042,2,MMSI 972601327,other
+972601371,stationary,0.007,2,MMSI 972601371,other
+972601389,stationary,0.011,2,MMSI 972601389,other
+972601655,stationary,0.027,2,MMSI 972601655,other
+972601668,stationary,0.145,2,MMSI 972601668,other
+972601779,stationary,0.014,6,MMSI 972601779,other
+972602102,stationary,0.01,4,MMSI 972602102,other
+972602176,stationary,0.037,4,MMSI 972602176,other
+972602182,stationary,0.013,2,MMSI 972602182,other
+972602208,stationary,0.036,4,MMSI 972602208,other
+972602352,stationary,0.048,2,MMSI 972602352,other
+972602419,stationary,0.0,2,MMSI 972602419,other
+972602773,stationary,0.041,2,MMSI 972602773,other
+972603095,stationary,0.006,2,MMSI 972603095,other
+972603567,stationary,0.0,2,MMSI 972603567,other
+972603681,stationary,0.0,2,MMSI 972603681,other
+972603759,stationary,0.0,2,MMSI 972603759,other
+972603860,stationary,0.004,2,MMSI 972603860,other
+972604085,stationary,0.149,2,MMSI 972604085,other
+972604133,stationary,0.006,2,MMSI 972604133,other
+972604449,stationary,0.002,2,MMSI 972604449,other
+972604468,stationary,0.007,2,MMSI 972604468,other
+972604485,stationary,0.013,2,MMSI 972604485,other
+972604521,stationary,0.003,2,MMSI 972604521,other
+972604522,stationary,0.019,2,MMSI 972604522,other
+972604540,stationary,0.0,2,MMSI 972604540,other
+972604549,stationary,0.033,4,MMSI 972604549,other
+972604592,stationary,0.122,2,MMSI 972604592,other
+972604623,stationary,0.01,4,MMSI 972604623,other
+972604814,stationary,0.012,2,MMSI 972604814,other
+972604925,stationary,0.026,2,MMSI 972604925,other
+972604973,stationary,0.006,2,MMSI 972604973,other
+972605470,stationary,0.009,2,MMSI 972605470,other
+972605512,stationary,0.022,2,MMSI 972605512,other
+972605552,stationary,0.0,2,MMSI 972605552,other
+972605594,stationary,0.056,2,MMSI 972605594,other
+972605662,stationary,0.0,2,MMSI 972605662,other
+972605683,stationary,0.003,2,MMSI 972605683,other
+972605738,stationary,0.116,2,MMSI 972605738,other
+972605999,stationary,0.0,2,MMSI 972605999,other
+972606092,stationary,0.0,2,MMSI 972606092,other
+972606408,stationary,0.011,2,MMSI 972606408,other
+972606541,stationary,0.002,2,MMSI 972606541,other
+972606585,stationary,0.029,2,MMSI 972606585,other
+972606668,stationary,0.003,2,MMSI 972606668,other
+972606746,stationary,0.007,2,MMSI 972606746,other
+972606948,stationary,0.164,2,MMSI 972606948,other
+972607050,stationary,0.0,2,MMSI 972607050,other
+972607185,stationary,0.024,4,MMSI 972607185,other
+972607324,stationary,0.068,2,MMSI 972607324,other
+972607415,stationary,0.005,2,MMSI 972607415,other
+972607437,stationary,0.111,2,MMSI 972607437,other
+972607502,stationary,0.0,2,MMSI 972607502,other
+972607514,stationary,0.09,2,MMSI 972607514,other
+972607715,stationary,0.008,2,MMSI 972607715,other
+972607728,stationary,0.026,2,MMSI 972607728,other
+972607854,stationary,0.0,2,MMSI 972607854,other
+972607855,stationary,0.006,2,MMSI 972607855,other
+972607966,stationary,0.0,2,MMSI 972607966,other
+972608000,stationary,0.148,2,MMSI 972608000,other
+972608086,stationary,0.009,4,MMSI 972608086,other
+972608176,stationary,0.031,2,MMSI 972608176,other
+972608221,stationary,0.0,2,MMSI 972608221,other
+972608481,stationary,0.053,2,MMSI 972608481,other
+972608996,stationary,0.002,2,MMSI 972608996,other
+972609003,stationary,0.01,2,MMSI 972609003,other
+972609157,stationary,0.0,2,MMSI 972609157,other
+972609211,stationary,0.0,2,MMSI 972609211,other
+972609228,stationary,0.005,2,MMSI 972609228,other
+972609346,stationary,0.045,4,MMSI 972609346,other
+972609882,stationary,0.001,2,MMSI 972609882,other
+972609992,stationary,0.007,2,MMSI 972609992,other
+972860125,stationary,0.002,2,MMSI 972860125,other
+972971464,stationary,0.045,2,MMSI 972971464,other
+974010032,stationary,0.007,2,MMSI 974010032,other
+974010033,stationary,0.0,2,MMSI 974010033,other
+974010082,stationary,0.0,2,MMSI 974010082,other
+974010123,stationary,0.004,2,MMSI 974010123,other
+974010155,stationary,0.032,2,MMSI 974010155,other
+974010160,stationary,0.0,2,MMSI 974010160,other
+974010180,stationary,0.011,2,MMSI 974010180,other
+974010205,stationary,0.059,2,MMSI 974010205,other
+974010218,stationary,0.002,2,MMSI 974010218,other
+974010245,stationary,0.0,2,MMSI 974010245,other
+974010246,stationary,0.0,2,MMSI 974010246,other
+974010260,stationary,0.006,2,MMSI 974010260,other
+974010278,stationary,0.037,2,MMSI 974010278,other
+974010295,stationary,0.005,2,MMSI 974010295,other
+974010313,stationary,0.0,2,MMSI 974010313,other
+974010318,stationary,0.0,2,MMSI 974010318,other
+974010358,stationary,0.003,2,MMSI 974010358,other
+974010439,stationary,0.0,2,MMSI 974010439,other
+974010443,stationary,0.003,2,MMSI 974010443,other
+974010462,stationary,0.0,2,MMSI 974010462,other
+974010472,stationary,0.0,2,MMSI 974010472,other
+974010638,stationary,0.0,2,MMSI 974010638,other
+974010657,stationary,0.0,2,MMSI 974010657,other
+974010663,stationary,0.004,2,MMSI 974010663,other
+974010675,stationary,0.0,2,MMSI 974010675,other
+974010677,stationary,0.027,2,MMSI 974010677,other
+974010685,stationary,0.0,2,MMSI 974010685,other
+974010778,stationary,0.0,2,MMSI 974010778,other
+974010786,stationary,0.014,2,MMSI 974010786,other
+974010839,stationary,0.0,2,MMSI 974010839,other
+974010860,stationary,0.0,2,MMSI 974010860,other
+974010862,stationary,0.0,2,MMSI 974010862,other
+974010877,stationary,0.0,2,MMSI 974010877,other
+974010882,stationary,0.0,2,MMSI 974010882,other
+974010884,stationary,0.0,2,MMSI 974010884,other
+974010916,stationary,0.0,2,MMSI 974010916,other
+974010946,stationary,0.0,2,MMSI 974010946,other
+974010948,stationary,0.0,2,MMSI 974010948,other
+974010955,stationary,0.0,2,MMSI 974010955,other
+974010964,stationary,0.0,2,MMSI 974010964,other
+974010989,stationary,0.0,2,MMSI 974010989,other
+974011016,stationary,0.008,2,MMSI 974011016,other
+974011019,stationary,0.0,2,MMSI 974011019,other
+974011021,stationary,0.0,2,MMSI 974011021,other
+974011022,stationary,0.001,2,MMSI 974011022,other
+974011045,stationary,0.001,2,MMSI 974011045,other
+974011048,stationary,0.0,2,MMSI 974011048,other
+974011107,stationary,0.0,2,MMSI 974011107,other
+974011141,stationary,0.027,2,MMSI 974011141,other
+974011215,stationary,0.0,2,MMSI 974011215,other
+974011251,stationary,0.0,2,MMSI 974011251,other
+974011286,stationary,0.0,2,MMSI 974011286,other
+974011312,stationary,0.001,2,MMSI 974011312,other
+974011392,stationary,0.0,2,MMSI 974011392,other
+974011423,stationary,0.0,2,MMSI 974011423,other
+974011446,stationary,0.028,2,MMSI 974011446,other
+974011449,stationary,0.0,2,MMSI 974011449,other
+974011475,stationary,0.027,2,MMSI 974011475,other
+974011512,stationary,0.0,2,MMSI 974011512,other
+974011598,stationary,0.0,2,MMSI 974011598,other
+974011643,stationary,0.0,2,MMSI 974011643,other
+974011648,stationary,0.0,2,MMSI 974011648,other
+974011663,stationary,0.025,2,MMSI 974011663,other
+974011706,stationary,0.0,2,MMSI 974011706,other
+974011712,stationary,0.002,2,MMSI 974011712,other
+974011746,stationary,0.012,2,MMSI 974011746,other
+974011771,stationary,0.0,2,MMSI 974011771,other
+974011775,stationary,0.0,2,MMSI 974011775,other
+974011801,stationary,0.003,2,MMSI 974011801,other
+974011806,stationary,0.007,2,MMSI 974011806,other
+974011813,stationary,0.004,2,MMSI 974011813,other
+974011824,stationary,0.0,2,MMSI 974011824,other
+974011835,stationary,0.011,4,MMSI 974011835,other
+974011860,stationary,0.0,2,MMSI 974011860,other
+974011932,stationary,0.0,2,MMSI 974011932,other
+974012084,stationary,0.0,2,MMSI 974012084,other
+974012123,stationary,0.0,2,MMSI 974012123,other
+974012129,stationary,0.0,2,MMSI 974012129,other
+974012267,stationary,0.05,2,MMSI 974012267,other
+974012361,stationary,0.008,2,MMSI 974012361,other
+974012364,stationary,0.024,2,MMSI 974012364,other
+974012430,stationary,0.0,2,MMSI 974012430,other
+974012534,stationary,0.0,2,MMSI 974012534,other
+974012537,stationary,0.004,2,MMSI 974012537,other
+974012600,stationary,0.0,2,MMSI 974012600,other
+974012668,stationary,0.0,2,MMSI 974012668,other
+974012670,stationary,0.0,2,MMSI 974012670,other
+974012712,stationary,0.0,2,MMSI 974012712,other
+974012793,stationary,0.001,2,MMSI 974012793,other
+974012829,stationary,0.014,2,MMSI 974012829,other
+974012832,stationary,0.0,2,MMSI 974012832,other
+974012842,stationary,0.013,2,MMSI 974012842,other
+974013026,stationary,0.0,2,MMSI 974013026,other
+974013030,stationary,0.011,2,MMSI 974013030,other
+974013282,stationary,0.008,2,MMSI 974013282,other
+974013286,stationary,0.002,2,MMSI 974013286,other
+974013290,stationary,0.011,2,MMSI 974013290,other
+974013393,stationary,0.0,2,MMSI 974013393,other
+974013402,stationary,0.0,2,MMSI 974013402,other
+974013403,stationary,0.0,2,MMSI 974013403,other
+974013404,stationary,0.0,2,MMSI 974013404,other
+974013407,stationary,0.034,2,MMSI 974013407,other
+974013514,stationary,0.0,2,MMSI 974013514,other
+974013561,stationary,0.0,2,MMSI 974013561,other
+974013744,stationary,0.0,2,MMSI 974013744,other
+974013771,stationary,0.0,2,MMSI 974013771,other
+974013780,stationary,0.0,2,MMSI 974013780,other
+974013851,stationary,0.0,2,MMSI 974013851,other
+974013880,stationary,0.007,4,MMSI 974013880,other
+974013931,stationary,0.0,2,MMSI 974013931,other
+974013936,stationary,0.0,2,MMSI 974013936,other
+974014127,stationary,0.0,2,MMSI 974014127,other
+974014136,stationary,0.0,2,MMSI 974014136,other
+974014228,stationary,0.0,2,MMSI 974014228,other
+974014233,stationary,0.0,2,MMSI 974014233,other
+974014242,stationary,0.0,2,MMSI 974014242,other
+974014247,stationary,0.013,2,MMSI 974014247,other
+974014279,stationary,0.0,2,MMSI 974014279,other
+974014348,stationary,0.0,2,MMSI 974014348,other
+974014387,stationary,0.0,2,MMSI 974014387,other
+974014469,stationary,0.0,2,MMSI 974014469,other
+974014482,stationary,0.027,2,MMSI 974014482,other
+974014521,stationary,0.0,2,MMSI 974014521,other
+974014524,stationary,0.029,2,MMSI 974014524,other
+974014529,stationary,0.0,2,MMSI 974014529,other
+974014530,stationary,0.0,2,MMSI 974014530,other
+974014532,stationary,0.006,2,MMSI 974014532,other
+974014601,stationary,0.008,2,MMSI 974014601,other
+974014602,stationary,0.0,2,MMSI 974014602,other
+974014652,stationary,0.011,2,MMSI 974014652,other
+974014724,stationary,0.0,2,MMSI 974014724,other
+974014727,stationary,0.0,2,MMSI 974014727,other
+974014805,stationary,0.009,2,MMSI 974014805,other
+974014817,stationary,0.0,2,MMSI 974014817,other
+974014877,stationary,0.0,2,MMSI 974014877,other
+974014902,stationary,0.004,2,MMSI 974014902,other
+974014907,stationary,0.008,2,MMSI 974014907,other
+974014914,stationary,0.002,2,MMSI 974014914,other
+974014922,stationary,0.0,2,MMSI 974014922,other
+974014926,stationary,0.002,2,MMSI 974014926,other
+974014949,stationary,0.012,2,MMSI 974014949,other
+974015014,stationary,0.0,2,MMSI 974015014,other
+974015039,stationary,0.018,2,MMSI 974015039,other
+974015153,stationary,0.0,2,MMSI 974015153,other
+974015191,stationary,0.0,2,MMSI 974015191,other
+974015343,stationary,0.0,2,MMSI 974015343,other
+974015367,stationary,0.082,2,MMSI 974015367,other
+974015504,stationary,0.0,2,MMSI 974015504,other
+974015589,stationary,0.021,2,MMSI 974015589,other
+974015639,stationary,0.005,2,MMSI 974015639,other
+974015683,stationary,0.01,2,MMSI 974015683,other
+974015714,stationary,0.0,2,MMSI 974015714,other
+974015811,stationary,0.0,2,MMSI 974015811,other
+974015816,stationary,0.0,2,MMSI 974015816,other
+974015818,stationary,0.0,2,MMSI 974015818,other
+974015965,stationary,0.0,2,MMSI 974015965,other
+974016016,stationary,0.007,2,MMSI 974016016,other
+974016020,stationary,0.0,2,MMSI 974016020,other
+974016081,stationary,0.0,2,MMSI 974016081,other
+974016090,stationary,0.0,2,MMSI 974016090,other
+974016127,stationary,0.0,2,MMSI 974016127,other
+974016132,stationary,0.004,2,MMSI 974016132,other
+974016162,stationary,0.0,2,MMSI 974016162,other
+974016248,stationary,0.0,2,MMSI 974016248,other
+974016357,stationary,0.0,2,MMSI 974016357,other
+974016409,stationary,0.01,2,MMSI 974016409,other
+974016492,stationary,0.0,2,MMSI 974016492,other
+974016523,stationary,0.0,2,MMSI 974016523,other
+974016636,stationary,0.0,2,MMSI 974016636,other
+974016657,stationary,0.0,2,MMSI 974016657,other
+974016679,stationary,0.003,2,MMSI 974016679,other
+974016680,stationary,0.0,2,MMSI 974016680,other
+974016728,stationary,0.0,2,MMSI 974016728,other
+974016820,stationary,0.013,2,MMSI 974016820,other
+974016845,stationary,0.019,2,MMSI 974016845,other
+974016890,stationary,0.0,2,MMSI 974016890,other
+974016905,stationary,0.001,2,MMSI 974016905,other
+974016909,stationary,0.06,2,MMSI 974016909,other
+974016914,stationary,0.0,2,MMSI 974016914,other
+974016982,stationary,0.064,4,MMSI 974016982,other
+974017006,stationary,0.0,2,MMSI 974017006,other
+974017072,stationary,0.019,2,MMSI 974017072,other
+974017083,stationary,0.043,2,MMSI 974017083,other
+974017087,stationary,0.022,2,MMSI 974017087,other
+974017128,stationary,0.0,2,MMSI 974017128,other
+974017140,stationary,0.0,2,MMSI 974017140,other
+974017144,stationary,0.0,2,MMSI 974017144,other
+974017155,stationary,0.0,2,MMSI 974017155,other
+974017156,stationary,0.004,4,MMSI 974017156,other
+974017162,stationary,0.013,6,MMSI 974017162,other
+974017339,stationary,0.0,2,MMSI 974017339,other
+974017347,stationary,0.0,2,MMSI 974017347,other
+974017354,stationary,0.0,2,MMSI 974017354,other
+974017359,stationary,0.0,2,MMSI 974017359,other
+974017373,stationary,0.0,2,MMSI 974017373,other
+974017399,stationary,0.0,2,MMSI 974017399,other
+974017410,stationary,0.012,2,MMSI 974017410,other
+974017412,stationary,0.0,2,MMSI 974017412,other
+974017437,stationary,0.0,2,MMSI 974017437,other
+974017541,stationary,0.0,2,MMSI 974017541,other
+974017548,stationary,0.0,2,MMSI 974017548,other
+974017574,stationary,0.0,2,MMSI 974017574,other
+974017631,stationary,0.0,2,MMSI 974017631,other
+974017689,stationary,0.047,2,MMSI 974017689,other
+974017704,stationary,0.0,2,MMSI 974017704,other
+974017717,stationary,0.0,2,MMSI 974017717,other
+974017781,stationary,0.0,2,MMSI 974017781,other
+974017970,stationary,0.011,2,MMSI 974017970,other
+974017976,stationary,0.0,2,MMSI 974017976,other
+974017980,stationary,0.0,2,MMSI 974017980,other
+974017981,stationary,0.0,2,MMSI 974017981,other
+974017986,stationary,0.0,2,MMSI 974017986,other
+974017994,stationary,0.0,2,MMSI 974017994,other
+974018007,stationary,0.0,2,MMSI 974018007,other
+974018038,stationary,0.0,2,MMSI 974018038,other
+974018046,stationary,0.0,2,MMSI 974018046,other
+974018050,stationary,0.0,2,MMSI 974018050,other
+974018054,stationary,0.0,2,MMSI 974018054,other
+974018059,stationary,0.0,2,MMSI 974018059,other
+974018121,stationary,0.116,4,MMSI 974018121,other
+974018147,stationary,0.009,2,MMSI 974018147,other
+974018148,stationary,0.0,2,MMSI 974018148,other
+974018150,stationary,0.003,2,MMSI 974018150,other
+974018460,stationary,0.0,2,MMSI 974018460,other
+974018476,stationary,0.019,2,MMSI 974018476,other
+974018478,stationary,0.017,2,MMSI 974018478,other
+974018618,stationary,0.003,2,MMSI 974018618,other
+974018647,stationary,0.08,2,MMSI 974018647,other
+974018702,stationary,0.006,2,MMSI 974018702,other
+974018719,stationary,0.009,2,MMSI 974018719,other
+974018739,stationary,0.0,2,MMSI 974018739,other
+974018743,stationary,0.023,2,MMSI 974018743,other
+974018746,stationary,0.027,2,MMSI 974018746,other
+974018758,stationary,0.044,4,MMSI 974018758,other
+974018760,stationary,0.0,2,MMSI 974018760,other
+974018881,stationary,0.011,2,MMSI 974018881,other
+974018948,stationary,0.008,2,MMSI 974018948,other
+974019033,stationary,0.0,2,MMSI 974019033,other
+974019079,stationary,0.057,2,MMSI 974019079,other
+974019114,stationary,0.013,2,MMSI 974019114,other
+974019116,stationary,0.0,2,MMSI 974019116,other
+974019339,stationary,0.0,2,MMSI 974019339,other
+974019371,stationary,0.0,2,MMSI 974019371,other
+974019374,stationary,0.023,2,MMSI 974019374,other
+974019380,stationary,0.0,2,MMSI 974019380,other
+974019400,stationary,0.0,2,MMSI 974019400,other
+974019551,stationary,0.003,2,MMSI 974019551,other
+974019669,stationary,0.0,2,MMSI 974019669,other
+974019727,stationary,0.01,2,MMSI 974019727,other
+974019801,stationary,0.0,2,MMSI 974019801,other
+974019848,stationary,0.0,2,MMSI 974019848,other
+974019861,stationary,0.0,2,MMSI 974019861,other
+974019869,stationary,0.021,2,MMSI 974019869,other
+974019873,stationary,0.001,2,MMSI 974019873,other
+974019889,stationary,0.0,2,MMSI 974019889,other
+974019908,stationary,0.0,2,MMSI 974019908,other
+974019913,stationary,0.018,2,MMSI 974019913,other
+974122530,stationary,0.0,2,MMSI 974122530,other
+974122742,stationary,0.0,2,MMSI 974122742,other
+974124435,stationary,0.032,2,MMSI 974124435,other
+974126309,stationary,0.028,2,MMSI 974126309,other
+974571490,stationary,0.0,2,MMSI 974571490,other
+974572755,stationary,0.021,2,MMSI 974572755,other
+974576605,stationary,0.0,2,MMSI 974576605,other
+974605291,stationary,0.0,2,MMSI 974605291,other
+974605596,stationary,0.0,2,MMSI 974605596,other
+974608479,stationary,0.0,2,MMSI 974608479,other
+982125930,stationary,0.142,4,Tasman Frb,other
+982125931,stationary,0.159,4,Tasman Wb2,other
+982151054,stationary,0.0,2,Celebrity Apex Tb04,other
+982293787,stationary,0.024,2,Europa 2 #7,other
+982296707,stationary,0.019,2,Ms4 Tender Boat 07,other
+982320033,stationary,0.006,2,Britannia T17,other
+982320035,stationary,0.011,2,MMSI 982320035,other
+982320122,stationary,0.001,2,Vasco Da Gama T9,port_tender
+982440045,stationary,0.033,2,Rotterdam Tb22,other
+982440047,stationary,0.14,2,Rotterdam Rb14,other
+982441405,stationary,0.007,2,Pbco T21,other
+982449581,stationary,0.091,2,Madm Rb 1,other
+982458102,stationary,0.006,2,Frb Afrika,search_and_rescue
+982463041,stationary,0.037,2,MMSI 982463041,passenger
+982463043,stationary,0.045,2,Zudm 13,other
+982470078,stationary,0.013,2,Costa Diadema Tb 7,other
+982470128,stationary,0.003,2,MMSI 982470128,passenger
+982470134,stationary,0.036,2,Aidaaura Tender 4,other
+982470135,stationary,0.029,2,Aidaaura Tender 9,passenger
+982470185,stationary,0.0,2,Aidaluna Tb 15,other
+982470190,stationary,0.027,2,Aidabella Tb 14,other
+982470191,stationary,0.056,2,Aidabella Tb15,other
+982470192,stationary,0.041,2,Aidabella Tb 16,other
+982470194,stationary,0.096,4,Aidabella Tb 18,other
+982470210,stationary,0.016,2,Costa Firenze Rb 1,passenger
+982485132,stationary,0.031,2,Ms1 Tender 8,other
+982485135,stationary,0.004,2,Ms1 Tender 11,other
+982550096,stationary,0.0,2,Dc To Windea Leibniz,other
+982563433,stationary,0.029,2,Tender 3 To Ilma,other
+982563434,stationary,0.014,2,Tender 4 To Ilma,other
+982563435,stationary,0.008,2,MMSI 982563435,other
+982567504,stationary,0.002,2,MMSI 982567504,other
+982570015,stationary,0.027,2,MMSI 982570015,other
+982570143,stationary,0.021,2,Viking Vela Tb1,other
+982570171,stationary,0.019,2,Viking Mars,other
+982570189,stationary,0.019,2,Viking Vela Tb6,other
+982570215,stationary,0.015,2,Viking Neptune - Tb2,other
+982570335,stationary,0.0,2,Brage Thai,other
+982571050,stationary,0.002,2,G.O.Sars Mob,other
+982579030,stationary,0.045,2,Viking Star Tender 1,other
+982579031,stationary,0.045,2,MMSI 982579031,passenger
+982579033,stationary,0.017,2,MMSI 982579033,passenger
+982580025,stationary,0.02,2,Viking Saturn Tb01,other
+982580027,stationary,0.024,2,Viking Saturn Tb05,other
+982591862,stationary,0.032,2,Viking Sky Tender 5,port_tender
+982751440,stationary,0.174,2,Lv Warship A53 Boat,other
+983103843,stationary,0.068,2,Island Princess T5,other
+983103845,stationary,0.008,2,Island Princess T11,other
+983103846,stationary,0.0,2,MMSI 983103846,other
+983104238,stationary,0.042,2,MMSI 983104238,other
+983105311,stationary,0.01,2,MMSI 983105311,other
+983105318,stationary,0.08,2,Emerald Princess T23,other
+983107910,stationary,0.001,2,Enchanted Port Frc,other
+983108350,stationary,0.004,2,MMSI 983108350,other
+983108356,stationary,0.003,2,Queen Anne Rb 13,other
+983108674,stationary,0.061,2,Sapphireprincesstb18,other
+983108675,stationary,0.055,2,Sapphireprincesstb19,other
+983108676,stationary,0.046,2,Sapphireprincesstb20,other
+983110002,stationary,0.021,2,Borealis Tender 7,other
+983110003,stationary,0.041,2,Borealis Tender 8,other
+983110005,stationary,0.002,2,Borealis Tender 10,other
+983110020,stationary,0.005,2,Ncl Getaway T5,other
+983110028,stationary,0.036,2,MMSI 983110028,passenger
+983110126,stationary,0.011,2,MMSI 983110126,other
+983110129,stationary,0.003,2,Sbn Ovation Zodiac 3,other
+983110282,stationary,0.0,2,Star Legend Tender 4,other
+983110292,stationary,0.012,2,MMSI 983110292,other
+983110293,stationary,0.005,2,MMSI 983110293,other
+983110299,stationary,0.003,2,Endurance Zodiac 09,pleasure
+983110300,stationary,0.002,2,Endurance Zodiac 10,other
+983110305,stationary,0.0,2,Endurance Sounding,other
+983110412,stationary,0.043,2,Resolution Zodiac 3,other
+983110413,stationary,0.009,2,MMSI 983110413,other
+983110417,stationary,0.014,4,Resolution Zodiac 8,other
+983110419,stationary,0.043,4,MMSI 983110419,other
+983110423,stationary,0.086,2,Resolution Zodiac 14,other
+983110424,stationary,0.022,2,Resolution Zodiac 15,other
+983110448,stationary,0.145,2,Wind 11,other
+983110610,stationary,0.003,2,MMSI 983110610,other
+983542153,stationary,0.007,2,MMSI 983542153,other
+983542156,stationary,0.017,2,Carnival Pride T4,other
+983542157,stationary,0.002,2,Carnival Pride T5,other
+983710027,stationary,0.056,2,Msc Preziosa T/B 27,other
+985380357,stationary,0.013,4,Kaos Rescue 1,pleasure
+985380676,stationary,0.016,2,Splendor - Tender 8,pleasure
+985380705,stationary,0.031,2,S S Grandeur Tender5,pleasure
+985380707,stationary,0.037,2,S S Grandeur Tender7,other
+990001521,stationary,0.032,2,N2,other
+990001666,stationary,0.008,2,N9,other
+990001676,stationary,0.01,16,A,other
+990001681,aton,4.978,11,N1,other
+990180001,aton,54.281,15,Aurora_Buoy01,other
+991234567,stationary,0.004,2,Silver Dawn # 1,other
+992111007,aton,15.716,775,S1,other
+992111008,aton,15.677,785,S2,other
+992111009,aton,15.675,786,S3,other
+992111010,aton,14.481,776,S4,other
+992111011,aton,14.835,781,S5,other
+992111012,aton,13.977,392,S6,other
+992111013,aton,13.459,318,S7,other
+992111014,aton,0.206,8,S8,other
+992111015,stationary,0.02,4,S9,other
+992111016,stationary,0.026,6,S10,other
+992111023,aton,0.555,482,Buoy Ko N,other
+992111024,aton,1.117,326,Bouy Ko E1,other
+992111025,aton,2.343,218,Bouy Ko E2,other
+992111027,stationary,0.0,84,Wa01 Windfarm,other
+992111028,stationary,0.0,84,Wa03 Windfarm,other
+992111029,stationary,0.0,84,Wa04 Windfarm,other
+992111030,aton,63.978,84,Wa08 Windfarm,other
+992111031,stationary,0.0,84,Wa16 Windfarm,other
+992111032,stationary,0.0,84,Wa19 Windfarm,other
+992111033,stationary,0.0,84,Wa21 Windfarm,other
+992111034,aton,0.676,170,Oss Jasmund Platform,other
+992111039,stationary,0.0,34,Lighthouse Kiel,other
+992111119,aton,3.29,130,Bfn-Pbr02-Odas,other
+992111701,stationary,0.002,3066,Ab01 Windfarm,other
+992111702,stationary,0.003,3026,Ab02 Windfarm,other
+992111703,stationary,0.001,3066,Ab10 Windfarm,other
+992111704,stationary,0.003,3028,Ab36 Windfarm,other
+992111705,stationary,0.004,2966,Ab37 Windfarm,other
+992111706,stationary,0.004,3062,Ab51 Windfarm,other
+992111707,stationary,0.003,3066,Ab55 Windfarm,other
+992111708,stationary,0.006,3028,Ab60 Windfarm,other
+992111709,stationary,0.022,4,Bkr02 Z02 Platform,other
+992111729,aton,87.319,844,Odas Swlb111,other
+992111738,aton,15.573,1565,N1,other
+992111739,aton,22.815,1507,N2,other
+992111740,aton,116.509,1564,N3,other
+992111741,aton,16.12,1555,N4,other
+992111742,aton,9.442,1567,N5,other
+992111743,aton,15.693,1565,N6,other
+992111744,aton,14.671,1575,N7,other
+992111745,aton,76.751,1567,N8,other
+992111746,aton,77.976,1930,S1,other
+992111747,aton,16.273,1832,S2,other
+992111748,aton,17.149,1901,S3,other
+992111749,aton,17.667,1873,S4,other
+992111750,aton,16.961,1905,S5,other
+992111751,aton,16.203,1900,S6,other
+992111752,aton,139.817,1816,S7,other
+992111753,aton,17.207,1753,S8,other
+992111758,aton,0.584,89,MMSI 992111758,other
+992111761,stationary,0.0,1094,Be Oss Windfarm,other
+992111762,stationary,0.0,1164,Be 01 Windfarm,other
+992111763,stationary,0.0,1166,Be 06 Windfarm,other
+992111764,stationary,0.0,1160,Be 14 Windfarm,other
+992111765,stationary,0.0,1166,Be 42 Windfarm,other
+992111766,stationary,0.0,1082,Be 52 Windfarm,other
+992111789,aton,14.003,460,N9,other
+992111790,aton,15.619,449,N10,other
+992111791,aton,13.971,151,S9,other
+992111792,aton,15.989,175,S10,other
+992111793,aton,20.288,642,N1,other
+992111794,aton,80.386,1373,N2,other
+992111795,aton,3.94,1430,N3,other
+992111796,aton,3.709,1400,N4,other
+992111797,aton,12.42,1374,N5,other
+992111798,aton,7.01,1409,N6,other
+992111799,aton,34.651,1341,N7,other
+992111801,aton,5.569,1072,N8,other
+992111802,aton,5.231,252,N9,other
+992111803,aton,4.818,1007,N10,other
+992111805,stationary,0.002,2606,Ao D4 Windfarm,other
+992111806,stationary,0.003,2606,Ao A4 Windfarm,other
+992111807,aton,4.562,2589,Ao G2 Windfarm,other
+992111808,stationary,0.003,2646,Ao B4 Windfarm,other
+992111809,stationary,0.006,2618,Ao G4 Windfarm,other
+992111829,aton,195.525,430,Odas Ob 2,other
+992111840,stationary,0.017,3200,Wind Farm Baltic1Nw,other
+992111841,stationary,0.003,3198,Wind Farm Baltic1Sw,other
+992111842,stationary,0.003,3200,Wind Farm Baltic1Ne,other
+992111876,stationary,0.002,3008,Wk N-15 Windfarm,other
+992111877,stationary,0.003,3044,Wk E-70 Windfarm,other
+992111878,stationary,0.003,2998,Wk Se-51 Windfarm,other
+992111879,aton,0.994,3044,Wk Sw-01 Winfarm,other
+992111886,stationary,0.003,984,Wk W-06 Windfarm,other
+992111887,aton,7.843,3037,Wk Nw-11 Windfarm,other
+992111888,stationary,0.004,3046,Wk Oss Platform,other
+992111900,aton,0.216,158,Digital Ocean Lab Ni,other
+992111901,stationary,0.003,1598,Fisch1,other
+992111902,stationary,0.003,1594,Fisch2,other
+992111903,stationary,0.003,1610,Fisch3,other
+992111904,stationary,0.003,1578,Fisch4,other
+992111905,aton,328.6,319,Digital Ocean Lab Ni,other
+992111923,stationary,0.002,3200,Baltic2 Windfarm Sw,other
+992111924,stationary,0.003,3200,Baltic2 Windfarm Nw,other
+992111925,stationary,0.003,3200,Baltic2 Windfarm Ne,other
+992111926,stationary,0.003,3198,Baltic2 Windfarmb2P2,other
+992111927,stationary,0.002,3200,Baltic2 Windfarmb2N5,other
+992111928,stationary,0.003,3198,Baltic2 Windfarmb2E1,other
+992111929,stationary,0.002,3198,Baltic2 Windfarm Se,other
+992116002,stationary,0.0,2,Ge-Navy 02 Aton,other
+992116011,aton,22.741,186,Odas Wms01,other
+992116012,aton,32.935,116,Odas Wms03,other
+992116013,stationary,0.0,8,Odas Sgm02,other
+992116015,stationary,0.0,8,Odas Sgm04,other
+992116016,stationary,0.009,68,Odas Mtm01,other
+992116017,aton,29.631,82,Odas Mtm02,other
+992116018,aton,38.221,12,Odas Mtm03,other
+992116019,aton,35.353,80,Odas Mtm04,other
+992191040,aton,57.599,22,Mobile Odas 1,other
+992191532,stationary,0.002,80,MMSI 992191532,other
+992191533,stationary,0.004,82,MMSI 992191533,other
+992191534,stationary,0.003,66,MMSI 992191534,other
+992191535,aton,4.267,78,MMSI 992191535,other
+992191536,stationary,0.006,2544,Dkntm 343-20,other
+992191537,stationary,0.006,2544,Dkntm 343-20,other
+992195001,stationary,0.0,2,Odas_Bms02 83%,other
+992195010,stationary,0.037,2,Odas_Bms01 100%,other
+992195011,stationary,0.089,34,Odas_Bms02 83%,fishing
+992196020,stationary,0.003,318,Y3_Dw_Lpo,other
+992196021,stationary,0.002,346,Y5_Dw_Lpo,other
+992196022,stationary,0.003,382,Y7_Dw_Lpo,other
+992196023,stationary,0.003,130,Y9_Dw_Lpo,other
+992196024,stationary,0.003,244,Y11_Dw_Lpo,other
+992196025,stationary,0.003,342,Y13_Dw_Lpo,other
+992196026,stationary,0.003,242,Y15_Dw_Lpo,other
+992196027,stationary,0.002,394,Y2_Dw_Lpo,other
+992196028,stationary,0.006,386,Y4_Dw_Lpo,other
+992196029,stationary,0.002,226,Y6_Dw_Lpo,other
+992196030,stationary,0.006,354,Y8_Dw_Lpo,other
+992196031,stationary,0.003,372,Y10_Dw_Lpo,other
+992196032,stationary,0.002,364,Y12_Dw_Lpo,other
+992196033,stationary,0.003,384,Y14_Dw_Lpo,other
+992196034,stationary,0.002,250,Y16_Dw_Lpo,other
+992196035,stationary,0.003,380,Y18_Dw_Lpo,other
+992196036,stationary,0.003,362,Y20_Dw_Lpo,other
+992196037,stationary,0.002,348,Y22_Dw_Lpo,other
+992196038,stationary,0.002,248,Y24_Dw_Lpo,other
+992196039,stationary,0.0,34,MMSI 992196039,other
+992196041,aton,6.421,145,Y1_Dw_Lpo,other
+992196042,stationary,0.001,2714,Skagerrak,other
+992196043,stationary,0.002,2930,Tss Skagen West,other
+992196044,stationary,0.002,2714,T7,other
+992196045,stationary,0.003,2930,Tss Entrance To The,other
+992196046,stationary,0.0,102,Itz Se,other
+992196147,stationary,0.0,2,Wreck Ref Dnw020-22,other
+992196148,stationary,0.0,2,Wreck Ref Dnw021-22,other
+992196149,stationary,0.0,94,Gas Leakage Ref Dnw,other
+992196150,stationary,0.0,94,Gas Ref Dnw 231-22,other
+992196151,stationary,0.0,58,Gas Ref. Dnw 231-22,other
+992196152,stationary,0.0,52,Danger Area 4 Rad 5,other
+992196153,aton,188.739,338,Danger Area 1-  500M,other
+992196154,aton,380.905,320,Danger Area 2 - 500,other
+992196155,stationary,0.006,294,Danger Area 1 500M,other
+992196156,stationary,0.002,294,Danger Area 2 - 500M,other
+992196157,stationary,0.0,26,Hirtshals Havn Stb. 1,other
+992196158,stationary,0.0,16,Dw Fyns Hoved Bb 3,other
+992198001,aton,4.643,9,Mobile Odas 1,other
+992303000,stationary,0.0,2,O 1A,other
+992303001,stationary,0.0,2,Ke 1,other
+992303002,stationary,0.0,2,Ke 2,other
+992303003,aton,258.805,14,Reini 17,other
+992303004,aton,6.092,6,Ke 2,other
+992303005,stationary,0.0,4,Ke 1,other
+992303006,stationary,0.0,4,Ke 3,other
+992303007,stationary,0.0,4,Ke 4,other
+992303008,stationary,0.0,4,O 1A,other
+992304001,stationary,0.0,92,Suomen Leijona,other
+992304002,stationary,0.0,94,Kalliomatala,other
+992304003,stationary,0.0,6,Sand,other
+992305500,stationary,0.0,2,Brudstens Grund,other
+992305505,stationary,0.0,12,Odas Buoy Cpa 0.3,other
+992306000,stationary,0.0,92,Reini 8,other
+992306001,stationary,0.0,4,Reini 7,other
+992306002,stationary,0.0,2,Reini 16,other
+992306003,stationary,0.0,2,Ljy 1,other
+992306004,stationary,0.0,2,Ljy 2,other
+992306005,stationary,0.194,72,Reini 7,other
+992306006,aton,0.619,82,Reini 16,other
+992306007,aton,0.332,90,Ljy 1,other
+992306008,stationary,0.062,70,Ljy 1,other
+992306009,aton,0.75,70,Ljy 2,other
+992306010,aton,0.812,82,Reini 6,other
+992306011,stationary,0.0,30,Ljy 3,other
+992306015,stationary,0.0,50,Reini 17,other
+992306028,stationary,0.0,10,Withdrawn Ke 4,other
+992306029,stationary,0.0,10,Withdrawn Ke 3,other
+992306030,stationary,0.0,8,Withdrawn Ke 2,other
+992306031,aton,255.668,14,Reini 17,other
+992306032,aton,210.089,14,It Inen Merenkurkku,other
+992306033,aton,16.865,12,Waldersgrund,other
+992306034,stationary,0.0,8,Norrsk Rin Pohjoinen,other
+992306035,aton,16.865,10,Gloppet,other
+992306036,aton,238.175,10,Winter Pilot B Pos,other
+992306037,aton,174.428,16,Winter Pilot B Pos,other
+992306038,aton,49.722,8,Winter Pilot B Posit,other
+992306039,aton,136.01,6,Winter Pilot B Pos,other
+992306040,stationary,0.0,4,Winter Pilot B Pos,other
+992306042,stationary,0.0,4,Winter Pilot B Pos,other
+992306043,stationary,0.0,2,Winter Pilot B Pos,other
+992306064,stationary,0.0,2,Withdrawn O 1A,other
+992306065,stationary,0.0,2,Withdrawn Ke 1,other
+992306066,stationary,0.0,2,Withdrawn Ke 2,other
+992306067,stationary,0.0,2,Withdrawn Ke 3,other
+992306068,stationary,0.0,2,Withdrawn Ke 4,other
+992306500,stationary,0.0,82,Hanko No 10,other
+992306501,stationary,0.0,72,Skoldvik V-Ais,other
+992306502,stationary,0.0,90,Reilander Virtual,other
+992306504,stationary,0.0,78,Ulkomatala V-Ais,other
+992306505,stationary,0.0,82,Vastra Balkan V-Ais,other
+992306506,stationary,0.0,68,Laituriallas 12,other
+992306507,stationary,0.0,72,Laituriallas 10,other
+992306508,stationary,0.0,70,Laituriallas 1,other
+992306509,stationary,0.003,80,Nestebulk 4,other
+992306750,stationary,0.0,2,Avoid Area 1,other
+992306751,stationary,0.0,2,Avoid Area 2,other
+992306752,stationary,0.0,2,Avoid Area 3,other
+992306753,aton,20.455,6,Winter Pilot B Pos,other
+992441023,aton,0.211,97,Wkb01381,other
+992441024,stationary,0.016,84,Wkb01391,other
+992570000,stationary,0.001,1794,Test Vaton,other
+992571018,stationary,0.002,2,Ws173,other
+992571124,aton,3.647,2,Kyv Oildrifter 10,other
+992571181,aton,39.721,31,Fugro_Buoy_Ws190,other
+992571424,stationary,0.0,2,Aton Test,other
+992576410,aton,56.045,513,Virtual Aton(1),other
+992576411,aton,42.985,108,Virtual Aton(2),other
+992576412,aton,4.042,60,Bridge Closed,other
+992576413,stationary,0.138,6,Restricted,other
+992576440,stationary,0.0,24,Virtual Aton(1),other
+992576441,stationary,0.0,24,No Trawling 500 M,other
+992576500,aton,99.181,2606,Virtual Aton(1),other
+992576501,aton,71.157,2328,Virtual Aton(2),other
+992576502,aton,94.874,2178,Virtual Aton(3),other
+992576503,aton,165.113,1716,Virtual Aton(4),other
+992576504,aton,121.259,2156,Virtual Aton(5),other
+992576505,aton,97.64,1300,Virtual Aton(6),other
+992576506,aton,94.906,1706,Virtual Aton(7),other
+992576507,aton,99.139,1487,Ref South,other
+992576508,aton,98.999,714,Virtual Aton(9),other
+992576509,aton,93.32,278,Virtual Aton(10),other
+992576510,aton,93.509,914,Ref North,other
+992576511,stationary,0.181,252,Bouy # 6,other
+992576512,stationary,0.0,28,Bouy # 7,other
+992576513,stationary,0.0,28,Bouy # 8,other
+992576514,stationary,0.0,28,Bouy # 9,other
+992576515,stationary,0.0,28,Bouy #10,other
+992576800,stationary,0.009,340,MMSI 992576800,other
+992576900,stationary,0.0,2,Sar Testtest,other
+992610000,stationary,0.008,26,N.Port - R,other
+992610800,stationary,0.003,1758,Meteo 12,other
+992610801,stationary,0.0,486,12,other
+992610802,aton,222.644,2244,Meteo Swinoujscie,other
+992611110,aton,197.0,125,N.Port - R,other
+992611130,stationary,0.0,300,Buoy 10,other
+992611200,aton,3.558,118,Zn,other
+992611300,aton,162.931,144,Zs,other
+992611330,aton,13.327,1277,11,other
+992611340,stationary,0.014,1430,12,other
+992611400,stationary,0.019,130,By N2 Tp,other
+992611564,stationary,0.003,2,By A Tp,other
+992611566,aton,0.2,3,By 16 Tp,other
+992611569,aton,1.557,8,By 13 Tp,other
+992611570,aton,0.514,4,By 10 Tp,other
+992611572,stationary,0.004,2,By 8 Tp,other
+992611573,stationary,0.008,2,By 7 Tp,other
+992611580,stationary,0.0,2,By N1 Tp,other
+992611581,aton,0.677,48,By Reda Tp,other
+992611600,aton,220.419,142,Hel,other
+992611601,stationary,0.026,26,By 11 Tw,other
+992611602,stationary,0.005,8,By 12 Tw,other
+992611603,stationary,0.015,38,By 13 Tw,other
+992611604,stationary,0.041,62,By 14 Tw,other
+992611616,stationary,0.016,36,By 37 Tw,other
+992611690,stationary,0.03,62,By 1 Tw,other
+992611691,stationary,0.017,62,By 2 Tw,other
+992611692,stationary,0.03,156,By 3 Tw,other
+992611693,stationary,0.027,184,By 4 Tw,other
+992611698,stationary,0.034,12,By 9 Tw,other
+992611699,stationary,0.019,12,By 10 Tw,other
+992611782,aton,25.914,8,By Ko 1,other
+992611783,aton,19.664,4,By Ko 2,other
+992611784,stationary,0.0,2,By Ko 3,other
+992611785,aton,0.475,261,By Ko 4,other
+992611786,stationary,0.0,2,By Ko 5,other
+992611787,stationary,0.002,2,By Lng1,other
+992611788,stationary,0.002,2,By Lng2 Tp,other
+992611789,aton,23.652,8,By Lng 3,other
+992611911,stationary,0.006,4,Dn G-E,other
+992611916,aton,6.875,230,By Mz-1 Tw,other
+992611917,stationary,0.031,190,By Mz-2 Tw,other
+992611918,stationary,0.02,58,By Mz-3 Tw,other
+992611919,stationary,0.03,86,By Mz-4 Tw,other
+992611920,aton,9.838,4,By Mp Tw,other
+992611921,aton,9.833,2,By 35 Tw,other
+992611940,stationary,0.001,2,Blp-M2,other
+992611941,stationary,0.071,38,Blp-M1,other
+992611990,stationary,0.002,2,Boja Sc-49 Ais,other
+992611993,aton,1.951,2,Boja Nc-01 Ais,other
+992614101,stationary,0.0,288,Buoy 3,other
+992614102,stationary,0.0,304,Buoy 11,other
+992614103,stationary,0.0,296,Buoy 12,other
+992614104,stationary,0.0,286,Buoy 15,other
+992614105,stationary,0.0,304,Buoy 16,other
+992614106,stationary,0.0,284,Buoy 19,other
+992614107,stationary,0.0,300,Buoy 20,other
+992614108,aton,78.998,303,Buoy 23,other
+992614109,stationary,0.0,298,Buoy 24,other
+992614110,stationary,0.0,300,Buoy 8/Elb,other
+992614111,stationary,0.0,290,Buoy  Fro,other
+992614112,stationary,0.0,294,Bn Elblag,other
+992614113,stationary,0.0,286,Buoy Tol,other
+992614114,stationary,0.0,294,Buoy Kat,other
+992614115,stationary,0.0,298,Bn Gdansk,other
+992614201,stationary,0.003,784,W-Gb,other
+992614301,aton,45.451,28,Obstn,other
+992614302,stationary,0.0,4,Obstn,other
+992616946,stationary,0.001,76,Blp Tp1,other
+992616947,stationary,0.002,76,Blp Tp6,other
+992616948,stationary,0.0,70,Blp Tp10,other
+992616949,stationary,0.0,6,Blp Tp13,other
+992616950,stationary,0.001,72,Blp Tp15,other
+992616951,stationary,0.0,74,Blp Tp49,other
+992616952,stationary,0.001,68,Blp Tp33,other
+992616953,stationary,0.0,6,Blp Tp31,other
+992616954,stationary,0.0,4,Blp Tp61,other
+992616955,stationary,0.001,68,Blp Tp30,other
+992616956,stationary,0.001,66,Blp Tp27,other
+992616957,stationary,0.001,70,Blp Tp22,other
+992616958,stationary,0.0,62,Blp Tp19,other
+992616959,stationary,0.028,58,Blp Oss West,other
+992616960,stationary,0.012,70,Blp Oss East,other
+992616994,stationary,0.027,6,Bk2-C4,other
+992616995,stationary,0.035,14,Bk2-C1,other
+992616996,stationary,0.029,10,Bk2-C2,other
+992616997,stationary,0.031,8,Bk2-C3,other
+992616998,stationary,0.041,6,Bk3_C1,other
+992617000,stationary,0.042,6,Bk3_C3,other
+992617001,stationary,0.033,6,Bk3_C4,other
+992651001,stationary,0.003,414,Live Fire Exercis 1,other
+992651002,stationary,0.0,414,Live Fire Exercis 2,other
+992651003,stationary,0.0,414,Live Fire Exercis 3,other
+992651004,stationary,0.003,414,Live Fire Exercis 4,other
+992651005,stationary,0.003,414,Live Fire Exercis 5,other
+992651006,aton,18.283,3204,M8 Ven,other
+992651007,aton,569.866,404,Sodra Kvarken,other
+992651009,aton,179.596,4,Live Fire Exercise 4,other
+992651010,stationary,0.004,3202,Staffansbank East,other
+992651011,stationary,0.0,3202,Center Point Of Turn,other
+992651012,stationary,0.003,3202,V 07,other
+992651013,aton,1.592,3203,V 09,other
+992651014,stationary,0.006,3202,V 10,other
+992651016,aton,48.567,3203,Ih 2,other
+992651017,stationary,0.003,86,Remmargrund,other
+992651018,stationary,0.0,6,S Kajgrund,other
+992651019,stationary,0.002,3202,"Deep 8,1",other
+992651020,aton,393.032,22,Swe Naval Exercise 4,other
+992651021,aton,161.762,6,Live Fire Exercise 3,other
+992651027,stationary,0.002,3202,Falkenberg 1,other
+992651028,stationary,0.003,3202,Falkenberg 2,other
+992651029,aton,388.345,172,Restricted Area 1,other
+992651030,aton,413.26,246,Odas Huvudskar Ost,other
+992651031,aton,411.661,12,Test Njord X,other
+992651033,stationary,0.0,4,Diving Operation 4,other
+992651034,stationary,0.003,132,Vartan 001,other
+992651035,stationary,0.002,136,Vartan 002,other
+992651036,stationary,0.002,130,Vartan 005,other
+992651037,stationary,0.006,134,Vartan 004,other
+992651038,aton,107.484,729,Damage Trebenningen,other
+992651039,aton,362.172,98,Test Sma,other
+992651040,aton,392.013,22,Swe Naval Exercise 6,other
+992651041,aton,397.447,654,Area 13 Temporary 1,other
+992651042,aton,81.825,2970,Damage Trebeningen,other
+992651043,aton,57.364,222,Restricted Area 2,other
+992651044,aton,79.495,224,Restricted Area 3,other
+992651045,aton,96.27,224,Restricted Area 4,other
+992651046,aton,91.783,182,Live Fire Exercis 5,other
+992651047,aton,227.923,54,Karlskrona Approach,other
+992651048,aton,390.398,80,Dammage Trebeningen,other
+992651049,aton,64.812,30,Swe Naval Exercise 2,other
+992651050,aton,392.117,274,Sma Test,other
+992651052,stationary,0.0,78,Ref Point Lerskarsgr,other
+992651053,aton,1.471,170,Ref Point Lerviksudd,other
+992651054,stationary,0.003,160,Ref Point Revengegr,other
+992651055,stationary,0.0,84,Ref Point Simpnasgr,other
+992651056,stationary,0.002,154,Ref Point Svangen,other
+992651057,stationary,0.0,2,Ref Point Vassarogr,other
+992651058,aton,392.063,148,Diving Operation 2,other
+992651059,aton,210.1,146,Diving Opertarion 3,other
+992651060,aton,192.936,138,Diving Opertarion 3,other
+992651061,aton,199.878,132,Diving Operation 2,other
+992651062,aton,216.955,138,Diving Operation 6,other
+992651063,aton,208.216,138,Diving Operation 5,other
+992651064,aton,473.393,88,Diving Operation 4,other
+992651065,aton,19.354,752,Diving Operation 3,other
+992651066,aton,277.104,752,Diving Operation 2,other
+992651067,aton,19.589,752,Diving Operation 1,other
+992651068,aton,381.273,74,Diving Operation 6,other
+992651069,aton,383.301,46,Diving Operation 5,other
+992651070,aton,382.197,78,Diving Operation 4,other
+992651071,aton,189.411,54,Diving Operation 6,other
+992651072,aton,183.823,54,Diving Operation 5,other
+992651073,aton,193.018,54,Diving Operation 4,other
+992651074,aton,200.02,54,Diving Operation 3,other
+992651075,aton,276.177,12,Live Fire Ex. 10,other
+992651076,stationary,0.0,14,Live Fire Exercise 1,other
+992651077,aton,278.897,24,Diving Operation 2,other
+992651078,aton,297.107,14,Live Fire Exercise 2,other
+992651080,aton,295.846,46,Swe Naval Exercise 3,other
+992651081,aton,244.656,46,Live Fire Exercise 6,other
+992651082,stationary,0.0,222,368,other
+992651083,aton,408.097,172,Diving Op6,other
+992651084,aton,382.337,176,Diving Op5,other
+992651085,aton,373.077,174,Diving Op4,other
+992651086,stationary,0.002,154,Diving Op3,other
+992651087,aton,19.141,182,Diving Op2,other
+992651088,aton,309.057,168,Diving Op1,other
+992651089,aton,177.442,18,Live Fire Exercise 6,other
+992651090,aton,150.029,20,Live Fire Exercise 5,other
+992651091,aton,30.665,24,Live Fire Exercise 4,other
+992651092,aton,29.537,24,Live Fire Exercise 3,other
+992651093,aton,35.448,22,Live Fire Exercise 2,other
+992651094,aton,32.932,22,Live Fire Exercise 1,other
+992651095,aton,379.759,180,Live Fire Exercise 1,other
+992651096,aton,377.292,180,Live Fire Exercise 3,other
+992651097,aton,377.435,180,Live Fire Exercise 2,other
+992651098,aton,386.97,202,Live Fire Exercise 4,other
+992651099,aton,282.35,18,Live Fire Ex. 11,other
+992651100,aton,315.873,14,Live Fire Exercise 4,other
+992652135,stationary,0.007,4,Ystad 1,other
+992652162,stationary,0.01,22,Klintehamn 01,other
+992656000,stationary,0.0,2,Test Sma 2,other
+992656001,stationary,0.0,4,Test Sma 3,other
+992656004,stationary,0.0,2,Test Sma 4,other
+992656011,aton,90.581,20,Sma Test,other
+992656016,stationary,0.0,16,Test Sma1,other
+992656017,stationary,0.0,18,Test Sma1,other
+992656019,stationary,0.0,4,Test Sma 1,other
+992656022,stationary,0.0,18,Test Sma1,other
+992751075,stationary,0.006,4,Daugavgriva Light,other
+992751470,stationary,0.066,16,Mikelbaka Light,other
+992761003,stationary,0.002,2,Buoy-157,other
+992761008,stationary,0.024,10,Buoy-205,other
+992761009,stationary,0.015,8,Buoy-211,other
+992761010,stationary,0.006,4,Buoy-212,other
+992761011,stationary,0.002,4,Buoy-213,other
+992761012,stationary,0.001,2,Buoy-225,other
+992761013,stationary,0.014,12,Buoy-295,other
+992761014,stationary,0.025,4,Buoy-368,other
+992761015,stationary,0.007,6,Buoy-369,other
+992761016,stationary,0.024,10,Buoy-370,other
+992761017,stationary,0.016,8,Buoy-382,other
+992761018,stationary,0.039,24,Buoy-415,other
+992761019,stationary,0.038,30,Buoy-634,other
+992761020,stationary,0.041,28,Buoy-650,other
+992761021,stationary,0.05,62,Buoy-674,other
+992761022,stationary,0.033,32,Buoy-850,other
+992761023,stationary,0.045,32,Buoy-861,other
+992761024,stationary,0.049,102,Buoy-920,other
+992761025,stationary,0.05,98,Buoy-929,other
+992761026,stationary,0.038,70,Buoy-944,other
+992761037,stationary,0.038,36,Buoy-997,other
+992761084,stationary,0.013,22,Buoy-875,other
+992761085,stationary,0.029,14,Buoy-876,other
+992761086,stationary,0.05,94,Buoy-927,other
+992766001,stationary,0.0,16,V-Hobulaid_Test,other
+992766002,stationary,0.0,16,Vbuoytest 02,other
+992771001,stationary,0.001,2,Eolos Fl200 Buoy E01,other
+993380081,stationary,0.008,10,Cvow T1L11 Oss,other
+993380082,stationary,0.008,34,Oss T2G07,other
+993380083,stationary,0.012,32,Cvow T3G15,other
+993700001,aton,443.46,9,Acoustic_Buoy01,other
+993840001,aton,0.568,2,Rv Dana_Buoy01,other
+994002349,aton,98.051,164,Hpl Stbd Aft Anc 89%,fishing
+994474000,aton,335.874,38,Vina Pa Anchor 92%,fishing
+995002349,stationary,0.019,2,Hpl S Side Anchor 89,fishing
+995408135,aton,32.409,4,MMSI 995408135,other
+996002349,stationary,0.077,2,Hpl S Aft Anchor 47%,fishing
+996171001,stationary,0.03,6,Oceanographic_Buoy,other
+996474000,aton,298.491,40,Vina Sa Anchor 92%,fishing
+996900003,aton,6.902,7,Ulrika Gg 126 Fishing Net_Buoy03,other
+997002349,aton,97.925,113,Hpl Port Aft Anc 88%,fishing
+997474000,aton,297.154,34,Vina Sf Anchor 95%,fishing
+997970001,aton,9.99,5,Maloe_Buoy01,other
+998002349,aton,101.02,61,Hpl Port Side Anc 91,fishing
+998474000,aton,309.845,52,Vina Cf Anhor 95%,other
+998998999,aton,263.672,462,Nato Warship 703,other
+999002349,aton,97.841,56,Hpl Port Fore Anc 89,fishing
+999052000,aton,4.608,25,Honte Buoy,other
+999103002,aton,289.662,62,Orp Baltyk,other
+999103272,aton,30.814,4,Nato Warship F272,other
+999999980,aton,147.699,237,MMSI 999999980,other
+999999991,aton,384.133,340,Ais Fat Ble Ais1,other
+999999992,aton,222.192,58,Ais Fat Ble Ais2,other
+999999993,stationary,0.0,56,Ais Fat Ble Virtual 1,other
+999999994,aton,444.805,342,Nato Warship,other
+999999998,aton,359.558,107,French Warship,military
+999999999,aton,653.532,19952,French Warship D646,other

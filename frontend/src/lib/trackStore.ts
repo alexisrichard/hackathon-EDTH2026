@@ -1,13 +1,11 @@
 /**
- * Track store — replays real AIS by interpolating between downsampled keyframes.
+ * Track store — replays real AIS by interpolating between keyframes.
  *
- * Tiles come from scripts/ingest/build_ais_tracks.py (adaptive Douglas-Peucker
- * keyframes). The browser holds a window of tiles and reconstructs each vessel's
- * position at any instant `t` by binary-search + linear interpolation between
- * its keyframes — so a few thousand keyframes replay a full day, and the same
- * machinery scales to a 6-year archive streamed window-by-window.
- *
- * V1 loads a single day tile; the API is shaped for multi-tile windowing.
+ * Tiles are the STITCHED tiles (`scripts/ingest/stitch_tracks.py`): de-spiked,
+ * with global gaps and a shared keyframe at every midnight a vessel crosses. So
+ * each day-tile is self-contained and aligns exactly with its neighbours at the
+ * seam — the app renders ONE tile, no runtime stitching, continuous by
+ * construction. (All the old cross-tile merge logic now lives in the build.)
  */
 import type { ShipType } from "../types/models";
 
@@ -51,24 +49,11 @@ const SHIP_TYPES = new Set<ShipType>([
   "anti_pollution", "pleasure", "research", "wing_in_ground", "dredger", "other", "unknown",
 ]);
 
-function bearing(lon0: number, lat0: number, lon1: number, lat1: number): number {
-  const coslat = Math.cos((((lat0 + lat1) / 2) * Math.PI) / 180);
-  const dx = (lon1 - lon0) * coslat;
-  const dy = lat1 - lat0;
-  if (dx === 0 && dy === 0) return NaN;
-  return ((Math.atan2(dx, dy) * 180) / Math.PI + 360) % 360;
-}
-
-// Above this implied speed, a segment isn't real travel — it's a bad AIS fix or
-// two vessels sharing an MMSI. (Even fast ferries top out ~40 kn.)
+// A residual MMSI-collision can still leave a segment implying impossible speed;
+// freeze rather than streak the vessel across the map. (Spikes are de-spiked in
+// the build; this is just a render-time safety net.)
 const MAX_KNOTS = 60;
 const KM_PER_NM = 1.852;
-// Beyond this we genuinely don't know where the vessel is — don't dead-reckon it
-// (and don't let a shifting tile window resurrect a sparse pinger across a day).
-const MAX_BRIDGE_SECONDS = 3600;
-// A >10-min jump across a tile seam is a real absence the per-day builder
-// couldn't flag (its gaps stop at midnight), not a continuous track.
-const SEAM_GAP_SECONDS = 600;
 
 function haversineKm(lon0: number, lat0: number, lon1: number, lat1: number): number {
   const R = 6371,
@@ -87,30 +72,15 @@ function impliedKnots(a: KF, b: KF): number {
   return haversineKm(a[1], a[2], b[1], b[2]) / dtH / KM_PER_NM;
 }
 
-/**
- * Drop isolated position spikes: a keyframe whose *both* neighbouring segments
- * imply impossible speed is a bad fix (or an MMSI collision) — the vessel was
- * never there. Done once at load so `positionsAt` stays a hot, simple lerp.
- */
-function despike(kf: KF[]): KF[] {
-  if (kf.length < 3) return kf;
-  const out: KF[] = [kf[0]];
-  for (let i = 1; i < kf.length - 1; i++) {
-    const a = out[out.length - 1],
-      b = kf[i],
-      c = kf[i + 1];
-    if (impliedKnots(a, b) > MAX_KNOTS && impliedKnots(b, c) > MAX_KNOTS) continue;
-    out.push(b);
-  }
-  out.push(kf[kf.length - 1]);
-  return out;
+function bearing(lon0: number, lat0: number, lon1: number, lat1: number): number {
+  const coslat = Math.cos((((lat0 + lat1) / 2) * Math.PI) / 180);
+  const dx = (lon1 - lon0) * coslat;
+  const dy = lat1 - lat0;
+  if (dx === 0 && dy === 0) return NaN;
+  return ((Math.atan2(dx, dy) * 180) / Math.PI + 360) % 360;
 }
 
-/**
- * Interpolate every vessel's fix at instant `t` (epoch seconds). Shared by the
- * single-day store and the cross-tile boundary merge so both interpolate, gap-
- * freeze, and fade identically.
- */
+/** Interpolate every vessel's fix at instant `t` (epoch seconds) within one tile. */
 function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
   const out: VesselFix[] = [];
   for (const v of vessels) {
@@ -118,7 +88,6 @@ function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
     const n = kf.length;
     if (n === 0 || t < kf[0][0] || t > kf[n - 1][0]) continue;
 
-    // binary search for segment [lo, hi] with kf[lo].t <= t <= kf[hi].t
     let lo = 0,
       hi = n - 1;
     while (hi - lo > 1) {
@@ -129,15 +98,10 @@ function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
     const a = kf[lo];
     const b = kf[hi];
 
-    // Don't draw a confident straight line we can't justify. Across an AIS gap
-    // or a segment implying impossible speed, hold at the last fix and fade out.
+    // Across an AIS gap (we don't know the path) or an implausible segment, hold
+    // at the last fix and fade out as the gap elapses — never glide through land.
     const segGap = v.gaps.some(([g0, g1]) => a[0] < g1 && b[0] > g0);
     const untrusted = segGap || impliedKnots(a, b) > MAX_KNOTS;
-
-    // Too long a gap to dead-reckon → the vessel is genuinely absent; don't
-    // render it (this is what kept sparse pingers from being resurrected across
-    // a whole day as the merge window slides at midnight).
-    if (untrusted && b[0] - a[0] > MAX_BRIDGE_SECONDS) continue;
 
     let lon: number, lat: number, sog: number, cog: number, dark: boolean, darkness: number;
     if (untrusted) {
@@ -165,40 +129,6 @@ function positionsFrom(vessels: RawVessel[], t: number): VesselFix[] {
   return out;
 }
 
-/**
- * Union vessels by MMSI across chronologically-ordered tiles, concatenating
- * keyframes + gaps so a vessel's track is continuous across a day boundary.
- * `ordered` is earliest-tile-first; within a tile kf is sorted and tiles don't
- * overlap in time, so the merged kf is sorted without an explicit sort.
- */
-function mergeVessels(ordered: RawVessel[][]): RawVessel[] {
-  const merged = new Map<number, RawVessel>();
-  for (const vessels of ordered) {
-    for (const v of vessels) {
-      if (v.kf.length === 0) continue;
-      const e = merged.get(v.mmsi);
-      if (e) {
-        // Flag the seam between this tile and the previous one: a long jump means
-        // the vessel was absent across (part of) a day — a real gap the per-day
-        // builder couldn't see — so it must not be bridged as a continuous track.
-        const seam = v.kf[0][0] - e.kf[e.kf.length - 1][0];
-        if (seam > SEAM_GAP_SECONDS) e.gaps.push([e.kf[e.kf.length - 1][0], v.kf[0][0]]);
-        e.kf = e.kf.concat(v.kf);
-        e.gaps = e.gaps.concat(v.gaps);
-      } else {
-        merged.set(v.mmsi, {
-          mmsi: v.mmsi,
-          name: v.name,
-          type: v.type,
-          kf: v.kf.slice(),
-          gaps: v.gaps.slice(),
-        });
-      }
-    }
-  }
-  return [...merged.values()];
-}
-
 export class TrackStore {
   private vessels: RawVessel[] = [];
   meta: TrackTile["meta"] | null = null;
@@ -207,21 +137,10 @@ export class TrackStore {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
     const tile = (await res.json()) as TrackTile;
-    for (const v of tile.vessels) v.kf = despike(v.kf);
     this.vessels = tile.vessels;
     this.meta = tile.meta;
   }
 
-  get window(): [number, number] | null {
-    return this.meta ? [this.meta.start, this.meta.end] : null;
-  }
-
-  /** Read-only access to the (despiked) vessels — for cross-tile stitching. */
-  get rawVessels(): RawVessel[] {
-    return this.vessels;
-  }
-
-  /** All vessels present at instant `t` (epoch seconds), interpolated. */
   positionsAt(t: number): VesselFix[] {
     return positionsFrom(this.vessels, t);
   }
@@ -237,10 +156,10 @@ function dayKey(tMs: number): string {
 }
 
 /**
- * Windowed tile streaming — loads one day-tile per UTC day on demand, caches a
- * few (LRU), prefetches the next day, and routes positionsAt() to the right
- * day's store. This is what lets the clock roam the whole 6-year archive while
- * only ~a day of keyframes is ever resident.
+ * Windowed tile streaming — one day-tile per UTC day, LRU-cached, with the next
+ * and previous day prefetched so the midnight tile-switch is instant. Because the
+ * tiles are stitched (shared seam keyframes), rendering just the current day is
+ * continuous — no merge.
  */
 export class TileManager {
   private tiles = new Map<string, TrackStore>();
@@ -248,10 +167,6 @@ export class TileManager {
   private missing = new Set<string>();
   private maxResident = 8;
   private lastFleet: VesselFix[] = [];
-  // Cached cross-tile merge for the current day-boundary pair (rebuilt only when
-  // the pair changes, i.e. once per boundary crossing — not per frame).
-  private mergedVessels: RawVessel[] | null = null;
-  private mergedKey = "";
 
   constructor(
     private baseUrl: string,
@@ -265,7 +180,6 @@ export class TileManager {
     try {
       await store.load(`${this.baseUrl}/tracks_${key}.json`);
       this.tiles.set(key, store);
-      // LRU evict
       while (this.tiles.size > this.maxResident) {
         const oldest = this.tiles.keys().next().value as string;
         this.tiles.delete(oldest);
@@ -278,46 +192,19 @@ export class TileManager {
     }
   }
 
-  /** Vessels at instant `t` (epoch ms); loads + prefetches tiles as a side effect. */
   positionsAt(tMs: number): VesselFix[] {
     const key = dayKey(tMs);
-    const nextKey = dayKey(tMs + 86_400_000);
-    const prevKey = dayKey(tMs - 86_400_000);
     void this.fetchDay(key);
-    void this.fetchDay(nextKey); // prefetch next day
-    void this.fetchDay(prevKey); // ...and previous (scrubbing back)
-
-    const cur = this.tiles.get(key);
-    const tSec = Math.floor(tMs / 1000);
-
-    if (!cur) {
-      // Current day still streaming → hold the last frame; only blank if the day
-      // genuinely has no tile.
-      return this.missing.has(key) ? [] : this.lastFleet;
-    }
-
-    // Each day-tile holds only that day's keyframes, so a vessel's track is split
-    // at every midnight: it ends at its last ping before 00:00 and resumes at its
-    // first ping after — a gap where the single tile renders neither end. Always
-    // stitch the current day with its loaded neighbours (prev + next) so each
-    // track is continuous across BOTH boundaries, with no windowed edge to snap
-    // back at. The merge is cached and only rebuilt when the resident neighbour
-    // set changes (≈once per day crossing); positionsFrom still only returns the
-    // vessels actually present at t, so render cost is unchanged.
-    const prev = this.tiles.get(prevKey);
-    const next = this.tiles.get(nextKey);
-    if (!prev && !next) {
-      this.lastFleet = cur.positionsAt(tSec);
+    void this.fetchDay(dayKey(tMs + 86_400_000)); // prefetch next day
+    void this.fetchDay(dayKey(tMs - 86_400_000)); // ...and previous (scrubbing back)
+    const store = this.tiles.get(key);
+    if (store) {
+      this.lastFleet = store.positionsAt(Math.floor(tMs / 1000));
       return this.lastFleet;
     }
-    const ordered = [prev, cur, next].filter((s): s is TrackStore => !!s);
-    const mk = `${prev ? prevKey : ""}|${key}|${next ? nextKey : ""}`;
-    if (this.mergedKey !== mk) {
-      this.mergedVessels = mergeVessels(ordered.map((s) => s.rawVessels));
-      this.mergedKey = mk;
-    }
-    this.lastFleet = positionsFrom(this.mergedVessels!, tSec);
-    return this.lastFleet;
+    // Day still streaming → hold the last frame so the fleet doesn't blink while a
+    // tile loads; only blank if the day genuinely has no tile.
+    return this.missing.has(key) ? [] : this.lastFleet;
   }
 
   status(tMs: number): "ready" | "loading" | "missing" {
