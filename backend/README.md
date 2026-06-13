@@ -31,16 +31,17 @@ data/geo/*      ├─ (not touched in mock)       data/geo/*       ──► cr
 - **`DataSource`** (`app/data/base.py`) is the seam. Two implementations:
   - **`MockDataSource`** — the default. A scripted, realistic recreation of the
     **Eagle S / Estlink 2** incident (25 Dec 2024, Gulf of Finland): the tanker
-    *EAGLE S* slows over the real Estlink 2 cable route and its suspicion climbs
-    over time, while a RoPax ferry, a container ship, a fishing vessel, and an
+    *EAGLE S* slows over the real Estlink 2 cable route and its collection
+    priority climbs over time, while a RoPax ferry, a container ship, a fishing vessel, and an
     anchored bulker stay calm. Includes a criticality grid with a hotspot over the
     cable and a top-K SAR cue pointing at it. Everything is a pure function of the
     requested instant `t`, so `/scores` and `/cues` re-rank live as the clock scrubs.
   - **`DuckDBDataSource`** — reads AIS parquet from S3 via DuckDB `httpfs`
     (reusing `scripts/common/duck.py`). `/vessels` is a real query; the
-    scoring-dependent endpoints (`/scores`, `/cues`, `/geo`) are TODO stubs that
-    delegate to the mock until the scoring engine (`scoring.score`) and the
-    criticality grid land — so the API stays fully functional in either mode.
+    scoring-dependent endpoints (`/scores`, `/cues`, `/geo`) delegate to the
+    mock integration until real feature extraction and the criticality grid
+    land. The mock integration already calls `scoring.score_observation` and
+    `scoring.rank_tasking`.
 - Models live in `app/models/` and are the source of truth. The frontend mirrors
   them 1:1 in `frontend/src/types/`.
 - Shape/color **display encoding** is shared with the frontend via

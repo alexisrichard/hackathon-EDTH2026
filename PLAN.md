@@ -89,7 +89,9 @@ A spatial heatmap of how strategically important each cell of ocean is. Built fr
 - Maritime chokepoints (manual: Skagerrak, Gulf of Finland, Øresund, Great Belt)
 - Naval exercise zones (national hydrographic offices, NOTMARs)
 
-Vessel suspicion gets *multiplied* by local criticality. A weird vessel in the open Atlantic is whatever; the same vessel over Estlink 2 is an alarm.
+Infrastructure proximity and importance contribute directly to collection
+priority. Unusual movement far from protected assets remains low priority; the
+same movement over Estlink 2 rises in the task-next queue.
 
 ### 5.3 Sensor fusion
 
@@ -101,14 +103,20 @@ Vessel suspicion gets *multiplied* by local criticality. A weird vessel in the o
 
 ### 5.4 The combined score
 
+For the hackathon demo, collection priority uses a transparent weighted rule:
+
 ```
-suspicion(vessel, t) = kinematic_anomaly(vessel, t)
-                     × (1 − class_coherence(vessel, t))
-                     × local_criticality(vessel.position)
-                     × dark_modifier(vessel, t)
+priority = 0.30 × infrastructure_proximity
+         + 0.25 × unusual_movement
+         + 0.15 × (1 − ais_recency)
+         + 0.20 × infrastructure_importance
+         + 0.10 × satellite_availability
 ```
 
-Each term is interpretable. When a vessel is flagged, the dashboard shows the breakdown: *"flagged because: declared fishing vessel, trajectory inconsistent with fishing class (0.12), within 2 km of submarine cable (criticality 0.91), AIS dropout in last 47 minutes."*
+Each term is in `[0, 1]` and shown separately. The output is a defensive
+collection cue, not an assessment of hostile intent. The earlier multiplicative
+behavioral-coherence formula remains a post-hackathon research direction once
+class models and independent dark-vessel confirmation are available.
 
 ### 5.5 The cueing output
 
