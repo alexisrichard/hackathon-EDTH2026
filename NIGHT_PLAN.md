@@ -31,7 +31,7 @@ midnight discontinuity saga.
 puts a keyframe at midnight and detects gaps per-day, so each tile is an island
 the app must rejoin. Clean tiles touch exactly at the seam → no rejoining.
 
-- [ ] 1.1 `scripts/ingest/stitch_tracks.py`:
+- [x] 1.1 `scripts/ingest/stitch_tracks.py`:
   - read all `frontend/public/data/ais/tracks_*.json` (sorted)
   - concat per-MMSI across days → continuous tracks; global de-spike
   - **global gap detection** (>600 s no ping = gap), correct across midnights
@@ -46,18 +46,25 @@ the app must rejoin. Clean tiles touch exactly at the seam → no rejoining.
     boundary keyframes; preserve `meta`.
   - write to a temp dir, verify counts, then swap into `frontend/public/data/ais/`
     (back up originals to `data/ais/tiles_raw_backup/` — gitignored).
-- [ ] 1.2 Simplify `frontend/src/lib/trackStore.ts`: remove `mergeVessels`, the
+- [x] 1.2 Simplify `frontend/src/lib/trackStore.ts`: remove `mergeVessels`, the
   boundary logic, `MAX_BRIDGE`/`SEAM_GAP`, in-app de-spike. `TileManager` loads
   the current day (+ prefetch next/prev, keep `lastFleet` to avoid a blank during
   load) and renders `positionsFrom(currentTile, t)`. Keep gap-freeze + fade.
-- [ ] 1.3 Remove debug instrumentation (App.tsx `__tiles`/`__seek`/the DEBUG badge).
-- [ ] 1.4 Verify: faithful python trace across ≥5 midnights (corpus-edge +
+- [x] 1.3 Remove debug instrumentation (App.tsx `__tiles`/`__seek`/the DEBUG badge).
+- [x] 1.4 Verify: faithful python trace across ≥5 midnights (corpus-edge +
   interior) → appeared/disappeared ≈ mid-day baseline; in-app screenshot at a
   midnight; `tsc` clean; no console errors.
-- [ ] 1.5 REVIEWER AGENT (data architecture). Iterate.
-- [ ] 1.6 Commit.
+- [x] 1.5 REVIEWER AGENT (data architecture). Iterate.
+- [x] 1.6 Commit.
 
-REVIEW-1: _(append verdict)_
+REVIEW-1: **DONE (commit `ace977b`).** Build-time stitch (`scripts/ingest/stitch_tracks.py`)
+→ 1601 self-aligned day-tiles in `frontend/public/data/ais_v2/` (gitignored); app
+renders one tile, no runtime merge (`trackStore.ts` simplified). Reviewer REJECTED
+the first cut: gaps were RECOMPUTED from DP-simplified keyframes → 90.6% phantom
+gaps, freezing 1124 steaming vessels and poisoning the (old) suspicion score.
+Fixed by carrying the REAL source gaps clipped to each day + interpolated seam
+keyframes at every midnight crossing. Moving-while-dark 1124→79; in-app midnight
+continuity verified by faithful trace + screenshot.
 
 ---
 
@@ -73,28 +80,39 @@ prior mis-calibrated (fishing/service vessels top, hero buried). The SAR signals
 the hero. Ship score = behavioral_history (class-relative) + identity + watchlist
 + **sar_mismatch** (new).
 
-- [ ] 2.1 Check whether the Signal Brick files exist in the tree
+- [x] 2.1 Check whether the Signal Brick files exist in the tree
   (`scoring/detect_dark_vessels.py`, `vessel_signals.csv`, …). If absent, build a
   **mock** `data/reference/vessel_signals.mock.csv` matching the schema + the
   handoff coverage table (Nord Stream 153 dark_vessel; C-Lion1 96 ais_blackout +
   176 ais_dark_approach incl. Yi Peng 3) so scoring/demo work; swap real later.
-- [ ] 2.2 Add `sar_mismatch` sub-signal to `scoring/ship_trust.py`:
+- [x] 2.2 Add `sar_mismatch` sub-signal to `scoring/ship_trust.py`:
   point-in-time (only `signal_date_utc` ≤ t), weighted
   `ais_dark_approach 1.0 / ais_blackout 0.7 × gap_factor`, fail-closed. Tests.
-- [ ] 2.3 Class-relative calibration of `behavioral_history` (promote the validated
+- [x] 2.3 Class-relative calibration of `behavioral_history` (promote the validated
   approach from `validate_fleet.py`: deviation within ship class; exclude in-port/
   anchored idle time from "loiter"). Tests. Keep it interpretable.
-- [ ] 2.4 A loader that assembles a vessel's full `score_vessel_risk` input from
+- [x] 2.4 A loader that assembles a vessel's full `score_vessel_risk` input from
   real data (behavioral from corpus, identity curated, watchlist curated, SAR
   from `vessel_signals`).
-- [ ] 2.5 Re-run `validate_fleet.py` as-of 2024-11-18: confirm Yi Peng 3 now ranks
+- [x] 2.5 Re-run `validate_fleet.py` as-of 2024-11-18: confirm Yi Peng 3 now ranks
   in the tail (via the SAR `ais_dark_approach` + behavior) and fishing/service no
   longer dominate. "Good enough" = hero in top ~2%, clean classes low, no
   look-ahead. Iterate constants (principled, not hero-tuned).
-- [ ] 2.6 REVIEWER AGENT (scoring correctness + no-overfit + no-look-ahead). Iterate.
-- [ ] 2.7 Commit (note: Côme's lane → PR + heads-up in the morning).
+- [x] 2.6 REVIEWER AGENT (scoring correctness + no-overfit + no-look-ahead). Iterate.
+- [x] 2.7 Commit (note: Côme's lane → PR + heads-up in the morning).
 
-REVIEW-2: _(append verdict)_
+REVIEW-2: **DONE (commit `6b8a673`).** `ship_trust.py` gains a point-in-time
+`sar_mismatch` sub-signal (dark_approach 1.0 / blackout 0.7×gap, fail-closed,
+adds on top of base); `calibrate.py` class-relative behavioural prior; mock
+`vessel_signals` + `sar_signals.py` loader; `validate_fleet.py` re-run. Reviewer
+MODIFY: (1) SAR used DAY-granularity → leaked same-day-future signals — fixed with
+instant granularity (`_parse_signal_instant`, `when <= as_of`); (2) liar-test —
+added a same-day-but-after-t exclusion test; (3) the mock sprayed dark_approach on
+'other'-class rescue/pilot boats (hero buried rank 366) — restricted to the
+transit-class pool. Result: hero top ~3% on prior+SAR, top 67% on behaviour ALONE
+(honest — the prior is unremarkable; SAR + live surface it). 42 tests green.
+(Part 3 later refined the mock to be faithful to the dark-approach definition and
+added the zone engine + 18 more tests.)
 
 ---
 
@@ -105,18 +123,31 @@ cell: infra-proximity × importance + aggregated vessel_risk + live unusual_move
 + dark_vessel density (SAR). Produces the hero cue (C-Lion1 box driven by Yi Peng 3)
 and a Nord Stream box driven by dark_vessel density.
 
-- [ ] 3.1 Real per-cell aggregation in `scoring/` (extend `rank_tasking`): pull
-  vessel_risk per vessel at t, criticality surface from `data/geo`, dark_vessel
-  density from `vessel_signals` (0.1° bins). Transparent weighted terms.
-- [ ] 3.2 Backend loader: replace the `cues_at`/`scores_at` TODO stubs in
-  `backend/app/data/duckdb_source.py` with the real computation (or a precomputed
-  per-scenario JSON for demo robustness, mock-first).
-- [ ] 3.3 Validate: the top cue at the C-Lion1 replay is the Yi Peng 3 box; a
-  Nord Stream cue surfaces from dark-vessel density. Distribution sane.
-- [ ] 3.4 REVIEWER AGENT (cueing logic + demo-readiness). Iterate.
-- [ ] 3.5 Commit.
+- [x] 3.1 Real per-cell aggregation in `scoring/zone_score.py`: per-vessel argmax
+  (one ship's infra/risk/live/sar, sub-weights sum to 1) + dark-density, combined
+  by noisy-OR. Transparent terms that belong to ONE named driver (no Frankenstein).
+- [x] 3.2 Demo-robust precomputed per-scenario JSON: `zone_score --emit
+  frontend/public/data/cues/` writes `{index,c-lion1,nord-stream}.json` (cues +
+  dark contacts + per-vessel breakdowns). (Backend duckdb stubs left for Part 4.)
+- [x] 3.3 Validate: C-Lion1 top cue = Yi Peng 3 box (#1, 0.885); Nord Stream cue =
+  dark-density box (no ship named). No-overfit confirmed: hero is top 67% on
+  behaviour ALONE (rank 1412/2096) — surfaces only via SAR + live in the cue.
+- [x] 3.4 REVIEWER AGENT — verdict MODIFY; all blockers fixed (see REVIEW-3).
+- [x] 3.5 Commit — `ba3b36f`.
 
-REVIEW-3: _(append verdict)_
+REVIEW-3: **MODIFY → resolved.** Adversarial subagent confirmed all 3 hard
+invariants hold under tracing: no-look-ahead (all 3 paths fail-closed), no-overfit
+(hero never special-cased in the math; grep-verified), honest attribution (terms
+provably belong to one ship). Blockers fixed: (1) added `test_zone_score.py` (18
+tests — the engine had ZERO coverage; old 42 tested other modules); (2) fail-closed
+the zone dark-contact filter (was admitting blank `signal_date` via `(None or 0)`).
+Nits fixed: stable per-row cell grid (deterministic bbox); dark-dominated cells
+zero vessel terms/drivers to match "no AIS" prose; honest mock + calibrate
+docstrings. Residual (→ Côme): raw `dark_events`/`kinematics` features saturate the
+small-craft tail at 1.0; class-relative re-centres the mass (p50 .78→.33) but can't
+un-saturate the tail — needs softer feature defs / a low-sample-confidence guard in
+`behavioral.py`. Net: prior is a supporting signal; the cue discriminates via
+infra+live+SAR. 60/60 scoring tests pass.
 
 ---
 
@@ -126,18 +157,33 @@ REVIEW-3: _(append verdict)_
 `scenario.scoreFix` with the real ship-risk; render the real task-next cues; add a
 SAR / dark-vessel overlay; show ship-risk breakdown in the alert feed (interpretable).
 
-- [ ] 4.1 Wire the real `vessel_risk` into the frontend fleet (via backend
-  `/scores` or a precomputed per-scenario JSON). Replace `scenario.ts` interim.
-- [ ] 4.2 Render the real `/cues` (task-next boxes) + per-box "why".
-- [ ] 4.3 SAR dark-vessel overlay (incident detections) as a toggle.
-- [ ] 4.4 Alert feed shows the interpretable ship-risk breakdown (behavioral /
-  identity / watchlist / sar) + the no-look-ahead "as-of" note for the hero.
-- [ ] 4.5 Verify in-app: the hero replay shows Yi Peng 3 elevated, the cue box on
-  the C-Lion1 corridor, the cable-cut narrative. Screenshot proof.
-- [ ] 4.6 REVIEWER AGENT (integration + demo flow). Iterate.
-- [ ] 4.7 Commit.
+- [x] 4.1 Real `vessel_risk` wired via precomputed per-scenario JSON
+  (`frontend/public/data/cues/`). Interim `scenario.ts` DELETED. New `lib/cues.ts`
+  loader; fleet carries real risk + breakdown per MMSI; unscored outside theatre.
+- [x] 4.2 Real ranked task-next boxes (`MapView` cue-boxes/tags) + the queue in
+  `CuePanel` with per-box "why" + transparent term bars + Task button.
+- [x] 4.3 SAR dark-vessel overlay (`sar-dark-contacts`) + a "Cueing engine" toggle
+  group in `LayerPanel` (task-next cues + SAR dark contacts).
+- [x] 4.4 Alert feed shows interpretable contributions (SAR / behaviour / identity)
+  + the scenario "cued as-of" line; hero pinned PRIMARY CUE (guarded).
+- [x] 4.5 Verified in-app (screenshots): C-Lion1 → Yi Peng 3 pinned (0.83 = SAR
+  +0.50 · behaviour +0.33), #1 box on the corridor; Nord Stream → 153 SAR dark
+  contacts on the pipeline, #1 dark-density cue, no AIS suspect.
+- [x] 4.6 REVIEWER AGENT — APPROVE WITH NITS; honesty nits fixed (see REVIEW-4).
+- [x] 4.7 Commit — `6747802` + `82b9dbb` (review fixes).
 
-REVIEW-4: _(append verdict)_
+REVIEW-4: **APPROVE WITH NITS → resolved.** Reviewer traced both UI invariants and
+confirmed they hold: no-overfit (hero risk 0.833 read verbatim from payload; MMSI
+only used as demo config for the pin/always-show, never in a risk value) and honest
+attribution (the #1 C-Lion1 cue driver IS the hero; Nord Stream pin suppressed).
+Graceful degradation on missing cues, clean scenario-switch memo deps, faithful
+term-by-term payload rendering — all verified. Fixes applied: (1) `activeScenario`
+now gates on `at_ts` so a cue can't appear before its compute instant (verified:
+03:00 same-day → inactive); (2) PRIMARY CUE pin only renders when the hero is truly
+the #1 cue driver (`primaryCueMmsi`); (3) cue-tag `characterSet:"auto"` + alert feed
+trimmed to 4. Residual (non-blocking): no frontend test runner — if one test is
+added, make it `activeScenario`; rail scrolls below the fold on short screens (top
+cue + hero alert always visible). tsc clean, prod build OK.
 
 ---
 
