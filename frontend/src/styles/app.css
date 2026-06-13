@@ -496,6 +496,31 @@ body,
   gap: 14px;
   z-index: 5;
 }
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+.step-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: none;
+  border: 1px solid var(--line-heavy);
+  color: var(--text-slate);
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-btn:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
 .play-btn {
   width: 32px;
   height: 32px;
