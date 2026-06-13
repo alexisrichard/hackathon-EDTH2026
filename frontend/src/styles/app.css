@@ -193,6 +193,24 @@ body,
   width: 11px;
   height: 11px;
 }
+.layer-panel .section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: var(--text-slate);
+  text-transform: uppercase;
+  margin: 13px 0 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-heavy);
+}
+.layer-panel .infra-theme .hd {
+  border-top: none;
+  padding-top: 5px;
+  margin-top: 5px;
+}
+.layer-panel .infra-theme > label {
+  padding-left: 14px;
+}
 .layer-panel label {
   display: flex;
   align-items: center;
@@ -240,6 +258,20 @@ body,
   color: var(--text-muted);
   margin-top: 4px;
   letter-spacing: 0.1em;
+}
+.day-status {
+  position: absolute;
+  top: 12px;
+  right: 56px;
+  z-index: 4;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--text-slate);
+  background: rgba(6, 10, 18, 0.85);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 5px 9px;
 }
 .coords {
   right: 12px;

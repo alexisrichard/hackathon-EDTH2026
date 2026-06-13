@@ -70,3 +70,7 @@ data/geo/osm_buoys.geojson
 # Claude Code preview launcher (per-user)
 .claude/launch.json
 data/geo/marine_regions_12nm.geojson
+
+# AIS replay tiles — bulk generated, host on S3/CDN (one demo day is committed)
+frontend/public/data/ais/tracks_*.json
+!frontend/public/data/ais/tracks_2024-11-18.json

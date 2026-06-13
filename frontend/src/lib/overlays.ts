@@ -2,16 +2,66 @@
  * Thematic overlay model — what the layer panel toggles and the map renders.
  *
  *   Geography       country borders · territorial seas (12nm) · EEZ
- *                   (rescue/SRR zones: no open dataset found yet — TODO)
- *   Infrastructure  Energy · Telecom · Transport · Military (POI cats + lines)
+ *   Infrastructure  per-category toggles grouped under Energy · Telecom ·
+ *                   Transport · Military (each theme has a select-all master)
  *   Vessels         filter by class group + labels
  *   Analysis        the unified strategic heatmap
  */
 import type { ShipType } from "../types/models";
 
+// ---- infrastructure: one toggle per real category, grouped by theme --------
+export type InfraCat =
+  | "telecom_cable"
+  | "power_cable"
+  | "pipeline"
+  | "power_plant"
+  | "converter"
+  | "energy_terminal"
+  | "platform"
+  | "windfarm"
+  | "port"
+  | "anchorage"
+  | "shipping_lane"
+  | "naval_base"
+  | "restricted_zone";
+
+export type InfraKind = "line" | "point" | "zone";
+export type InfraTheme = "Energy" | "Telecom" | "Transport" | "Military";
+
+export interface InfraCatMeta {
+  theme: InfraTheme;
+  label: string;
+  kind: InfraKind;
+}
+
+export const INFRA_CATS: Record<InfraCat, InfraCatMeta> = {
+  pipeline: { theme: "Energy", label: "Pipelines", kind: "line" },
+  power_cable: { theme: "Energy", label: "Power cables", kind: "line" },
+  power_plant: { theme: "Energy", label: "Power plants (incl. nuclear)", kind: "point" },
+  converter: { theme: "Energy", label: "HVDC converters", kind: "point" },
+  energy_terminal: { theme: "Energy", label: "Terminals / refineries", kind: "point" },
+  platform: { theme: "Energy", label: "Offshore platforms", kind: "point" },
+  windfarm: { theme: "Energy", label: "Wind farms", kind: "point" },
+  telecom_cable: { theme: "Telecom", label: "Submarine cables", kind: "line" },
+  port: { theme: "Transport", label: "Ports (commercial/naval)", kind: "point" },
+  shipping_lane: { theme: "Transport", label: "Shipping lanes (TSS)", kind: "line" },
+  anchorage: { theme: "Transport", label: "Anchorages", kind: "point" },
+  naval_base: { theme: "Military", label: "Naval bases", kind: "point" },
+  restricted_zone: { theme: "Military", label: "Restricted / exercise zones", kind: "zone" },
+};
+
+export const INFRA_CAT_KEYS = Object.keys(INFRA_CATS) as InfraCat[];
+export const INFRA_THEME_ORDER: InfraTheme[] = ["Energy", "Telecom", "Transport", "Military"];
+
+export function catsInTheme(theme: InfraTheme): InfraCat[] {
+  return INFRA_CAT_KEYS.filter((c) => INFRA_CATS[c].theme === theme);
+}
+
+export type InfraState = Record<InfraCat, boolean>;
+
 export interface OverlayState {
   geo: { borders: boolean; territorial: boolean; eez: boolean };
-  infra: { energy: boolean; telecom: boolean; transport: boolean; military: boolean };
+  infra: InfraState;
   vessels: {
     cargo: boolean;
     tanker: boolean;
@@ -21,38 +71,43 @@ export interface OverlayState {
     other: boolean;
     labels: boolean;
   };
+  fishing: { intensity: boolean };
   analysis: { heatmap: boolean };
+  /** Dev-only diagnostics: the 9 known incidents + where we actually have AIS. */
+  incidentsDev: { points: boolean; coverage: boolean };
 }
 
 export const DEFAULT_OVERLAYS: OverlayState = {
   geo: { borders: true, territorial: true, eez: true },
-  infra: { energy: true, telecom: true, transport: true, military: true },
+  infra: {
+    telecom_cable: true,
+    power_cable: true,
+    pipeline: true,
+    power_plant: true,
+    converter: true,
+    energy_terminal: true,
+    platform: true,
+    windfarm: true,
+    port: true,
+    shipping_lane: true,
+    anchorage: false, // off by default — shadow-fleet loitering context, toggle on as needed
+    naval_base: true,
+    restricted_zone: true,
+  },
   vessels: { cargo: true, tanker: true, fishing: true, passenger: true, military: true, other: true, labels: true },
+  fishing: { intensity: false }, // big contextual heatmap — off by default
   analysis: { heatmap: false },
+  incidentsDev: { points: false, coverage: false }, // dev diagnostics — off by default
 };
 
-/** Infrastructure themes — which POI categories + line categories they own. */
-export const INFRA_THEMES: Record<
-  keyof OverlayState["infra"],
-  { label: string; lines: string[]; pois: string[] }
-> = {
-  energy: {
-    label: "Energy (pipelines · terminals · platforms · wind)",
-    lines: ["pipeline", "power_cable"],
-    pois: ["energy_terminal", "platform", "windfarm"],
-  },
-  telecom: { label: "Telecom (submarine cables)", lines: ["telecom_cable"], pois: [] },
-  transport: {
-    label: "Transport (ports · anchorages · lights · chokepoints)",
-    lines: [],
-    pois: ["port", "anchorage", "lighthouse", "chokepoint"],
-  },
-  military: { label: "Military (naval bases)", lines: [], pois: ["naval_base"] },
-};
+/** Enabled categories of a given render kind. */
+export function enabledCats(infra: InfraState, kind: InfraKind): Set<string> {
+  return new Set(INFRA_CAT_KEYS.filter((c) => INFRA_CATS[c].kind === kind && infra[c]));
+}
 
+// ---- vessels ---------------------------------------------------------------
 export type VesselGroup = Exclude<keyof OverlayState["vessels"], "labels">;
 
-/** Ship class → filter group. */
 export const VESSEL_GROUPS: Record<ShipType, VesselGroup> = {
   cargo: "cargo",
   dredger: "cargo",

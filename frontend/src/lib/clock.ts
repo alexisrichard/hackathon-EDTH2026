@@ -1,18 +1,29 @@
 /**
  * Replay clock — sim time driven by requestAnimationFrame.
  *
- * V1 window: the Eagle S / Estlink 2 day (2024-12-25, held-out incident).
- * The window will become scenario-driven (shared/scenarios.json) later.
+ * Spans the full AIS archive (2022-01 → 2026-05). Track tiles are loaded per
+ * day on demand (see TileManager), so the clock ranges over years while only a
+ * day's worth of keyframes is ever in memory.
  */
 import { useEffect, useRef, useState } from "react";
 
-export const WINDOW_START = Date.UTC(2024, 11, 25, 10, 0, 0);
-export const WINDOW_END = Date.UTC(2024, 11, 25, 16, 0, 0);
-/** Ground truth: Estlink 2 went down 2024-12-25 ~14:00Z (cue must fire BEFORE). */
-export const BREACH_T = Date.UTC(2024, 11, 25, 14, 0, 0);
-export const DEFAULT_T = Date.UTC(2024, 11, 25, 13, 10, 0);
+// Full archive window.
+export const WINDOW_START = Date.UTC(2022, 0, 1, 0, 0, 0);
+export const WINDOW_END = Date.UTC(2026, 4, 20, 0, 0, 0);
+// Open on the Yi Peng 3 / C-Lion1 moment (a day we have a tile for).
+export const DEFAULT_T = Date.UTC(2024, 10, 18, 8, 41, 0);
 
-export const SPEEDS = [1, 10, 60, 300, 900];
+// Catalogued Baltic undersea-infra incidents — ticks on the scrubber.
+export const INCIDENTS: { t: number; label: string }[] = [
+  { t: Date.UTC(2022, 8, 26), label: "NORD STREAM" },
+  { t: Date.UTC(2023, 9, 8), label: "BALTICCONNECTOR" },
+  { t: Date.UTC(2024, 10, 17), label: "C-LION1 / YI PENG 3" },
+  { t: Date.UTC(2024, 11, 25), label: "ESTLINK 2 / EAGLE S" },
+  { t: Date.UTC(2025, 0, 26), label: "LV–SE CABLE" },
+];
+
+// Replay speeds (× real time). Top speeds make multi-year scrubbing usable.
+export const SPEEDS = [60, 600, 3600, 21600, 86400];
 
 export interface ReplayClock {
   t: number;
@@ -25,8 +36,8 @@ export interface ReplayClock {
 
 export function useReplayClock(): ReplayClock {
   const [t, setT] = useState(DEFAULT_T);
-  const [playing, setPlaying] = useState(true);
-  const [speed, setSpeed] = useState(60);
+  const [playing, setPlaying] = useState(false); // start paused on the hero moment
+  const [speed, setSpeed] = useState(600);
   const last = useRef<number | null>(null);
 
   useEffect(() => {
@@ -40,7 +51,7 @@ export function useReplayClock(): ReplayClock {
         const dt = (now - last.current) * speed;
         setT((prev) => {
           const next = prev + dt;
-          return next >= WINDOW_END ? WINDOW_START : next; // loop the replay
+          return next >= WINDOW_END ? WINDOW_START : next;
         });
       }
       last.current = now;
@@ -65,4 +76,9 @@ export function useReplayClock(): ReplayClock {
 
 export function fmtZ(t: number): string {
   return new Date(t).toISOString().slice(0, 19).replace("T", " ") + "Z";
+}
+
+/** UTC date key "YYYY-MM-DD" for the day containing epoch-ms t (tile filename). */
+export function dayKey(t: number): string {
+  return new Date(t).toISOString().slice(0, 10);
 }

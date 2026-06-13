@@ -13,11 +13,19 @@ npm run dev          # → http://localhost:5173
 
 - **Satellite basemap** — EOX Sentinel-2 Cloudless tiles (real imagery, global, CC-BY),
   CSS-dimmed to the ops aesthetic. Falls back to the void background offline.
-- **Jurisdictions** — EEZ (solid) + 12 nm territorial seas (dashed), Marine Regions.
-- **Infrastructure** — telecom cables (cyan), power cables (teal), pipelines (amber).
-- **Geopoints** — ~2,550 scored & clustered POI sites (ports, naval bases, chokepoints, terminals,
-  wind farms, lights…) colored by **v1 strategic score** + optional **heatmap** overlay.
-  Data + scoring weights: `scripts/geo/build_web_layers.py` → `public/data/*.json`.
+- **Geography** — country borders + EEZ + 12 nm territorial seas (Marine Regions), with
+  ISO zone codes labelled along the maritime lines.
+- **Infrastructure** — per-category toggles grouped by theme, each with a select-all master:
+  *Energy* (pipelines · power cables · **power plants incl. nuclear** · **HVDC converters** ·
+  terminals · platforms · wind), *Telecom* (submarine cables), *Transport* (commercial/naval
+  ports · **shipping lanes / TSS** · anchorages), *Military* (naval bases · restricted/exercise
+  zones, red dashed areas).
+- **Fishing** — HELCOM fishing-intensity heatmap (green): where trawling actually happens, so a
+  "fishing" vessel working *outside* these grounds stands out (the fake-trawler tell). SW Baltic coverage.
+- **Geopoints** — ~1,000 scored & **clustered** POI sites colored by **v1 strategic score**
+  + optional strategic **heatmap**. Lighthouses dropped; ports filtered to working harbours;
+  energy/power layers coastal-clipped (drops inland oil-field clutter); anchorages off by
+  default. Data + scoring weights: `scripts/geo/build_web_layers.py` → `public/data/*.json`.
 - **Mock AIS fleet** — EAGLE S scripted incident + ~110 synthetic vessels on Baltic +
   North Sea lanes (`src/mock/fleet.ts`), shape=type / color=suspicion per the shared
   encoding. Replay clock: play/pause/speed/scrub; the suspicion arc crosses the

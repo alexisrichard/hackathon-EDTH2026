@@ -1,7 +1,7 @@
 /**
  * The theatre map: EOX Sentinel-2 cloudless basemap (MapLibre) with deck.gl
  * data layers overlaid — thematic overlays (geography / infrastructure /
- * vessels / analysis), the mock AIS fleet, and the live cue box.
+ * vessels / analysis), the real interpolated AIS fleet, and the live cue box.
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
@@ -12,20 +12,27 @@ import { HeatmapLayer } from "@deck.gl/aggregation-layers";
 import { PathStyleExtension } from "@deck.gl/extensions";
 import type { Layer, PickingInfo } from "@deck.gl/core";
 
-import { colorForSuspicion, colorForSensor, shapeForShipType } from "../types/encoding";
+import { colorForSuspicion, shapeForShipType } from "../types/encoding";
 import type { GeoLayers, GeoFeature } from "../lib/geodata";
 import { CAT_LABELS, pointCoords } from "../lib/geodata";
 import { buildIconAtlas, ROTATABLE } from "../lib/icons";
-import { INFRA_THEMES, type OverlayState } from "../lib/overlays";
-import type { MockVesselState } from "../mock/fleet";
-import { CUE_BBOX, CUE_FIRES_T, EAGLE_S_MMSI } from "../mock/fleet";
-import { BREACH_T, fmtZ } from "../lib/clock";
+import { enabledCats, type OverlayState } from "../lib/overlays";
+import type { ScoredVessel } from "../lib/trackStore";
+
+/** A tasking recommendation drawn on the map (bracket box + tag). */
+export interface Cue {
+  bbox: [number, number, number, number];
+  label: string;
+  color: [number, number, number];
+}
 
 interface Props {
   t: number;
-  vessels: MockVesselState[]; // already group-filtered by App
+  vessels: ScoredVessel[]; // already group-filtered + scored by App
   geo: GeoLayers | null;
   overlays: OverlayState;
+  cue: Cue | null;
+  suspectMmsi: number;
   onMapReady: (map: maplibregl.Map) => void;
 }
 
@@ -105,18 +112,39 @@ function getTooltip(info: PickingInfo): { html: string } | null {
   const o = info.object as Record<string, unknown> | GeoFeature | undefined;
   if (!o) return null;
   if ((o as { mmsi?: number }).mmsi !== undefined) {
-    const v = o as unknown as MockVesselState;
+    const v = o as unknown as ScoredVessel;
     return {
       html: `<b>${v.name}</b> · ${v.shipType.toUpperCase()}<br/>MMSI ${v.mmsi} · ${v.sog.toFixed(1)} kn · COG ${Math.round(v.cog)}°<br/>suspicion <b>${v.suspicion.toFixed(2)}</b><br/><span style="color:#8FA3B8">${v.why}</span>`,
     };
   }
   const f = o as GeoFeature;
   const p = f.properties ?? {};
+  if (p.id !== undefined && p.coverage !== undefined) {
+    const cov = String(p.coverage);
+    const covTxt =
+      p.vessels_80km !== undefined
+        ? `${cov.toUpperCase()} — ${Number(p.vessels_80km)} vessels ≤80 km, nearest ${p.nearest_km ?? "?"} km`
+        : cov.toUpperCase();
+    return {
+      html: `<b>${Number(p.n)}. ${String(p.short)}</b> · ${String(p.date)}${p.time_utc ? " " + String(p.time_utc) + "Z" : ""}<br/>${String(p.name)}<br/>${String(p.vessel)} (${String(p.flag)}) · ${String(p.status)}<br/><span style="color:#8FA3B8">AIS this day: <b>${covTxt}</b></span>`,
+    };
+  }
+  if (p.tier !== undefined) {
+    return {
+      html: `<b>AIS coverage · ${String(p.tier)}</b><br/>≥${Number(p.min_vessels)} distinct vessels/cell over ${Number(p.n_days)} sample days`,
+    };
+  }
+  if (p.fhr !== undefined) {
+    return { html: `<b>Fishing intensity</b><br/>${Number(p.fhr).toFixed(0)} fishing-hours / cell (HELCOM 2020)` };
+  }
+  if (p.cat === "shipping_lane") {
+    return { html: `<b>Shipping lane</b><br/>Traffic separation scheme · ${String(p.name ?? "")}` };
+  }
   if (p.cat !== undefined) {
     const n = Number(p.n ?? 1);
-    const sites = n > 1 ? ` · ${n} sites merged` : "";
+    const extra = p.kind ? ` · ${String(p.kind)}` : n > 1 ? ` · ${n} sites merged` : "";
     return {
-      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat}${sites} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
+      html: `<b>${String(p.name ?? "—")}</b><br/>${CAT_LABELS[String(p.cat)] ?? p.cat}${extra} · strategic <b>${Number(p.s).toFixed(2)}</b>`,
     };
   }
   if (p.zone !== undefined) {
@@ -129,13 +157,38 @@ function getTooltip(info: PickingInfo): { html: string } | null {
 
 function buildLayers(
   t: number,
-  vessels: MockVesselState[],
+  vessels: ScoredVessel[],
   geo: GeoLayers | null,
   ov: OverlayState,
   zoneLabels: ZoneLabel[],
+  cue: Cue | null,
+  suspectMmsi: number,
 ): Layer[] {
   const layers: Layer[] = [];
   const { atlas, mapping } = buildIconAtlas();
+
+  // ---- fishing intensity heatmap (green — where trawling actually happens) ----
+  if (geo && ov.fishing.intensity) {
+    layers.push(
+      new HeatmapLayer({
+        id: "fishing-intensity",
+        data: geo.fishing.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getWeight: (f: GeoFeature) => Number(f.properties.fhr),
+        radiusPixels: 40,
+        intensity: 1,
+        threshold: 0.05,
+        colorRange: [
+          [16, 70, 55, 60],
+          [24, 120, 90, 110],
+          [60, 170, 110, 150],
+          [150, 210, 90, 180],
+          [220, 235, 130, 205],
+          [245, 250, 170, 230],
+        ],
+      }),
+    );
+  }
 
   // ---- analysis: unified strategic heatmap (all POIs, theme-independent) ----
   if (geo && ov.analysis.heatmap) {
@@ -156,6 +209,25 @@ function buildLayers(
           [230, 57, 70, 200],
           [230, 57, 70, 240],
         ],
+      }),
+    );
+  }
+
+  // ---- AIS coverage zone (dev) — base wash under everything else ----
+  if (geo && ov.incidentsDev.coverage && geo.coverage.features.length) {
+    layers.push(
+      new GeoJsonLayer({
+        id: "ais-coverage",
+        data: geo.coverage,
+        stroked: true,
+        filled: true,
+        getFillColor: (f: GeoFeature) =>
+          f.properties.tier === "reliable" ? [47, 214, 181, 40] : [255, 176, 46, 26],
+        getLineColor: (f: GeoFeature) =>
+          f.properties.tier === "reliable" ? [47, 214, 181, 150] : [255, 176, 46, 110],
+        getLineWidth: 1,
+        lineWidthUnits: "pixels",
+        pickable: true,
       }),
     );
   }
@@ -208,20 +280,36 @@ function buildLayers(
     }
   }
 
-  // ---- infrastructure (thematic) ----
+  // ---- infrastructure (per-category) ----
   if (geo) {
-    const lineCats = new Set<string>();
-    const poiCats = new Set<string>();
-    (Object.keys(INFRA_THEMES) as (keyof OverlayState["infra"])[]).forEach((theme) => {
-      if (!ov.infra[theme]) return;
-      INFRA_THEMES[theme].lines.forEach((c) => lineCats.add(c));
-      INFRA_THEMES[theme].pois.forEach((c) => poiCats.add(c));
-    });
-    if (lineCats.size) {
+    const lineCats = enabledCats(ov.infra, "line");
+    const poiCats = enabledCats(ov.infra, "point");
+
+    // restricted / military zones (polygons)
+    if (ov.infra.restricted_zone) {
+      layers.push(
+        new GeoJsonLayer({
+          id: "restricted-zones",
+          data: geo.zones,
+          stroked: true,
+          filled: true,
+          getFillColor: [255, 69, 56, 26],
+          getLineColor: [255, 69, 56, 150],
+          getLineWidth: 1.2,
+          lineWidthUnits: "pixels",
+          extensions: [new PathStyleExtension({ dash: true })],
+          getDashArray: [4, 3],
+          pickable: true,
+        } as never),
+      );
+    }
+    // solid infrastructure lines (cables, pipelines)
+    const solidCats = new Set([...lineCats].filter((c) => c !== "shipping_lane"));
+    if (solidCats.size) {
       layers.push(
         new GeoJsonLayer({
           id: "infra-lines",
-          data: { ...geo.infra, features: geo.infra.features.filter((f) => lineCats.has(String(f.properties.cat))) },
+          data: { ...geo.infra, features: geo.infra.features.filter((f) => solidCats.has(String(f.properties.cat))) },
           stroked: true,
           filled: false,
           getLineColor: (f: GeoFeature) => INFRA_COLORS[String(f.properties.cat)] ?? [143, 163, 184, 120],
@@ -229,6 +317,24 @@ function buildLayers(
           lineWidthUnits: "pixels",
           pickable: true,
         }),
+      );
+    }
+    // shipping lanes — dashed, muted (routing context, not a target)
+    if (lineCats.has("shipping_lane")) {
+      layers.push(
+        new GeoJsonLayer({
+          id: "shipping-lanes",
+          data: { ...geo.infra, features: geo.infra.features.filter((f) => f.properties.cat === "shipping_lane") },
+          stroked: true,
+          filled: false,
+          getLineColor: [125, 150, 190, 95],
+          getLineWidth: 1,
+          lineWidthUnits: "pixels",
+          extensions: [new PathStyleExtension({ dash: true })],
+          getDashArray: [6, 5],
+          dashJustified: false,
+          pickable: true,
+        } as never),
       );
     }
     if (poiCats.size) {
@@ -259,29 +365,29 @@ function buildLayers(
         data: vessels,
         iconAtlas: atlas,
         iconMapping: mapping,
-        getIcon: (v: MockVesselState) => shapeForShipType(v.shipType),
-        getPosition: (v: MockVesselState) => [v.lon, v.lat],
-        getSize: (v: MockVesselState) => 13 + v.suspicion * 10,
+        getIcon: (v: ScoredVessel) => shapeForShipType(v.shipType),
+        getPosition: (v: ScoredVessel) => [v.lon, v.lat],
+        getSize: (v: ScoredVessel) => 13 + v.suspicion * 10,
         sizeUnits: "pixels",
-        getColor: (v: MockVesselState) => {
+        getColor: (v: ScoredVessel) => {
           const [r, g, b] = colorForSuspicion(v.suspicion);
           return [r, g, b, 235];
         },
-        getAngle: (v: MockVesselState) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
+        getAngle: (v: ScoredVessel) => (ROTATABLE.has(shapeForShipType(v.shipType)) ? -v.cog : 0),
         pickable: true,
         updateTriggers: { getPosition: t, getColor: t, getAngle: t, getSize: t },
       }),
     );
     if (ov.vessels.labels) {
-      const labelled = vessels.filter((v) => v.suspicion >= 0.45 || v.mmsi === EAGLE_S_MMSI);
+      const labelled = vessels.filter((v) => v.suspicion >= 0.45 || v.mmsi === suspectMmsi);
       layers.push(
         new TextLayer({
           id: "vessel-labels",
           data: labelled,
-          getPosition: (v: MockVesselState) => [v.lon, v.lat],
-          getText: (v: MockVesselState) => `${v.name} · ${v.suspicion.toFixed(2)}`,
+          getPosition: (v: ScoredVessel) => [v.lon, v.lat],
+          getText: (v: ScoredVessel) => `${v.name} · ${v.suspicion.toFixed(2)}`,
           getSize: 10.5,
-          getColor: (v: MockVesselState) => (v.suspicion >= 0.75 ? [230, 57, 70, 255] : [143, 163, 184, 255]),
+          getColor: (v: ScoredVessel) => (v.suspicion >= 0.75 ? [230, 57, 70, 255] : [143, 163, 184, 255]),
           getPixelOffset: [0, -20],
           fontFamily: "'JetBrains Mono', monospace",
           background: true,
@@ -293,27 +399,70 @@ function buildLayers(
     }
   }
 
-  // ---- SAR cue box — fires before the breach ----
-  if (t >= CUE_FIRES_T) {
-    const sar = colorForSensor("SAR");
+  // ---- incident points (dev) — the 9 known incidents, coloured by AIS coverage ----
+  if (geo && ov.incidentsDev.points && geo.incidents.features.length) {
+    const covColor: Record<string, [number, number, number]> = {
+      reliable: [46, 196, 132],
+      marginal: [255, 176, 46],
+      gap: [230, 57, 70],
+      unknown: [143, 163, 184],
+    };
+    layers.push(
+      new ScatterplotLayer({
+        id: "incident-points",
+        data: geo.incidents.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getRadius: 6,
+        radiusUnits: "pixels",
+        stroked: true,
+        getLineColor: [255, 255, 255, 230],
+        lineWidthUnits: "pixels",
+        getLineWidth: 1.5,
+        getFillColor: (f: GeoFeature) => {
+          const [r, g, b] = covColor[String(f.properties.coverage)] ?? covColor.unknown;
+          return [r, g, b, 235];
+        },
+        pickable: true,
+      }),
+      new TextLayer({
+        id: "incident-labels",
+        data: geo.incidents.features,
+        getPosition: (f: GeoFeature) => pointCoords(f),
+        getText: (f: GeoFeature) => `${f.properties.n}·${String(f.properties.short)}`,
+        getSize: 10,
+        getColor: [233, 240, 247, 255],
+        getTextAnchor: "start" as const,
+        getAlignmentBaseline: "center" as const,
+        getPixelOffset: [10, 0],
+        fontFamily: "'JetBrains Mono', monospace",
+        characterSet: "auto",
+        background: true,
+        getBackgroundColor: [6, 10, 18, 205],
+        backgroundPadding: [4, 2],
+      }),
+    );
+  }
+
+  // ---- SAR cue box — follows the hottest vessel (the tasking recommendation) ----
+  if (cue) {
     layers.push(
       new PathLayer({
         id: "cue-box",
-        data: cueBracketPaths(CUE_BBOX).map((path) => ({ path })),
+        data: cueBracketPaths(cue.bbox).map((path) => ({ path })),
         getPath: (d: { path: [number, number][] }) => d.path,
-        getColor: [...sar, 235] as [number, number, number, number],
+        getColor: [...cue.color, 235] as [number, number, number, number],
         getWidth: 2.2,
         widthUnits: "pixels",
         opacity: 0.7 + 0.3 * Math.sin(t / 400),
+        updateTriggers: { getPath: cue.bbox },
       }),
       new TextLayer({
         id: "cue-tag",
-        data: [{ pos: [CUE_BBOX[0], CUE_BBOX[3]] }],
+        data: [{ pos: [cue.bbox[0], cue.bbox[3]], label: cue.label }],
         getPosition: (d: { pos: [number, number] }) => d.pos,
-        getText: () =>
-          t < BREACH_T ? `CUE-01 · SAR · TASK BY ${fmtZ(BREACH_T).slice(11, 16)}Z` : "CUE-01 · SAR · BREACH 14:00Z",
+        getText: (d: { label: string }) => d.label,
         getSize: 10,
-        getColor: t < BREACH_T ? ([...sar, 255] as [number, number, number, number]) : [255, 69, 56, 255],
+        getColor: [...cue.color, 255] as [number, number, number, number],
         getTextAnchor: "start" as const,
         getAlignmentBaseline: "bottom" as const,
         getPixelOffset: [0, -6],
@@ -321,7 +470,7 @@ function buildLayers(
         background: true,
         getBackgroundColor: [6, 10, 18, 220],
         backgroundPadding: [5, 3],
-        updateTriggers: { getText: t >= BREACH_T, getColor: t >= BREACH_T },
+        updateTriggers: { getText: cue.label, getPosition: cue.bbox },
       }),
     );
   }
@@ -329,7 +478,7 @@ function buildLayers(
   return layers;
 }
 
-export default function MapView({ t, vessels, geo, overlays, onMapReady }: Props) {
+export default function MapView({ t, vessels, geo, overlays, cue, suspectMmsi, onMapReady }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const overlayRef = useRef<MapboxOverlay | null>(null);
@@ -377,8 +526,8 @@ export default function MapView({ t, vessels, geo, overlays, onMapReady }: Props
   }, []);
 
   useEffect(() => {
-    overlayRef.current?.setProps({ layers: buildLayers(t, vessels, geo, overlays, zoneLabels) });
-  }, [t, vessels, geo, overlays, zoneLabels]);
+    overlayRef.current?.setProps({ layers: buildLayers(t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi) });
+  }, [t, vessels, geo, overlays, zoneLabels, cue, suspectMmsi]);
 
   return (
     <div className="map-wrap">

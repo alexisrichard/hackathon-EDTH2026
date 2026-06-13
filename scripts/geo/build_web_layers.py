@@ -36,15 +36,21 @@ SCORES = {
     "telecom_cable": 0.95,
     "power_cable":   0.95,
     "pipeline":      0.90,
-    "chokepoint":    0.90,
+    "power_plant":   0.75,  # thermal; nuclear overridden to 0.90 per-feature
     "naval_base":    0.85,
+    "converter":     0.85,  # HVDC converter stations — subsea power-cable landings
     "energy_terminal": 0.80,
+    "restricted_zone": 0.70,  # military / danger / exercise areas
     "port":          0.65,
     "windfarm":      0.60,
     "platform":      0.60,
     "anchorage":     0.40,
-    "lighthouse":    0.30,
+    "shipping_lane": 0.25,  # context line, not a target (score unused for rendering)
+    # lighthouses dropped — navigation aids, not strategic targets
 }
+
+# Working harbours only — OSM tags ~2,200 recreational marinas as "ports".
+COMMERCIAL_PORTS = {"cargo", "container", "bulk", "passenger", "ferry", "naval", "fishing"}
 
 PREC = 4  # coordinate decimals (~11 m)
 
@@ -67,6 +73,48 @@ def geom_dict(geom, prec: int = PREC) -> dict:
 def as_point(geom):
     """Representative point for any geometry."""
     return geom if geom.geom_type == "Point" else geom.centroid
+
+
+# Coastal band — drops far-inland clutter (Belarus oil fields, Scandinavian
+# micro-hydro) while keeping anything maritime-relevant. ~0.55° ≈ 40–60 km.
+_COAST_BAND = None
+
+
+def near_coast(geom) -> bool:
+    global _COAST_BAND
+    if _COAST_BAND is None:
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
+        cl = gpd.read_file(GEO / "ne_coastline_10m.geojson")
+        if cl.crs and cl.crs.to_epsg() != 4326:
+            cl = cl.to_crs(epsg=4326)
+        _COAST_BAND = prep(unary_union(list(cl.geometry)).buffer(0.55))
+    return _COAST_BAND.contains(as_point(geom))
+
+
+# Tight (~8 km) coastline band — a subsea cable "lands" here. Used to drop
+# OSM cable fragments that dead-end in open water (incomplete traces).
+_LANDING_BAND = None
+
+
+def lands_on_coast(geom) -> bool:
+    """True if BOTH endpoints of a (Multi)LineString are near a coast (coast-to-coast)."""
+    global _LANDING_BAND
+    if _LANDING_BAND is None:
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
+        cl = gpd.read_file(GEO / "ne_coastline_10m.geojson")
+        if cl.crs and cl.crs.to_epsg() != 4326:
+            cl = cl.to_crs(epsg=4326)
+        _LANDING_BAND = prep(unary_union(list(cl.geometry)).buffer(0.08))
+    from shapely.geometry import Point
+    if geom.geom_type == "MultiLineString":
+        cs = [p for ln in geom.geoms for p in ln.coords]
+    else:
+        cs = list(geom.coords)
+    if len(cs) < 2:
+        return False
+    return _LANDING_BAND.contains(Point(cs[0])) and _LANDING_BAND.contains(Point(cs[-1]))
 
 
 def load(name: str) -> gpd.GeoDataFrame:
@@ -184,14 +232,24 @@ def build_lines() -> None:
     print("[infra lines]")
     feats: list[dict] = []
 
+    # Coast-to-coast only: subsea cables must land on two shores. Drops OSM
+    # fragments that dead-end in open water (incomplete traces).
     cables = load("submarine_cables")
     cables = cables[cables.geometry.length > 0.03]  # drop harbor stubs
+    kept = dropped = 0
     for _, r in cables.iterrows():
+        if not lands_on_coast(r.geometry):
+            dropped += 1
+            continue
+        kept += 1
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "submarine cable", "telecom_cable"))
+    print(f"    telecom cables: kept {kept} coast-to-coast, dropped {dropped} dead-ending", flush=True)
 
     power = load("submarine_power_cables")
     for _, r in power.iterrows():
+        if not lands_on_coast(r.geometry):
+            continue
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "power cable", "power_cable"))
 
@@ -200,9 +258,16 @@ def build_lines() -> None:
         feats.append(line_feature(r.geometry.simplify(0.005),
                                   first(r.to_dict(), "name") or "pipeline", "pipeline"))
 
+    # Shipping lanes — IMO traffic separation schemes (lane/boundary/line).
+    tss = load("osm_tss")
+    tss = tss[tss.geometry.geom_type == "LineString"]
+    for _, r in tss.iterrows():
+        label = str(r.get("seamark:type") or "").replace("separation_", "").replace("_", " ") or "shipping lane"
+        feats.append(line_feature(r.geometry.simplify(0.003), label, "shipping_lane"))
+
     dump(OUT / "infra_lines.json", feats, {
         "source": "OSM (ODbL) + EMODnet Human Activities (CC-BY 4.0)",
-        "categories": {k: SCORES[k] for k in ("telecom_cable", "power_cable", "pipeline")},
+        "categories": {k: SCORES[k] for k in ("telecom_cable", "power_cable", "pipeline", "shipping_lane")},
     })
 
 
@@ -285,22 +350,48 @@ def build_poi() -> None:
         g = as_point(r.geometry)
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name:en", "name") or "naval base", "naval_base"))
 
-    for _, r in load("chokepoints").iterrows():
-        g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "chokepoint", "chokepoint"))
-
     ports = load("ports")
-    ports = ports[ports["leisure"].isna()] if "leisure" in ports.columns else ports
-    named = ports[ports.apply(lambda r: bool(first(r.to_dict(), "name", "seamark:name")), axis=1)]
-    for _, r in named.iterrows():
+    for _, r in ports.iterrows():
+        cat = str(r.get("seamark:harbour:category") or "")
+        if cat not in COMMERCIAL_PORTS:  # skip the ~2,200 recreational marinas
+            continue
         g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "seamark:name"), "port"))
+        feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "seamark:name") or f"{cat} harbour", "port"))
 
     refi = load("refineries_lng")
     for _, r in refi.iterrows():
+        if not near_coast(r.geometry):  # drops inland Belarus oil-field gathering stations
+            continue
         c = r.geometry.centroid
         name = first(r.to_dict(), "name", "operator") or "energy terminal"
         feats.append(poi(c.x, c.y, name, "energy_terminal"))
+
+    # power plants — strategic carriers only; nuclear scored highest + always kept
+    STRAT_SRC = ("nuclear", "gas", "coal", "oil", "diesel", "combined")
+    for _, r in load("power_plants").iterrows():
+        src = str(r.get("plant:source") or "").lower()
+        nuclear = "nuclear" in src or str(r.get("plant:method")) == "fission"
+        if not nuclear and not any(s in src for s in STRAT_SRC):
+            continue  # drop hydro / biomass / biogas / solar
+        if not nuclear and not near_coast(r.geometry):
+            continue  # keep all nuclear; coastal-clip thermal
+        g = as_point(r.geometry)
+        name = first(r.to_dict(), "name") or (f"{src.split(';')[0]} power plant" if src else "power plant")
+        f = poi(g.x, g.y, name, "power_plant")
+        f["properties"]["kind"] = "nuclear" if nuclear else (src.split(";")[0] or "thermal")
+        if nuclear:
+            f["properties"]["s"] = 0.90
+        feats.append(f)
+
+    # HVDC converter stations — subsea power-cable landings (substation=converter
+    # only; the bare power=converter tag is full of pipeline cathodic-protection units)
+    for _, r in load("converter_stations").iterrows():
+        if str(r.get("substation")) != "converter":
+            continue
+        if not near_coast(r.geometry):  # keep subsea-cable landings, drop inland AC/DC substations
+            continue
+        g = as_point(r.geometry)
+        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "HVDC converter", "converter"))
 
     for _, r in load("emodnet_windfarms_point").iterrows():
         g = as_point(r.geometry)
@@ -318,17 +409,6 @@ def build_poi() -> None:
         g = r.geometry.centroid
         feats.append(poi(g.x, g.y, first(r.to_dict(), "name", "description") or "anchorage", "anchorage"))
 
-    lh = load("osm_lighthouses")
-    def lh_range(r):
-        try:
-            return float(str(r.get("seamark:light:range", "")).split(";")[0])
-        except (ValueError, TypeError):
-            return 0.0
-    lh = lh[lh.apply(lambda r: lh_range(r) >= 12 or bool(first(r.to_dict(), "name")), axis=1)]
-    for _, r in lh.iterrows():
-        g = as_point(r.geometry)
-        feats.append(poi(g.x, g.y, first(r.to_dict(), "name") or "light", "lighthouse"))
-
     feats = cluster_all(feats)
     dump(OUT / "poi.json", feats, {
         "source": "OSM (ODbL), EMODnet (CC-BY 4.0), hand-curated chokepoints",
@@ -338,8 +418,77 @@ def build_poi() -> None:
     })
 
 
+# ---- 4 · restricted / military zones (polygons) -------------------------------
+# OSM tags 1,277 "restricted areas" but most are bird sanctuaries / nature
+# reserves / swimming areas. Keep only the defense-relevant ones.
+ZONE_CATEGORIES = {"military", "safety"}  # seamark:restricted_area:category
+
+
+def build_zones() -> None:
+    print("[zones]")
+    g = load("osm_restricted_areas")
+    feats: list[dict] = []
+    def clean(v) -> str:  # geopandas missing values are NaN floats -> "nan"
+        s = str(v).strip()
+        return "" if s.lower() in ("nan", "none", "") else s
+
+    for _, r in g.iterrows():
+        p = r.to_dict()
+        cat = clean(p.get("seamark:restricted_area:category"))
+        mil = clean(p.get("military"))  # training_area / danger_area / range
+        if cat not in ZONE_CATEGORIES and not mil:
+            continue
+        geom = r.geometry
+        if geom is None or geom.is_empty:
+            continue
+        geom = geom.simplify(0.004)
+        kind = mil.replace("_", " ") if mil else cat
+        name = first(p, "name", "seamark:name") or f"{kind} zone"
+        feats.append({
+            "type": "Feature",
+            "geometry": geom_dict(geom, prec=4),
+            "properties": {"cat": "restricted_zone", "name": name, "kind": kind, "s": SCORES["restricted_zone"]},
+        })
+    dump(OUT / "zones.json", feats, {
+        "source": "OSM seamark restricted_area (ODbL), filtered to military/danger/safety",
+        "note": "excludes bird sanctuaries, nature reserves, swimming areas (not defense-relevant)",
+        "score": SCORES["restricted_zone"],
+    })
+
+
+# ---- 5 · fishing intensity (heatmap input) -----------------------------------
+# HELCOM AIS-derived fishing effort. `fhr` = fishing hours per 0.05° cell.
+# Lets an operator spot a "fishing" vessel working where nobody actually fishes
+# — the fake-trawler tell. Coverage: SW Baltic / Kattegat–Bornholm (2020 Q1).
+def build_fishing() -> None:
+    print("[fishing]")
+    g = load("helcom_fishing_intensity_total_2016_2021")
+    feats: list[dict] = []
+    for _, r in g.iterrows():
+        fhr = r.get("fhr")
+        if not isinstance(fhr, (int, float)) or fhr <= 0:
+            continue
+        lon, lat = r.get("lon"), r.get("lat")
+        if not isinstance(lon, (int, float)) or not isinstance(lat, (int, float)):
+            c = r.geometry.centroid
+            lon, lat = c.x, c.y
+        feats.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [round(float(lon), 3), round(float(lat), 3)]},
+            "properties": {"fhr": round(float(fhr), 1)},
+        })
+    dump(OUT / "fishing_intensity.json", feats, {
+        "source": "HELCOM AIS-derived fishing intensity, gear total, 2020 Q1",
+        "field": "fhr = fishing hours per ~0.05° cell",
+        "coverage": "SW Baltic / Kattegat–Bornholm (HELCOM extent)",
+        "note": "zero-effort cells dropped",
+    })
+
+
 if __name__ == "__main__":
     build_jurisdiction()
     build_lines()
     build_poi()
+    build_zones()
+    build_fishing()
     print("done.")
