@@ -30,7 +30,7 @@ from app.core.config import VERSION, get_settings
 from app.core.display import _encoding
 from app.data import get_data_source
 from app.models.responses import HealthResponse
-from app.routers import cues, geo, scenarios, scores, vessels
+from app.routers import cues, frame, geo, scenarios, scores, vessels
 
 settings = get_settings()
 
@@ -58,6 +58,7 @@ app.add_middleware(
 app.include_router(vessels.router)
 app.include_router(scores.router)
 app.include_router(cues.router)
+app.include_router(frame.router)
 app.include_router(geo.router)
 app.include_router(scenarios.router)
 

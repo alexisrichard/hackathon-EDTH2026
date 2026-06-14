@@ -171,6 +171,50 @@ export async function loadCues(): Promise<CueData> {
   return { scenarios, timeseries };
 }
 
+// ---- live backend (continuous scoring outside the precomputed windows) --------
+
+const BACKEND = (import.meta.env.VITE_BACKEND_URL as string | undefined) ?? "http://localhost:8077";
+const LIVE_CADENCE_MS = 3 * 3600 * 1000; // snap to the engine's 3h cadence → cacheable
+const liveCache = new Map<number, Frame | null>();
+const livePending = new Map<number, Promise<Frame | null>>();
+
+function snapshotToFrame(snap: any): Frame {
+  const riskMap = new Map<number, RiskEntry>();
+  for (const k in snap.risk) riskMap.set(Number(k), snap.risk[k]);
+  return {
+    scenarioId: "live", label: "Live · Baltic theatre", heroMmsi: null, at: snap.at,
+    riskMap, taskings: snap.taskings ?? [], darkContacts: snap.dark_contacts ?? [],
+    isTimeseries: true, cadenceH: snap.cadence_h ?? 3, nSat: snap.n_sat ?? 3,
+    nextRetaskTs: snap.next_retask_ts ? snap.next_retask_ts * 1000 : null, caughtAt: null,
+  };
+}
+
+/** Fetch the engine's frame at `clockT` from the live backend, snapped to the
+ *  re-tasking cadence and cached per snapped instant (so playback within a window
+ *  and re-visits are free). Returns null if the backend is unreachable. */
+export function fetchLiveFrame(clockT: number): Promise<Frame | null> {
+  const snapped = Math.floor(clockT / LIVE_CADENCE_MS) * LIVE_CADENCE_MS;
+  if (liveCache.has(snapped)) return Promise.resolve(liveCache.get(snapped)!);
+  const inflight = livePending.get(snapped);
+  if (inflight) return inflight;
+  const p = fetch(`${BACKEND}/frame?at=${new Date(snapped).toISOString()}`, { cache: "no-store" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => (j ? snapshotToFrame(j) : null))
+    .then((f) => { liveCache.set(snapped, f); livePending.delete(snapped); return f; })
+    .catch(() => { livePending.delete(snapped); return null; });
+  livePending.set(snapped, p);
+  return p;
+}
+
+/** Is `clockT` covered by a precomputed time-series window? (If so, no backend.) */
+export function inPrecomputedWindow(clockT: number, data: CueData): boolean {
+  return data.timeseries.some((ts) => {
+    const start = Date.parse(ts.window[0]);
+    const end = Date.parse(ts.window[1]) + ts.cadence_h * 3600 * 1000;
+    return clockT >= start && clockT <= end;
+  });
+}
+
 function riskEntryFromVessel(v: TheatreVessel): RiskEntry {
   return {
     name: v.name, type: v.type, risk: v.vessel_risk, sar: v.sar, live: v.live_anomaly,

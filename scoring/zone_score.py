@@ -20,6 +20,7 @@ import math
 import os
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
+from functools import lru_cache
 from pathlib import Path
 
 import geopandas as gpd
@@ -34,6 +35,21 @@ from scoring.ship_trust import score_vessel_risk
 ROOT = Path(__file__).resolve().parents[1]
 TILES = ROOT / "frontend/public/data/ais_v2"
 GRID_KM = 50.0
+
+
+@lru_cache(maxsize=400)
+def _tile_vessels(path: str):
+    """Parsed vessels for one day-tile, CACHED — so repeated 90-day lookback scans
+    (the live backend's hot path, and the time-series build) don't re-parse the
+    same JSON tiles on every call. ~400 tiles ≈ the whole lookback window resident."""
+    with open(path) as fh:
+        return json.load(fh)["vessels"]
+
+
+@lru_cache(maxsize=1)
+def _tile_paths():
+    return sorted(glob.glob(str(TILES / "tracks_*.json")))
+
 KM_PER_DEG = 111.32
 INFRA_RANGE_KM = 12.0  # within this, a vessel is "over" infrastructure
 
@@ -98,7 +114,9 @@ def build_theatre(at_ts: int, as_of_date: str, bbox, lookback: int = 90):
     """Vessels present at `at_ts` inside bbox, each with position, live anomaly, and
     point-in-time ship-trust risk (class-relative behaviour + SAR)."""
     cut_tile = TILES / f"tracks_{as_of_date}.json"
-    vessels = json.load(open(cut_tile))["vessels"]
+    if not cut_tile.exists():
+        return []
+    vessels = _tile_vessels(str(cut_tile))
     lon0, lat0, lon1, lat1 = bbox
 
     here = {}  # mmsi -> (fix, type, name)
@@ -112,11 +130,11 @@ def build_theatre(at_ts: int, as_of_date: str, bbox, lookback: int = 90):
     # prior history for risk (scan the lookback window once)
     start = (date.fromisoformat(as_of_date) - timedelta(days=lookback)).isoformat()
     prior = defaultdict(list)
-    for f in sorted(glob.glob(str(TILES / "tracks_*.json"))):
+    for f in _tile_paths():
         d = os.path.basename(f)[len("tracks_") : -len(".json")]
         if d < start or d >= as_of_date:
             continue
-        for v in json.load(open(f))["vessels"]:
+        for v in _tile_vessels(f):
             if v["mmsi"] in here:
                 prior[v["mmsi"]].append({"date": d, "kf": v["kf"], "gaps": v["gaps"]})
 

@@ -101,8 +101,9 @@ export default function CuePanel({ frame, t, onTask }: Props) {
             <span className="sc">—</span>
           </div>
           <div className="why">
-            No scored window at this time. Scrub onto the C-Lion1 lead-up (2024-11-17/18) to watch
-            the engine re-task its satellites, or Nord Stream (2022-09-26).
+            No active cues here — either an empty theatre, or the live backend isn't running.
+            Start it: <code>cd backend &amp;&amp; uvicorn app.main:app --port 8077</code>. Precomputed
+            windows (C-Lion1 2024-11-17/18, Nord Stream 2022-09-26) work without it.
           </div>
         </div>
       )}

@@ -27,6 +27,17 @@ npm run dev          # → http://localhost:5173
 
 It opens on the **C-Lion1 / Yi Peng 3 catch (2024-11-18 09:00Z)** — Yi Peng 3 is satellite #1. Drag the timeline left into 2024-11-17 to watch the engine re-task its 3 satellites every 3 hours through the lead-up; scrub to 2022-09-26 for the Nord Stream dark-density cue. Production-like build: `npm run build && npm run preview` (→ :4173).
 
+### Continuous scoring — run the backend too (optional)
+
+The two incident windows above are **precomputed** and work with no backend. To get **continuous** scoring at *any* instant (scrub anywhere → the engine scores that moment on demand), run the FastAPI backend alongside the frontend:
+
+```bash
+source .venv/bin/activate
+cd backend && uvicorn app.main:app --port 8077    # the frontend calls :8077 by default
+```
+
+The frontend then fetches `/frame?at=<t>` for times outside the precomputed windows (snapped to the 3h cadence + cached, so playback within a window is free; the first request for a new region runs a real ~60-day lookback, a few seconds, shown as "scoring theatre…"). Override the URL with `VITE_BACKEND_URL` if you run it on a different port. Interactive API docs at `http://localhost:8077/docs`.
+
 ### The AIS replay tiles (large, gitignored)
 
 Without them the map shows the cues + overlays but **no moving fleet**:

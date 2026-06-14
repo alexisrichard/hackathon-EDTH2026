@@ -12,7 +12,7 @@ import { useReplayClock } from "./lib/clock";
 import { loadGeoLayers, type GeoLayers } from "./lib/geodata";
 import { DEFAULT_OVERLAYS, VESSEL_GROUPS, type OverlayState } from "./lib/overlays";
 import { TileManager, type ScoredVessel } from "./lib/trackStore";
-import { frameAt, loadCues, type CueData, type Frame, type ZoneCue } from "./lib/cues";
+import { fetchLiveFrame, frameAt, loadCues, type CueData, type Frame, type ZoneCue } from "./lib/cues";
 
 const TILES_BASE = "/data/ais_v2"; // stitched, self-aligned tiles (no runtime merge)
 
@@ -26,6 +26,9 @@ export default function App() {
   const [geoReady, setGeoReady] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [cueData, setCueData] = useState<CueData | null>(null);
+  const [frame, setFrame] = useState<Frame | null>(null);
+  const [liveLoading, setLiveLoading] = useState(false);
+  const liveSnap = useRef<number | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   useEffect(() => {
@@ -41,9 +44,34 @@ export default function App() {
       .catch((e: Error) => console.warn("cues unavailable:", e.message));
   }, []);
 
-  // The frame the engine is showing right now: a continuous re-tasking snapshot
-  // (latest ≤ clock — no look-ahead) inside a scenario's window, else null.
-  const frame = useMemo<Frame | null>(() => (cueData ? frameAt(clock.t, cueData) : null), [clock.t, cueData]);
+  // The frame the engine is showing right now. Inside a precomputed window
+  // (C-Lion1 / Nord Stream) it's instant; ANY other instant is scored on demand by
+  // the live backend (snapped to the 3h cadence + cached, so playback within a
+  // window is free). No look-ahead either way.
+  useEffect(() => {
+    if (!cueData) return;
+    const pre = frameAt(clock.t, cueData);
+    if (pre) {
+      liveSnap.current = null;
+      setLiveLoading(false);
+      setFrame(pre);
+      return;
+    }
+    const snapped = Math.floor(clock.t / (3 * 3600 * 1000));
+    if (snapped === liveSnap.current) return; // same re-task window → frame already set
+    liveSnap.current = snapped;
+    let cancelled = false;
+    setLiveLoading(true);
+    fetchLiveFrame(clock.t).then((f) => {
+      if (cancelled) return;
+      setLiveLoading(false);
+      setFrame(f); // null if the backend is unreachable → fleet shows unscored
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clock.t, cueData]);
   const risk = frame?.riskMap;
 
   // Vessels driving a current satellite tasking (and the hero) are always rendered,
@@ -136,6 +164,11 @@ export default function App() {
           {geoReady && dayStatus !== "ready" && (
             <div className="day-status">
               {dayStatus === "loading" ? "▣ streaming AIS…" : "○ no AIS tile for this day"}
+            </div>
+          )}
+          {liveLoading && (
+            <div className="day-status live-scoring">
+              <span className="ring small" /> scoring theatre…
             </div>
           )}
         </div>
