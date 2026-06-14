@@ -47,15 +47,23 @@ export function useReplayClock(): ReplayClock {
       return;
     }
     let raf = 0;
+    // Throttle the data-layer re-render to ~25 fps. At 60 fps the full recompute +
+    // deck render (800 vessels, labels, cues) can't fit in a 16 ms frame when zoomed
+    // in, so the rAF loop monopolises the main thread and overlay toggles/clicks
+    // starve. Positions interpolate smoothly at 25 fps; `last` is the last RENDER
+    // time so `dt` stays accurate regardless of the throttle.
+    const FRAME_MS = 40;
     const step = (now: number) => {
-      if (last.current !== null) {
+      if (last.current === null) {
+        last.current = now;
+      } else if (now - last.current >= FRAME_MS) {
         const dt = (now - last.current) * speed;
+        last.current = now;
         setT((prev) => {
           const next = prev + dt;
           return next >= WINDOW_END ? WINDOW_START : next;
         });
       }
-      last.current = now;
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);

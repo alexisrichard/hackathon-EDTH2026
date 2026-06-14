@@ -403,7 +403,19 @@ function buildLayers(
       }),
     );
     if (ov.vessels.labels) {
-      const labelled = vessels.filter((v) => v.suspicion >= 0.45 || v.mmsi === suspectMmsi);
+      // Cap labels HARD: the tasked vessels (what the satellites watch) + the hero
+      // + a few top-risk, ≤ LABEL_CAP total. Labelling every ≥0.45 vessel was ~78
+      // text-laid-out glyphsets re-rendered EVERY frame — it froze the main thread
+      // when zoomed in during playback. A handful of labels is also more legible.
+      const LABEL_CAP = 12;
+      const labelSet = new Set<number>();
+      if (suspectMmsi != null) labelSet.add(suspectMmsi);
+      for (const c of cues) for (const d of c.drivers) labelSet.add(d.mmsi);
+      for (const v of vessels.filter((v) => v.suspicion >= 0.6 && !labelSet.has(v.mmsi)).sort((a, b) => b.suspicion - a.suspicion)) {
+        if (labelSet.size >= LABEL_CAP) break;
+        labelSet.add(v.mmsi);
+      }
+      const labelled = vessels.filter((v) => labelSet.has(v.mmsi));
       layers.push(
         new TextLayer({
           id: "vessel-labels",
@@ -417,7 +429,7 @@ function buildLayers(
           background: true,
           getBackgroundColor: [6, 10, 18, 215],
           backgroundPadding: [4, 2],
-          updateTriggers: { getPosition: t, getText: t, getColor: t },
+          updateTriggers: { getPosition: t },
         }),
       );
     }
