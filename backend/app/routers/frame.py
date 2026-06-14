@@ -26,7 +26,12 @@ router = APIRouter(tags=["frame"])
 # thousands of vessels and blow the per-request budget. Snapping the clock to the
 # cadence makes the result cacheable.
 BALTIC_BBOX = (12.0, 53.5, 22.0, 60.0)
-LOOKBACK_DAYS = 60   # behavioural prior window; 60 keeps the cold request ~4 s vs ~14 s at 90
+# Behavioural-prior window. Cold latency is dominated by parsing this many day-tiles
+# (lru-cached, so only the FIRST touch of a window pays). 30 keeps a cold scrub ~2-3 s
+# (vs ~4-24 s at 60, where the variance was how many tiles were already resident); the
+# prior is still multi-week. The live engine is the "always-on" feed — the hero story
+# lives in the precomputed windows — so a shorter prior here is the right trade.
+LOOKBACK_DAYS = 30
 CADENCE_H = 3
 N_SAT = 3
 STEP = CADENCE_H * 3600
@@ -38,6 +43,16 @@ def _cable_dist():
     from scoring.zone_score import _cable_distance_fn
 
     return _cable_distance_fn()
+
+
+def warm() -> None:
+    """Build the cable-distance surface once (≈0.8 s) so the user's first scrub to a
+    live instant doesn't pay it. Called off-thread at app startup; safe to no-op if
+    the geo layers are missing."""
+    try:
+        _cable_dist()
+    except Exception:  # never let a prewarm failure block startup
+        pass
 
 
 @lru_cache(maxsize=1024)

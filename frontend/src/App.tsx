@@ -12,7 +12,7 @@ import { useReplayClock } from "./lib/clock";
 import { loadGeoLayers, type GeoLayers } from "./lib/geodata";
 import { DEFAULT_OVERLAYS, VESSEL_GROUPS, type OverlayState } from "./lib/overlays";
 import { TileManager, type ScoredVessel } from "./lib/trackStore";
-import { fetchLiveFrame, frameAt, loadCues, type CueData, type Frame, type ZoneCue } from "./lib/cues";
+import { fetchLiveFrame, frameAt, isLiveCached, loadCues, type CueData, type Frame, type ZoneCue } from "./lib/cues";
 
 const TILES_BASE = "/data/ais_v2"; // stitched, self-aligned tiles (no runtime merge)
 
@@ -58,18 +58,20 @@ export default function App() {
       return;
     }
     const snapped = Math.floor(clock.t / (3 * 3600 * 1000));
-    if (snapped === liveSnap.current) return; // same re-task window → frame already set
+    if (snapped === liveSnap.current) return; // same re-task window → frame already set/loading
     liveSnap.current = snapped;
-    let cancelled = false;
-    setLiveLoading(true);
+    // Only show "scoring…" for a genuinely cold window; cached windows swap instantly.
+    if (!isLiveCached(clock.t)) setLiveLoading(true);
     fetchLiveFrame(clock.t).then((f) => {
-      if (cancelled) return;
+      // Guard on the ref, NOT a captured `cancelled` flag. During playback the
+      // clock advances faster than a cold fetch resolves; a per-run cancelled flag
+      // would fire on every re-render and strand BOTH setFrame and setLiveLoading
+      // (frozen frame + stuck spinner). The ref only rejects a *superseded* window,
+      // so the current window always settles — and re-renders within it are no-ops.
+      if (liveSnap.current !== snapped) return;
       setLiveLoading(false);
       setFrame(f); // null if the backend is unreachable → fleet shows unscored
     });
-    return () => {
-      cancelled = true;
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clock.t, cueData]);
   const risk = frame?.riskMap;

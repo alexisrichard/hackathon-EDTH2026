@@ -206,6 +206,13 @@ export function fetchLiveFrame(clockT: number): Promise<Frame | null> {
   return p;
 }
 
+/** Has the frame for `clockT`'s 3h window already been fetched? (So the caller can
+ *  skip the "scoring…" spinner for an instant, cached swap.) */
+export function isLiveCached(clockT: number): boolean {
+  const snapped = Math.floor(clockT / LIVE_CADENCE_MS) * LIVE_CADENCE_MS;
+  return liveCache.has(snapped);
+}
+
 /** Is `clockT` covered by a precomputed time-series window? (If so, no backend.) */
 export function inPrecomputedWindow(clockT: number, data: CueData): boolean {
   return data.timeseries.some((ts) => {

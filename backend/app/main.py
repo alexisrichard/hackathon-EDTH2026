@@ -63,6 +63,15 @@ app.include_router(geo.router)
 app.include_router(scenarios.router)
 
 
+@app.on_event("startup")
+def _prewarm_frame() -> None:
+    """Warm the live-cueing cable surface in the background so the first /frame scrub
+    is faster. Off-thread → startup stays instant; failure is swallowed in warm()."""
+    import threading
+
+    threading.Thread(target=frame.warm, daemon=True).start()
+
+
 @app.get("/health", response_model=HealthResponse, tags=["meta"], summary="Liveness")
 def health() -> HealthResponse:
     """Liveness probe; reports which data source is active."""
