@@ -33,7 +33,7 @@
      {
       "name": "Yi Peng 3",
       "mmsi": 414270000,
-      "type": "other",
+      "type": "cargo",
       "infra_proximity": 0.74,
       "vessel_risk": 0.833,
       "live_anomaly": 1.0,
@@ -41,24 +41,24 @@
       "vessel_score": 0.8849
      },
      {
-      "name": "Delfinen",
-      "mmsi": 219018255,
-      "type": "other",
-      "infra_proximity": 0.021,
-      "vessel_risk": 0.609,
-      "live_anomaly": 1.0,
-      "sar": 0.0,
-      "vessel_score": 0.388
+      "name": "Snp Galaxy",
+      "mmsi": 314828000,
+      "type": "cargo",
+      "infra_proximity": 0.823,
+      "vessel_risk": 0.5,
+      "live_anomaly": 0.0,
+      "sar": 1.0,
+      "vessel_score": 0.6058
      },
      {
-      "name": "Finnpulp",
-      "mmsi": 230643000,
-      "type": "other",
-      "infra_proximity": 0.81,
-      "vessel_risk": 0.333,
+      "name": "African Dragon",
+      "mmsi": 232052663,
+      "type": "cargo",
+      "infra_proximity": 0.0,
+      "vessel_risk": 0.5,
       "live_anomaly": 0.0,
-      "sar": 0.0,
-      "vessel_score": 0.3024
+      "sar": 1.0,
+      "vessel_score": 0.4
      }
     ],
     "dark_contacts": 0,
@@ -97,8 +97,8 @@
      "dark_density": 1.0
     },
     "drivers": [],
-    "dark_contacts": 84,
-    "why": "84 dark SAR contacts, no AIS \u2014 a suspect that went dark",
+    "dark_contacts": 82,
+    "why": "82 dark SAR contacts, no AIS \u2014 a suspect that went dark",
     "disclaimer": "Defensive collection cue; not for targeting.",
     "rank": 1
    }

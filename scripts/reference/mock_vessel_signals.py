@@ -56,7 +56,13 @@ def _vessels_near(tile_path: Path, lon_rng, lat_rng, types):
         )
         if hit:
             has_gap = bool(v.get("gaps"))
-            out.append((v["mmsi"], v.get("name"), v["type"], hit[1], hit[2], has_gap))
+            # max sog anywhere in the box — a transit is moving through; a loiterer
+            # (the hero's profile) crawls. Used to keep fabricated SAR signals off
+            # parked-over-a-cable vessels so they can't out-cue the real hero.
+            in_box = [k for k in v["kf"]
+                      if lon_rng[0] <= k[1] <= lon_rng[1] and lat_rng[0] <= k[2] <= lat_rng[1]]
+            max_sog = max((k[3] for k in in_box), default=0.0)
+            out.append((v["mmsi"], v.get("name"), v["type"], hit[1], hit[2], has_gap, max_sog))
     return out
 
 
@@ -102,12 +108,18 @@ def main():
                      lat=55.10, lon=15.80, sar_confidence="", gap_hours="",
                      gap_start_utc="", gap_end_utc="",
                      details="First AIS appearance near the corridor with no prior Baltic track"))
-    others = [v for v in pool if v[0] != YI_PENG_3]
+    # Fabricated non-hero signals go ONLY on TRANSITING vessels (moved >6 kn through
+    # the box). The hero is the lone loiterer-over-a-cable with a SAR flag, so it
+    # stays the top cue — others are transit dark-approaches/blackouts that, not
+    # loitering over infrastructure, score lower. (The real vessel_signals.csv will
+    # carry the true set; this just keeps the mock from inventing a fake #1.)
+    MOVING = 6.0
+    others = [v for v in pool if v[0] != YI_PENG_3 and v[6] >= MOVING]
     no_track = [v for v in others if pdays.get(v[0], 0) <= 3]       # appeared from nowhere
     established_gap = [v for v in others if pdays.get(v[0], 0) >= 10 and v[5]]  # had track, went dark
     rnd.shuffle(no_track)
     rnd.shuffle(established_gap)
-    for i, (mmsi, name, typ, lo, la, _g) in enumerate(no_track):
+    for i, (mmsi, name, typ, lo, la, _g, _s) in enumerate(no_track):
         day = 10 + (i % 9)  # 11-10 .. 11-18
         rows.append(dict(incident_id="INC-2024-11-18", vessel_mmsi=mmsi, vessel_name=name,
                          vessel_type=typ, signal_type="ais_dark_approach",
@@ -115,7 +127,7 @@ def main():
                          lat=round(la, 4), lon=round(lo, 4), sar_confidence="", gap_hours="",
                          gap_start_utc="", gap_end_utc="",
                          details="No prior track in coverage before first incident-area ping"))
-    for i, (mmsi, name, typ, lo, la, _g) in enumerate(established_gap[:96]):
+    for i, (mmsi, name, typ, lo, la, _g, _s) in enumerate(established_gap[:96]):
         gh = round(2 + rnd.random() * 70, 1)
         rows.append(dict(incident_id="INC-2024-11-18", vessel_mmsi=mmsi, vessel_name=name,
                          vessel_type=typ, signal_type="ais_blackout",

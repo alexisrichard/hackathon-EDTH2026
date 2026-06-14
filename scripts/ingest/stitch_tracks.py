@@ -45,6 +45,11 @@ GAP_SECONDS = 600          # >10 min with no ping = a gap (matches build_ais_tra
 MAX_KNOTS = 60.0           # above this a segment is a bad fix / MMSI collision
 KM_PER_NM = 1.852
 DAY = 86400
+IMPOSSIBLE_JUMP_KM = 2.0   # a non-gap leg jumping >this AND faster than MAX_KNOTS is
+                           # an MMSI collision (two vessels on one id) — drop it whole
+
+# Known incident vessels — never drop these, whatever their data looks like.
+INCIDENT_MMSIS = {414270000, 229659000, 353125000}  # Yi Peng 3, Vezhen, Newnew Polar Bear
 
 
 def _hav_km(lon0, lat0, lon1, lat1):
@@ -253,6 +258,52 @@ def stitch_day(combined, combined_gaps, start_m):
     return out, gaps
 
 
+def find_impossible_tracks(out_dir):
+    """MMSIs whose STITCHED output contains a non-gap leg jumping >IMPOSSIBLE_JUMP_KM
+    AND faster than MAX_KNOTS — i.e. a genuine teleport the renderer can only freeze
+    over (two vessels sharing one MMSI). Detected on the output so the interpolated
+    seam leg (last real ping -> midnight seam) is included, which is exactly where a
+    cross-boundary collision shows up. Known incident vessels are never flagged."""
+    bad = {}
+    for f in sorted(glob.glob(os.path.join(out_dir, "tracks_*.json"))):
+        for v in json.load(open(f))["vessels"]:
+            if v["mmsi"] in INCIDENT_MMSIS or v["mmsi"] in bad:
+                continue
+            kf, gaps = v["kf"], v["gaps"]
+            for i in range(len(kf) - 1):
+                a, b = kf[i], kf[i + 1]
+                if any(a[0] < g1 and b[0] > g0 for g0, g1 in gaps):
+                    continue  # across a gap → frozen, not a teleport
+                jump = _hav_km(a[1], a[2], b[1], b[2])
+                if jump > IMPOSSIBLE_JUMP_KM and _implied_kn(a, b) > MAX_KNOTS:
+                    bad[v["mmsi"]] = round(jump, 1)
+                    break
+    return bad
+
+
+def drop_impossible_tracks(out_dir):
+    """Find collided-MMSI teleporters and remove them from every tile in place."""
+    bad = find_impossible_tracks(out_dir)
+    if not bad:
+        return bad
+    for f in sorted(glob.glob(os.path.join(out_dir, "tracks_*.json"))):
+        j = json.load(open(f))
+        kept = [v for v in j["vessels"] if v["mmsi"] not in bad]
+        if len(kept) != len(j["vessels"]):
+            j["vessels"] = kept
+            j["meta"]["vessels"] = len(kept)
+            j["meta"]["keyframes"] = sum(len(v["kf"]) for v in kept)
+            with open(f, "w") as fh:
+                json.dump(j, fh, separators=(",", ":"))
+    # log for transparency, alongside the static-reporter drops
+    with open(ROOT / "data/reference/dropped_impossible_tracks.csv", "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["mmsi", "max_jump_km"])
+        for m, jk in sorted(bad.items()):
+            w.writerow([m, jk])
+    return bad
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--tiles-dir", default=str(ROOT / "frontend/public/data/ais"))
@@ -337,6 +388,13 @@ def main(argv=None):
             json.dump({"meta": out_meta, "vessels": out_vessels}, fh, separators=(",", ":"))
         if i % 100 == 0 or i == len(dates) - 1:
             print(f"      {i + 1}/{len(dates)}  {date}  ({len(out_vessels)} vessels)")
+
+    # [3/3] drop collided-MMSI teleporters (only meaningful on a full-archive build,
+    # where the per-tile seam legs are present to detect cross-boundary jumps).
+    if not args.start and not args.end:
+        print("[3/3] removing collided-MMSI teleporters…")
+        bad = drop_impossible_tracks(args.out)
+        print(f"      dropped {len(bad)} impossible tracks → dropped_impossible_tracks.csv")
     print("done.")
 
 
