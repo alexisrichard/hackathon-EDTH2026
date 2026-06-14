@@ -88,41 +88,137 @@ export interface ScenarioPayload {
   disclaimer: string;
 }
 
+/** Per-vessel point-in-time risk, as carried by a continuous-engine snapshot. */
+export interface RiskEntry {
+  name: string | null;
+  type: string;
+  risk: number;
+  sar: number;
+  live: number;
+  confidence: number;
+  prior_days: number;
+  contributions: Record<string, number>;
+  explanation: string;
+}
+
+/** One re-tasking instant: the top-N cells to point satellites at, plus the
+ *  point-in-time risk of every scored vessel. */
+export interface Snapshot {
+  at: string;
+  at_ts: number;
+  dark_contacts: number;
+  taskings: ZoneCue[];
+  risk: Record<string, RiskEntry>;
+}
+
+/** The continuous engine for a scenario: N satellites re-tasked every cadence_h
+ *  hours across a lead-up window. Replaces the single magic cue. */
+export interface Timeseries {
+  id: string;
+  label: string;
+  sensor: string;
+  bbox: [number, number, number, number];
+  hero_mmsi: number | null;
+  cadence_h: number;
+  n_sat: number;
+  window: [string, string];
+  hero_caught_at: string | null;
+  snapshots: Snapshot[];
+}
+
+/** What the app renders at the current clock instant — abstracts over a
+ *  continuous time-series (C-Lion1) and a single-snapshot scenario (Nord Stream). */
+export interface Frame {
+  scenarioId: string;
+  label: string;
+  heroMmsi: number | null;
+  at: string;
+  riskMap: Map<number, RiskEntry>;
+  taskings: ZoneCue[];
+  darkContacts: DarkContact[];
+  isTimeseries: boolean;
+  cadenceH: number | null;
+  nSat: number | null;
+  nextRetaskTs: number | null;
+  caughtAt: string | null;
+}
+
 interface ScenarioIndex {
-  scenarios: { id: string }[];
+  scenarios: { id: string; has_timeseries?: boolean }[];
+}
+
+export interface CueData {
+  scenarios: ScenarioPayload[];
+  timeseries: Timeseries[];
 }
 
 const BASE = "/data/cues";
 
-/** Load the index + every scenario payload (a few hundred KB total, once). */
-export async function loadScenarios(): Promise<ScenarioPayload[]> {
+/** Load the index, every single-snapshot payload, and every continuous
+ *  time-series (a couple of MB total, once). */
+export async function loadCues(): Promise<CueData> {
   const idxRes = await fetch(`${BASE}/index.json`, { cache: "no-store" });
   if (!idxRes.ok) throw new Error(`cues index: HTTP ${idxRes.status}`);
   const idx = (await idxRes.json()) as ScenarioIndex;
-  const payloads = await Promise.all(
-    idx.scenarios.map(async (s) => {
-      const r = await fetch(`${BASE}/${s.id}.json`, { cache: "no-store" });
-      if (!r.ok) throw new Error(`cues ${s.id}: HTTP ${r.status}`);
-      return (await r.json()) as ScenarioPayload;
-    }),
+  const scenarios = await Promise.all(
+    idx.scenarios.map(async (s) => (await (await fetch(`${BASE}/${s.id}.json`, { cache: "no-store" })).json()) as ScenarioPayload),
   );
-  return payloads;
+  const timeseries = await Promise.all(
+    idx.scenarios
+      .filter((s) => s.has_timeseries)
+      .map(async (s) => (await (await fetch(`${BASE}/${s.id}-timeseries.json`, { cache: "no-store" })).json()) as Timeseries),
+  );
+  return { scenarios, timeseries };
 }
 
-/** The scenario whose cue applies at the clock instant: same UTC day AND the
- *  clock is at/after the cue's computation time (`at_ts`). The `at_ts` gate keeps
- *  the no-look-ahead promise true to the minute — a cue can't light up before the
- *  SAR pass that produced it, even when scrubbing within the incident day. */
-export function activeScenario(clockT: number, scenarios: ScenarioPayload[]): ScenarioPayload | null {
+function riskEntryFromVessel(v: TheatreVessel): RiskEntry {
+  return {
+    name: v.name, type: v.type, risk: v.vessel_risk, sar: v.sar, live: v.live_anomaly,
+    confidence: v.breakdown.confidence, prior_days: v.breakdown.prior_days,
+    contributions: v.breakdown.contributions, explanation: v.breakdown.explanation,
+  };
+}
+
+/** The frame to render at `clockT`: a continuous snapshot if a time-series window
+ *  covers the clock (latest re-tasking ≤ clock — no look-ahead), else a
+ *  single-snapshot scenario on its day, else null (outside any scored window). */
+export function frameAt(clockT: number, data: CueData): Frame | null {
+  for (const ts of data.timeseries) {
+    const start = Date.parse(ts.window[0]);
+    const end = Date.parse(ts.window[1]) + ts.cadence_h * 3600 * 1000;
+    if (clockT < start || clockT > end) continue;
+    let snap: Snapshot | null = null;
+    let idx = -1;
+    for (let i = 0; i < ts.snapshots.length; i++) {
+      if (ts.snapshots[i].at_ts * 1000 <= clockT) {
+        snap = ts.snapshots[i];
+        idx = i;
+      } else break;
+    }
+    if (!snap) continue;
+    const riskMap = new Map<number, RiskEntry>();
+    for (const k in snap.risk) riskMap.set(Number(k), snap.risk[k]);
+    const next = ts.snapshots[idx + 1];
+    return {
+      scenarioId: ts.id, label: ts.label, heroMmsi: ts.hero_mmsi, at: snap.at,
+      riskMap, taskings: snap.taskings, darkContacts: [], isTimeseries: true,
+      cadenceH: ts.cadence_h, nSat: ts.n_sat,
+      nextRetaskTs: next ? next.at_ts * 1000 : null, caughtAt: ts.hero_caught_at,
+    };
+  }
+  const tsIds = new Set(data.timeseries.map((t) => t.id));
   const day = dayKey(clockT);
-  return (
-    scenarios.find((s) => dayKey(Date.parse(s.at)) === day && clockT >= s.at_ts * 1000) ?? null
+  const scn = data.scenarios.find(
+    (s) => !tsIds.has(s.id) && dayKey(Date.parse(s.at)) === day && clockT >= s.at_ts * 1000,
   );
-}
-
-/** mmsi -> point-in-time risk, for the active scenario's theatre. */
-export function riskByMmsi(scn: ScenarioPayload | null): Map<number, TheatreVessel> {
-  const m = new Map<number, TheatreVessel>();
-  if (scn) for (const v of scn.theatre) m.set(v.mmsi, v);
-  return m;
+  if (scn) {
+    const riskMap = new Map<number, RiskEntry>();
+    for (const v of scn.theatre) riskMap.set(v.mmsi, riskEntryFromVessel(v));
+    return {
+      scenarioId: scn.id, label: scn.label, heroMmsi: scn.hero_mmsi, at: scn.at,
+      riskMap, taskings: scn.cues, darkContacts: scn.dark_contacts, isTimeseries: false,
+      cadenceH: null, nSat: null, nextRetaskTs: null, caughtAt: null,
+    };
+  }
+  return null;
 }

@@ -13,6 +13,7 @@
     60.0
    ],
    "hero_mmsi": 414270000,
+   "has_timeseries": true,
    "top_cue": {
     "bbox": [
      15.0557,
@@ -80,6 +81,7 @@
     57.0
    ],
    "hero_mmsi": null,
+   "has_timeseries": false,
    "top_cue": {
     "bbox": [
      15.0557,

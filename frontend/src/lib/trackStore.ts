@@ -8,7 +8,7 @@
  * construction. (All the old cross-tile merge logic now lives in the build.)
  */
 import type { ShipType } from "../types/models";
-import type { RiskBreakdown } from "./cues";
+import type { RiskEntry } from "./cues";
 
 // keyframe: [t_epoch_s, lon, lat, sog, cog]
 type KF = [number, number, number, number, number];
@@ -44,7 +44,7 @@ export interface VesselFix {
 export interface ScoredVessel extends VesselFix {
   suspicion: number;
   why: string;
-  breakdown?: RiskBreakdown;
+  breakdown?: RiskEntry;
   scored?: boolean; // true = a real point-in-time score; false = outside the scored theatre
 }
 

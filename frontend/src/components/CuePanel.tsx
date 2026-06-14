@@ -1,8 +1,8 @@
-import type { ScenarioPayload, ZoneCue } from "../lib/cues";
+import type { Frame, ZoneCue } from "../lib/cues";
 
 interface Props {
-  cues: ZoneCue[];
-  scenario: ScenarioPayload | null;
+  frame: Frame | null;
+  t: number;
   onTask: (cue: ZoneCue) => void;
 }
 
@@ -31,7 +31,21 @@ function TermBars({ terms }: { terms: ZoneCue["terms"] }) {
   );
 }
 
-export default function CuePanel({ cues, scenario, onTask }: Props) {
+/** "in 2h10m" until the next re-tasking. */
+function untilNext(t: number, nextRetaskTs: number | null): string | null {
+  if (nextRetaskTs == null) return null;
+  const ms = nextRetaskTs - t;
+  if (ms <= 0) return null;
+  const h = Math.floor(ms / 3_600_000);
+  const m = Math.floor((ms % 3_600_000) / 60_000);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+export default function CuePanel({ frame, t, onTask }: Props) {
+  const taskings = frame?.taskings ?? [];
+  const continuous = frame?.isTimeseries && frame.cadenceH != null;
+  const next = untilNext(t, frame?.nextRetaskTs ?? null);
+
   return (
     <>
       <div className="rail-head">
@@ -45,18 +59,25 @@ export default function CuePanel({ cues, scenario, onTask }: Props) {
           />
           <circle cx="12" cy="12" r="2.2" fill="currentColor" />
         </svg>
-        TASK-NEXT QUEUE
+        {continuous ? `SATELLITE TASKING · ${frame!.nSat}×` : "TASK-NEXT QUEUE"}
       </div>
 
-      {scenario && cues.length ? (
+      {frame && taskings.length ? (
         <>
           <div className="cue-scenario">
-            {scenario.label} · cued as-of {scenario.at.slice(0, 16).replace("T", " ")}Z
+            {continuous ? (
+              <>
+                {frame.label} · re-task every {frame.cadenceH}h · current {frame.at.slice(5, 16).replace("T", " ")}Z
+                {next && <span className="cue-next"> · next in {next}</span>}
+              </>
+            ) : (
+              <>{frame.label} · cued as-of {frame.at.slice(0, 16).replace("T", " ")}Z</>
+            )}
           </div>
-          {cues.map((c) => (
+          {taskings.map((c) => (
             <div key={c.rank} className={`cue-item ${c.rank === 1 ? "" : "upcoming"}`}>
               <div className="r1">
-                <span className="rank">#{c.rank}</span>
+                <span className="rank">{continuous ? `SAT ${c.rank}` : `#${c.rank}`}</span>
                 <span className={`chip ${chipClass(c.sensor)}`}>{c.sensor}</span>
                 <span className="sc">{c.score.toFixed(2)}</span>
               </div>
@@ -66,11 +87,11 @@ export default function CuePanel({ cues, scenario, onTask }: Props) {
               <div className="why">{c.why}</div>
               <TermBars terms={c.terms} />
               <button className="btn primary" onClick={() => onTask(c)}>
-                Task {c.sensor}
+                Point {c.sensor} here
               </button>
             </div>
           ))}
-          <div className="cue-foot">{cues[0]?.disclaimer ?? "Defensive collection cue; not for targeting."}</div>
+          <div className="cue-foot">{taskings[0]?.disclaimer ?? "Defensive collection cue; not for targeting."}</div>
         </>
       ) : (
         <div className="cue-item upcoming">
@@ -80,8 +101,8 @@ export default function CuePanel({ cues, scenario, onTask }: Props) {
             <span className="sc">—</span>
           </div>
           <div className="why">
-            No scored incident at this time. Scrub the timeline onto a flagged incident (C-Lion1 /
-            Nord Stream) to see the engine's live task-next queue.
+            No scored window at this time. Scrub onto the C-Lion1 lead-up (2024-11-17/18) to watch
+            the engine re-task its satellites, or Nord Stream (2022-09-26).
           </div>
         </div>
       )}

@@ -10,8 +10,9 @@ import { useEffect, useRef, useState } from "react";
 // Full archive window.
 export const WINDOW_START = Date.UTC(2022, 0, 1, 0, 0, 0);
 export const WINDOW_END = Date.UTC(2026, 4, 20, 0, 0, 0);
-// Open on the Yi Peng 3 / C-Lion1 moment (a day we have a tile for).
-export const DEFAULT_T = Date.UTC(2024, 10, 18, 8, 41, 0);
+// Open on the catch: the 09:00 re-tasking where Yi Peng 3 becomes satellite #1.
+// (Scrub back to 11-17 to watch the routine re-taskings in the lead-up.)
+export const DEFAULT_T = Date.UTC(2024, 10, 18, 9, 0, 0);
 
 // Catalogued Baltic undersea-infra incidents — ticks on the scrubber.
 export const INCIDENTS: { t: number; label: string }[] = [

@@ -434,6 +434,10 @@ body,
   letter-spacing: 0.04em;
   color: var(--sensor-sar);
   text-transform: uppercase;
+  line-height: 1.5;
+}
+.cue-scenario .cue-next {
+  color: var(--text-muted);
 }
 .cue-foot {
   margin: 2px 10px 10px;

@@ -129,7 +129,10 @@ def build_theatre(at_ts: int, as_of_date: str, bbox, lookback: int = 90):
     class_relative(rows)
 
     sar = sar_per_vessel()
-    as_of_ts = f"{as_of_date}T00:00:00Z"
+    # No-look-ahead at the SNAPSHOT instant (not just the day): a satellite tasked
+    # at 12:00 may use a SAR signal that landed at 11:00, but not one at 13:00. The
+    # behavioural prior stays day-granular (tiles strictly before as_of_date).
+    as_of_ts = datetime.fromtimestamp(at_ts, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     theatre = []
     for r in rows:
         mmsi = r["mmsi"]
@@ -296,7 +299,12 @@ SCENARIOS = [
      "as_of": "2024-11-18", "at": "2024-11-18T08:41:00Z",
      "bbox": (12.0, 53.5, 22.0, 60.0), "dark_incident": "INC-2024-11-18",
      "hero_mmsi": 414270000,
-     "blurb": "Vessel-driven cue: a dark-approach contact loitering over the cable."},
+     "blurb": "Vessel-driven cue: a dark-approach contact loitering over the cable.",
+     # Continuous tasking: re-task N satellites every `cadence_h` hours over the
+     # lead-up window. The 3h cadence catches the 08:00-10:00 Yi Peng 3 action that
+     # a 12h cadence brackets (the ship is dark until 08:00, moving away by 12:00).
+     "timeseries": {"start": "2024-11-17T00:00:00Z", "end": "2024-11-18T21:00:00Z",
+                    "cadence_h": 3, "n_sat": 3}},
     {"id": "nord-stream", "label": "Nord Stream", "sensor": "SAR",
      "as_of": "2022-09-26", "at": "2022-09-26T06:00:00Z",
      "bbox": (13.0, 54.0, 18.0, 57.0), "dark_incident": "INC-2022-09-26",
@@ -331,6 +339,42 @@ def compute_scenario(scn: dict, cable_dist=None) -> dict:
     }
 
 
+def compute_timeseries(scn: dict, cable_dist=None) -> dict:
+    """Per-scenario time-series of satellite taskings at a fixed cadence — the
+    CONTINUOUS engine. Each snapshot scores the theatre AS-OF that instant (no
+    look-ahead) and tasks the top `n_sat` cells. So the fleet is scored throughout
+    the lead-up and N satellites re-task every `cadence_h` hours, catching the hero
+    the moment it acts, instead of one magic cue popping in at the incident."""
+    cable_dist = cable_dist or _cable_distance_fn()
+    cfg = scn["timeseries"]
+    step = cfg["cadence_h"] * 3600
+    t, end = _epoch(cfg["start"]), _epoch(cfg["end"])
+    snaps = []
+    while t <= end:
+        d = datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%d")
+        theatre = build_theatre(t, d, scn["bbox"])
+        dark, _ = filter_dark_no_lookahead(load_dark_vessels(), scn["dark_incident"], t)
+        taskings = rank_cues(theatre, dark, cable_dist, top_n=cfg["n_sat"], sensor=scn["sensor"])
+        risk = {v["mmsi"]: {"name": v["name"], "type": v["type"], "risk": v["vessel_risk"],
+                            "sar": v["sar"], "live": v["live_anomaly"],
+                            "confidence": v["breakdown"]["confidence"],
+                            "prior_days": v["breakdown"]["prior_days"],
+                            "contributions": v["breakdown"]["contributions"],
+                            "explanation": v["breakdown"]["explanation"]}
+                for v in theatre}
+        snaps.append({"at": datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                      "at_ts": t, "dark_contacts": len(dark), "taskings": taskings, "risk": risk})
+        t += step
+    caught = next((s["at"] for s in snaps if scn["hero_mmsi"] and
+                   any(any(dr["mmsi"] == scn["hero_mmsi"] for dr in tk["drivers"])
+                       for tk in s["taskings"])), None)
+    return {"id": scn["id"], "label": scn["label"], "sensor": scn["sensor"],
+            "bbox": list(scn["bbox"]), "hero_mmsi": scn["hero_mmsi"],
+            "cadence_h": cfg["cadence_h"], "n_sat": cfg["n_sat"],
+            "window": [cfg["start"], cfg["end"]], "hero_caught_at": caught,
+            "snapshots": snaps}
+
+
 def _print(payload: dict) -> None:
     print(f"\n=== TASK-NEXT QUEUE — {payload['label']} ({payload['at']}) ===  "
           f"theatre={len(payload['theatre'])} vessels, {len(payload['dark_contacts'])} dark SAR contacts")
@@ -353,11 +397,16 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     cable_dist = _cable_distance_fn()
-    payloads = []
+    payloads, series = [], {}
     for scn in SCENARIOS:
         payload = compute_scenario(scn, cable_dist)
         _print(payload)
         payloads.append(payload)
+        if "timeseries" in scn:
+            ts = compute_timeseries(scn, cable_dist)
+            series[scn["id"]] = ts
+            print(f"   time-series: {len(ts['snapshots'])} snapshots @ {ts['cadence_h']}h × {ts['n_sat']} sats"
+                  f" — hero first tasked at {ts['hero_caught_at'] or 'NEVER'}")
 
     if args.emit:
         out_dir = Path(args.emit)
@@ -368,9 +417,12 @@ def main(argv: list[str] | None = None) -> int:
             index.append({"id": p["id"], "label": p["label"], "blurb": p["blurb"],
                           "as_of": p["as_of"], "at": p["at"], "bbox": p["bbox"],
                           "hero_mmsi": p["hero_mmsi"],
+                          "has_timeseries": p["id"] in series,
                           "top_cue": p["cues"][0] if p["cues"] else None})
+        for sid, ts in series.items():
+            json.dump(ts, open(out_dir / f"{sid}-timeseries.json", "w"))
         json.dump({"scenarios": index}, open(out_dir / "index.json", "w"), indent=1)
-        print(f"\nwrote {len(payloads)} scenario payload(s) + index.json -> {out_dir}")
+        print(f"\nwrote {len(payloads)} scenario(s) + {len(series)} time-series + index.json -> {out_dir}")
     return 0
 
 

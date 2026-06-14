@@ -12,13 +12,7 @@ import { useReplayClock } from "./lib/clock";
 import { loadGeoLayers, type GeoLayers } from "./lib/geodata";
 import { DEFAULT_OVERLAYS, VESSEL_GROUPS, type OverlayState } from "./lib/overlays";
 import { TileManager, type ScoredVessel } from "./lib/trackStore";
-import {
-  activeScenario,
-  loadScenarios,
-  riskByMmsi,
-  type ScenarioPayload,
-  type ZoneCue,
-} from "./lib/cues";
+import { frameAt, loadCues, type CueData, type Frame, type ZoneCue } from "./lib/cues";
 
 const TILES_BASE = "/data/ais_v2"; // stitched, self-aligned tiles (no runtime merge)
 
@@ -31,7 +25,7 @@ export default function App() {
   if (!tiles.current) tiles.current = new TileManager(TILES_BASE, () => setTileVersion((v) => v + 1));
   const [geoReady, setGeoReady] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [scenarios, setScenarios] = useState<ScenarioPayload[]>([]);
+  const [cueData, setCueData] = useState<CueData | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   useEffect(() => {
@@ -41,47 +35,43 @@ export default function App() {
         setGeoReady(true);
       })
       .catch((e: Error) => setErr(e.message));
-    // Real cueing-engine output (zone_score --emit). Non-fatal if absent.
-    loadScenarios()
-      .then(setScenarios)
+    // The continuous cueing engine (zone_score --emit). Non-fatal if absent.
+    loadCues()
+      .then(setCueData)
       .catch((e: Error) => console.warn("cues unavailable:", e.message));
   }, []);
 
-  // The scenario whose evaluation day matches the clock — its real cues + scores
-  // light up. Opens on the C-Lion1 / Yi Peng 3 moment, so it's live by default.
-  const active = useMemo(() => activeScenario(clock.t, scenarios), [clock.t, scenarios]);
-  const risk = useMemo(() => riskByMmsi(active), [active]);
+  // The frame the engine is showing right now: a continuous re-tasking snapshot
+  // (latest ≤ clock — no look-ahead) inside a scenario's window, else null.
+  const frame = useMemo<Frame | null>(() => (cueData ? frameAt(clock.t, cueData) : null), [clock.t, cueData]);
+  const risk = frame?.riskMap;
 
-  // Vessels that drive a task-next cue (and the hero) are always rendered, even if
-  // their class group is toggled off — we never hide a flagged vessel because of a
-  // class filter. (The real Yi Peng 3 broadcasts AIS type "other", so it would
-  // otherwise vanish with the Other group off.)
+  // Vessels driving a current satellite tasking (and the hero) are always rendered,
+  // even if their class group is toggled off — we never hide a flagged vessel.
+  // (The real Yi Peng 3 broadcasts AIS type "other", so it would otherwise vanish.)
   const alwaysShow = useMemo(() => {
     const s = new Set<number>();
-    if (active?.hero_mmsi) s.add(active.hero_mmsi);
-    if (active) for (const c of active.cues) for (const d of c.drivers) s.add(d.mmsi);
+    if (frame?.heroMmsi) s.add(frame.heroMmsi);
+    if (frame) for (const c of frame.taskings) for (const d of c.drivers) s.add(d.mmsi);
     return s;
-  }, [active]);
+  }, [frame]);
 
-  // Real interpolated fleet, scored point-in-time by the engine (no look-ahead).
-  // A vessel inside the active scenario's theatre carries its real vessel_risk +
-  // interpretable breakdown; one outside the scored theatre shows as unscored.
+  // Real interpolated fleet, scored point-in-time by the engine. A vessel inside
+  // the current snapshot's scored theatre carries its real vessel_risk; one outside
+  // shows as unscored (never silently "safe").
   const vessels = useMemo<ScoredVessel[]>(() => {
     return (tiles.current?.positionsAt(clock.t) ?? [])
       .filter((v) => overlays.vessels[VESSEL_GROUPS[v.shipType]] || alwaysShow.has(v.mmsi))
       .map((v) => {
-        const r = risk.get(v.mmsi);
-        if (r) {
-          return { ...v, suspicion: r.breakdown.risk, why: r.breakdown.explanation,
-                   breakdown: r.breakdown, scored: true };
-        }
+        const r = risk?.get(v.mmsi);
+        if (r) return { ...v, suspicion: r.risk, why: r.explanation, breakdown: r, scored: true };
         return {
           ...v, suspicion: 0, scored: false,
-          why: active ? "Outside the scored theatre at this instant" : "No scored incident at this time",
+          why: frame ? "Outside the scored theatre at this instant" : "No scored incident at this time",
         };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clock.t, overlays.vessels, tileVersion, active, risk, alwaysShow]);
+  }, [clock.t, overlays.vessels, tileVersion, frame, risk, alwaysShow]);
   const dayStatus = tiles.current?.status(clock.t) ?? "loading";
 
   const maxSuspicion = useMemo(
@@ -89,23 +79,22 @@ export default function App() {
     [vessels],
   );
 
-  // The real task-next queue + SAR dark detections for the active scenario.
+  // The current satellite taskings + any SAR dark detections.
   const cues = useMemo<ZoneCue[]>(
-    () => (active && overlays.cueing.cues ? active.cues : []),
-    [active, overlays.cueing.cues],
+    () => (frame && overlays.cueing.cues ? frame.taskings : []),
+    [frame, overlays.cueing.cues],
   );
   const darkContacts = useMemo(
-    () => (active && overlays.cueing.sar ? active.dark_contacts : []),
-    [active, overlays.cueing.sar],
+    () => (frame && overlays.cueing.sar ? frame.darkContacts : []),
+    [frame, overlays.cueing.sar],
   );
 
-  // Pin the alert feed's "PRIMARY CUE" only when the scenario hero is genuinely
-  // the #1 cue's top driver — so the pin can never lie if a future emit changes
-  // the ranking. (For C-Lion1 the hero is the #1 driver; Nord Stream has no hero.)
+  // Pin the alert feed's "PRIMARY CUE" only when the hero is genuinely the #1
+  // tasking's top driver — so the pin can never lie.
   const primaryCueMmsi = useMemo(() => {
-    const top = active?.cues?.[0]?.drivers?.[0]?.mmsi;
-    return active?.hero_mmsi != null && top === active.hero_mmsi ? active.hero_mmsi : null;
-  }, [active]);
+    const top = frame?.taskings?.[0]?.drivers?.[0]?.mmsi;
+    return frame?.heroMmsi != null && top === frame.heroMmsi ? frame.heroMmsi : null;
+  }, [frame]);
 
   const focusVessel = (v: { lon: number; lat: number }) =>
     mapRef.current?.flyTo({ center: [v.lon, v.lat], zoom: 8.2, duration: 1200 });
@@ -132,7 +121,7 @@ export default function App() {
             overlays={overlays}
             cues={cues}
             darkContacts={darkContacts}
-            suspectMmsi={active?.hero_mmsi ?? null}
+            suspectMmsi={frame?.heroMmsi ?? null}
             onMapReady={(m) => {
               mapRef.current = m;
             }}
@@ -152,7 +141,7 @@ export default function App() {
         </div>
         <aside className="rail">
           <AlertFeed t={clock.t} vessels={vessels} heroMmsi={primaryCueMmsi} onFocus={focusVessel} />
-          <CuePanel cues={cues} scenario={active} onTask={focusCue} />
+          <CuePanel frame={frame} t={clock.t} onTask={focusCue} />
         </aside>
       </div>
       <TimeScrubber clock={clock} />
