@@ -13,7 +13,9 @@ all cached, so repeated/playback requests are instant.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import gc
+import os
+from datetime import date, datetime, timedelta, timezone
 from functools import lru_cache
 
 import app.core.paths  # noqa: F401  (puts repo root on sys.path before scoring.*)
@@ -48,11 +50,37 @@ def _cable_dist():
 def warm() -> None:
     """Build the cable-distance surface once (≈0.8 s) so the user's first scrub to a
     live instant doesn't pay it. Called off-thread at app startup; safe to no-op if
-    the geo layers are missing."""
+    the geo layers are missing. Freezes the GC at the end so the import + cable-surface
+    objects are excluded from every future collection (see `_warm_lookback`)."""
     try:
         _cable_dist()
     except Exception:  # never let a prewarm failure block startup
         pass
+    gc.collect()
+    gc.freeze()  # lock the small startup heap into the permanent generation while it's cheap
+
+
+def _warm_lookback(day: str) -> None:
+    """Parse the lookback + cut day-tiles into zone_score's tile cache, then freeze the
+    GC, BEFORE the allocation-heavy scoring runs.
+
+    Why: each cold frame builds ~2000 vessel dicts + prior-history lists. With the tile
+    cache resident (millions of objects across a 30-day window, accumulating over the
+    session) Python's generational GC fires gen-2 sweeps DURING that scoring, each one
+    rescanning the whole tile cache — 15 s+ spikes on high-traffic days (measured: 2041
+    vessels = 15.7 s, ~11 s of it pure GC). `gc.freeze()` moves the now-resident tiles
+    to the permanent generation, excluded from future collections (still refcount-freed
+    if the lru cache evicts them), so scoring only ever scans its own small working set.
+    Result: a flat ~3 s cold regardless of vessel count."""
+    from scoring.zone_score import _tile_paths, _tile_vessels
+
+    start = (date.fromisoformat(day) - timedelta(days=LOOKBACK_DAYS)).isoformat()
+    for f in _tile_paths():
+        d = os.path.basename(f)[len("tracks_") : -len(".json")]
+        if start <= d <= day:
+            _tile_vessels(f)
+    gc.collect()
+    gc.freeze()
 
 
 @lru_cache(maxsize=1024)
@@ -65,6 +93,7 @@ def _frame(at_ts: int) -> dict:
     )
 
     day = datetime.fromtimestamp(at_ts, timezone.utc).strftime("%Y-%m-%d")
+    _warm_lookback(day)  # parse + gc.freeze() the tiles before scoring → flat ~3 s cold
     theatre = build_theatre(at_ts, day, BALTIC_BBOX, lookback=LOOKBACK_DAYS)
     dark = [
         x for x in load_dark_vessels()
