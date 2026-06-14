@@ -212,28 +212,40 @@ def stitch_day(combined, combined_gaps, start_m):
     # huge cross-midnight teleport (the renderer even freezes ON the spike via its
     # implied-speed check). Now interior, the spike gets removed.
     combined = _despike(combined)
+    # Add CROSS-DAY gaps. Source gaps are detected per-day, so the silence between a
+    # vessel's last ping on day D and its first on day D+1 is never recorded — the
+    # seam then interpolates the vessel across that whole silence (a cross-midnight
+    # teleport of up to hundreds of km). DP keeps each day's first/last raw ping, so
+    # a keyframe pair that straddles a UTC-day boundary with a >GAP_SECONDS delta IS
+    # a real cross-day silence. (Big SAME-day deltas are DP-straight legs, already
+    # correctly covered-or-not by the source gaps — we must not touch those.)
+    gaps_all = list(combined_gaps)
+    for i in range(len(combined) - 1):
+        a, b = combined[i], combined[i + 1]
+        if a[0] // DAY != b[0] // DAY and (b[0] - a[0]) > GAP_SECONDS:
+            gaps_all.append([a[0], b[0]])
     # Anchor each gap end to the next observed fix BEFORE seams/clip, so the
     # renderer can't freeze the vessel at a stale pre-gap position past midnight.
-    combined = insert_reacq(combined, combined_gaps)
+    combined = insert_reacq(combined, gaps_all)
     out = []
     # start seam
     if combined[0][0] < start_m < combined[-1][0]:
-        p = _fix_at(combined, combined_gaps, start_m)
+        p = _fix_at(combined, gaps_all, start_m)
         if p:
             out.append([start_m, round(p[0], 5), round(p[1], 5), round(p[2], 1), round(p[3])])
     out.extend(k for k in combined if start_m < k[0] < end_m)
     # end seam
     if combined[0][0] < end_m < combined[-1][0]:
-        p = _fix_at(combined, combined_gaps, end_m)
+        p = _fix_at(combined, gaps_all, end_m)
         if p:
             out.append([end_m, round(p[0], 5), round(p[1], 5), round(p[2], 1), round(p[3])])
     if not out:
         return None, None
-    # Carry the REAL gaps (detected pre-DP in the source tiles), clipped to the day.
+    # Carry the REAL gaps (source per-day + cross-day), clipped to the day.
     # Recomputing from keyframe deltas would label every DP-straight steaming leg a
     # gap — phantom "AIS-dark" that poisons the suspicion score.
     gaps = []
-    for g0, g1 in combined_gaps:
+    for g0, g1 in gaps_all:
         c0, c1 = max(g0, start_m), min(g1, end_m)
         if c1 > c0:
             gaps.append([c0, c1])
