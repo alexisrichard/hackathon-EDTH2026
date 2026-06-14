@@ -5,17 +5,59 @@ Pre-event data preparation for [EDTH 2026 Paris](https://luma.com/edth-2026-pari
 
 ---
 
-## What this project does (and what's in this repo *right now*)
+## What this project does
 
-The hackathon target is a system that ingests AIS, satellite imagery, and strategic infrastructure layers — then outputs prioritised ISR tasking recommendations: *"point the next satellite pass at this 50 km box at 14:00, here's why."*
+**Heimdall** ingests AIS, satellite (SAR) detections, and strategic infrastructure layers — then outputs prioritised ISR tasking recommendations: *"point the next satellite pass at this ~50 km box, here's why."* It runs continuously: a fixed fleet of satellites is re-tasked on a cadence, every vessel is scored point-in-time with **no look-ahead**, and the C-Lion1 / Yi Peng 3 replay shows the engine catching the anchor-drag.
 
 The full project plan lives in [`PLAN.md`](PLAN.md). The threat-model context — Nord Stream, Balticconnector, C-Lion1, Estlink 2 / Eagle S, Latvia–Sweden / Vezhen, Elisa / Fitburg — is described there.
 
-**This repository, in its current state, is *only* the data-prep layer.** Every dataset we identified is either downloaded, scripted, or honestly documented as a gap. The model, the scoring engine, the dashboard, the demo — all of that is hackathon-weekend work and is deliberately not pre-built here.
+**The app is built.** The React + MapLibre/deck.gl dashboard (`frontend/`) and the Python scoring/cueing engine (`scoring/`) are in this repo — see [Launch Heimdall](#launch-heimdall) to run it. What's *not* in git is the large AIS replay tiles and raw imagery (gitignored — local, or synced from S3).
 
 ---
 
-## Quick start
+## Launch Heimdall
+
+The dashboard is a Vite + React + MapLibre/deck.gl app in [`frontend/`](frontend/). The committed data (scoring cues, the satellite-tasking timeline, geo/infrastructure overlays, incidents) ships in git, so the map and cues work out of the box. Prerequisite: **Node 18+**.
+
+```bash
+cd frontend
+npm install
+npm run dev          # → http://localhost:5173
+```
+
+It opens on the **C-Lion1 / Yi Peng 3 catch (2024-11-18 09:00Z)** — Yi Peng 3 is satellite #1. Drag the timeline left into 2024-11-17 to watch the engine re-task its 3 satellites every 3 hours through the lead-up; scrub to 2022-09-26 for the Nord Stream dark-density cue. Production-like build: `npm run build && npm run preview` (→ :4173).
+
+### The AIS replay tiles (large, gitignored)
+
+Without them the map shows the cues + overlays but **no moving fleet**:
+
+| data | path | in git? | how to get it |
+|---|---|---|---|
+| Scoring cues + satellite timeline | `frontend/public/data/cues/` | ✅ committed | — |
+| Geo / infra / incident overlays | `frontend/public/data/*.json` | ✅ committed | — |
+| AIS replay tiles (~3.5 GB, 1601 days) | `frontend/public/data/ais_v2/` | ❌ gitignored | already local on Alexis's machine; else sync `s3://edth2026-baltic/ais_tiles/`, or rebuild ↓ |
+
+**Rebuild the stitched tiles** (from the source per-day tiles under `frontend/public/data/ais/`, themselves synced from S3):
+
+```bash
+source .venv/bin/activate
+python scripts/ingest/stitch_tracks.py     # → frontend/public/data/ais_v2/
+```
+
+### Regenerate the scoring / cues (optional — they're committed)
+
+```bash
+source .venv/bin/activate
+python -m scoring.zone_score --emit frontend/public/data/cues   # cues + c-lion1 satellite time-series
+python -m unittest discover -s scoring/tests -p 'test_*.py'      # the scoring tests
+python -m scoring.validate_fleet --as-of 2024-11-18              # the no-overfit fleet check
+```
+
+---
+
+## Data prep (the rest of this repo)
+
+The bulk of this repo is the **data-prep layer** that feeds the engine — AIS, satellite imagery, criticality layers, sanctions, incidents. Setup below.
 
 1. Clone the repo: `git clone https://github.com/alexisrichard/hackathon-EDTH2026.git`
 2. Follow [`ONBOARDING.md`](ONBOARDING.md) — cross-platform (Windows winget, macOS Homebrew). ~30 min including AWS configuration.
@@ -78,7 +120,13 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 │   ├── geo/                        criticality-layer fetchers (OSM, EMODnet, HELCOM, ...)
 │   ├── ingest/                     bulk + streaming + satellite + Kaggle fetchers
 │   ├── reference/                  sanctions, KSE PDF parser, Equasis lookup
+│   ├── ingest/stitch_tracks.py     build the stitched AIS replay tiles (ais_v2)
 │   └── overnight.ps1               one-shot launcher for the heavy bulk downloads
+│
+├── frontend/                       Heimdall dashboard — Vite + React + MapLibre/deck.gl
+│   └── public/data/                committed cues + overlays (ais_v2 replay tiles gitignored)
+│
+├── scoring/                        point-in-time ship-trust + zone (cueing) engine + tests
 │
 ├── outreach/                       drafted emails, signup guides, team recaps (HTML + text)
 │

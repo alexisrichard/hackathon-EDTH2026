@@ -43,7 +43,11 @@ data/optical/
 data/cache/
 data/tmp/
 data/reference/raw/
+data/hrsid_samples/
 raw/
+# YOLO weights (large; mirrored to S3 scoring/weights/)
+*.pt
+scoring/weights/
 
 # Auto-generated per-vessel lookup outputs — re-runnable, mirrored to S3
 data/reference/equasis/
