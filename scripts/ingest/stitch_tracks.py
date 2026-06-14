@@ -27,12 +27,18 @@ Output: <out>/tracks_<date>.json  (default frontend/public/data/ais_v2/)
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import glob
 import json
 import math
 import os
+from collections import Counter, defaultdict
 from pathlib import Path
+
+# Generic AIS classes carry no real class info — a vessel that ever broadcasts a
+# specific type should keep it on every tile (see canonical_types).
+_GENERIC_TYPES = {None, "", "other", "unknown"}
 
 ROOT = Path(__file__).resolve().parents[2]
 GAP_SECONDS = 600          # >10 min with no ping = a gap (matches build_ais_tracks)
@@ -76,16 +82,26 @@ def _date_of(path):
 # ---- static-reporter pre-pass -------------------------------------------------
 
 def static_filter(files, static_km):
-    """One cheap pass: per-MMSI full-archive bbox → set of MMSIs to drop, plus a
-    transparency record. A vessel whose entire archive footprint fits in a tiny
-    box is a fixed installation, not a moving vessel."""
+    """One cheap pass over the whole archive. Returns (dropped, canonical_type).
+
+    - dropped: MMSIs to drop (static installations), with a transparency record.
+      A vessel whose entire archive footprint fits in a tiny box is a fixed
+      installation, not a moving vessel.
+    - canonical_type: one stable class per MMSI. AIS broadcasts the type field
+      intermittently, so build_ais_tracks classed the same vessel "cargo" one day
+      and "unknown"/"other" the next — which made it flip in/out of the vessel-
+      class filter at every midnight (the fleet-thinning bug). We pin the type to
+      the most-common SPECIFIC class the vessel ever broadcasts, archive-wide.
+    """
     bbox = {}
     meta = {}
+    type_votes = defaultdict(Counter)
     for f in files:
         for v in json.load(open(f))["vessels"]:
             m = v["mmsi"]
             if not v["kf"]:
                 continue
+            type_votes[m][v.get("type")] += 1
             b = bbox.get(m)
             for k in v["kf"]:
                 lo, la = k[1], k[2]
@@ -96,6 +112,11 @@ def static_filter(files, static_km):
                 b[0] = min(b[0], lo); b[1] = max(b[1], lo)
                 b[2] = min(b[2], la); b[3] = max(b[3], la)
                 b[4] += 1
+
+    canonical_type = {}
+    for m, votes in type_votes.items():
+        specific = Counter({t: n for t, n in votes.items() if t not in _GENERIC_TYPES})
+        canonical_type[m] = (specific or votes).most_common(1)[0][0]
 
     dropped = {}
     for m, b in bbox.items():
@@ -112,7 +133,7 @@ def static_filter(files, static_km):
             reason = "base_station"
         if reason:
             dropped[m] = (reason, round(span_km, 3), b[4], meta[m][0], meta[m][1])
-    return dropped
+    return dropped, canonical_type
 
 
 # ---- seam keyframes -----------------------------------------------------------
@@ -144,6 +165,39 @@ def _fix_at(kf, gaps, t):
             a[3] + (b[3] - a[3]) * f, a[4]]
 
 
+# ---- gap-end (reacquisition) keyframes ---------------------------------------
+
+def insert_reacq(kf, gaps):
+    """Insert a keyframe at each gap END, positioned at the next surviving fix.
+
+    Upstream DP-simplification drops the reacquisition ping (and, for a vessel that
+    parks after a gap, every post-gap ping is collinear and collapses too). That
+    leaves a single bracket spanning the gap AND the long sparse tail, so the
+    renderer freezes the vessel at its PRE-gap position for hours, then snaps it to
+    the next keyframe — the midnight-teleport bug (the seam guarantees that next
+    keyframe lands at 00:00). Anchoring the gap end to where the vessel is next
+    actually seen makes the freeze release at the real reacquisition (faded), with
+    no movement afterwards, instead of holding stale and snapping at the seam.
+    """
+    if not kf or not gaps:
+        return kf
+    times = [k[0] for k in kf]
+    have = set(times)
+    extra = []
+    for g0, g1 in gaps:
+        if g1 in have:
+            continue
+        i = bisect.bisect_left(times, g1)
+        if i >= len(kf):
+            continue  # gap end is past the whole track — nothing to anchor to
+        nxt = kf[i]   # the next position we actually observe
+        extra.append([g1, nxt[1], nxt[2], nxt[3], nxt[4]])
+        have.add(g1)
+    if not extra:
+        return kf
+    return sorted(kf + extra, key=lambda k: k[0])
+
+
 # ---- main stitch --------------------------------------------------------------
 
 def stitch_day(combined, combined_gaps, start_m):
@@ -152,6 +206,15 @@ def stitch_day(combined, combined_gaps, start_m):
     (kf, gaps) clipped to [start_m, start_m+DAY] with seam keyframes at both
     midnights when the vessel crosses them."""
     end_m = start_m + DAY
+    # Re-de-spike the COMBINED track. Per-tile de-spiking always keeps each tile's
+    # first/last keyframe, so an MMSI-collision spike sitting at a day edge slips
+    # through and lands mid-track once neighbouring tiles are concatenated — a
+    # huge cross-midnight teleport (the renderer even freezes ON the spike via its
+    # implied-speed check). Now interior, the spike gets removed.
+    combined = _despike(combined)
+    # Anchor each gap end to the next observed fix BEFORE seams/clip, so the
+    # renderer can't freeze the vessel at a stale pre-gap position past midnight.
+    combined = insert_reacq(combined, combined_gaps)
     out = []
     # start seam
     if combined[0][0] < start_m < combined[-1][0]:
@@ -192,7 +255,7 @@ def main(argv=None):
         ap.error(f"no tiles in {args.tiles_dir}")
 
     print(f"[1/2] static-reporter pre-pass over {len(files)} tiles…")
-    dropped = static_filter(files, args.static_km)
+    dropped, canon = static_filter(files, args.static_km)
     drop_path = ROOT / "data/reference/dropped_static_reporters.csv"
     drop_path.parent.mkdir(parents=True, exist_ok=True)
     with open(drop_path, "w", newline="") as fh:
@@ -222,8 +285,8 @@ def main(argv=None):
                 if v["mmsi"] in dropped or not v["kf"]:
                     continue
                 vm[v["mmsi"]] = {"mmsi": v["mmsi"], "name": v.get("name"),
-                                 "type": v.get("type"), "kf": _despike(v["kf"]),
-                                 "gaps": v["gaps"]}
+                                 "type": canon.get(v["mmsi"]) or v.get("type"),
+                                 "kf": _despike(v["kf"]), "gaps": v["gaps"]}
         if len(cache) > 4:
             cache.pop(next(iter(cache)))
         cache[date] = vm
