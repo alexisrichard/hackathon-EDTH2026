@@ -1,12 +1,14 @@
-"""Build compact replay track tiles from the AIS archive on S3.
+"""Build compact replay track tiles from the local Danish AIS parquet archive.
 
-Reads one day of Danish AIS parquet via DuckDB-over-S3, thins to ~1 ping per
+Reads one day of Danish AIS parquet via DuckDB from local disk (S3 retired;
+override AIS_PARQUET_ROOT to point elsewhere), thins to ~1 ping per
 vessel per 30 s, simplifies each vessel's trajectory with Douglas-Peucker
 (~150 m), detects AIS gaps, and writes a compact keyframe tile the web app
 replays by interpolating between keyframes.
 
 This is the DISPLAY tier (PLAN: tip-and-cue for compute). Full-resolution data
-stays on S3 for scoring/training; the browser only ever sees these keyframes.
+stays in the local parquet (S3 retired) for scoring/training; the browser only
+ever sees these keyframes.
 
 Usage:
   python scripts/ingest/build_ais_tracks.py 2024-11-18 [--out frontend/public/data/ais]
@@ -19,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -87,23 +90,26 @@ def build(date_str: str, out_rel: str = "frontend/public/data/ais", quiet: bool 
     y, m, d = (int(p) for p in date_str.split("-"))
 
     con = duckdb.connect()
-    con.execute("INSTALL httpfs; LOAD httpfs; SET enable_progress_bar=false")
-    # Survive a slow/contended home link: generous timeout + retries, keep-alive.
-    for stmt in (
-        "SET http_timeout=90000",        # 90s/request — fail-fast; the batch's
-        "SET http_retries=2",            #   per-day subprocess timeout is the backstop
-        "SET http_retry_wait_ms=500",
-        "SET http_keep_alive=true",
-    ):
-        try:
-            con.execute(stmt)
-        except duckdb.Error:
-            pass  # older duckdb may not have all knobs
-    # credential_chain works with both long-term creds (local ~/.aws) and an
-    # EC2 instance-role's temporary creds (session token) — so the in-region
-    # batch needs no key handling.
-    con.execute("CREATE SECRET aws (TYPE s3, PROVIDER credential_chain, REGION 'eu-west-3')")
-    src = f"s3://edth2026-baltic/ais/parquet/source=danish/year={y}/month={m:02d}/day={d:02d}/*.parquet"
+    con.execute("SET enable_progress_bar=false")
+    # S3 RETIRED: read parquet from the LOCAL rebuild output (scripts/ingest/danish_ais.py
+    # writes here) by default — no AWS, no network. Override AIS_PARQUET_ROOT to point
+    # elsewhere; an s3:// root still works (httpfs + a credential-chain secret on demand).
+    root = os.environ.get("AIS_PARQUET_ROOT", "data/ais/parquet")
+    if root.startswith("s3://"):
+        con.execute("INSTALL httpfs; LOAD httpfs")
+        # Survive a slow/contended link: generous timeout + retries, keep-alive.
+        for stmt in (
+            "SET http_timeout=90000",
+            "SET http_retries=2",
+            "SET http_retry_wait_ms=500",
+            "SET http_keep_alive=true",
+        ):
+            try:
+                con.execute(stmt)
+            except duckdb.Error:
+                pass  # older duckdb may not have all knobs
+        con.execute("CREATE SECRET aws (TYPE s3, PROVIDER credential_chain, REGION 'eu-west-3')")
+    src = f"{root}/source=danish/year={y}/month={m:02d}/day={d:02d}/*.parquet"
     args_date = date_str
     if not quiet:
         print(f"[ais tracks] {date_str} — reading + thinning to {THIN_SECONDS}s ...", flush=True)

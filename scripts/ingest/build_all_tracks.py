@@ -1,10 +1,13 @@
 """Batch-build replay track tiles for the whole AIS archive.
 
-Lists the day partitions present on S3, then builds a keyframe tile per day
-(skipping any already built), in parallel. Each day runs in its OWN fresh
-subprocess with a hard timeout — so memory can't creep across days (no OOM)
-and one pathological S3 read can't stall the batch (the day is killed + skipped).
-Idempotent and resumable.
+Lists the day partitions present in the LOCAL parquet archive, then builds a
+keyframe tile per day (skipping any already built), in parallel. Each day runs
+in its OWN fresh subprocess with a hard timeout — so memory can't creep across
+days (no OOM) and one pathological read can't stall the batch (the day is killed
++ skipped). Idempotent and resumable.
+
+S3 retired — day enumeration walks the local filesystem
+(data/ais/parquet/source=danish/year=*/month=*/day=*); no AWS needed.
 
   python scripts/ingest/build_all_tracks.py                 # all available days
   python scripts/ingest/build_all_tracks.py 2024-11 2024-12 # only these months
@@ -23,31 +26,30 @@ OUT = ROOT / "frontend/public/data/ais"
 DAY_SCRIPT = HERE / "build_ais_tracks.py"
 PREFIX = "ais/parquet/source=danish"
 BUCKET = "edth2026-baltic"
+# Local parquet root the per-day builder also reads from (S3 retired).
+PARQUET_ROOT = ROOT / "data" / "ais" / "parquet" / "source=danish"
 PER_DAY_TIMEOUT = 150  # seconds — kill + skip a day that hangs
 
 
-def s3_days(month_filter: list[str]) -> list[str]:
+def local_days(month_filter: list[str]) -> list[str]:
+    """Enumerate day partitions from the LOCAL parquet archive (S3 retired).
+
+    Walks data/ais/parquet/source=danish/year=*/month=*/day=* on disk instead of
+    `aws s3 ls`, so the batch runs with no AWS credentials.
+    """
     days: list[str] = []
-    years = subprocess.run(["aws", "s3", "ls", f"s3://{BUCKET}/{PREFIX}/"], capture_output=True, text=True).stdout
-    for yline in years.splitlines():
-        if "year=" not in yline:
+    for day_dir in PARQUET_ROOT.glob("year=*/month=*/day=*"):
+        if not day_dir.is_dir():
             continue
-        y = yline.split("year=")[1].strip().rstrip("/")
-        months = subprocess.run(
-            ["aws", "s3", "ls", f"s3://{BUCKET}/{PREFIX}/year={y}/"], capture_output=True, text=True
-        ).stdout
-        for mline in months.splitlines():
-            if "month=" not in mline:
-                continue
-            m = mline.split("month=")[1].strip().rstrip("/")
-            if month_filter and f"{y}-{m}" not in month_filter:
-                continue
-            dd = subprocess.run(
-                ["aws", "s3", "ls", f"s3://{BUCKET}/{PREFIX}/year={y}/month={m}/"], capture_output=True, text=True
-            ).stdout
-            for dline in dd.splitlines():
-                if "day=" in dline:
-                    days.append(f"{y}-{m}-{dline.split('day=')[1].strip().rstrip('/')}")
+        try:
+            y = day_dir.parent.parent.name.split("year=")[1]
+            m = day_dir.parent.name.split("month=")[1]
+            d = day_dir.name.split("day=")[1]
+        except IndexError:
+            continue
+        if month_filter and f"{y}-{m}" not in month_filter:
+            continue
+        days.append(f"{y}-{m}-{d}")
     return sorted(days)
 
 
@@ -78,9 +80,9 @@ def main(argv: list[str]) -> int:
             months.append(argv[i]); i += 1
 
     OUT.mkdir(parents=True, exist_ok=True)
-    days = s3_days(months)
+    days = local_days(months)
     todo = [d for d in days if not (OUT / f"tracks_{d}.json").exists()]
-    print(f"[batch] {len(days)} days on S3 · {len(days) - len(todo)} built · {len(todo)} to do · {workers} workers", flush=True)
+    print(f"[batch] {len(days)} days local · {len(days) - len(todo)} built · {len(todo)} to do · {workers} workers", flush=True)
 
     done = ok = 0
     with ThreadPoolExecutor(max_workers=workers) as ex:

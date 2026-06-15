@@ -4,8 +4,9 @@ Two implementations satisfy it:
 
 * :class:`~app.data.mock.MockDataSource` — synthetic but realistic data, zero
   external dependencies (the default).
-* :class:`~app.data.duckdb_source.DuckDBDataSource` — reads AIS parquet + geo from
-  S3 via DuckDB ``httpfs``.
+* :class:`~app.data.duckdb_source.DuckDBDataSource` — reads AIS parquet via DuckDB
+  from a configurable root (``data/ais/parquet/`` locally by default; the
+  ``edth2026-baltic`` S3 bucket is retired).
 
 Routers receive a ``DataSource`` via dependency injection and never know which
 implementation they got. Switch with the ``DATA_SOURCE`` env var.

@@ -26,25 +26,30 @@ This repo is **only the data-prep layer** — every dataset is downloaded, scrip
 - **Target:** class-conditional behavioral coherence engine, multi-incident replay, interpretable alert breakdown, top-N areas-to-task panel.
 - **Stretch:** Sentinel-1 dark-vessel cross-check, live AISStream mode, spoofing detection, DAS mock integration.
 
-Suggested stack (finalize day-of): DuckDB (S3 reads) / PostGIS · FastAPI · React + deck.gl / MapLibre · scikit-learn / lightgbm baseline, PyTorch if needed. **Mock-data philosophy:** every external source has a mock fallback so the demo never depends on venue WiFi.
+Suggested stack (finalize day-of): DuckDB (local Parquet) / PostGIS · FastAPI · React + deck.gl / MapLibre · scikit-learn / lightgbm baseline, PyTorch if needed. **Mock-data philosophy:** every external source has a mock fallback so the demo never depends on venue WiFi.
 
 ---
 
-## 2. Data & S3 — the source of truth
+## 2. Data — rebuild from public sources
 
-**Bucket: `s3://edth2026-baltic/` · region `eu-west-3` (Paris). Do not create resources in other regions.** ~536 GB / 65k objects.
+**There is no project bucket.** The old `s3://edth2026-baltic/` (eu-west-3) has been retired and deleted to stop storage cost. **AWS is not needed for anything** — not the demo, not any rebuild. Everything the demo needs is committed in git; everything else regenerates from its original public source via `scripts/`.
 
-| Prefix | Size | What |
-|---|---|---|
-| `ais/parquet/source=danish/year=YYYY/month=MM/day=DD/` | ~510 GB | Danish AIS, Baltic-filtered, 2022-01-01 → 2026-05-20 (~1,601 days) |
-| `kaggle/` | ~26 GB | 10 ML training datasets (SAR, optical, drone video, AIS samples) |
-| `geo/` | ~210 MB | 36+ criticality GeoJSON layers (large ones; small ones are in git) |
-| `reference/` | ~27 MB | sanctions, incidents, KSE shadow fleet, marine weather |
-| `sar/`, `optical/`, `cameras/` | small | Sentinel-1/-2 incident crops, coastal-camera clips |
+**Committed in git (the demo runs from these, zero AWS):**
+
+| Path | What |
+|---|---|
+| `frontend/public/data/cues/` | scoring cues + satellite-tasking timeline |
+| `data/geo/`, `data/reference/`, `frontend/public/data/*.json` | criticality layers, incidents, sanctions, weather, geo/incident overlays |
+| `frontend/public/data/ais_v2/` (+ source tiles in `frontend/public/data/ais/`) | hero-incident AIS replay days — Nord Stream 2022-09-26, Balticconnector 2023-10-08, C-Lion1/Yi Peng 3 2024-11-17 & 2024-11-18, Estlink2/Eagle S 2024-12-25, LV–SE 2025-01-26 |
+| `scoring/weights/yolov8n_hrsid_best.pt` | trained SAR model weights |
+
+So a fresh `git clone` shows the cues, overlays, AND a moving fleet on every hero-incident day — no rebuild, no backend.
+
+**The full datasets regenerate from ORIGINAL PUBLIC sources via `scripts/`** (per-source commands in [`DATA_GUIDE.md`](DATA_GUIDE.md)): Danish Maritime Authority (AIS — public anonymous S3 `aisdata.ais.dk`), Copernicus (Sentinel), Kaggle, OSM/EMODnet/HELCOM/Natural Earth/GMRT (geo), OFAC/OFSI/OpenSanctions (sanctions), Open-Meteo (weather), GFW, Equasis.
 
 - **Small layers are committed in git** under `data/geo/*.geojson` and `data/reference/*.csv` — work with those directly, no download needed.
-- **Large files are S3-only** (gitignored). Pull with `python scripts/common/sync_from_s3.py {geo|reference|kaggle|all}` or `... ais YYYY-MM-DD` for one day.
-- **Prefer reading Parquet/GeoJSON straight from S3 with DuckDB `httpfs`** (no local download) — see commands below.
+- **Large files are gitignored** and rebuild locally from the public source. The AIS-replay chain is fully local, no AWS: `python scripts/ingest/danish_ais.py date <YYYY-MM-DD>` (downloads from the public Danish source → `data/ais/parquet/`) → `python scripts/ingest/build_ais_tracks.py <date>` (reads the local parquet) → `python scripts/ingest/stitch_tracks.py` (→ `frontend/public/data/ais_v2/`).
+- `scripts/common/sync_from_s3.py` is a **retired no-op** that just prints public-source rebuild hints for the layer you ask for.
 - Data dictionary, source-by-source: [`DATA_GUIDE.md`](DATA_GUIDE.md). Provenance + license matrix: [`data/SOURCES.md`](data/SOURCES.md). Setup: [`ONBOARDING.md`](ONBOARDING.md).
 - **Honest gaps** (don't rediscover them): KSE per-vessel shadow-fleet list is aggregate-only (emailed, awaiting reply); Finnish bulk historical AIS is shallow (Danish partially covers Gulf of Finland); Orange Marine cable routes pending a contact.
 - **License guardrails:** OpenSanctions (EU FSF) and Capella Open Data SAR are **non-commercial** — fine for the hackathon, must be replaced for a commercial product. Include the attribution string from `SOURCES.md` in any public demo/deck.
@@ -56,9 +61,10 @@ Suggested stack (finalize day-of): DuckDB (S3 reads) / PostGIS · FastAPI · Rea
 - **Never commit:** `.env*`, raw AIS dumps, anything under `data/ais|sar|optical/`, the venv. **Always commit:** code you wrote, GeoJSON under `data/geo/`, CSVs under `data/reference/`.
 
 ### Credentials
-- Gated API keys live in `.env.local` at repo root (gitignored): `AISSTREAM_API_KEY`, `EQUASIS_USERNAME`/`PASSWORD`, `COPERNICUS_CLIENT_ID`/`SECRET`, `GFW_API_TOKEN`.
-- AWS S3 is via `aws configure` → `~/.aws/credentials`, region `eu-west-3`. Verify with `aws sts get-caller-identity` and `aws s3 ls s3://edth2026-baltic/`.
-- All keys are to be **rotated after the hackathon**.
+- The demo needs **no credentials at all** — it runs from committed data. Keys are only for OPTIONAL full-dataset rebuilds.
+- Gated API keys live in `.env.local` at repo root (gitignored): `COPERNICUS_CLIENT_ID`/`SECRET` (Sentinel), `GFW_API_TOKEN` (GFW), `EQUASIS_USERNAME`/`PASSWORD` (registry), `AISSTREAM_API_KEY` (optional live AIS); Kaggle uses `~/.kaggle/kaggle.json`.
+- **No AWS.** The bucket is gone; no `aws configure` is needed. The Danish AIS rebuild downloads from the public source with no credentials.
+- The remaining keys are to be **rotated after the hackathon** (AWS keys are moot now that the bucket is gone).
 
 ---
 
@@ -69,16 +75,13 @@ Suggested stack (finalize day-of): DuckDB (S3 reads) / PostGIS · FastAPI · Rea
 source .venv/bin/activate                 # venv at repo root
 python -c "import geopandas, duckdb, pyarrow, boto3, pyais; print('ok')"   # smoke test
 
-# Verify S3
-aws sts get-caller-identity
-aws s3 ls s3://edth2026-baltic/           # expect: ais cameras geo kaggle optical reference sar samples
+# Rebuild a layer from its public source (no AWS) — see DATA_GUIDE.md for all sources
+python scripts/ingest/danish_ais.py date 2024-12-25  # download one day of Danish AIS → data/ais/parquet/
+python scripts/ingest/build_ais_tracks.py 2024-12-25 # local parquet → frontend/public/data/ais/
+python scripts/ingest/stitch_tracks.py               # → frontend/public/data/ais_v2/ (the replay tiles)
 
-# Pull data
-python scripts/common/sync_from_s3.py geo            # all geo layers
-python scripts/common/sync_from_s3.py ais 2024-12-25 # one day of Danish AIS
-
-# Read straight from S3 with DuckDB (no download) — the preferred query path
-python -c "import duckdb; c=duckdb.connect(); c.execute(\"INSTALL httpfs; LOAD httpfs; SET s3_region='eu-west-3'\"); print(c.execute(\"SELECT COUNT(*) FROM read_parquet('s3://edth2026-baltic/ais/parquet/source=danish/year=2024/month=12/day=25/*.parquet')\").fetchall())"
+# Query the LOCAL rebuilt parquet with DuckDB (no S3)
+python -c "import duckdb; c=duckdb.connect(); print(c.execute(\"SELECT COUNT(*) FROM read_parquet('data/ais/parquet/source=danish/year=2024/month=12/day=25/*.parquet')\").fetchall())"
 
 jupyter lab                               # notebooks in data/samples/notebooks/
 ```

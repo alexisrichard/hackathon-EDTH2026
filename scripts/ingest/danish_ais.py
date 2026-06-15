@@ -12,15 +12,18 @@ CSV schema (26 columns, comma-separated, decimal comma):
   Destination, ETA, Data source type, Size A, Size B, Size C, Size D
 
 Pipeline per file:
-  1. Download .zip from aisdata.ais.dk (anonymous S3)
+  1. Download .zip from aisdata.ais.dk (anonymous S3 — public, no creds)
   2. Stream-extract inner CSV via zipfile.open() (no full disk extraction)
   3. Read in chunks with pandas, filter to Baltic bbox (lat 52-66, lon 9-30)
   4. Group by date, write per-day Parquet via pyarrow (zstd compression)
-  5. Upload Parquet partition to s3://edth2026-baltic/ais/parquet/...
-  6. Delete local zip + temp Parquet files
+  5. Keep the per-day Parquet LOCALLY (data/ais/parquet/...); delete the local zip
+
+Note: the project's old dest bucket (s3://edth2026-baltic/) is RETIRED. By default this
+writes parquet locally only and needs no AWS credentials. Set EDTH_UPLOAD_S3=1 to also
+mirror to a dest bucket of your own (see UPLOAD_TO_S3 below).
 
 Output layout:
-  s3://edth2026-baltic/ais/parquet/source=danish/year=YYYY/month=MM/day=DD/part-0000.parquet
+  data/ais/parquet/source=danish/year=YYYY/month=MM/day=DD/part-0000.parquet
 
 Usage:
   python scripts/ingest/danish_ais.py incidents          # all 9 incident windows
@@ -33,6 +36,7 @@ from __future__ import annotations
 
 import io
 import re
+import os
 import shutil
 import sys
 import time
@@ -59,6 +63,13 @@ SOURCE_REGION = "eu-central-1"
 DEST_BUCKET = "edth2026-baltic"
 DEST_REGION = "eu-west-3"
 DEST_PREFIX = "ais/parquet/source=danish"
+
+# S3 RETIRED: the dest bucket (edth2026-baltic) was deleted to stop incurring cost.
+# By default this writes parquet LOCALLY only (data/ais/parquet/...) and never touches
+# AWS — so a rebuild needs no credentials and no bucket. The SOURCE bucket above is the
+# Danish Maritime Authority's PUBLIC anonymous S3, which is untouched. Set EDTH_UPLOAD_S3=1
+# only if you have your own dest bucket to mirror to.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 CACHE_DIR = Path("data/ais/cache")
 PARQUET_DIR = Path("data/ais/parquet")
@@ -285,19 +296,24 @@ def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[d
             for w in writers.values():
                 w.close()
             for d, p in sorted(local_paths.items()):
-                if p.exists():
-                    key = s3_dest_key(d)
-                    mb = p.stat().st_size / 1_048_576
-                    try:
-                        _dest.upload_file(str(p), DEST_BUCKET, key)
-                        print(f"      uploaded day={d} {mb:.1f} MB", flush=True)
-                    except Exception as ex:
-                        print(f"      upload FAILED day={d}: {ex}", flush=True)
-                        continue
-                    try:
-                        p.unlink()
-                    except OSError:
-                        pass
+                if not p.exists():
+                    continue
+                mb = p.stat().st_size / 1_048_576
+                if not UPLOAD_TO_S3:
+                    # S3 retired → keep the local parquet (the rebuild reads it); no upload.
+                    print(f"      wrote day={d} {mb:.1f} MB -> {p}", flush=True)
+                    continue
+                key = s3_dest_key(d)
+                try:
+                    _dest.upload_file(str(p), DEST_BUCKET, key)
+                    print(f"      uploaded day={d} {mb:.1f} MB", flush=True)
+                except Exception as ex:
+                    print(f"      upload FAILED day={d}: {ex}", flush=True)
+                    continue
+                try:
+                    p.unlink()  # only when mirrored to S3 — local copy is redundant then
+                except OSError:
+                    pass
 
     dt = time.time() - t0
     print(f"  done in {dt:.0f}s. total_rows={rows_total:,}, kept={rows_kept:,}, days={len(all_paths)}", flush=True)
@@ -305,6 +321,8 @@ def process_zip(zip_path: Path, dates_wanted: set[date] | None = None) -> dict[d
 
 
 def upload_parquet(paths: dict[date, Path]) -> None:
+    if not UPLOAD_TO_S3:
+        return  # S3 retired — local parquet is the artifact
     for d, p in sorted(paths.items()):
         key = s3_dest_key(d)
         mb = p.stat().st_size / 1_048_576
@@ -342,7 +360,10 @@ def process_one_date(d: date, dates_wanted: set[date] | None = None) -> None:
 
 
 def s3_dest_exists(d: date) -> bool:
-    """Cheap HEAD against our own bucket to see if a day is already done."""
+    """Is this day already built? Local-only by default (S3 retired) — so idempotency
+    needs no AWS creds. With EDTH_UPLOAD_S3=1, HEADs the dest bucket instead."""
+    if not UPLOAD_TO_S3:
+        return parquet_path(d).exists()
     try:
         _dest.head_object(Bucket=DEST_BUCKET, Key=s3_dest_key(d))
         return True

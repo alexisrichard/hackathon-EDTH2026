@@ -1,8 +1,8 @@
 """Vessel identity, position, and track models.
 
-These map directly onto the Danish AIS parquet schema on S3
-(``s3://edth2026-baltic/ais/parquet/source=danish/...``). The relevant columns
-are::
+These map directly onto the Danish AIS parquet schema in the local dataset
+(``data/ais/parquet/source=danish/...``; the ``edth2026-baltic`` S3 bucket is
+retired). The relevant columns are::
 
     Timestamp, Type of mobile, MMSI, Latitude, Longitude, Navigational status,
     ROT, SOG, COG, Heading, IMO, Callsign, Name, Ship type, Cargo type,

@@ -1,9 +1,12 @@
-"""DuckDBDataSource — reads AIS parquet + geo from S3 via DuckDB ``httpfs``.
+"""DuckDBDataSource — reads AIS parquet from a configurable root.
 
-This is the *real* data path (``DATA_SOURCE=duckdb``). It reuses the shared,
-already-working DuckDB connection helper (``scripts/common/duck.py``), which
-loads ``httpfs`` and creates an S3 secret from ``~/.aws/credentials`` in region
-``eu-west-3``.
+This is the *real* data path (``DATA_SOURCE=duckdb``). The parquet root is
+``Settings.ais_parquet_root`` — **LOCAL by default** (``data/ais/parquet/``,
+produced by ``scripts/ingest/danish_ais.py``); the S3 bucket
+(``edth2026-baltic``) is **retired**. For a local root, DuckDB reads the parquet
+globs straight from the filesystem with no ``httpfs`` / AWS setup. Only when the
+root is an ``s3://...`` path do we ``LOAD httpfs`` and create an S3 secret (via
+``scripts/common/duck.py``).
 
 Status: **skeleton with one working example query** (``count_positions`` /
 ``positions_for_day``). The scoring-dependent methods (``scores_at``,
@@ -35,7 +38,10 @@ from app.models.vessel import Vessel, VesselPosition, VesselTrack
 
 
 class DuckDBDataSource(DataSource):
-    """S3/DuckDB-backed data source (real AIS; scoring stubs delegate to mock)."""
+    """DuckDB-backed data source over local (default) or s3:// AIS parquet.
+
+    Real AIS; scoring stubs delegate to mock.
+    """
 
     name = "duckdb"
 
@@ -49,19 +55,34 @@ class DuckDBDataSource(DataSource):
     # -- connection ---------------------------------------------------------------
 
     def _conn(self):
-        """Lazily open the shared DuckDB connection (httpfs + S3 secret)."""
-        if self._con is None:
-            from scripts.common.duck import connect
+        """Lazily open a DuckDB connection sized to the configured parquet root.
 
-            self._con = connect()
+        Local root (default): a plain DuckDB connection that reads parquet from
+        the filesystem — no ``httpfs``, no AWS credentials required. ``s3://``
+        root: reuse the shared helper (``scripts/common/duck.py``), which loads
+        ``httpfs`` and creates an S3 secret from ``~/.aws/credentials``.
+        """
+        if self._con is None:
+            if self._settings.is_s3_root:
+                from scripts.common.duck import connect
+
+                self._con = connect()
+            else:
+                import duckdb
+
+                con = duckdb.connect()
+                # Progress bar spams stdout; disable it (mirrors duck.connect()).
+                con.execute("SET enable_progress_bar = false;")
+                self._con = con
         return self._con
 
     # -- working example query ----------------------------------------------------
 
     def count_positions(self, year: int, month: int, day: int) -> int:
-        """Example working query: count AIS position rows for one day on S3.
+        """Example working query: count AIS position rows for one day.
 
-        Mirrors the smoke-test in AGENTS.md §3. Proves the httpfs/S3 path works.
+        Reads from the configured parquet root (local by default; S3 retired).
+        Mirrors the smoke-test in AGENTS.md §3. Proves the parquet read path works.
         """
         glob = self._settings.ais_day_glob(year, month, day)
         sql = "SELECT COUNT(*) AS n FROM read_parquet(?)"

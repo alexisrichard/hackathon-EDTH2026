@@ -3,7 +3,9 @@
 One card per source. Read top-to-bottom to judge which datasets are useful for your specific question; jump via the index below.
 
 For **license, attribution, and per-file inventory** see [`data/SOURCES.md`](data/SOURCES.md).
-For **how to set up access** (S3 keys, API tokens) see [`ONBOARDING.md`](ONBOARDING.md).
+For **how to set up access** (API tokens) see [`ONBOARDING.md`](ONBOARDING.md).
+
+> **AWS/S3 is retired and optional.** The old `s3://edth2026-baltic/` bucket has been deleted. Nothing here depends on it. The demo runs from data committed in git (cues, geo/incident overlays, the hero-incident AIS replay days under `frontend/public/data/ais_v2/`, and the trained weights). The full datasets regenerate **locally** from each source's ORIGINAL public origin via the `scripts/` commands listed in each card below — no AWS required.
 
 ## Index
 
@@ -53,18 +55,24 @@ MMSI, IMO (when broadcast), vessel name, type, length/breadth, draft, lat/lon, C
 
 **Temporal resolution.** Class-A transponders broadcast every 2–10 s when underway, 3 min when anchored. Class-B and AtoN every 30 s – 3 min. Static info every 6 min.
 
-**Volume in our copy.** 1,601 days (2022-01-01 → 2026-05-20), Baltic-bbox-filtered, ~330 GB in S3. Typical day ≈ 15–25M kept rows / 10–20k unique MMSI.
+**Volume if you rebuild it all.** 1,601 days (2022-01-01 → 2026-05-20), Baltic-bbox-filtered, ~330 GB locally. Typical day ≈ 15–25M kept rows / 10–20k unique MMSI. You almost never need the whole backfill — rebuild only the days you want (e.g. `… incidents` for the hero windows).
 
 **Useful for.** Per-vessel tracks, AIS-gap detection (a key shadow-fleet signal), loiter/anchor patterns near cables, behavioural baselines.
 
 **Caveats.** Vessels can switch AIS off ("dark behaviour") — absence ≠ no vessel. IMO field is optional; ~15 % of rows lack it. Source publishes ~1 day late, so today and yesterday will always be missing.
 
-**Format / how to query.** Hive-partitioned Parquet at `s3://edth2026-baltic/ais/parquet/source=danish/year=YYYY/month=MM/day=DD/`. DuckDB one-liner:
+**Where it lives / how to rebuild.** Regenerable from the Danish Maritime Authority's public anonymous S3 (`aisdata.ais.dk`) — no AWS account needed for that read. One day at a time:
+```bash
+python scripts/ingest/danish_ais.py date 2024-12-25     # one day
+python scripts/ingest/danish_ais.py incidents           # all hero-incident windows
+```
+Output is Hive-partitioned Parquet written **locally** to `data/ais/parquet/source=danish/year=YYYY/month=MM/day=DD/` (set `EDTH_UPLOAD_S3=1` only if you want to mirror it to your own bucket). Then query the local copy with DuckDB:
 ```sql
 SELECT mmsi, lat, lon, sog, ts
-FROM read_parquet('s3://edth2026-baltic/ais/parquet/source=danish/year=2024/month=12/day=25/*.parquet')
+FROM read_parquet('data/ais/parquet/source=danish/year=2024/month=12/day=25/*.parquet')
 WHERE mmsi = 273399740;  -- example
 ```
+**Replay days for the demo are already committed** — the hero incidents are stitched into `frontend/public/data/ais_v2/` (Nord Stream 2022-09-26, Balticconnector 2023-10-08, C-Lion1/Yi Peng 3 2024-11-17 & 2024-11-18, Eagle S 2024-12-25, LV–SE 2025-01-26), built by `python scripts/ingest/build_ais_tracks.py` (reads local `data/ais/parquet`, override with `AIS_PARQUET_ROOT`) → `python scripts/ingest/stitch_tracks.py` (→ `frontend/public/data/ais_v2/`).
 
 **License.** Public, no restrictions. Attribution: *"Danish Maritime Authority"*.
 
@@ -84,7 +92,7 @@ WHERE mmsi = 273399740;  -- example
 
 **Useful for.** The Sunday demo's live ticker — proving the cueing engine works on live data, not just replay.
 
-**Caveats.** Don't archive to S3 (ToS). For historical look-back, use the Danish bulk feed instead. Coverage drops to satellite-only beyond ~50 km from terrestrial receivers.
+**Caveats.** Don't archive the stream (ToS — live use only). For historical look-back, use the Danish bulk feed instead. Coverage drops to satellite-only beyond ~50 km from terrestrial receivers.
 
 **Format / how to query.** `scripts/ingest/aisstream_consumer.py` — reads `AISSTREAM_API_KEY` from `.env.local`, prints decoded messages.
 
@@ -108,7 +116,7 @@ WHERE mmsi = 273399740;  -- example
 
 **Caveats.** Sea state matters — high winds add speckle and can hide small vessels. Wake detection requires careful processing (we don't run it; the raw imagery is provided for inspection or downstream models).
 
-**Format / how to query.** Scene catalog at `data/reference/sentinel_scenes.csv`. Crops at `s3://edth2026-baltic/sar/incident=*/`. Re-render any AOI with `scripts/ingest/fetch_sentinel_imagery.py --incident <ID>`.
+**Where it lives / how to rebuild.** Scene catalog committed at `data/reference/sentinel_scenes.csv`. Re-render any incident-AOI crop from Copernicus (the public source) with `python scripts/ingest/fetch_sentinel_imagery.py --incident <ID>` — output lands locally under `data/sar/incident=*/`.
 
 **License.** Free, Copernicus Open Access. Attribution: *"contains modified Copernicus Sentinel data (2022–2026)"*.
 
@@ -128,7 +136,7 @@ WHERE mmsi = 273399740;  -- example
 
 **Caveats.** Daylight only; useless under cloud. Baltic is cloudy roughly **70 %** of the time, so for any specific date the chances of a clean Sentinel-2 image are slim. Always pair with Sentinel-1.
 
-**Format / how to query.** Same as Sentinel-1; crops at `s3://edth2026-baltic/optical/incident=*/`.
+**Where it lives / how to rebuild.** Same as Sentinel-1 (`fetch_sentinel_imagery.py`); crops land locally under `data/optical/incident=*/`.
 
 **License.** Free, Copernicus Open Access. Same attribution as Sentinel-1.
 
@@ -369,7 +377,7 @@ Hourly resolution.
 - **AIS gaps** — vessel transponder went dark for >N hours
 - **Fishing** — apparent fishing activity, with effort hours
 
-**What's in our copy.** 25 vessel-event rows for the named incident suspects (Eagle S, Yi Peng 3, Vezhen, Fitburg, Newnew Polar Bear, etc.) at `s3://edth2026-baltic/reference/gfw_events/`.
+**What's in our copy.** 25 vessel-event rows for the named incident suspects (Eagle S, Yi Peng 3, Vezhen, Fitburg, Newnew Polar Bear, etc.). Regenerable per-IMO from the GFW v3 API (the public source) via `python scripts/ingest/fetch_gfw.py`, written under `data/reference/`.
 
 **Useful for.** Pre-computed behavioural anomaly features. Rather than re-deriving "did the Eagle S go dark for 6 hours before the Estlink-2 cut?" from raw AIS, you can read GFW's answer directly.
 
@@ -397,7 +405,7 @@ Hourly resolution.
 
 **What it is.** 10 maritime-domain datasets downloaded for use as training data if any team member wants to train (or fine-tune) a vessel-detection model.
 
-**What's included** (downloaded + mirrored to S3 on 2026-06-07):
+**What's included** (downloaded on 2026-06-07; re-downloadable from Kaggle):
 
 | Dataset | Slug | Size | License |
 |---|---|---|---|
@@ -412,13 +420,13 @@ Hourly resolution.
 | World shipping ports | `sanjeetsinghnaik/ship-ports` | 44 KB | ✅ CC0-1.0 |
 | Ukraine-war event context | `piterfm/2022-ukraine-russian-war` | 184 KB | 🚫 CC-BY-NC-SA-4.0 |
 
-**Total volume.** ~24 GB (26.06 GB / 63,173 objects) at `s3://edth2026-baltic/kaggle/<slug-name>/`.
+**Total volume.** ~24 GB (26.06 GB / 63,173 objects) if you re-download the full set locally.
 
 **Useful for.** Pre-training or fine-tuning ship-detection CV models. Not used by the cueing engine itself; provided as training material for anyone who wants to extend.
 
 **Caveats.** Licenses vary per dataset (see table). **Two are `unknown`** (SeaDronesSee, HRSID) and **two are non-commercial** (AFO, Ukraine-war) — fine for the hackathon as research/training material, but verify before any commercial use. See `data/SOURCES.md` § *Commercial-use guardrails*.
 
-**Format / how to query.** Per-dataset folders under `s3://edth2026-baltic/kaggle/`. Pull one with `aws s3 sync s3://edth2026-baltic/kaggle/<name>/ data/reference/raw/kaggle/<name>/`. Re-run / extend the set with `python scripts/ingest/fetch_kaggle.py` (skip-if-exists; uploads to S3 automatically). Inventory + per-dataset status in `data/reference/kaggle_datasets_INDEX.csv`.
+**Where it lives / how to rebuild.** Re-download from Kaggle (the public source) with `python scripts/ingest/fetch_kaggle.py --skip-s3` (skip-if-exists); datasets land in per-dataset folders under `data/reference/raw/kaggle/<name>/`. Inventory + per-dataset status in `data/reference/kaggle_datasets_INDEX.csv`.
 
 **License.** Per Kaggle terms + dataset-specific. See [`data/SOURCES.md`](data/SOURCES.md) for the matrix.
 

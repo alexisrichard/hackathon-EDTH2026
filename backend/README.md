@@ -5,22 +5,23 @@
 The typed data layer the dashboard hangs off. Serves vessel tracks, interpretable
 suspicion scores, ranked ISR "task-next" cues, the criticality grid, and the
 incident/scenario catalogue. **Mock-first:** it runs with zero AWS/network setup
-so the frontend can build against realistic typed JSON immediately; the real
-DuckDB-over-S3 path swaps in behind the same interface.
+so the frontend can build against realistic typed JSON immediately; an optional
+DuckDB-over-**local-parquet** path swaps in behind the same interface.
 
 **Stack:** FastAPI + uvicorn, pydantic v2 models (the single source of truth),
-DuckDB (`httpfs` over S3) for the real data path.
+DuckDB reading **local** Parquet (`data/ais/parquet/`) for the optional real data path.
+(AWS/S3 is retired — not needed for the demo or this backend.)
 
 ## How data flows
 
 ```
                  mock (default)                         duckdb (DATA_SOURCE=duckdb)
                  ──────────────                         ───────────────────────────
-S3 AIS parquet ─┐                              S3 AIS parquet ──► DuckDB httpfs ──┐
-data/geo/*      ├─ (not touched in mock)       data/geo/*       ──► criticality   ├─► DataSource
-                │                              scoring.score    ──► suspicion     │
-   scripted ────┘                                                                 │
-   Eagle S scenario ──────────────► DataSource ◄───────────────────────────────────┘
+local AIS parquet ─┐                       local AIS parquet ──► DuckDB ──┐
+data/geo/*         ├─ (not touched in mock)  (data/ais/parquet/)          │
+                   │                        data/geo/*       ──► criticality ├─► DataSource
+   scripted ───────┘                        scoring.score    ──► suspicion   │
+   Eagle S scenario ──────────────► DataSource ◄──────────────────────────────┘
                                         │
                           pydantic models (app/models)  ──►  FastAPI routers (app/routers)
                                         │                            │
@@ -36,8 +37,11 @@ data/geo/*      ├─ (not touched in mock)       data/geo/*       ──► cr
     anchored bulker stay calm. Includes a criticality grid with a hotspot over the
     cable and a top-K SAR cue pointing at it. Everything is a pure function of the
     requested instant `t`, so `/scores` and `/cues` re-rank live as the clock scrubs.
-  - **`DuckDBDataSource`** — reads AIS parquet from S3 via DuckDB `httpfs`
-    (reusing `scripts/common/duck.py`). `/vessels` is a real query; the
+  - **`DuckDBDataSource`** — reads AIS parquet from **local** `data/ais/parquet/`
+    via DuckDB (reusing `scripts/common/duck.py`); override the root with
+    `AIS_PARQUET_ROOT`. Rebuild the parquet from the public Danish feed with
+    `scripts/ingest/danish_ais.py` (see [`../DATA_GUIDE.md`](../DATA_GUIDE.md)).
+    `/vessels` is a real query; the
     scoring-dependent endpoints (`/scores`, `/cues`, `/geo`) delegate to the
     mock integration until real feature extraction and the criticality grid
     land. The mock integration already calls `scoring.score_observation` and
@@ -73,13 +77,16 @@ open http://localhost:8000/docs          # interactive Swagger UI
 The demo instant `2024-12-25T13:50:00Z` shows EAGLE S already hot (SAR cue firing)
 *before* the 14:00 cable cut — the hero narrative.
 
-## Run against real S3 data (duckdb mode)
+## Run against real parquet (duckdb mode)
 
-Requires AWS creds (`aws configure`, region `eu-west-3`) and reachable S3.
+No AWS needed. Requires local AIS parquet under `data/ais/parquet/` — rebuild the
+day(s) you want from the public Danish feed first:
+`python scripts/ingest/danish_ais.py date 2024-12-25` (or `… incidents`). Point
+DuckDB elsewhere with `AIS_PARQUET_ROOT` if your parquet lives outside the default.
 
 ```bash
 DATA_SOURCE=duckdb uvicorn app.main:app --reload
-# example working query proving the httpfs/S3 path:
+# example working query proving the local-parquet path:
 #   from app.data.duckdb_source import DuckDBDataSource
 #   DuckDBDataSource().count_positions(2024, 12, 25)
 ```
@@ -108,14 +115,14 @@ app/
 ├── main.py            # FastAPI app: routers, CORS, /health, /encoding
 ├── core/
 │   ├── paths.py       # puts repo root on sys.path (so `scripts.*` imports work)
-│   ├── config.py      # env-driven settings (DATA_SOURCE), S3 layout
+│   ├── config.py      # env-driven settings (DATA_SOURCE), local parquet layout
 │   └── display.py     # shape/color from shared/encoding/display_encoding.json
 ├── models/            # pydantic v2 domain models — the single source of truth
 ├── data/
 │   ├── base.py        # DataSource ABC (the seam)
 │   ├── mock.py        # MockDataSource (default) + incidents.csv loader
 │   ├── mock_scenario.py # scripted Eagle S / Estlink 2 fleet + score arcs
-│   └── duckdb_source.py # DuckDB-over-S3 (real /vessels; scoring stubs delegate)
+│   └── duckdb_source.py # DuckDB over local parquet (real /vessels; scoring stubs delegate)
 └── routers/           # /vessels /scores /cues /geo /scenarios /incidents
 ```
 

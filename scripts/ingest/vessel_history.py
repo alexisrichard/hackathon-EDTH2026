@@ -1,7 +1,7 @@
 """Extract one vessel's per-day track history from the AIS keyframe tiles.
 
-The replay tiles (`tracks_<date>.json`, built by `build_ais_tracks.py`, full
-archive synced from `s3://edth2026-baltic/ais_tiles/`) are partitioned by day.
+The replay tiles (`tracks_<date>.json`, built locally by `build_ais_tracks.py`;
+S3 retired) are partitioned by day.
 The scoring engine, by contrast, needs a *per-vessel* view: every day-record
 for one MMSI, so `scoring.behavioral.behavioral_history` can compute that
 vessel's prior. This script pivots day-partitioned tiles into that view.

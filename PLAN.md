@@ -3,6 +3,8 @@
 **EDTH 2026 Paris · June 12–14**
 **Team of 3:** engineer/entrepreneur (telecom, cyber, submarine cables) · engineer · cyber + defense
 
+> **Post-hackathon note:** S3 is retired. The repo is self-contained — the demo runs from data committed in git, and the full datasets rebuild from their original public sources via `scripts/` (no AWS). The S3 bucket layout and prep tasks below are kept as the historical plan record; see [`DATA_GUIDE.md`](DATA_GUIDE.md) for the current rebuild commands.
+
 ---
 
 ## 1. One-line pitch
@@ -337,7 +339,7 @@ Light suggestions only — finalize on Friday.
 
 ### 10.3 Mock-data philosophy
 
-Every external data source has a mock generator. Real S3 data is the default; mocks are the fallback if S3 auth, network, or the venue WiFi flakes during the demo. Same for any DAS partner-team feed — mock first, real swapped in if available.
+Every external data source has a mock generator. Real committed/local data is the default; mocks are the fallback if anything flakes during the demo. (At hackathon time the real data lived in S3; post-event it's committed in git or regenerable locally — S3 retired.) Same for any DAS partner-team feed — mock first, real swapped in if available.
 
 ---
 

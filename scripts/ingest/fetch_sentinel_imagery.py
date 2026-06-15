@@ -9,7 +9,9 @@ For each incident in data/reference/incidents.csv:
 Outputs:
   data/optical/sentinel2/<incident_id>_truecolor.jpg   (~ 1-3 MB each)
   data/sar/sentinel1/<incident_id>_sar.jpg             (~ 1-3 MB each)
-  + uploaded to s3://edth2026-baltic/{optical,sar}/<...>
+
+S3 retired — writes locally by default; set EDTH_UPLOAD_S3=1 to mirror to your
+own bucket (was s3://edth2026-baltic/{optical,sar}/<...>).
 
 Auth: COPERNICUS_CLIENT_ID + COPERNICUS_CLIENT_SECRET from .env.local
 """
@@ -23,7 +25,6 @@ from pathlib import Path
 
 import io
 
-import boto3
 import numpy as np
 import pandas as pd
 import requests
@@ -32,6 +33,9 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT / ".env.local")
+
+# S3 retired: upload is opt-in. Default OFF so the repo rebuilds locally with no AWS.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 CLIENT_ID = os.environ.get("COPERNICUS_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("COPERNICUS_CLIENT_SECRET")
@@ -168,7 +172,10 @@ def main() -> int:
     print("  OK", flush=True)
 
     incidents = pd.read_csv(INCIDENTS_CSV)
-    s3 = boto3.client("s3", region_name="eu-west-3")
+    s3 = None
+    if UPLOAD_TO_S3:
+        import boto3
+        s3 = boto3.client("s3", region_name="eu-west-3")
 
     for _, inc in incidents.iterrows():
         inc_id = inc["incident_id"]
@@ -190,7 +197,8 @@ def main() -> int:
                     out_s2.write_bytes(img)
                     kb = len(img) // 1024
                     print(f"    -> {out_s2} ({kb} KB)", flush=True)
-                    s3.upload_file(str(out_s2), DEST_BUCKET, f"optical/sentinel2/{out_s2.name}")
+                    if UPLOAD_TO_S3:
+                        s3.upload_file(str(out_s2), DEST_BUCKET, f"optical/sentinel2/{out_s2.name}")
                     break
                 elif img:
                     print(f"    blank at cloud<={cloud_pct}, retrying...", flush=True)
@@ -212,7 +220,8 @@ def main() -> int:
                     out_s1.write_bytes(img)
                     kb = len(img) // 1024
                     print(f"    -> {out_s1} ({kb} KB)", flush=True)
-                    s3.upload_file(str(out_s1), DEST_BUCKET, f"sar/sentinel1/{out_s1.name}")
+                    if UPLOAD_TO_S3:
+                        s3.upload_file(str(out_s1), DEST_BUCKET, f"sar/sentinel1/{out_s1.name}")
                     break
             else:
                 print(f"    S1 returned no data in either polarization", flush=True)
