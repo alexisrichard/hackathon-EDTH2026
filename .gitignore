@@ -68,6 +68,13 @@ data/geo/bathymetry_*.nc
 data/geo/bathymetry_*.tif
 data/geo/osm_buoys.geojson
 
+# Generated demo outputs — re-runnable locally
+demo_map_*.html
+sar_*.png
+comparison_before_after.png
+detections_yi_peng3.geojson
+*.ipynb
+
 # Notebook checkpoints
 .ipynb_checkpoints/
 
@@ -101,3 +108,14 @@ frontend/public/data/ais_v2/*
 !frontend/public/data/ais_v2/tracks_2024-12-25.json
 !frontend/public/data/ais_v2/tracks_2025-01-26.json
 data/reference/vessel_signals.mock.json
+
+# Computer-vision / SAR ship-detection pipeline (HRSID) — large/regenerable artifacts.
+# (The trained HRSID model is preserved in git above via the !scoring/weights/...best.pt
+# negation; pretrained ultralytics checkpoints are already covered by *.pt above.)
+data/hrsid_yolo/
+scoring/runs/
+# Generated dataset YAML holds a machine-specific absolute path:
+scoring/hrsid.yaml
+# Detector outputs are regenerable, EXCEPT the committed Nord Stream demo detections.
+detections_*.geojson
+!detections_nordstream.geojson
