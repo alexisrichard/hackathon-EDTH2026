@@ -7,7 +7,10 @@ Encodes the working recipe so nobody re-debugs it during the hackathon:
     SINGLE argument (split into two tokens it's read as a second download — the
     classic "Fixed output name but more than one file to download" error).
   - extracts a mid-clip JPEG frame.
-  - optionally uploads clip + frame to s3://edth2026-baltic/cameras/.
+  - optionally mirrors clip + frame to S3.
+
+S3 retired — writes locally by default; set EDTH_UPLOAD_S3=1 (and pass --s3) to
+mirror to your own bucket (was s3://edth2026-baltic/cameras/).
 
 Requires: yt-dlp + ffmpeg available (project .venv has yt-dlp; ffmpeg on PATH).
 Works for YouTube live URLs. For JS-player port-cam sites, resolve the .m3u8 in a
@@ -20,12 +23,16 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 OUT_DIR = Path("data/reference/raw/cameras")
 S3_PREFIX = "s3://edth2026-baltic/cameras"
+
+# S3 retired: upload is opt-in. Default OFF so the repo rebuilds locally with no AWS.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 
 def ytdlp_cmd() -> list[str]:
@@ -80,8 +87,10 @@ def main(argv: list[str]) -> int:
     clip = capture(a.cam_id, a.url, a.secs)
     frame = grab_frame(clip, a.cam_id, max(1, a.secs // 2))
     print(f"clip:  {clip}\nframe: {frame}", flush=True)
-    if a.s3:
+    if a.s3 and UPLOAD_TO_S3:
         upload([clip, frame])
+    elif a.s3:
+        print("  --s3 ignored: S3 retired. Set EDTH_UPLOAD_S3=1 to mirror to your own bucket.", flush=True)
     return 0
 
 

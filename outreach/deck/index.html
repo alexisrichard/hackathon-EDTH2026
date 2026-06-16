@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEIMDALL.ai — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ BRAND TOKENS (from brand/logo_refinement.html) ============ */
+  :root{
+    /* canonical heimdall tokens — brand/heimdall_brand_identity.html (R5 locked) */
+    --void:#060A12; --panel:#0B1220; --card:#0F1726; --elevated:#141E33; --tile:#0A101C;
+    --ice:#E8F1F8; --slate:#8FA3B8; --muted:#4A5A74; --faint:#2E3B55;
+    --border:#1C2740; --border-2:#2A3A5C;
+    --cyan:#41E3FF; --teal:#2FD6B5; --amber:#FFB02E; --red:#FF4538;
+    /* suspicion bands (= shared/encoding/display_encoding.json) */
+    --band-calm:#388ED3; --band-watch:#2EC4B6; --band-elevated:#FFD166; --band-high:#EF8A38; --band-critical:#E63946;
+    /* sensor colors — tasking surfaces only */
+    --sensor-sar:#7AA2F7; --sensor-opt:#9ECE6A; --sensor-ais:#7DCFFF; --sensor-das:#BB9AF7;
+    --sans:'Space Grotesk',-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#000;color:var(--ice);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+    print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+  /* ============ DECK / SLIDE FRAMEWORK ============ */
+  .stage{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#000;}
+  .deck{width:min(100vw,177.78vh);}            /* 16:9 letterbox to viewport */
+  .slide{
+    container-type:size; position:relative; width:100%; aspect-ratio:16/9; overflow:hidden;
+    background:var(--void); color:var(--ice);
+    background-image:
+      radial-gradient(120cqw 50cqw at 78% -12%, rgba(65,227,255,.06), transparent 60%);
+  }
+  @media screen{ .slide{display:none} .slide.active{display:block} }
+
+  /* universal slide furniture */
+  .pad{position:absolute; inset:0; padding:6.5cqh 8cqw 9cqh; display:flex; flex-direction:column;}
+  .kicker{font-family:var(--mono); font-size:1.5cqw; font-weight:600; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--cyan);}
+  .kicker.amber{color:var(--amber)} .kicker.red{color:var(--red)}
+  h1{font-weight:700; letter-spacing:-.01em; line-height:1.02;}
+  .lead{font-size:7.4cqw; font-weight:700; letter-spacing:-.015em; line-height:1.02;}
+  .lead .dim{color:var(--muted); font-weight:500}
+  .lead .cy{color:var(--cyan)}
+  .sub{font-size:2.3cqw; color:var(--slate); line-height:1.4; max-width:62cqw;}
+  .sub strong{color:var(--ice); font-weight:600}
+  .foot{position:absolute; left:8cqw; right:8cqw; bottom:4.4cqh; display:flex; gap:2cqw;
+    align-items:center; font-family:var(--mono); font-size:1.25cqw; letter-spacing:.14em;
+    color:var(--muted); text-transform:uppercase;}
+  .foot .sp{flex:1}
+  .pagenum{font-family:var(--mono); font-size:1.2cqw; color:var(--muted); letter-spacing:.1em}
+  .spacer{flex:1}
+  .grad-bottom{position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,10,18,.96) 8%,rgba(6,10,18,.5) 42%,rgba(6,10,18,.15) 75%);}
+
+  /* wordmark / logo */
+  .lockup{display:flex; align-items:center; gap:2.4cqw}
+  .lockup svg{color:var(--cyan); flex:none}
+  .wm{font-weight:600; letter-spacing:.24em}
+  .wm i{font-style:normal; color:var(--muted); font-weight:500}
+
+  /* chips / tags */
+  .tag{display:inline-flex; align-items:center; gap:.7em; font-family:var(--mono);
+    font-size:1.4cqw; letter-spacing:.06em; padding:.55em 1em; border-radius:.5em;
+    border:1px solid var(--border-2); background:var(--panel); color:var(--slate);}
+  .tag.amber{color:var(--amber); border-color:rgba(255,176,46,.4)}
+  .tag.cyan{color:var(--cyan); border-color:rgba(65,227,255,.4)}
+  .tag.red{color:var(--red); border-color:rgba(255,69,56,.4)}
+  .tag .dot{width:.6em;height:.6em;border-radius:50%;background:currentColor;box-shadow:0 0 .5em currentColor}
+
+  /* image frames w/ graceful "drop asset here" fallback */
+  .imgframe{position:relative; background:var(--tile); border:1px solid var(--border); overflow:hidden;}
+  .imgframe img{width:100%; height:100%; object-fit:cover; display:block}
+  .imgframe.contain img{object-fit:contain; background:#0a0f18}
+  .imgframe.empty{border:1px dashed var(--border-2);}
+  .imgframe.empty::after{content:attr(data-note); position:absolute; inset:0; display:flex;
+    align-items:center; justify-content:center; text-align:center; padding:3cqw;
+    font-family:var(--mono); font-size:1.4cqw; line-height:1.6; letter-spacing:.06em; color:var(--muted);}
+
+  /* three-sense cards */
+  .triptych{display:grid; grid-template-columns:repeat(3,1fr); gap:2.4cqw; margin-top:auto; margin-bottom:auto}
+  .scard{background:var(--panel); border:1px solid var(--border); border-radius:1cqw; padding:3cqw 2.6cqw;
+    display:flex; flex-direction:column; gap:1.4cqw;}
+  .scard svg{color:var(--cyan)}
+  .scard .st{font-family:var(--mono); font-size:1.4cqw; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan)}
+  .scard .sn{font-size:2.6cqw; font-weight:600}
+  .scard .sd{font-size:1.75cqw; color:var(--slate); line-height:1.4}
+  .scard.dim{opacity:.5}
+  .scard .miss{font-family:var(--mono); font-size:1.4cqw; color:var(--amber); letter-spacing:.04em}
+  .scard .xfail{font-family:var(--mono); font-size:1.6cqw; letter-spacing:.18em; color:var(--red); text-transform:uppercase}
+
+  /* cue-card facsimile (verdict) */
+  .cuecard{background:var(--card); border:1px solid var(--border-2); border-left:.4cqw solid var(--sensor-sar);
+    border-radius:1cqw; padding:2.6cqw 2.8cqw; width:42cqw;}
+  .cuecard .r1{display:flex; align-items:center; gap:1.4cqw; margin-bottom:1.2cqw}
+  .cuecard .rank{font-family:var(--mono); font-weight:700; font-size:2.4cqw; color:var(--ice)}
+  .cuecard .chip{font-family:var(--mono); font-size:1.4cqw; letter-spacing:.12em; color:var(--sensor-sar);
+    border:1px solid rgba(122,162,247,.4); background:rgba(122,162,247,.10); border-radius:.4em; padding:.3em .7em}
+  .cuecard .sc{margin-left:auto; font-family:var(--mono); font-weight:700; font-size:3.4cqw; color:var(--band-high)}
+  .cuecard .box{font-family:var(--mono); font-size:1.35cqw; color:var(--muted); letter-spacing:.06em; margin-bottom:1cqw}
+  .cuecard .why{font-size:1.95cqw; color:var(--ice); line-height:1.35; margin-bottom:1.8cqw}
+  .terms{display:flex; flex-direction:column; gap:.8cqw}
+  .term{display:flex; align-items:center; gap:1.2cqw}
+  .term .tl{font-family:var(--mono); font-size:1.25cqw; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); width:7cqw}
+  .term .tbar{flex:1; height:1cqw; background:var(--tile); border:1px solid var(--border); border-radius:.5cqw; overflow:hidden}
+  .term .tfill{display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--cyan))}
+
+  /* doctrine chips row */
+  .doctrine{display:grid; grid-template-columns:repeat(3,1fr); gap:2cqw; margin:auto 0}
+  .dchip{background:var(--panel); border:1px solid var(--border); border-radius:1cqw; padding:2.6cqw;
+    display:flex; flex-direction:column; gap:1cqw}
+  .dchip .dk{font-family:var(--mono); font-size:1.3cqw; letter-spacing:.18em; color:var(--cyan); text-transform:uppercase}
+  .dchip .dv{font-size:2cqw; font-weight:600; line-height:1.2}
+  .dchip .dd{font-size:1.5cqw; color:var(--slate)}
+
+  /* model before/after */
+  .ba{display:grid; grid-template-columns:1fr 1fr; gap:2cqw; flex:1; min-height:0}
+  .ba .col{display:flex; flex-direction:column; gap:1.2cqw; min-height:0}
+  .ba .colhead{display:flex; align-items:baseline; gap:1cqw}
+  .ba .clab{font-family:var(--mono); font-size:1.5cqw; letter-spacing:.12em; text-transform:uppercase}
+  .ba .cnote{margin-left:auto; font-family:var(--mono); font-size:1.4cqw}
+  .ba .before .clab{color:var(--slate)} .ba .before .cnote{color:var(--red)}
+  .ba .after .clab{color:var(--cyan)} .ba .after .cnote{color:var(--teal)}
+  .ba .imgframe{flex:1; border-radius:.8cqw}
+  .statband{display:flex; gap:2.6cqw; align-items:center; margin-top:1.4cqh}
+  .statband .big{font-size:4.4cqw; font-weight:700; color:var(--cyan); letter-spacing:-.02em; line-height:1}
+  .statband .bl{font-size:1.55cqw; color:var(--slate); line-height:1.32}
+
+  /* generic svg viz wrapper */
+  .viz{flex:1; min-height:0; display:flex; align-items:center; justify-content:center}
+  .viz svg{width:100%; height:100%}
+
+  /* ON-SCREEN NAV UI */
+  .nav-zone{position:fixed; top:0; bottom:0; width:18vw; z-index:40; cursor:pointer}
+  .nav-zone.left{left:0} .nav-zone.right{right:0}
+  .hud{position:fixed; right:18px; bottom:14px; z-index:50; display:flex; gap:14px; align-items:center;
+    font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:.1em}
+  .hud .pdf{background:var(--panel); border:1px solid var(--border-2); color:var(--cyan);
+    padding:7px 13px; border-radius:6px; cursor:pointer; font-family:var(--mono); font-size:11px; letter-spacing:.14em}
+  .hint{position:fixed; left:18px; bottom:14px; z-index:50; font-family:var(--mono); font-size:11px;
+    color:var(--muted); letter-spacing:.1em}
+
+  /* ============ PRINT → PDF ============ */
+  @page{ size:13.333in 7.5in; margin:0; }
+  @media print{
+    body,.stage{background:#fff; display:block; min-height:0}
+    .deck{width:13.333in}
+    .slide{display:block !important; width:13.333in; height:7.5in; page-break-after:always; break-after:page;}
+    .slide:last-child{page-break-after:auto}
+    .nav-zone,.hud,.hint{display:none !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGO MARK (R4 · Chevron Cue, the recommended brand mark) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="mark" viewBox="0 0 120 120">
+    <rect x="25.5" y="85.5" width="9" height="9" fill="currentColor"/>
+    <path d="M51.25 84.30 L48.05 71.95 L35.70 68.75" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+    <path d="M66.71 80.16 L61.17 58.83 L39.84 53.29" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+    <path d="M82.16 76.01 L77.28 57.22" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt"/>
+    <path d="M43.99 37.84 L62.78 42.72" fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="butt"/>
+    <path d="M64.79 42.21 V36.21 H70.79 M77.79 36.21 H83.79 V42.21 M83.79 49.21 V55.21 H77.79 M70.79 55.21 H64.79 V49.21" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+  </symbol>
+  <!-- small target reticle glyph -->
+  <symbol id="reticle" viewBox="0 0 120 120">
+    <path d="M30 48 V30 H48 M72 30 H90 V48 M90 72 V90 H72 M48 90 H30 V72" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square"/>
+    <circle cx="60" cy="60" r="6" fill="currentColor"/>
+  </symbol>
+  <!-- memory / track glyph -->
+  <symbol id="memglyph" viewBox="0 0 120 120">
+    <path d="M16 86 L44 60 L66 74 L104 34" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="miter"/>
+    <rect x="40" y="56" width="8" height="8" fill="currentColor"/><rect x="62" y="70" width="8" height="8" fill="currentColor"/>
+    <rect x="100" y="30" width="8" height="8" fill="currentColor"/>
+    <path d="M60 22 A18 18 0 1 1 42 40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M60 22 V34 H70" fill="none" stroke="currentColor" stroke-width="4"/>
+  </symbol>
+  <!-- map / criticality glyph -->
+  <symbol id="mapglyph" viewBox="0 0 120 120">
+    <path d="M20 40 L60 20 L100 40 L60 60 Z M20 76 L60 56 L100 76 L60 96 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="miter" opacity=".55"/>
+    <path d="M14 64 C40 50 80 80 106 58" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="74" y="48" width="9" height="9" fill="currentColor"/>
+  </symbol>
+</defs></svg>
+
+<div class="stage"><div class="deck" id="deck">
+
+  <!-- ===== 1 · TITLE ===== -->
+  <section class="slide active" style="background:#04070d">
+    <div class="imgframe" style="position:absolute;inset:0;border:none">
+      <img src="assets/sar_clion1.jpg" alt="" style="opacity:.4;filter:grayscale(1) brightness(.62) contrast(1.2)"
+           onerror="this.style.display='none'">
+    </div>
+    <div style="position:absolute;inset:0;background:radial-gradient(70cqw 50cqw at 50% 46%, rgba(6,10,18,.2), rgba(4,7,13,.92) 78%)"></div>
+    <div class="pad" style="justify-content:center;align-items:center;text-align:center">
+      <div class="lockup" style="gap:3cqw">
+        <svg width="11cqw" height="11cqw"><use href="#mark"/></svg>
+        <span class="wm" style="font-size:8.5cqw">HEIMDALL<i>.AI</i></span>
+      </div>
+      <div class="sub" style="margin-top:2.6cqh;color:var(--cyan);max-width:none;font-size:2.6cqw;letter-spacing:.04em">Seeing what ships hide.</div>
+    </div>
+    <div class="foot"><span>EDTH 2026 · Paris</span><span class="sp"></span><span>Baltic seabed defence</span></div>
+  </section>
+
+  <!-- ===== 2 · THE CRIME ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker red">18 Nov 2024 · Baltic Sea</div>
+      <div class="spacer"></div>
+      <h1 class="lead">Two cables. Two days.<br><span class="cy">One ship.</span></h1>
+      <div class="sub" style="margin-top:2.8cqh">Finland–Germany, then Lithuania–Sweden — severed on consecutive days. The same bulk carrier crossed both. The investigation ended with <strong>no charges</strong>. <strong>"An accident."</strong></div>
+      <div class="spacer"></div>
+      <div><span class="tag red"><span class="dot"></span>Deniability is the weapon</span></div>
+    </div>
+    <div class="foot"><span>heimdall.ai</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 3 · STAKES ===== -->
+  <section class="slide">
+    <div class="pad" style="justify-content:center">
+      <div class="kicker">The stakes</div>
+      <div style="display:flex;align-items:baseline;gap:3cqw;margin-top:2cqh">
+        <span style="font-size:20cqw;font-weight:700;color:var(--cyan);line-height:.9;letter-spacing:-.03em">99%</span>
+        <span class="sub" style="font-size:3cqw;max-width:46cqw">of the world's data — finance, the internet, military command — runs through a few hundred <strong>cables on the seabed.</strong> Unguarded. Unwatched.</span>
+      </div>
+    </div>
+    <div class="foot"><span>heimdall.ai</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 4 · THE PATTERN ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">The pattern</div>
+      <h1 class="lead" style="font-size:6cqw;margin-top:1.2cqh">Nine cuts. Since 2022. One sea.</h1>
+      <div class="viz" style="margin-top:1cqh">
+        <svg viewBox="0 0 1000 230" preserveAspectRatio="xMidYMid meet">
+          <line x1="40" y1="150" x2="960" y2="150" stroke="#2A3A5C" stroke-width="2"/>
+          <!-- 9 incident ticks -->
+          <g stroke="#FF4538" stroke-width="3">
+            <line x1="70"  y1="132" x2="70"  y2="168"/>
+            <line x1="300" y1="132" x2="300" y2="168"/>
+            <line x1="560" y1="132" x2="560" y2="168"/>
+            <line x1="600" y1="132" x2="600" y2="168"/>
+            <line x1="640" y1="132" x2="640" y2="168"/>
+            <line x1="690" y1="132" x2="690" y2="168"/>
+            <line x1="720" y1="132" x2="720" y2="168"/>
+            <line x1="900" y1="132" x2="900" y2="168"/>
+            <line x1="930" y1="132" x2="930" y2="168"/>
+          </g>
+          <g font-family="JetBrains Mono" font-size="15" fill="#8FA3B8">
+            <text x="70"  y="195" text-anchor="middle">NORD STREAM</text>
+            <text x="300" y="195" text-anchor="middle">BALTICCONNECTOR</text>
+            <text x="600" y="118" text-anchor="middle" fill="#41E3FF">YI PENG 3</text>
+            <text x="705" y="210" text-anchor="middle">EAGLE S</text>
+            <text x="915" y="195" text-anchor="middle">LV–SE</text>
+          </g>
+          <g font-family="JetBrains Mono" font-size="14" fill="#4A5A74">
+            <text x="40"  y="55">2022</text><text x="960" y="55" text-anchor="end">2026</text>
+          </g>
+        </svg>
+      </div>
+      <div class="sub" style="font-size:2.1cqw">A <strong>€20,000 anchor</strong> severs a billion-euro artery — and takes weeks to repair. Cheap, deniable, attritional.</div>
+    </div>
+    <div class="foot"><span>heimdall.ai · data/reference/incidents.csv</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 5 · PRIORITIZATION ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">The real problem</div>
+      <div class="viz"><svg id="swarm" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <h1 class="lead" style="font-size:5.4cqw">We don't lack alerts.<br>We lack <span class="cy">prioritization.</span></h1>
+      <div class="sub" style="margin-top:1.6cqh;font-size:2cqw">The ocean is too big. The sensors that actually see — satellites — are too few. <strong>Where do we point the next one, in the next hour?</strong></div>
+    </div>
+    <div class="foot"><span>heimdall.ai · the tip-and-cue problem</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 6 · SHIPS LIE ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker amber">The catch</div>
+      <div class="spacer"></div>
+      <h1 class="lead">AIS is what a ship <span class="cy">says.</span></h1>
+      <div class="sub" style="margin-top:2.4cqh">Every vessel broadcasts who it is. But AIS is <strong>self-reported</strong> — spoof it, fake the identity, or switch it off. The cheapest signal is the one the adversary controls. A ship that wants to cut a cable simply <strong>goes dark.</strong></div>
+      <div class="spacer"></div>
+      <div style="display:flex;gap:1.4cqw">
+        <span class="tag amber">SPOOFABLE</span><span class="tag amber">FAKEABLE</span><span class="tag amber">SWITCH-OFF-ABLE</span>
+      </div>
+    </div>
+    <div class="foot"><span>heimdall.ai</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 7 · THREE SENSES ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">Meet Heimdall</div>
+      <h1 class="lead" style="font-size:5.2cqw">Three senses. One watch.</h1>
+      <div class="triptych">
+        <div class="scard"><svg width="6cqw" height="6cqw"><use href="#memglyph"/></svg>
+          <div class="st">Memory</div><div class="sn">Ship Scoring</div>
+          <div class="sd">Every vessel's class, history, sanctions &amp; behaviour — scored for how out-of-character it is now.</div></div>
+        <div class="scard"><svg width="6cqw" height="6cqw"><use href="#reticle"/></svg>
+          <div class="st">Eyes</div><div class="sn">SAR Vision</div>
+          <div class="sd">A fine-tuned detector that finds the ships on the actual water — through cloud, through dark, whatever they broadcast.</div></div>
+        <div class="scard"><svg width="6cqw" height="6cqw"><use href="#mapglyph"/></svg>
+          <div class="st">The map</div><div class="sn">Geography</div>
+          <div class="sd">Every cable, pipeline &amp; base as a map of strategic value — what's actually worth protecting.</div></div>
+      </div>
+    </div>
+    <div class="foot"><span>heimdall.ai</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 8 · SENSE 1 SCORING ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">Sense 01 · Memory</div>
+      <div class="spacer"></div>
+      <div style="display:flex;align-items:center;gap:3cqw">
+        <svg width="9cqw" height="9cqw" style="color:var(--cyan);flex:none"><use href="#memglyph"/></svg>
+        <h1 class="lead" style="font-size:5.6cqw">Knows every ship's story.</h1>
+      </div>
+      <div class="sub" style="margin-top:2.4cqh">Class · track history · sanctions &amp; shadow-fleet · behavioural coherence. Point-in-time, no look-ahead — and every score is explainable.</div>
+      <div class="spacer"></div>
+      <div><span class="tag amber"><span class="dot"></span>…but it only knows what AIS tells it. Lie to it, and it believes the lie.</span></div>
+    </div>
+    <div class="foot"><span>heimdall.ai · scoring engine · 60 tests</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 9 · SENSE 2 SAR ===== -->
+  <section class="slide" style="background:#04070d">
+    <div class="imgframe" style="position:absolute;inset:0;border:none">
+      <img src="assets/sar_clion1.jpg" alt="Sentinel-1 SAR scene, C-Lion1 incident area" style="opacity:.62;filter:grayscale(1) brightness(.7) contrast(1.25)" onerror="this.style.display='none'">
+    </div>
+    <div class="grad-bottom"></div>
+    <!-- a couple of detection reticles over the SAR -->
+    <svg viewBox="0 0 1000 562" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;color:var(--sensor-sar)">
+      <g fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M250 165 v-16 h16 M322 149 h16 v16 M338 205 v16 h-16 M266 221 h-16 v-16"/>
+        <path d="M523 250 v-13 h13 M580 237 h13 v13 M593 282 v13 h-13 M536 295 h-13 v-13"/>
+        <path d="M404 360 v-13 h13 M461 347 h13 v13 M474 392 v13 h-13 M417 405 h-13 v-13"/>
+      </g>
+    </svg>
+    <div class="pad" style="justify-content:flex-end">
+      <div class="kicker">Sense 02 · Eyes · Sentinel-1 SAR</div>
+      <h1 class="lead" style="font-size:5.6cqw;margin-top:1cqh">Ground truth.<br>Can't be spoofed.</h1>
+      <div style="margin-top:1.8cqh"><span class="tag amber"><span class="dot"></span>…but a radar blob has no name — and passes are scarce.</span></div>
+    </div>
+    <div class="foot"><span>Real Sentinel-1 scene · C-Lion1 area · 17–18 Nov 2024</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 10 · THE MODEL (BEFORE / AFTER) ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">The model that makes the eyes work</div>
+      <h1 class="lead" style="font-size:3.7cqw;margin:.3cqh 0 1.2cqh">Off-the-shelf AI is blind to radar. <span class="cy">Ours isn't.</span></h1>
+      <div class="ba">
+        <div class="col before">
+          <div class="colhead"><span class="clab">Base YOLOv8n · off-the-shelf</span><span class="cnote">misses the ships</span></div>
+          <div class="imgframe contain" data-note="DROP: assets/model_before.png — base-model panel from compare_before_after_finetuning.py">
+            <img src="assets/model_before.png" alt="Base model on SAR" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
+          </div>
+        </div>
+        <div class="col after">
+          <div class="colhead"><span class="clab">Fine-tuned on HRSID · SAR</span><span class="cnote">locks every hull</span></div>
+          <div class="imgframe contain" data-note="DROP: assets/model_after.png — fine-tuned panel">
+            <img src="assets/model_after.png" alt="Fine-tuned model on SAR" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
+          </div>
+        </div>
+      </div>
+      <div class="statband">
+        <div><div class="big">0&nbsp;<span style="color:var(--muted)">→</span>&nbsp;105</div></div>
+        <div class="bl"><strong style="color:var(--ice)">ships found on the same held-out SAR scene</strong>, same threshold — off-the-shelf YOLOv8n: 0; our fine-tune: the whole harbour.<br>~0.91 mAP50 across the HRSID test set.</div>
+      </div>
+    </div>
+    <div class="foot"><span>scoring/train_yolov8_hrsid.py · scripts/eval/compare_before_after_finetuning.py</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 11 · SENSE 3 GEOGRAPHY ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">Sense 03 · The map</div>
+      <div class="spacer"></div>
+      <div style="display:flex;align-items:center;gap:3cqw">
+        <svg width="9cqw" height="9cqw" style="color:var(--cyan);flex:none"><use href="#mapglyph"/></svg>
+        <h1 class="lead" style="font-size:5cqw">Knows what's<br>worth protecting.</h1>
+      </div>
+      <div class="sub" style="margin-top:2.2cqh">Turns "a ship slowed down" into "a ship slowed down <strong>right over the C-Lion1 crossing.</strong>" 36+ layers: cables, pipelines, naval bases, chokepoints.</div>
+      <div class="spacer"></div>
+      <div><span class="tag amber"><span class="dot"></span>…but alone it's just a map — everything near a cable looks busy.</span></div>
+    </div>
+    <div class="foot"><span>heimdall.ai · criticality surface</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 12 · ALONE, BLIND ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker red">The turn</div>
+      <h1 class="lead" style="font-size:5cqw">Alone, each one is blind.</h1>
+      <div class="triptych">
+        <div class="scard dim"><svg width="5cqw" height="5cqw"><use href="#memglyph"/></svg>
+          <div class="sn">Ship Scoring</div><div class="xfail">✗ Lied to</div></div>
+        <div class="scard dim"><svg width="5cqw" height="5cqw"><use href="#reticle"/></svg>
+          <div class="sn">SAR Vision</div><div class="xfail">✗ Anonymous</div></div>
+        <div class="scard dim"><svg width="5cqw" height="5cqw"><use href="#mapglyph"/></svg>
+          <div class="sn">Geography</div><div class="xfail">✗ Noise</div></div>
+      </div>
+    </div>
+    <div class="foot"><span>heimdall.ai</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 13 · THE GAP (MONEY SLIDE) ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">The fusion</div>
+      <div class="viz" style="margin:1cqh 0">
+        <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
+          <!-- AIS tracks — what a ship SAYS (neutral slate paths) -->
+          <g fill="none" stroke="#8FA3B8" stroke-width="2" opacity=".5">
+            <path d="M40 70 C200 40 380 120 560 90 S860 60 970 110"/>
+            <path d="M40 180 C220 150 360 210 540 180 S820 150 970 200"/>
+            <path d="M40 250 C240 270 420 220 620 255 S880 280 970 250"/>
+          </g>
+          <!-- SAR contacts matched to AIS — accounted for (Aurora Teal) -->
+          <g fill="#2FD6B5"><circle cx="200" cy="95" r="5"/><circle cx="560" cy="90" r="5"/><circle cx="540" cy="180" r="5"/><circle cx="820" cy="158" r="5"/><circle cx="420" cy="232" r="5"/></g>
+          <!-- DARK: SAR contact, no AIS — hollow Breach Red glyph (brand: dark vessels are hollow) -->
+          <g fill="none" stroke="#FF4538" stroke-width="2.5">
+            <circle cx="700" cy="150" r="9"/><circle cx="700" cy="150" r="17" opacity=".45"/>
+            <text x="700" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#FF4538" stroke="none">DARK</text>
+            <circle cx="330" cy="150" r="9"/><circle cx="330" cy="150" r="17" opacity=".45"/>
+            <text x="330" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#FF4538" stroke="none">DARK</text>
+          </g>
+        </svg>
+      </div>
+      <h1 class="lead" style="font-size:3.7cqw;line-height:1.14">AIS is what a ship <span class="cy">says.</span> SAR is what a ship <span class="cy">is.</span><br>The gap between them is the <span style="color:var(--red)">threat.</span></h1>
+    </div>
+    <div class="foot"><span>heimdall.ai · dark vessels &amp; dark approaches</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 14 · DEMO ===== -->
+  <section class="slide" style="background:#04070d">
+    <div class="imgframe" style="position:absolute;inset:0;border:none" data-note="DROP: assets/Actual Incident.png — screenshot of the C-Lion1 replay (cockpit, labels off)">
+      <img src="assets/Actual%20Incident.png" alt="Heimdall app — C-Lion1 / Yi Peng 3 replay" style="opacity:.92" onerror="this.style.display='none';this.parentNode.classList.add('empty')">
+    </div>
+    <div class="grad-bottom"></div>
+    <div class="pad" style="justify-content:flex-end">
+      <div class="kicker cyan" style="color:var(--cyan)"><span style="color:var(--teal)">●</span> LIVE</div>
+      <h1 class="lead" style="font-size:4.6cqw;margin-top:1cqh">C-Lion1 / Yi Peng 3 — replayed on real AIS.</h1>
+    </div>
+    <div class="foot"><span>Switch to the live app</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 15 · VERDICT ===== -->
+  <section class="slide">
+    <div class="pad" style="flex-direction:row;gap:5cqw;align-items:center">
+      <div style="flex:1;display:flex;flex-direction:column">
+        <div class="kicker">The verdict</div>
+        <h1 class="lead" style="font-size:5.2cqw;margin-top:1cqh">Scored blind.<br>Ranked <span class="cy">#1.</span></h1>
+        <div class="sub" style="margin-top:2.4cqh;font-size:2cqw"><strong>Point-in-time. No look-ahead.</strong> The real investigation took weeks and ended with no charges. Heimdall pulled the culprit out of a thousand ships — the same morning.</div>
+      </div>
+      <div class="cuecard">
+        <div class="r1"><span class="rank">SAT 1</span><span class="chip">SAR</span><span class="sc">0.89</span></div>
+        <div class="box">BOX 15.06–15.85E · 55.25–55.70N · SATELLITE TASKING · 2024-11-18 09:00Z</div>
+        <div class="why">Yi Peng 3 — SAR dark-approach, loitering over the cable now, anomalous track record.</div>
+        <div class="terms">
+          <div class="term"><span class="tl">infra</span><span class="tbar"><span class="tfill" style="width:75%"></span></span></div>
+          <div class="term"><span class="tl">risk</span><span class="tbar"><span class="tfill" style="width:83%"></span></span></div>
+          <div class="term"><span class="tl">live</span><span class="tbar"><span class="tfill" style="width:100%"></span></span></div>
+          <div class="term"><span class="tl">sar</span><span class="tbar"><span class="tfill" style="width:100%"></span></span></div>
+          <div class="term"><span class="tl">dark</span><span class="tbar"><span class="tfill" style="width:2%"></span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>heimdall.ai · satellite tasking</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 16 · WHY NOW + WEDGE ===== -->
+  <section class="slide">
+    <div class="pad">
+      <div class="kicker">Why now</div>
+      <h1 class="lead" style="font-size:4.4cqw">The doctrine exists. The cueing layer doesn't.</h1>
+      <div class="doctrine">
+        <div class="dchip"><span class="dk">NATO</span><span class="dv">Critical Undersea Infrastructure Cell</span><span class="dd">stood up 2024</span></div>
+        <div class="dchip"><span class="dk">France</span><span class="dv">Seabed-warfare doctrine</span><span class="dd">maîtrise des fonds marins</span></div>
+        <div class="dchip"><span class="dk">EU</span><span class="dv">Cable-security mandate</span><span class="dd">recommendation 2024</span></div>
+      </div>
+      <div class="sub" style="font-size:2.2cqw;max-width:none"><strong>Everyone tracks ships. No one tasks the sensor</strong> — and the sensor is the scarce thing. That tasking decision is the layer we own. Open data → we deploy day one.</div>
+    </div>
+    <div class="foot"><span>heimdall.ai · the wedge</span><span class="sp"></span><span class="pagenum"></span></div>
+  </section>
+
+  <!-- ===== 17 · CLOSE ===== -->
+  <section class="slide" style="background:#04070d">
+    <div style="position:absolute;inset:0;background:radial-gradient(70cqw 50cqw at 50% 44%, rgba(65,227,255,.07), rgba(4,7,13,.96) 80%)"></div>
+    <div class="pad" style="justify-content:center;align-items:center;text-align:center">
+      <div class="lockup"><svg width="7cqw" height="7cqw"><use href="#mark"/></svg><span class="wm" style="font-size:5.4cqw">HEIMDALL<i>.AI</i></span></div>
+      <div class="lead" style="font-size:2.7cqw;margin-top:3.4cqh;line-height:1.3;font-weight:600">AIS is what a ship <span class="cy">says.</span> SAR is what a ship <span class="cy">is.</span><br>The gap is the <span style="color:var(--red)">threat.</span></div>
+      <div class="sub" style="margin-top:3cqh;color:var(--slate);max-width:none;font-size:1.9cqw">Looking for one design partner — a navy or a cable operator — to point Heimdall at live water.</div>
+    </div>
+    <div class="foot"><span>Data: Danish AIS · Sentinel-1 (Copernicus) · HRSID · OpenStreetMap — see SOURCES.md</span><span class="sp"></span><span>EDTH 2026 · Paris</span></div>
+  </section>
+
+</div></div>
+
+<!-- nav -->
+<div class="nav-zone left"  onclick="go(-1)"></div>
+<div class="nav-zone right" onclick="go(1)"></div>
+<div class="hint">← → / space · F fullscreen</div>
+<div class="hud"><span id="counter">1 / 17</span><button class="pdf" onclick="window.print()">SAVE PDF</button></div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const counter=document.getElementById('counter');
+  // page numbers
+  document.querySelectorAll('.pagenum').forEach((el)=>{ const s=el.closest('.slide'); el.textContent=String(slides.indexOf(s)+1).padStart(2,'0'); });
+  function show(n){ i=Math.max(0,Math.min(slides.length-1,n)); slides.forEach((s,k)=>s.classList.toggle('active',k===i)); counter.textContent=(i+1)+' / '+slides.length; location.hash=i+1; }
+  function go(d){ show(i+d); }
+  window.addEventListener('keydown',(e)=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(-1);}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  // swarm scatter (slide 5)
+  (function(){ const svg=document.getElementById('swarm'); if(!svg)return;
+    const ns='http://www.w3.org/2000/svg'; let seed=7; const rnd=()=>{seed=(seed*9301+49297)%233280; return seed/233280;};
+    for(let k=0;k<150;k++){ const c=document.createElementNS(ns,'circle');
+      c.setAttribute('cx',20+rnd()*840); c.setAttribute('cy',20+rnd()*320); c.setAttribute('r',(rnd()*1.6+1).toFixed(1));
+      c.setAttribute('fill','#8FA3B8'); c.setAttribute('opacity',(rnd()*0.5+0.25).toFixed(2)); svg.appendChild(c); }
+    // lone satellite/sensor, top-right
+    const g=document.createElementNS(ns,'g'); g.setAttribute('transform','translate(905,40)'); g.setAttribute('stroke','#41E3FF'); g.setAttribute('fill','none'); g.setAttribute('stroke-width','2.5');
+    g.innerHTML='<rect x="-9" y="-7" width="18" height="14"/><line x1="-22" y1="0" x2="-9" y2="0"/><line x1="9" y1="0" x2="22" y2="0"/><circle cx="0" cy="0" r="2.5" fill="#41E3FF"/>';
+    svg.appendChild(g);
+  })();
+  // open at hash
+  const h=parseInt(location.hash.replace('#',''))||1; show(h-1);
+</script>
+</body>
+</html>

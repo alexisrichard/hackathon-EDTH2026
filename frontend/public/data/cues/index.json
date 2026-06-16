@@ -1,0 +1,109 @@
+{
+ "scenarios": [
+  {
+   "id": "c-lion1",
+   "label": "C-Lion1 / Yi Peng 3",
+   "blurb": "Vessel-driven cue: a dark-approach contact loitering over the cable.",
+   "as_of": "2024-11-18",
+   "at": "2024-11-18T08:41:00Z",
+   "bbox": [
+    12.0,
+    53.5,
+    22.0,
+    60.0
+   ],
+   "hero_mmsi": 414270000,
+   "has_timeseries": true,
+   "top_cue": {
+    "bbox": [
+     15.0557,
+     55.2461,
+     15.8481,
+     55.6953
+    ],
+    "score": 0.8849,
+    "sensor": "SAR",
+    "terms": {
+     "infra": 0.74,
+     "vessel_risk": 0.833,
+     "live_anomaly": 1.0,
+     "sar": 1.0,
+     "dark_density": 0.0
+    },
+    "drivers": [
+     {
+      "name": "Yi Peng 3",
+      "mmsi": 414270000,
+      "type": "cargo",
+      "infra_proximity": 0.74,
+      "vessel_risk": 0.833,
+      "live_anomaly": 1.0,
+      "sar": 1.0,
+      "vessel_score": 0.8849
+     },
+     {
+      "name": "Snp Galaxy",
+      "mmsi": 314828000,
+      "type": "cargo",
+      "infra_proximity": 0.823,
+      "vessel_risk": 0.5,
+      "live_anomaly": 0.0,
+      "sar": 1.0,
+      "vessel_score": 0.6058
+     },
+     {
+      "name": "African Dragon",
+      "mmsi": 232052663,
+      "type": "cargo",
+      "infra_proximity": 0.0,
+      "vessel_risk": 0.5,
+      "live_anomaly": 0.0,
+      "sar": 1.0,
+      "vessel_score": 0.4
+     }
+    ],
+    "dark_contacts": 0,
+    "why": "Yi Peng 3: SAR dark-approach/blackout, loitering/slow now, anomalous track record",
+    "disclaimer": "Defensive collection cue; not for targeting.",
+    "rank": 1
+   }
+  },
+  {
+   "id": "nord-stream",
+   "label": "Nord Stream",
+   "blurb": "Dark-density cue: SAR contacts with no AIS \u2014 the suspect went dark.",
+   "as_of": "2022-09-26",
+   "at": "2022-09-26T06:00:00Z",
+   "bbox": [
+    13.0,
+    54.0,
+    18.0,
+    57.0
+   ],
+   "hero_mmsi": null,
+   "has_timeseries": false,
+   "top_cue": {
+    "bbox": [
+     15.0557,
+     55.2461,
+     15.8481,
+     55.6953
+    ],
+    "score": 1.0,
+    "sensor": "SAR",
+    "terms": {
+     "infra": 0.0,
+     "vessel_risk": 0.0,
+     "live_anomaly": 0.0,
+     "sar": 0.0,
+     "dark_density": 1.0
+    },
+    "drivers": [],
+    "dark_contacts": 82,
+    "why": "82 dark SAR contacts, no AIS \u2014 a suspect that went dark",
+    "disclaimer": "Defensive collection cue; not for targeting.",
+    "rank": 1
+   }
+  }
+ ]
+}

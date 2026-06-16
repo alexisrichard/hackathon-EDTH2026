@@ -1,67 +1,51 @@
-"""Sync large data layers from s3://edth2026-baltic/ to local data/.
+"""RETIRED — the project's S3 bucket (s3://edth2026-baltic/) has been deleted.
 
-Used by teammates after cloning the repo to pull files that are too large for git
-(EMODnet cables combined, Marine Regions EEZ, AIS Parquet snapshots).
+This script used to pull the large data layers from S3. The bucket no longer exists
+(retired to stop incurring storage cost). Nothing here downloads anymore; instead it
+prints the public-source rebuild command for whatever layer you ask for, so an old
+muscle-memory invocation guides you to the new path instead of failing cryptically.
 
-Usage:
-  python scripts/common/sync_from_s3.py geo            # all geo/ layers
-  python scripts/common/sync_from_s3.py reference      # sanctions + incidents
-  python scripts/common/sync_from_s3.py kaggle         # ML training datasets (~24 GB)
-  python scripts/common/sync_from_s3.py ais YYYY-MM-DD # one day of Danish AIS
-  python scripts/common/sync_from_s3.py all            # everything small (geo + reference)
+Everything regenerates from its ORIGINAL public source — see DATA_GUIDE.md. The demo
+itself needs none of this: the frontend + scoring engine run from data committed in
+git (cues, geo/incident overlays, and the hero-incident AIS replay days).
 """
 from __future__ import annotations
 
-import subprocess
 import sys
 
-BUCKET = "edth2026-baltic"
-
-SYNCS: dict[str, tuple[str, str]] = {
-    "geo": (f"s3://{BUCKET}/geo/", "data/geo/"),
-    "reference": (f"s3://{BUCKET}/reference/", "data/reference/"),
+# label -> (what it was, how to rebuild it from the public source now)
+REBUILD: dict[str, tuple[str, str]] = {
+    "geo": (
+        "criticality / infrastructure GeoJSON layers (OSM, EMODnet, HELCOM, NE, GMRT — all public)",
+        "python scripts/geo/fetch_osm_layers.py  (+ fetch_emodnet_layers.py, fetch_helcom.py, "
+        "fetch_marine_regions_eez.py, fetch_natural_earth.py, fetch_bathymetry.py) — see DATA_GUIDE.md",
+    ),
+    "reference": (
+        "sanctions, incidents, marine weather, registry lookups",
+        "python scripts/reference/fetch_sanctions.py  &&  python scripts/ingest/fetch_marine_weather.py",
+    ),
+    "kaggle": (
+        "10 Kaggle ML datasets (~24 GB) — needs a free Kaggle account (~/.kaggle/kaggle.json)",
+        "python scripts/ingest/fetch_kaggle.py --skip-s3",
+    ),
+    "ais": (
+        "Danish AIS parquet (Danish Maritime Authority, public)",
+        "python scripts/ingest/danish_ais.py date YYYY-MM-DD   # or `… incidents` for the incident windows",
+    ),
 }
-
-# Large prefixes excluded from "all" — pull explicitly by name.
-LARGE_SYNCS: dict[str, tuple[str, str]] = {
-    "kaggle": (f"s3://{BUCKET}/kaggle/", "data/reference/raw/kaggle/"),
-}
-
-
-def run(args: list[str]) -> int:
-    print(f"$ {' '.join(args)}", flush=True)
-    return subprocess.call(args)
-
-
-def cmd_sync_prefix(label: str) -> int:
-    src, dst = {**SYNCS, **LARGE_SYNCS}[label]
-    return run(["aws", "s3", "sync", src, dst, "--exclude", "*.keep"])
-
-
-def cmd_ais_day(date_str: str) -> int:
-    # YYYY-MM-DD
-    y, m, d = date_str.split("-")
-    src = f"s3://{BUCKET}/ais/parquet/source=danish/year={y}/month={m}/day={d}/"
-    dst = f"data/ais/parquet/source=danish/year={y}/month={m}/day={d}/"
-    return run(["aws", "s3", "sync", src, dst])
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) < 2:
-        print(__doc__, file=sys.stderr)
-        return 2
-    cmd = argv[1]
-    if cmd in SYNCS or cmd in LARGE_SYNCS:
-        return cmd_sync_prefix(cmd)
-    if cmd == "ais" and len(argv) >= 3:
-        return cmd_ais_day(argv[2])
-    if cmd == "all":
-        rc = 0
-        for label in SYNCS:
-            rc |= cmd_sync_prefix(label)
-        return rc
-    print(__doc__, file=sys.stderr)
-    return 2
+    print(__doc__)
+    asked = argv[1] if len(argv) > 1 else None
+    print("Rebuild from public sources:\n")
+    for label, (what, how) in REBUILD.items():
+        marker = "→" if label == asked else " "
+        print(f" {marker} {label:10s} {what}\n              {how}\n")
+    if asked and asked not in REBUILD and asked != "all":
+        print(f"(unknown layer '{asked}' — pick one of: {', '.join(REBUILD)})")
+    # Non-zero so any script that chained on a successful sync notices the change.
+    return 1
 
 
 if __name__ == "__main__":

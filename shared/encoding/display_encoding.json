@@ -1,0 +1,55 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for display encoding shared by backend (Python) and frontend (TypeScript). Backend reads this to fill ScoredVessel display hints; frontend reads it (mirrored in TS) to render. Do not drift the two consumers apart — change here, regenerate/mirror in both. See shared/encoding/README.md.",
+  "version": 1,
+
+  "ship_type_to_shape": {
+    "_comment": "Maps the normalized ShipType enum -> a deck.gl-friendly icon/shape key. 'triangle' points along COG for moving vessels; 'square'/'diamond' etc. are static glyphs.",
+    "tanker": "triangle",
+    "cargo": "square",
+    "fishing": "diamond",
+    "passenger": "pentagon",
+    "ropax": "pentagon",
+    "tug": "cross",
+    "pleasure": "circle",
+    "high_speed": "chevron",
+    "military": "shield",
+    "law_enforcement": "shield",
+    "search_and_rescue": "shield",
+    "research": "hexagon",
+    "dredger": "square",
+    "pilot": "cross",
+    "port_tender": "cross",
+    "anti_pollution": "cross",
+    "wing_in_ground": "chevron",
+    "other": "circle",
+    "unknown": "circle"
+  },
+
+  "suspicion_color_stops": {
+    "_comment": "Piecewise-linear color ramp from suspicion 0.0 (calm) -> 1.0 (hot). Each stop is [score, [r,g,b]]. Consumers interpolate between adjacent stops. Tuned for a dark ops basemap: cool blue -> teal -> amber -> red.",
+    "stops": [
+      [0.0,  [56, 142, 211]],
+      [0.25, [46, 196, 182]],
+      [0.5,  [255, 209, 102]],
+      [0.75, [239, 138, 56]],
+      [1.0,  [230, 57, 70]]
+    ]
+  },
+
+  "suspicion_bands": {
+    "_comment": "Discrete bands for legends / alert-feed grouping. [min_inclusive, max_exclusive] except the top band which is inclusive of 1.0.",
+    "calm":     [0.0, 0.25],
+    "watch":    [0.25, 0.5],
+    "elevated": [0.5, 0.75],
+    "high":     [0.75, 0.9],
+    "critical": [0.9, 1.0001]
+  },
+
+  "sensor_colors": {
+    "_comment": "Color per recommended sensor for the cueing overlay boxes.",
+    "SAR":     [122, 162, 247],
+    "optical": [158, 206, 106],
+    "AIS":     [125, 207, 255],
+    "DAS":     [187, 154, 247]
+  }
+}

@@ -1,22 +1,25 @@
-"""Download approved Kaggle datasets and mirror them to S3.
+"""Download approved Kaggle datasets to local disk (S3 mirror optional).
 
-Each dataset downloads (zip + auto-extract) into data/reference/raw/kaggle/<slug>/
-then syncs to s3://edth2026-baltic/kaggle/<slug>/. Both steps are skip-if-exists
+Each dataset downloads (zip + auto-extract) into data/reference/raw/kaggle/<slug>/.
+S3 retired — writes locally by default; set EDTH_UPLOAD_S3=1 to mirror to your own
+bucket (was s3://edth2026-baltic/kaggle/<slug>/). Both steps are skip-if-exists
 idempotent. Logs license + size + S3 status to
 data/reference/kaggle_datasets_INDEX.csv for downstream documentation.
 
 Auth: kaggle CLI reads ~/.kaggle/access_token (or ~/.kaggle/kaggle.json).
-S3: uses the ambient AWS credentials (aws configure / ~/.aws/credentials).
+S3 (only when EDTH_UPLOAD_S3=1): uses the ambient AWS credentials.
 
 Usage:
-  python scripts/ingest/fetch_kaggle.py            # download + upload all
-  python scripts/ingest/fetch_kaggle.py --skip-s3  # download locally only
+  python scripts/ingest/fetch_kaggle.py            # download locally only (default)
+  EDTH_UPLOAD_S3=1 python scripts/ingest/fetch_kaggle.py  # also mirror to S3
+  python scripts/ingest/fetch_kaggle.py --skip-s3  # force-skip S3 (also the default)
 
 Approved list (curated 2026-05-18) — see chat for rationale.
 """
 from __future__ import annotations
 
 import csv
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -28,6 +31,9 @@ INDEX_CSV = Path("data/reference/kaggle_datasets_INDEX.csv")
 
 BUCKET = "edth2026-baltic"
 S3_PREFIX = f"s3://{BUCKET}/kaggle"
+
+# S3 retired: upload is opt-in. Default OFF so the repo rebuilds locally with no AWS.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 
 def kaggle_exe() -> str:
@@ -101,13 +107,16 @@ def upload_to_s3(slug: str) -> tuple[str, str]:
 
 
 def main(argv: list[str]) -> int:
+    # Upload only when explicitly enabled (EDTH_UPLOAD_S3=1) AND not force-skipped.
+    # --skip-s3 forces off; default is off regardless.
     skip_s3 = "--skip-s3" in argv[1:]
+    do_upload = UPLOAD_TO_S3 and not skip_s3
     rows: list[dict] = []
     for slug, category, why in DATASETS:
         print(f"\n=== {slug} ({category}) ===", flush=True)
         ok, size_mb, status = download(slug)
         s3_uri, s3_status = "", "skipped"
-        if ok and not skip_s3:
+        if ok and do_upload:
             s3_uri, s3_status = upload_to_s3(slug)
         rows.append({
             "slug": slug,

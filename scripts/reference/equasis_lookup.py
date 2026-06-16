@@ -185,7 +185,10 @@ def parse_ship_info(html: str, imo: str) -> dict:
     return out
 
 
-_s3 = boto3.client("s3", region_name="eu-west-3")
+# S3 RETIRED — equasis lookups stay LOCAL by default (OUT_DIR). Set EDTH_UPLOAD_S3=1
+# to also mirror parsed JSON to a dest bucket of your own.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
+_s3 = boto3.client("s3", region_name="eu-west-3") if UPLOAD_TO_S3 else None
 
 
 def lookup_one(session: requests.Session, imo: str) -> dict | None:
@@ -203,11 +206,13 @@ def lookup_one(session: requests.Session, imo: str) -> dict | None:
     out_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
     raw_path = OUT_DIR / f"{imo}.raw.html"
     raw_path.write_text(html, encoding="utf-8")
-    # Mirror to S3 (parsed JSON only — raw HTML stays local for repro)
-    try:
-        _s3.upload_file(str(out_path), "edth2026-baltic", f"reference/equasis/{out_path.name}")
-    except Exception as ex:
-        print(f"  {imo}: S3 upload failed ({ex})", flush=True)
+    # Mirror parsed JSON to your own bucket only if EDTH_UPLOAD_S3=1 (S3 retired;
+    # the local OUT_DIR JSON is the artifact). Raw HTML always stays local for repro.
+    if UPLOAD_TO_S3:
+        try:
+            _s3.upload_file(str(out_path), "edth2026-baltic", f"reference/equasis/{out_path.name}")
+        except Exception as ex:
+            print(f"  {imo}: S3 upload failed ({ex})", flush=True)
     print(f"  {imo}: ok ({len(data.get('tables',[]))} tables, {raw_path.stat().st_size//1024} KB raw)", flush=True)
     return data
 

@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "INC-2025-01-26",
+  "title": "Latvia-Sweden telecommunications cable damage",
+  "last_reviewed_utc": "2026-06-13",
+  "event_time": {
+    "replay_anchor_utc": "2025-01-26T03:00:00Z",
+    "precision": "catalogue_anchor",
+    "confidence": "medium",
+    "note": "Inherited from incidents.csv. The Swedish prosecutor states only that the damage was discovered during the night of 26 January, so this is a replay anchor rather than a verified contact time."
+  },
+  "location": {
+    "latitude": 57.6,
+    "longitude": 19.5,
+    "precision": "segment_midpoint",
+    "confidence": "medium",
+    "note": "Approximate midpoint between Gotland and Latvia from incidents.csv; not a forensic contact coordinate."
+  },
+  "infrastructure": [
+    {
+      "name": "LVRTC Ventspils-Gotland fibre-optic cable",
+      "type": "telecom_cable",
+      "effect": "damaged",
+      "confidence": "high"
+    }
+  ],
+  "vessel": {
+    "name": "Vezhen",
+    "flag": "Malta",
+    "type": "bulk_carrier",
+    "mmsi": "229659000",
+    "imo": "9937270",
+    "association": "The Swedish prosecutor stated that the seized vessel caused the cable break.",
+    "association_confidence": "high"
+  },
+  "classification": {
+    "incident_type": "undersea_infrastructure_damage",
+    "physical_cause": {
+      "label": "vessel_caused_cable_break",
+      "confidence": "high",
+      "basis": "The official investigation attributed the break to the vessel and to a combination of weather, equipment deficiencies, and seamanship deficiencies."
+    },
+    "intent_assessment": {
+      "label": "not_sabotage",
+      "confidence": "high",
+      "basis": "The Swedish prosecutor stated that the investigation clearly established that the event was not sabotage."
+    },
+    "legal_status": {
+      "label": "sabotage_ruled_out_other_possible_offences_still_under_review_in_latest_cited_update",
+      "as_of": "2025-02-03",
+      "confidence": "high",
+      "basis": "The vessel seizure was lifted; the preliminary investigation continued at that point only to determine whether other offences might be suspected."
+    }
+  },
+  "timeline": [
+    {
+      "time_utc": "2025-01-26T00:00:00Z",
+      "time_precision": "date_only",
+      "phase": "initial_response",
+      "description": "A preliminary investigation into suspected aggravated sabotage was opened and a vessel was seized.",
+      "confidence": "high",
+      "source_ids": ["SE_PROSECUTOR_2025_OPENED"]
+    },
+    {
+      "time_utc": "2025-01-26T03:00:00Z",
+      "time_precision": "catalogue_anchor",
+      "phase": "event",
+      "description": "Replay anchor during the night in which the Latvia-Sweden communications cable damage was discovered.",
+      "confidence": "medium",
+      "source_ids": ["LOCAL_INCIDENT_CATALOGUE", "SE_PROSECUTOR_2025_RELEASE"]
+    },
+    {
+      "time_utc": "2025-02-03T11:01:17Z",
+      "time_precision": "publication_time",
+      "phase": "investigative_finding",
+      "description": "The prosecutor ruled out sabotage, attributed the break to the seized vessel, and cited weather, equipment deficiencies, and seamanship deficiencies.",
+      "confidence": "high",
+      "source_ids": ["SE_PROSECUTOR_2025_RELEASE"]
+    }
+  ],
+  "evidence": [
+    {
+      "type": "multi_source_investigation",
+      "finding": "Interviews, seized material and crime-scene examinations supported the finding that the seized vessel caused the break and that it was not sabotage.",
+      "confidence": "high",
+      "source_ids": ["SE_PROSECUTOR_2025_RELEASE"]
+    },
+    {
+      "type": "contributing_factors",
+      "finding": "The prosecutor identified a combination of weather conditions, equipment deficiencies and seamanship deficiencies.",
+      "confidence": "high",
+      "source_ids": ["SE_PROSECUTOR_2025_RELEASE"]
+    }
+  ],
+  "local_data": {
+    "ais_track": {
+      "available": false,
+      "note": "No validated incident vessel track is packaged in this dossier."
+    },
+    "gfw_identity_summary": {
+      "available": true,
+      "source_file": "../gfw_vessel_summary.csv",
+      "identity_match": {
+        "shipname": "VEZHEN",
+        "flag": "MLT",
+        "mmsi": "229659000",
+        "imo": "9937270",
+        "gfw_vessel_id": "e03af7b8a-a6ce-7fc3-8411-cd483d44290c"
+      },
+      "event_counts": {
+        "port_visits": 30,
+        "loitering": 1,
+        "encounters": 0,
+        "gaps": 0,
+        "fishing": 0
+      },
+      "caveat": "Aggregate GFW event counts are not an incident track and do not prove behaviour at the cable. Similar DE ZHEN records are excluded as name collisions."
+    },
+    "weather_sample": {
+      "sample_time_utc": "2025-01-26T03:00:00Z",
+      "wave_height_m": 1.32,
+      "wind_speed_10m_kmh": 27.9,
+      "wind_gusts_10m_kmh": 41.0,
+      "source_file": "../marine_weather/INC-2025-01-26.json",
+      "caveat": "Open-Meteo model/reanalysis sample at the approximate segment midpoint; it provides context but does not independently prove the prosecutor's weather finding."
+    },
+    "sentinel_catalogue": {
+      "source_file": "../sentinel_scenes.csv",
+      "sentinel_1_scene_count": 16,
+      "sentinel_2_scene_count": 30,
+      "nearest_sentinel_1_utc": "2025-01-25T16:13:18.966579Z",
+      "nearest_sentinel_1_offset_hours": -10.78,
+      "nearest_sentinel_2_utc": "2025-01-26T09:55:14.509000Z",
+      "nearest_sentinel_2_offset_hours": 6.92,
+      "nearest_sentinel_2_cloud_cover_percent": 100.0,
+      "note": "Catalogue availability only. The closest listed optical scene is fully cloud-covered."
+    }
+  },
+  "demo_guidance": {
+    "safe_summary": "A confirmed vessel-caused cable break that the Swedish investigation ruled was not sabotage; weather, equipment and seamanship deficiencies contributed.",
+    "cueing_signals": [
+      "anchor-drag-compatible movement near a critical cable",
+      "weather conditions that can increase anchor and handling risk",
+      "equipment or handling uncertainty",
+      "SAR preferred when optical coverage is cloud-obscured"
+    ],
+    "do_not_say": "Do not call this sabotage or use proximity to a Russian port as evidence of intent."
+  },
+  "sources": [
+    {
+      "id": "LOCAL_INCIDENT_CATALOGUE",
+      "publisher": "EDTH 2026 project",
+      "title": "Baltic incident catalogue",
+      "url": "../incidents.csv",
+      "published_at": null,
+      "source_type": "local_catalogue"
+    },
+    {
+      "id": "SE_PROSECUTOR_2025_OPENED",
+      "publisher": "Swedish Prosecution Authority",
+      "title": "Preliminary investigation opened after cable break in the Baltic Sea",
+      "url": "https://www.aklagare.se/for-media/pressmeddelanden/2025/januari/forundersokning-inledd-efter-kabelbrott-i-ostersjon/",
+      "published_at": "2025-01-26T20:56:15+01:00",
+      "source_type": "competent_authority",
+      "language": "sv"
+    },
+    {
+      "id": "SE_PROSECUTOR_2025_RELEASE",
+      "publisher": "Swedish Prosecution Authority",
+      "title": "Prosecutor lifts decision on seized vessel",
+      "url": "https://www.aklagare.se/for-media/pressmeddelanden/2025/februari/aklagaren-haver-beslut-om-beslagtaget-fartyg/",
+      "published_at": "2025-02-03T12:01:17+01:00",
+      "source_type": "competent_authority",
+      "language": "sv"
+    }
+  ]
+}

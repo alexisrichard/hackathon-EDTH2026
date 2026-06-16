@@ -11,6 +11,9 @@ Outputs:
   data/reference/gfw_events/<vesselId>_<event_type>.json — per-vessel events
   data/reference/gfw_vessel_summary.csv     — flat summary table
 
+S3 retired — writes locally by default; set EDTH_UPLOAD_S3=1 to mirror to your
+own bucket (was s3://edth2026-baltic/reference/...).
+
 License: GFW data is free for research with attribution. Token in .env.local.
 """
 from __future__ import annotations
@@ -22,13 +25,15 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
-import boto3
 import pandas as pd
 import requests
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT / ".env.local")
+
+# S3 retired: upload is opt-in. Default OFF so the repo rebuilds locally with no AWS.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 TOKEN = os.environ.get("GFW_API_TOKEN")
 if not TOKEN:
@@ -111,7 +116,10 @@ def fetch_events_for_vessel(vessel_id: str, dataset: str,
 
 
 def main() -> int:
-    s3 = boto3.client("s3", region_name="eu-west-3")
+    s3 = None
+    if UPLOAD_TO_S3:
+        import boto3
+        s3 = boto3.client("s3", region_name="eu-west-3")
     summary_rows: list[dict] = []
 
     for label, imo, name_query, inc_id, inc_date_str in INCIDENT_VESSELS:
@@ -145,7 +153,8 @@ def main() -> int:
                                         "queries": queries,
                                         "vessels": [v["entry"] for v in unique.values()]}, indent=2),
                             encoding="utf-8")
-        s3.upload_file(str(vs_file), "edth2026-baltic", f"reference/gfw_vessels/{vs_file.name}")
+        if UPLOAD_TO_S3:
+            s3.upload_file(str(vs_file), "edth2026-baltic", f"reference/gfw_vessels/{vs_file.name}")
 
         # Step 2: events per vessel
         inc_d = datetime.fromisoformat(inc_date_str).date()
@@ -175,7 +184,8 @@ def main() -> int:
                     "entries": entries,
                 }
                 out_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-                s3.upload_file(str(out_file), "edth2026-baltic", f"reference/gfw_events/{out_file.name}")
+                if UPLOAD_TO_S3:
+                    s3.upload_file(str(out_file), "edth2026-baltic", f"reference/gfw_events/{out_file.name}")
                 print(f"    {ev_label:12s}: {len(entries):4d} events  -> {out_file.name}", flush=True)
                 summary_rows.append({
                     "incident_id": inc_id,

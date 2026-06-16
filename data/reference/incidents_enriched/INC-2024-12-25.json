@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "INC-2024-12-25",
+  "title": "EstLink 2 and telecommunications cable damage",
+  "last_reviewed_utc": "2026-06-13",
+  "event_time": {
+    "replay_anchor_utc": "2024-12-25T10:26:00Z",
+    "precision": "operator_disconnection_time",
+    "confidence": "high",
+    "note": "Fingrid records the EstLink 2 disconnection at 12:26 Finnish time (10:26 UTC). The former 12:30 UTC catalogue value has been corrected."
+  },
+  "location": {
+    "latitude": 60.3,
+    "longitude": 26.5,
+    "precision": "segment_midpoint",
+    "confidence": "medium",
+    "note": "Approximate Gulf of Finland segment midpoint from incidents.csv; not a forensic contact coordinate."
+  },
+  "infrastructure": [
+    {
+      "name": "EstLink 2",
+      "type": "power_cable",
+      "effect": "disconnected_and_submarine_cable_fault_confirmed",
+      "confidence": "high"
+    },
+    {
+      "name": "Four Finland-Estonia telecommunications cables",
+      "type": "telecom_cable",
+      "effect": "ruptured_in_the_same_sequence",
+      "confidence": "medium"
+    }
+  ],
+  "vessel": {
+    "name": "Eagle S",
+    "flag": "Cook Islands",
+    "type": "oil_tanker",
+    "mmsi": null,
+    "imo": null,
+    "association": "Finnish investigators reconstructed an approximately 100 km seabed drag trace and recovered an anchor for examination in relation to Eagle S.",
+    "association_confidence": "high"
+  },
+  "classification": {
+    "incident_type": "multi_asset_undersea_infrastructure_damage",
+    "physical_cause": {
+      "label": "anchor_drag",
+      "confidence": "high",
+      "basis": "Finnish police reported an approximately 100 km seabed drag trace and an anchor recovered near the location where Eagle S was instructed to raise the anchor it had been dragging."
+    },
+    "intent_assessment": {
+      "label": "not_finally_adjudicated",
+      "confidence": "high",
+      "basis": "The district court ruling cited here was jurisdictional. It did not establish that the physical event was accidental or that prosecutors failed to prove intent on the merits."
+    },
+    "legal_status": {
+      "label": "district_court_inadmissibility_ruling_under_appeal",
+      "as_of": "2025-10-09",
+      "confidence": "high",
+      "basis": "The Helsinki District Court ruled the charges inadmissible on UNCLOS-related jurisdiction grounds on 3 October 2025. The Deputy Prosecutor General filed notice of appeal."
+    }
+  },
+  "timeline": [
+    {
+      "time_utc": "2024-12-25T10:26:00Z",
+      "time_precision": "operator_disconnection_time",
+      "phase": "event",
+      "description": "EstLink 2 disconnected from the grid; the fault was later located in the submarine cable.",
+      "confidence": "high",
+      "source_ids": ["FINGRID_2024_OUTAGE_TIME", "FINGRID_2024_FAULT"]
+    },
+    {
+      "time_utc": "2025-01-06T00:00:00Z",
+      "time_precision": "date_only",
+      "phase": "evidence_recovery",
+      "description": "Authorities recovered an approximately 11-ton anchor from the Gulf of Finland.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2025_ANCHOR"]
+    },
+    {
+      "time_utc": "2025-01-09T15:03:00Z",
+      "time_precision": "publication_time",
+      "phase": "technical_finding",
+      "description": "Police reported an approximately 100 km seabed drag trace and said the technical sequence was already quite clear.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2025_ANCHOR"]
+    },
+    {
+      "time_utc": "2025-10-03T00:00:00Z",
+      "time_precision": "date_only",
+      "phase": "legal_finding",
+      "description": "Helsinki District Court ruled the charges inadmissible because Finnish criminal law could not be applied under UNCLOS-related jurisdiction restrictions.",
+      "confidence": "high",
+      "source_ids": ["FI_PROSECUTOR_2025_APPEAL"]
+    },
+    {
+      "time_utc": "2025-10-09T08:15:00Z",
+      "time_precision": "publication_time",
+      "phase": "legal_status",
+      "description": "The Deputy Prosecutor General announced an appeal to the Helsinki Court of Appeal.",
+      "confidence": "high",
+      "source_ids": ["FI_PROSECUTOR_2025_APPEAL"]
+    }
+  ],
+  "evidence": [
+    {
+      "type": "seabed_trace",
+      "finding": "Underwater investigation identified an approximately 100 km drag trace.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2025_ANCHOR"]
+    },
+    {
+      "type": "recovered_object",
+      "finding": "Authorities recovered an approximately 4 m by 2.5 m, 11-ton anchor for forensic examination and identity confirmation.",
+      "confidence": "high",
+      "source_ids": ["FI_POLICE_2025_ANCHOR"]
+    },
+    {
+      "type": "infrastructure_telemetry",
+      "finding": "EstLink 2 disconnected and the operator subsequently located the fault in the submarine cable.",
+      "confidence": "high",
+      "source_ids": ["FINGRID_2024_FAULT"]
+    }
+  ],
+  "local_data": {
+    "ais_track": {
+      "available": false,
+      "note": "No validated incident vessel track is packaged in this dossier."
+    },
+    "weather_sample": {
+      "sample_time_utc": "2024-12-25T10:00:00Z",
+      "wave_height_m": 0.98,
+      "wind_speed_10m_kmh": 39.9,
+      "wind_gusts_10m_kmh": 51.8,
+      "source_file": "../marine_weather/INC-2024-12-25.json",
+      "caveat": "Open-Meteo model/reanalysis sample at the approximate incident midpoint; contextual only."
+    },
+    "sentinel_catalogue": {
+      "source_file": "../sentinel_scenes.csv",
+      "sentinel_1_scene_count": 16,
+      "sentinel_2_scene_count": 30,
+      "nearest_sentinel_1_utc": "2024-12-24T15:41:25.614376Z",
+      "nearest_sentinel_1_offset_hours": -18.74,
+      "nearest_sentinel_2_utc": "2024-12-26T09:33:26.460000Z",
+      "nearest_sentinel_2_offset_hours": 23.12,
+      "nearest_sentinel_2_cloud_cover_percent": 97.116572,
+      "note": "Catalogue availability only. The closest listed optical scene is highly cloud-covered."
+    }
+  },
+  "demo_guidance": {
+    "safe_summary": "A high-consequence anchor-drag sequence associated with Eagle S damaged multiple cables. The later district-court dismissal concerned jurisdiction and is under appeal in the latest cited official update.",
+    "cueing_signals": [
+      "long abnormal movement aligned with multiple cable crossings",
+      "anchor-drag-compatible speed and course",
+      "near-simultaneous outages across several assets",
+      "weather context that may affect both causation analysis and sensor choice",
+      "SAR preferred when optical coverage is cloud-obscured"
+    ],
+    "do_not_say": "Do not present the court ruling as proof that no harmful act occurred or as an acquittal on the factual merits."
+  },
+  "sources": [
+    {
+      "id": "FINGRID_2024_OUTAGE_TIME",
+      "publisher": "Fingrid",
+      "title": "Disturbance on the EstLink 2 direct-current connection on 25 December 2024",
+      "url": "https://www.fingrid.fi/ajankohtaista/tiedotteet/2024/hairio-estlink-2-tasasahkoyhteydella-25.12.2024/",
+      "published_at": "2024-12-25",
+      "source_type": "infrastructure_operator",
+      "language": "fi"
+    },
+    {
+      "id": "FINGRID_2024_FAULT",
+      "publisher": "Fingrid",
+      "title": "Fault in the EstLink 2 Electricity Transmission Connection Between Finland and Estonia Located in the Submarine Cable",
+      "url": "https://www.fingrid.fi/en/news/news/2024/fault-in-the-estlink-2-electricity-transmission-connection-between-finland-and-estonia-located-in-the-submarine-cable/",
+      "published_at": "2024-12-26T12:49:01+02:00",
+      "source_type": "infrastructure_operator"
+    },
+    {
+      "id": "FI_POLICE_2025_ANCHOR",
+      "publisher": "Police of Finland, National Bureau of Investigation",
+      "title": "Forensic analysis of the anchor hoisted from Gulf of Finland started",
+      "url": "https://poliisi.fi/en/-/forensic-analysis-of-the-anchor-hoisted-from-gulf-of-finland-started",
+      "published_at": "2025-01-09T17:03:00+02:00",
+      "source_type": "competent_authority"
+    },
+    {
+      "id": "FI_PROSECUTOR_2025_APPEAL",
+      "publisher": "Office of the Prosecutor General of Finland",
+      "title": "Prosecutor appeals judgement in the Eagle S case",
+      "url": "https://valtioneuvosto.fi/en/-/11121156/prosecutor-appeals-judgement-in-the-eagle-s-case",
+      "published_at": "2025-10-09T11:15:00+03:00",
+      "source_type": "competent_authority"
+    },
+    {
+      "id": "LOCAL_INCIDENT_CATALOGUE",
+      "publisher": "EDTH 2026 project",
+      "title": "Baltic incident catalogue",
+      "url": "../incidents.csv",
+      "published_at": null,
+      "source_type": "local_catalogue"
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 # Data sources and licenses
 
-Provenance and license tracking for every dataset under `data/` and `s3://edth2026-baltic/`.
+Provenance and license tracking for every dataset under `data/` (committed) and the larger layers that regenerate from public sources via `scripts/`.
 **Always check this file before redistributing data or shipping a demo to a third party.**
+
+> **AWS/S3 is retired.** The project's old `s3://edth2026-baltic/` bucket has been deleted to stop storage cost. It is no longer the source of truth for anything. Small layers are committed in git; large layers regenerate from their ORIGINAL public sources via the listed `scripts/`. See [`DATA_GUIDE.md`](../DATA_GUIDE.md) for the per-source rebuild commands.
 
 Last updated: 2026-06-07
 
@@ -31,9 +33,9 @@ Last updated: 2026-06-07
 | GMRT bathymetry | Free for non-commercial; cite Ryan et al. (2009) | Non-commercial only | Yes — "GMRT" |
 | Orange Marine (if obtained) | Likely proprietary / NDA | Depends on agreement | Per agreement |
 
-## Datasets currently in repo + S3 bucket
+## Datasets currently in repo + regenerable
 
-### Geo / criticality layers — `data/geo/` and `s3://edth2026-baltic/geo/`
+### Geo / criticality layers — `data/geo/`
 
 | File | Source | License | Last fetched | Script | Size | Notes |
 |---|---|---|---|---|---|---|
@@ -73,15 +75,15 @@ Last updated: 2026-06-07
 | `helcom_fishing_intensity_total_2016_2021.geojson` | HELCOM MADS | Free with attribution | 2026-05-18 | same | 8.6 MB | 10,000 fishing intensity cells |
 | `marine_weather/INC-*.json` | Open-Meteo Marine + Archive (ERA5) | CC-BY 4.0 | 2026-05-18 | `scripts/ingest/fetch_marine_weather.py` | ~150 KB × 9 | Hourly wave + wind + temp + pressure for each incident ±14 days |
 
-† Large files (>10 MB) — kept in S3 only, gitignored. Use `scripts/common/sync_from_s3.py geo` to fetch.
+† Large files (>10 MB) — gitignored, not committed. Regenerate from the public source via the listed `scripts/geo/fetch_*.py` script (see [`DATA_GUIDE.md`](../DATA_GUIDE.md)).
 
-### Reference data — `data/reference/` and `s3://edth2026-baltic/reference/`
+### Reference data — `data/reference/`
 
 | File | Source | License | Last fetched | Script | Notes |
 |---|---|---|---|---|---|
 | `incidents.csv` | Hand-curated by project team | MIT-equivalent (ours) | 2026-05-18 | Manual | 9 well-documented Baltic incidents with attribution taxonomy |
 | `sanctions_maritime.csv` | OFAC SDN + UK OFSI + EU FSF (via OpenSanctions) | OFAC: public domain; OFSI: OGL v3.0; OpenSanctions: CC-BY-NC 4.0 | 2026-05-18 | `scripts/reference/fetch_sanctions.py` | 1,773 entries. Mixed-license — non-commercial only because of OpenSanctions inclusion |
-| `sentinel_scenes.csv` | Element84 Earth-Search STAC | Sentinel data: free (Copernicus) | 2026-05-18 | `scripts/ingest/sentinel_stac_search.py` | 441 scenes catalogued; 9 incident-AOI crops rendered to S3 (`sar/sentinel1/`, `optical/sentinel2/`) |
+| `sentinel_scenes.csv` | Element84 Earth-Search STAC | Sentinel data: free (Copernicus) | 2026-05-18 | `scripts/ingest/sentinel_stac_search.py` | 441 scenes catalogued; 9 incident-AOI crops re-renderable via `scripts/ingest/fetch_sentinel_imagery.py` (local `data/sar/`, `data/optical/`) |
 | `commercial_sar_scenes.csv` | Umbra + Capella STAC walk | Umbra: CC-BY 4.0; Capella: CC-BY-NC 4.0 | 2026-05-18 | `scripts/ingest/commercial_sar_search.py` | Baltic-intersecting scenes per incident |
 | `raw/ofac_sdn.csv` | US Treasury OFAC | Public domain (US Gov) | 2026-05-18 | `fetch_sanctions.py` | Raw download (gitignored) |
 | `raw/uk_consolidated.csv` | UK OFSI | Open Government Licence v3.0 | 2026-05-18 | `fetch_sanctions.py` | Raw download (gitignored) |
@@ -89,20 +91,22 @@ Last updated: 2026-06-07
 | `aisdk_README.txt` | Danish Maritime Authority | Free | 2026-05-18 | `scripts/ingest/danish_ais.py` | Schema reference for AIS CSV |
 | `ais_access_notes.md` | Internal | — | 2026-05-18 | Manual | Notes on bulk-access status for each AIS source |
 | `kaggle_datasets_TODO.md` | Internal | — | 2026-05-18 | Manual | Original evaluation shortlist (now actioned — see INDEX below) |
-| `kaggle_datasets_INDEX.csv` | Internal | — | 2026-06-07 | `scripts/ingest/fetch_kaggle.py` | Inventory of the 10 downloaded Kaggle datasets: size, status, S3 URI. See Kaggle section below |
+| `kaggle_datasets_INDEX.csv` | Internal | — | 2026-06-07 | `scripts/ingest/fetch_kaggle.py` | Inventory of the 10 downloaded Kaggle datasets: size, status, slug. Re-download from Kaggle (public source) via the script. See Kaggle section below |
 | `coastal_cameras.csv` | Web research (public webcams) | Display-only; capture per each source's ToS | 2026-06-08 | Manual | 12 candidate Baltic port/coastal webcams for AIS↔camera fusion. Leads to confirm — see `coastal_cameras_README.md` |
 | `coastal_cameras_README.md` | Internal | — | 2026-06-08 | Manual | Methodology, verification status, stream-URL/clip-capture how-to, ToS guidance for the camera catalog |
 
-### AIS — `s3://edth2026-baltic/ais/parquet/`
+### AIS — regenerable to local `data/ais/parquet/`
 
-| Source | Bucket layout | License | Status |
+Rebuild from the Danish Maritime Authority's public anonymous S3 (`aisdata.ais.dk`) via `python scripts/ingest/danish_ais.py date <YYYY-MM-DD>` (or `… incidents` for the incident windows). Output lands locally under `data/ais/parquet/source=danish/year=YYYY/month=MM/day=DD/`. The committed hero-incident replay days are already stitched into `frontend/public/data/ais_v2/` — no rebuild needed for the demo.
+
+| Source | Local layout | License | Status |
 |---|---|---|---|
-| Danish | `source=danish/year=YYYY/month=MM/day=DD/part-XXXX.parquet` | Free, no restrictions | **Complete** — full backfill 2022-01-01 → 2026-05-20 (1,601 days, no gaps, ~330 GB). Pipeline at `scripts/ingest/danish_ais.py` |
+| Danish | `source=danish/year=YYYY/month=MM/day=DD/part-XXXX.parquet` | Free, no restrictions | Regenerable from `aisdata.ais.dk` — full backfill 2022-01-01 → 2026-05-20 is ~330 GB if you rebuild it all. Pipeline at `scripts/ingest/danish_ais.py` |
 | Finnish | (not yet) | CC-BY 4.0 | Bulk-download gap — see `ais_access_notes.md` |
 | Norwegian | (not yet) | NLOD 2.0 | Deprioritized — see `ais_access_notes.md` |
 | AISStream.io live | (not bulk-stored, demo only) | Free with key | Sign up at `aisstream.io` |
 
-### Satellite — `s3://edth2026-baltic/sar/` and `optical/`
+### Satellite — regenerable to local `data/sar/` and `data/optical/`
 
 | Source | Bucket | License | Status |
 |---|---|---|---|
@@ -113,9 +117,9 @@ Last updated: 2026-06-07
 | Planet Education | `planet.com/markets/education-and-research` | Research-only if approved | Application required; stretch goal |
 | ICEYE | `iceye.com` | Paid / ad-hoc researcher access | Stretch goal |
 
-### Kaggle ML training datasets — `s3://edth2026-baltic/kaggle/`
+### Kaggle ML training datasets — regenerable from Kaggle
 
-Downloaded + mirrored to S3 on 2026-06-07 via `scripts/ingest/fetch_kaggle.py`. Total ~24 GB (26.06 GB / 63,173 objects). Training material only — **not used by the cueing engine**. Inventory: `data/reference/kaggle_datasets_INDEX.csv`.
+Downloaded on 2026-06-07 via `scripts/ingest/fetch_kaggle.py`; re-download from Kaggle (the public source) with the same script (`--skip-s3`). Total ~24 GB (26.06 GB / 63,173 objects). Training material only — **not used by the cueing engine**. Inventory: `data/reference/kaggle_datasets_INDEX.csv`.
 
 | Dataset (slug) | License | Size | Commercial use | Notes |
 |---|---|---|---|---|

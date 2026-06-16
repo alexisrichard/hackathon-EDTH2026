@@ -8,21 +8,26 @@ supports per-MMSI queries — fine for our ~6 known incident vessels.
 License: CC-BY 4.0 (Fintraffic / Digitraffic).
 
 Output: data/ais/digitraffic/<mmsi>_<from>_<to>.json -- raw Digitraffic response
-        s3://edth2026-baltic/ais/digitraffic/<mmsi>_<from>_<to>.json
+
+S3 retired — writes locally by default; set EDTH_UPLOAD_S3=1 to mirror to your
+own bucket (was s3://edth2026-baltic/ais/digitraffic/<mmsi>_<from>_<to>.json).
 """
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-import boto3
 import requests
 
 OUT_DIR = Path("data/ais/digitraffic")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# S3 retired: upload is opt-in. Default OFF so the repo rebuilds locally with no AWS.
+UPLOAD_TO_S3 = os.environ.get("EDTH_UPLOAD_S3") == "1"
 
 BASE = "https://meri.digitraffic.fi/api/ais/v1/locations"
 
@@ -72,8 +77,11 @@ def fetch_mmsi_window(mmsi: int, start_dt: datetime, end_dt: datetime) -> dict |
 
 
 def main() -> int:
-    s3 = boto3.client("s3", region_name="eu-west-3")
+    s3 = None
     bucket = "edth2026-baltic"
+    if UPLOAD_TO_S3:
+        import boto3
+        s3 = boto3.client("s3", region_name="eu-west-3")
 
     rows_summary: list[dict] = []
     for label, mmsi, imo, inc_id, inc_d in VESSELS:
@@ -95,8 +103,11 @@ def main() -> int:
 
         out_local = OUT_DIR / f"{mmsi}_{inc_d.strftime('%Y%m%d')}.json"
         out_local.write_text(json.dumps(result, indent=1), encoding="utf-8")
-        s3.upload_file(str(out_local), bucket, f"ais/digitraffic/{out_local.name}")
-        print(f"  saved -> {out_local} + s3://{bucket}/ais/digitraffic/{out_local.name}", flush=True)
+        if UPLOAD_TO_S3:
+            s3.upload_file(str(out_local), bucket, f"ais/digitraffic/{out_local.name}")
+            print(f"  saved -> {out_local} + s3://{bucket}/ais/digitraffic/{out_local.name}", flush=True)
+        else:
+            print(f"  saved -> {out_local}", flush=True)
         rows_summary.append({"vessel": label, "mmsi": mmsi, "incident": inc_id,
                              "status": "ok", "feature_count": feat_count})
 

@@ -5,26 +5,83 @@ Pre-event data preparation for [EDTH 2026 Paris](https://luma.com/edth-2026-pari
 
 ---
 
-## What this project does (and what's in this repo *right now*)
+## What this project does
 
-The hackathon target is a system that ingests AIS, satellite imagery, and strategic infrastructure layers — then outputs prioritised ISR tasking recommendations: *"point the next satellite pass at this 50 km box at 14:00, here's why."*
+**Heimdall** ingests AIS, satellite (SAR) detections, and strategic infrastructure layers — then outputs prioritised ISR tasking recommendations: *"point the next satellite pass at this ~50 km box, here's why."* It runs continuously: a fixed fleet of satellites is re-tasked on a cadence, every vessel is scored point-in-time with **no look-ahead**, and the C-Lion1 / Yi Peng 3 replay shows the engine catching the anchor-drag.
 
 The full project plan lives in [`PLAN.md`](PLAN.md). The threat-model context — Nord Stream, Balticconnector, C-Lion1, Estlink 2 / Eagle S, Latvia–Sweden / Vezhen, Elisa / Fitburg — is described there.
 
-**This repository, in its current state, is *only* the data-prep layer.** Every dataset we identified is either downloaded, scripted, or honestly documented as a gap. The model, the scoring engine, the dashboard, the demo — all of that is hackathon-weekend work and is deliberately not pre-built here.
+**The app is built.** The React + MapLibre/deck.gl dashboard (`frontend/`) and the Python scoring/cueing engine (`scoring/`) are in this repo — see [Launch Heimdall](#launch-heimdall) to run it. The demo runs with **zero AWS**: the cues, overlays, the hero-incident AIS replay days, and the trained SAR weights all ship in git. What's *not* committed is the rest of the multi-year AIS replay archive and raw imagery (gitignored) — those rebuild from public sources via `scripts/` (see [`DATA_GUIDE.md`](DATA_GUIDE.md)).
 
 ---
 
-## Quick start
+## Launch Heimdall
+
+The dashboard is a Vite + React + MapLibre/deck.gl app in [`frontend/`](frontend/). The committed data (scoring cues, the satellite-tasking timeline, geo/infrastructure overlays, incidents) ships in git, so the map and cues work out of the box. Prerequisite: **Node 18+**.
+
+```bash
+cd frontend
+npm install
+npm run dev          # → http://localhost:5173
+```
+
+It opens on the **C-Lion1 / Yi Peng 3 catch (2024-11-18 09:00Z)** — Yi Peng 3 is satellite #1. Drag the timeline left into 2024-11-17 to watch the engine re-task its 3 satellites every 3 hours through the lead-up; scrub to 2022-09-26 for the Nord Stream dark-density cue. Production-like build: `npm run build && npm run preview` (→ :4173).
+
+### Continuous scoring — run the backend too (optional)
+
+The two incident windows above are **precomputed** and work with no backend. To get **continuous** scoring at *any* instant (scrub anywhere → the engine scores that moment on demand), run the FastAPI backend alongside the frontend:
+
+```bash
+source .venv/bin/activate
+cd backend && uvicorn app.main:app --port 8077    # the frontend calls :8077 by default
+```
+
+The frontend then fetches `/frame?at=<t>` for times outside the precomputed windows (snapped to the 3h cadence + cached, so playback within a window is free; the first request for a new region runs a real ~60-day lookback, a few seconds, shown as "scoring theatre…"). Override the URL with `VITE_BACKEND_URL` if you run it on a different port. Interactive API docs at `http://localhost:8077/docs`.
+
+### The AIS replay tiles
+
+The **hero-incident days are committed**, so a fresh clone already shows a moving fleet on every incident day — no rebuild, no backend. The rest of the multi-year archive is gitignored and rebuilds locally from the public Danish AIS source (no AWS):
+
+| data | path | in git? | how to get it |
+|---|---|---|---|
+| Scoring cues + satellite timeline | `frontend/public/data/cues/` | ✅ committed | — |
+| Geo / infra / incident overlays | `frontend/public/data/*.json` | ✅ committed | — |
+| Hero-incident AIS replay days | `frontend/public/data/ais_v2/` | ✅ committed | Nord Stream 2022-09-26, Balticconnector 2023-10-08, C-Lion1/Yi Peng 3 2024-11-17 & 2024-11-18, Estlink2/Eagle S 2024-12-25, LV–SE 2025-01-26 |
+| Full AIS replay archive (~3.5 GB, 1601 days) | `frontend/public/data/ais_v2/` | ❌ gitignored | rebuild from public Danish AIS ↓ |
+| Trained SAR weights | `scoring/weights/yolov8n_hrsid_best.pt` | ✅ committed | — |
+
+**Rebuild the full archive** — fully local, no AWS. For each day, download the public Danish AIS, build the per-day track tile, then stitch:
+
+```bash
+source .venv/bin/activate
+python scripts/ingest/danish_ais.py date 2024-11-18   # downloads from Danish Maritime Authority → data/ais/parquet/
+python scripts/ingest/build_ais_tracks.py 2024-11-18  # reads local parquet → frontend/public/data/ais/
+python scripts/ingest/stitch_tracks.py                # → frontend/public/data/ais_v2/
+```
+
+### Regenerate the scoring / cues (optional — they're committed)
+
+```bash
+source .venv/bin/activate
+python -m scoring.zone_score --emit frontend/public/data/cues   # cues + c-lion1 satellite time-series
+python -m unittest discover -s scoring/tests -p 'test_*.py'      # the scoring tests
+python -m scoring.validate_fleet --as-of 2024-11-18              # the no-overfit fleet check
+```
+
+---
+
+## Data prep (the rest of this repo)
+
+The bulk of this repo is the **data-prep layer** that feeds the engine — AIS, satellite imagery, criticality layers, sanctions, incidents. Setup below.
 
 1. Clone the repo: `git clone https://github.com/alexisrichard/hackathon-EDTH2026.git`
-2. Follow [`ONBOARDING.md`](ONBOARDING.md) — cross-platform (Windows winget, macOS Homebrew). ~30 min including AWS configuration.
-3. Get the bucket access key from Alexis (private channel — not in the repo).
+2. Follow [`ONBOARDING.md`](ONBOARDING.md) — cross-platform (Windows winget, macOS Homebrew). ~15 min; no AWS needed.
+3. Regenerate any full dataset you need from its public source via `scripts/` — per-source commands in [`DATA_GUIDE.md`](DATA_GUIDE.md). (Only some sources need keys: Copernicus / Kaggle / GFW / Equasis.)
 4. Open `data/samples/notebooks/01_baltic_exploration.ipynb` for a quick tour of the data.
 
 ### Using AI coding assistants (Claude, Gemini, ChatGPT/Codex…)
 
-The repo's working guide is [`AGENTS.md`](AGENTS.md) — one **tool-neutral** source of truth for humans and any AI assistant. [`CLAUDE.md`](CLAUDE.md) and [`GEMINI.md`](GEMINI.md) are thin pointers that redirect those tools to it (Codex/ChatGPT read `AGENTS.md` natively), so whatever you use auto-loads the same rules — just `cd` into the repo and start. It briefs you on the system design, the S3 layout and conventions (Baltic bbox, `eu-west-3`, parquet partitioning), the commands, and our way of working (branch isolation — never commit to `main`; plan-first; verify-before-done). It's also a fast read for humans who want the project in one page. Keep it current as the project evolves.
+The repo's working guide is [`AGENTS.md`](AGENTS.md) — one **tool-neutral** source of truth for humans and any AI assistant. [`CLAUDE.md`](CLAUDE.md) and [`GEMINI.md`](GEMINI.md) are thin pointers that redirect those tools to it (Codex/ChatGPT read `AGENTS.md` natively), so whatever you use auto-loads the same rules — just `cd` into the repo and start. It briefs you on the system design, the data layout and conventions (Baltic bbox, parquet partitioning, public-source rebuilds), the commands, and our way of working (branch isolation — never commit to `main`; plan-first; verify-before-done). It's also a fast read for humans who want the project in one page. Keep it current as the project evolves.
 
 ---
 
@@ -33,7 +90,7 @@ The repo's working guide is [`AGENTS.md`](AGENTS.md) — one **tool-neutral** so
 📖 **For a specialist-readable, source-by-source guide** — what each dataset is, what it provides, coverage / cadence / volume, what it's useful for, and caveats — see **[`DATA_GUIDE.md`](DATA_GUIDE.md)**.
 
 Full provenance + license matrix in [`data/SOURCES.md`](data/SOURCES.md).
-Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
+The large files are not committed — they regenerate from their original public sources via `scripts/` (per-source commands in [`DATA_GUIDE.md`](DATA_GUIDE.md)). No AWS/S3 is involved.
 
 | Category | What we have | Source |
 |---|---|---|
@@ -47,7 +104,7 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 | GFW events | Per-vessel port visits, loitering, encounters, AIS gaps, fishing | Global Fishing Watch v3 API |
 | Marine weather | 9 incident windows × hourly waves + wind + temp + pressure | Open-Meteo + ERA5 |
 | Incidents | 9 well-sourced Baltic events Sep 2022 → Jan 2026 with attribution taxonomy | Hand-curated |
-| Kaggle | **10 datasets downloaded to S3 (~24 GB, 63k files):** SeaDronesSee drone video, HRSID + LS-SSDD + SARScope (SAR), ships-in-satellite (optical), AFO (aerial), Kattegat AIS, daily port activity, world ports, Ukraine-war events | Kaggle |
+| Kaggle | **10 datasets (~24 GB, 63k files), rebuildable from Kaggle:** SeaDronesSee drone video, HRSID + LS-SSDD + SARScope (SAR), ships-in-satellite (optical), AFO (aerial), Kattegat AIS, daily port activity, world ports, Ukraine-war events | Kaggle |
 
 ---
 
@@ -68,17 +125,23 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 │   ├── SOURCES.md                  data provenance + license matrix
 │   ├── geo/                        criticality layers (small, in git)
 │   ├── reference/                  incidents, sanctions, KSE, marine weather (small, in git)
-│   ├── ais/                        local AIS mirror (gitignored — see S3)
-│   ├── optical/                    Sentinel-2 crops (gitignored — see S3)
-│   ├── sar/                        Sentinel-1 crops (gitignored — see S3)
+│   ├── ais/                        local AIS parquet (gitignored — rebuild via scripts/ingest/danish_ais.py)
+│   ├── optical/                    Sentinel-2 crops (gitignored — rebuild from Copernicus)
+│   ├── sar/                        Sentinel-1 crops (gitignored — rebuild from Copernicus)
 │   └── samples/notebooks/          starter notebook
 │
 ├── scripts/
-│   ├── common/                     helpers (DuckDB connection, S3 sync, bbox constants)
+│   ├── common/                     helpers (DuckDB connection, bbox constants; sync_from_s3.py is a retired no-op)
 │   ├── geo/                        criticality-layer fetchers (OSM, EMODnet, HELCOM, ...)
 │   ├── ingest/                     bulk + streaming + satellite + Kaggle fetchers
 │   ├── reference/                  sanctions, KSE PDF parser, Equasis lookup
+│   ├── ingest/stitch_tracks.py     build the stitched AIS replay tiles (ais_v2)
 │   └── overnight.ps1               one-shot launcher for the heavy bulk downloads
+│
+├── frontend/                       Heimdall dashboard — Vite + React + MapLibre/deck.gl
+│   └── public/data/                committed cues + overlays (ais_v2 replay tiles gitignored)
+│
+├── scoring/                        point-in-time ship-trust + zone (cueing) engine + tests
 │
 ├── outreach/                       drafted emails, signup guides, team recaps (HTML + text)
 │
@@ -89,16 +152,17 @@ Source of truth for the large files: `s3://edth2026-baltic/` (eu-west-3).
 
 ## Where the credentials live
 
-All gated sources read from `.env.local` at the repo root (gitignored). The current keys we use:
+The demo needs **no credentials at all** — it runs entirely from data committed in git. Keys are only for OPTIONAL full-dataset rebuilds. All gated sources read from `.env.local` at the repo root (gitignored). The keys we use:
 
-- `AISSTREAM_API_KEY` — live AIS WebSocket
-- `EQUASIS_USERNAME` + `EQUASIS_PASSWORD` — vessel registry lookup
-- `COPERNICUS_CLIENT_ID` + `COPERNICUS_CLIENT_SECRET` — Sentinel imagery
-- `GFW_API_TOKEN` — Global Fishing Watch v3 API
+- `COPERNICUS_CLIENT_ID` + `COPERNICUS_CLIENT_SECRET` — Sentinel imagery (rebuild only)
+- `GFW_API_TOKEN` — Global Fishing Watch v3 API (rebuild only)
+- `EQUASIS_USERNAME` + `EQUASIS_PASSWORD` — vessel registry lookup (rebuild only)
+- `AISSTREAM_API_KEY` — live AIS WebSocket (optional live mode)
+- Kaggle: `~/.kaggle/kaggle.json` — the 10 Kaggle ML datasets (rebuild only)
 
-AWS access (S3) is configured via `aws configure` and lives in `~/.aws/credentials`. The `edth2026-data` IAM user has S3 access to the project bucket.
+**AWS/S3 is no longer used.** The project bucket has been retired and deleted; nothing reads from it, and no `aws configure` is needed. The Danish AIS rebuild downloads from the public source with no credentials.
 
-**All of the above should be rotated after the hackathon.** They live in AI-assistant chat history where they were originally pasted in.
+**The remaining keys above should be rotated after the hackathon** (they live in AI-assistant chat history where they were originally pasted in). The AWS keys are moot now that the bucket is gone.
 
 ---
 
