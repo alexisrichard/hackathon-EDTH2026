@@ -1,7 +1,18 @@
-# hackathon-EDTH2026
+# Heimdall — maritime cueing for undersea-infrastructure defence
 
-**Maritime cueing engine for Baltic undersea infrastructure protection.**
-Pre-event data preparation for [EDTH 2026 Paris](https://luma.com/edth-2026-paris), June 12–14.
+**Tell your next satellite where to look.** Heimdall watches every AIS-broadcasting vessel in the Baltic, fuses an interpretable ship-risk score, a fine-tuned SAR vision model, and strategic geography, and outputs a ranked satellite-tasking queue. Built at [EDTH 2026 Paris](https://luma.com/edth-2026-paris).
+
+<p align="center">
+  <a href="outreach/deck/HEIMDALL_deck.pdf"><img src="outreach/deck/assets/readme_hero.png" alt="Heimdall — pitch deck" width="100%"></a>
+</p>
+
+<p align="center">
+  <b>📑 <a href="outreach/deck/HEIMDALL_deck.pdf">View the pitch deck (PDF)</a></b>
+  &nbsp;·&nbsp; <a href="#launch-heimdall">run the live app ↓</a>
+  &nbsp;·&nbsp; deck source: <a href="outreach/deck/">outreach/deck/</a>
+</p>
+
+> *AIS is what a ship says. SAR is what a ship is. The gap between them is the threat.*
 
 ---
 
@@ -143,7 +154,7 @@ The large files are not committed — they regenerate from their original public
 │
 ├── scoring/                        point-in-time ship-trust + zone (cueing) engine + tests
 │
-├── outreach/                       drafted emails, signup guides, team recaps (HTML + text)
+├── outreach/                       pitch deck (deck/ — HTML→PDF), pitch script, demo run-sheet, team comms
 │
 └── requirements.txt                Python deps (geopandas, duckdb, boto3, pyais, ...)
 ```
@@ -203,9 +214,8 @@ Two **non-commercial** datasets are included for hackathon use that would need t
 
 ## Team
 
-EDTH 2026 Paris hackathon team of three:
-- Engineer / entrepreneur (telecom, cyber, submarine cables) — [Alexis Richard](https://www.linkedin.com/in/alexis-richard-77053857/)
-- Engineer
-- Cyber + defense
+EDTH 2026 Paris — built by:
 
-Repository owner: [@alexisrichard](https://github.com/alexisrichard).
+- **[Alexis Richard](https://www.linkedin.com/in/alexis-richard-77053857/)** ([@alexisrichard](https://github.com/alexisrichard)) — engineer / entrepreneur; telecom, cyber, submarine cables
+- **Gabriel Richard** ([@RichieG48](https://github.com/RichieG48)) — engineer
+- **Côme Fournet** — naval & defense expert
